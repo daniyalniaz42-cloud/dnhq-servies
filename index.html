@@ -223,5 +223,31 @@
         // Run sync on load
         window.onload = updateTable;
     </script>
+<script>
+function handleBooking(event) {
+    event.preventDefault();
+    
+    // Form se data lena
+    const name = document.getElementById('customerName').value;
+    const phone = document.getElementById('customerPhone').value;
+    const service = document.getElementById('serviceType').value;
+
+    // 1. Google Sheet Link (Background mein data bhejna)
+    const googleFormUrl = https://docs.google.com/forms/d/e/1FAIpQLScGhlhZtgQk9QC5uqQv6L9Ne_-WVLLHoYxRzJd5WYrmubM2WQ/formResponse?entry.75173003=${encodeURIComponent(name)}&entry.1151320485=${encodeURIComponent(phone)}&entry.428181070=${encodeURIComponent(service)}&submit=Submit;
+
+    // Is line se data sheet mein chala jayega
+    fetch(googleFormUrl, { mode: 'no-cors' });
+
+    // 2. WhatsApp message tayyar karna
+    const whatsappMsg = *Naya Order (DN/HQ Services)*%0A%0A*Naam:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service};
+    
+    // WhatsApp kholna
+    window.open(https://wa.me/923152458657?text=${whatsappMsg}, '_blank');
+
+    alert("Booking Saved! Detail aapke WhatsApp aur Google Sheet dono mein bhej di gayi hai.");
+}
+</script>
+
 </body>
 </html>
+
