@@ -3,188 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DN/HQ Services | Professional AC & Electrical</title>
+    <title>DN/HQ Services | Professional Billing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        html { scroll-behavior: smooth; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
-        /* Print logic */
+        /* Click issue fix: Ensure no invisible layers block clicks */
+        #adminPanel, #signupModal, button {
+            position: relative;
+            z-index: 10;
+        }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 9999; 
+            left: 0; top: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); 
+            align-items: center; justify-content: center; 
+        }
         @media print {
-            body * { visibility: hidden; }
-            #receipt-display, #receipt-display * { visibility: visible; }
-            #receipt-display { position: absolute; left: 0; top: 0; width: 100%; border: none; }
             .no-print { display: none !important; }
+            #receipt-display { display: block !important; position: absolute; top: 0; left: 0; width: 100%; }
         }
     </style>
 </head>
-<body class="bg-gray-50 text-slate-900">
+<body class="bg-gray-100 font-sans">
 
-    <nav class="bg-slate-900 p-4 text-white flex justify-between items-center sticky top-0 z-50 shadow-xl">
-        <div class="text-2xl font-black text-yellow-400">DN/HQ SERVICES</div>
-        <ul class="hidden md:flex space-x-8">
-            <li><a href="#home" class="hover:text-yellow-400 font-bold">Home</a></li>
-            <li><a href="#services" class="hover:text-yellow-400 font-bold">Services</a></li>
-            <li><button onclick="showAdmin()" class="hover:text-yellow-400 font-bold">Admin Login</button></li>
-        </ul>
-        <a href="tel:+923152458657" class="bg-green-600 px-4 py-2 rounded-full font-bold flex items-center shadow-lg hover:bg-green-700 transition transform hover:scale-105">
-            <i class="fas fa-phone mr-2"></i> Call Now
-        </a>
+    <nav class="bg-slate-900 p-4 text-white flex justify-between items-center sticky top-0 z-50 shadow-lg">
+        <div class="text-xl font-bold text-yellow-400">DN/HQ SERVICES</div>
+        <button onclick="showAdmin()" class="bg-slate-700 px-3 py-1 rounded text-sm border border-yellow-500">Admin Login</button>
     </nav>
 
-    <section id="home" class="h-[450px] flex items-center justify-center text-center text-white bg-slate-800 border-b-8 border-yellow-500 relative">
-        <div class="z-10 px-4">
-            <h1 class="text-5xl font-extrabold mb-4 tracking-tight uppercase">AC & Electrical Experts</h1>
-            <p class="text-xl mb-8 text-gray-300">Karachi's Trusted Technical Solutions</p>
-            <button onclick="openModal('signupModal', 'General Inquiry')" class="bg-yellow-500 text-slate-900 px-10 py-4 rounded-xl font-black text-xl hover:bg-yellow-400 shadow-2xl transition transform hover:scale-110">
-                Signup for Services
-            </button>
-        </div>
+    <section class="p-10 text-center bg-slate-800 text-white border-b-4 border-yellow-500">
+        <h1 class="text-3xl font-black mb-2">AC & ELECTRICAL EXPERTS</h1>
+        <p class="text-gray-400 mb-6">Professional Services in Karachi</p>
+        <button onclick="openModal('signupModal', 'General Service')" class="bg-yellow-500 text-black px-8 py-3 rounded-full font-bold shadow-lg">Book Now</button>
     </section>
 
-    <section id="services" class="py-20 px-6 max-w-6xl mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-16 text-slate-800 underline decoration-yellow-500 decoration-4 underline-offset-8">Our Expertise</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-blue-500">
-                <i class="fas fa-snowflake text-4xl text-blue-600 mb-6 block text-center"></i>
-                <h3 class="text-2xl font-bold mb-4 text-center">AC Technician</h3>
-                <button onclick="openModal('signupModal', 'AC Technician')" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Book Now</button>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-yellow-500">
-                <i class="fas fa-plug text-4xl text-yellow-600 mb-6 block text-center"></i>
-                <h3 class="text-2xl font-bold mb-4 text-center">Electrician</h3>
-                <button onclick="openModal('signupModal', 'Electrician')" class="w-full bg-yellow-500 text-slate-900 py-3 rounded-lg font-bold">Book Now</button>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-slate-700">
-                <i class="fas fa-industry text-4xl text-slate-700 mb-6 block text-center"></i>
-                <h3 class="text-2xl font-bold mb-4 text-center">Maintenance</h3>
-                <button onclick="openModal('signupModal', 'Industrial Maintenance')" class="w-full bg-slate-800 text-white py-3 rounded-lg font-bold">Book Now</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="adminPanel" style="display:none;" class="py-16 px-6 bg-gray-100 border-t-4 border-slate-900">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-black text-slate-800 uppercase">Admin Dashboard</h2>
-                <button onclick="hideAdmin()" class="bg-red-600 text-white px-8 py-2 rounded-xl font-bold">Logout</button>
+    <section id="adminPanel" style="display:none; padding: 20px;" class="bg-gray-200 min-h-screen">
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-2xl border-t-4 border-slate-900">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-black">ADMIN DASHBOARD</h2>
+                <button onclick="hideAdmin()" class="bg-red-600 text-white px-4 py-2 rounded font-bold">Logout</button>
             </div>
 
-            <div class="bg-white p-8 rounded-2xl shadow-2xl mb-12 border-l-8 border-yellow-500">
-                <h3 class="text-2xl font-bold mb-6 flex items-center"><i class="fas fa-file-invoice-dollar mr-3 text-yellow-600"></i> Invoice Generator</h3>
+            <div class="bg-blue-50 p-4 rounded-lg mb-8 border border-blue-200">
+                <h3 class="font-bold mb-4 text-blue-800 uppercase tracking-widest"><i class="fas fa-file-invoice mr-2"></i> Create New Bill</h3>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-                    <div class="bg-gray-50 p-6 rounded-xl border">
-                        <h4 class="font-black text-slate-700 mb-4 border-b pb-2">ELECTRICAL</h4>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-2">
-                                <label class="text-xs font-bold w-32">Switch Board:</label>
-                                <input type="number" id="q_switch" class="w-16 p-1 border rounded" placeholder="0">
-                                <select id="r_switch" class="text-xs border p-1 rounded"><option value="500">500</option><option value="1000">1000</option></select>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <label class="text-xs font-bold w-32">Point Wiring:</label>
-                                <input type="number" id="q_wiring" class="w-16 p-1 border rounded" placeholder="0">
-                                <select id="r_wiring" class="text-xs border p-1 rounded"><option value="800">800</option><option value="1500">1500</option></select>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <label class="text-xs font-bold w-32">DB Box:</label>
-                                <input type="number" id="q_db" class="w-16 p-1 border rounded" placeholder="0">
-                                <select id="r_db" class="text-xs border p-1 rounded"><option value="2000">2000</option><option value="2500">2500</option></select>
-                            </div>
-                            <div class="pt-2"><label class="font-bold text-red-600 cursor-pointer"><input type="checkbox" id="visit_charge"> Visit Charges (1000)</label></div>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 p-6 rounded-xl border">
-                        <h4 class="font-black text-slate-700 mb-4 border-b pb-2">AC SERVICES</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-white p-3 rounded shadow">
+                        <p class="font-bold border-b mb-2">ELECTRICAL</p>
                         <div class="space-y-2">
-                            <div class="flex justify-between items-center text-xs font-bold"><label>Master (3500):</label><input type="number" id="q_acm" class="w-16 p-1 border rounded" placeholder="0"></div>
-                            <div class="flex justify-between items-center text-xs font-bold"><label>Normal (2500):</label><input type="number" id="q_acn" class="w-16 p-1 border rounded" placeholder="0"></div>
-                            <div class="flex justify-between items-center text-xs font-bold"><label>Installation (3000):</label><input type="number" id="q_aci" class="w-16 p-1 border rounded" placeholder="0"></div>
-                            <div class="flex justify-between items-center text-xs font-bold"><label>Gas 1T (6500):</label><input type="number" id="q_g1" class="w-16 p-1 border rounded" placeholder="0"></div>
-                            <div class="flex justify-between items-center text-xs font-bold"><label>Gas 1.5T (8500):</label><input type="number" id="q_g15" class="w-16 p-1 border rounded" placeholder="0"></div>
+                            <div>Board: <input type="number" id="q_switch" class="w-12 border rounded" value="0"> <select id="r_switch" class="border rounded"><option value="500">500</option><option value="1000">1000</option></select></div>
+                            <div>Wiring: <input type="number" id="q_wiring" class="w-12 border rounded" value="0"> <select id="r_wiring" class="border rounded"><option value="800">800</option><option value="1500">1500</option></select></div>
+                            <div>DB Box: <input type="number" id="q_db" class="w-12 border rounded" value="0"> <select id="r_db" class="border rounded"><option value="2000">2000</option><option value="2500">2500</option></select></div>
+                            <div class="text-red-600 font-bold mt-2"><input type="checkbox" id="visit_charge"> Visit (1000)</div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-3 rounded shadow">
+                        <p class="font-bold border-b mb-2">AC SERVICES</p>
+                        <div class="space-y-2">
+                            <div>Master (3500): <input type="number" id="q_acm" class="w-12 border rounded" value="0"></div>
+                            <div>Normal (2500): <input type="number" id="q_acn" class="w-12 border rounded" value="0"></div>
+                            <div>Install (3000): <input type="number" id="q_aci" class="w-12 border rounded" value="0"></div>
+                            <div>Gas 1T (6500): <input type="number" id="q_g1" class="w-12 border rounded" value="0"></div>
+                            <div>Gas 1.5T (8500): <input type="number" id="q_g15" class="w-12 border rounded" value="0"></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col md:flex-row gap-4">
-                    <input type="text" id="cust_inv_name" placeholder="Customer Name" class="flex-1 p-3 border-2 rounded-xl">
-                    <input type="tel" id="cust_inv_phone" placeholder="WhatsApp No (e.g 0315...)" class="flex-1 p-3 border-2 rounded-xl">
-                    <button onclick="generateInvoice()" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold">Generate Bill</button>
+                <div class="mt-4 space-y-2">
+                    <input type="text" id="cust_inv_name" placeholder="Customer Name" class="w-full p-3 border rounded shadow-inner">
+                    <input type="tel" id="cust_inv_phone" placeholder="WhatsApp Number" class="w-full p-3 border rounded shadow-inner">
+                    <button onclick="generateInvoice()" class="w-full bg-green-600 text-white p-4 rounded-xl font-bold shadow-lg hover:bg-green-700">Generate Professional Bill</button>
                 </div>
 
-                <div id="receipt-display" style="display:none;" class="mt-8 p-6 border-4 border-double border-slate-800 bg-white"></div>
+                <div id="receipt-display" style="display:none;" class="mt-6 p-6 border-4 border-double border-black bg-white"></div>
             </div>
 
-            <div class="sheet-container rounded-xl border-4 border-slate-800 bg-white">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml?widget=true&amp;headers=false"></iframe>
+            <div style="height: 500px;" class="border-4 border-slate-800 rounded">
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml?widget=true&amp;headers=false" class="w-full h-full"></iframe>
             </div>
         </div>
     </section>
-
-    <footer class="bg-slate-900 text-white py-12 text-center border-t-4 border-yellow-500">
-        <h4 class="text-2xl font-black text-yellow-400">DN/HQ SERVICES</h4>
-        <p class="text-sm text-gray-400 mt-4">Developed by Muhammad Daniyal</p>
-        <button onclick="showAdmin()" class="text-xs text-gray-700 mt-4 block mx-auto underline italic">Admin Login</button>
-    </footer>
 
     <div id="signupModal" class="modal">
-        <div class="bg-white rounded-3xl p-8 w-full max-w-md relative shadow-2xl">
-            <button onclick="closeModal('signupModal')" class="absolute top-2 right-4 text-3xl text-gray-400">&times;</button>
-            <h3 class="text-2xl font-black mb-4 text-center">BOOKING</h3>
-            <p id="modalServiceType" class="text-center text-blue-600 font-bold mb-4 italic"></p>
-            <input type="text" id="userName" placeholder="Full Name" class="w-full p-3 border mb-3 rounded-xl">
-            <input type="tel" id="userPhone" placeholder="Mobile Number" class="w-full p-3 border mb-6 rounded-xl">
-            <button onclick="handleSignup()" class="w-full bg-yellow-500 text-slate-900 p-4 rounded-xl font-black">Confirm</button>
+        <div class="bg-white p-8 rounded-2xl w-80 text-center shadow-2xl">
+            <h3 class="font-black text-xl mb-4">NEW BOOKING</h3>
+            <input type="text" id="userName" placeholder="Your Name" class="w-full p-2 border mb-3 rounded">
+            <input type="tel" id="userPhone" placeholder="Phone" class="w-full p-2 border mb-4 rounded">
+            <div class="flex gap-2">
+                <button onclick="handleSignup()" class="bg-green-600 text-white flex-1 p-2 rounded">Confirm</button>
+                <button onclick="closeModal('signupModal')" class="bg-gray-300 flex-1 p-2 rounded">Cancel</button>
+            </div>
         </div>
     </div>
 
     <script>
-        let currentService = "";
+        // Simple Debugger: Agar JS load hui to alert aayega (Check karne ke liye)
+        console.log("System Loaded Successfully");
+
         function openModal(id, service) {
-            currentService = service;
-            document.getElementById('modalServiceType').innerText = "Service: " + service;
             document.getElementById(id).style.display = 'flex';
         }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function showAdmin() {
+            let pass = prompt("Enter Admin Password:");
+            if (pass === "1234") {
+                document.getElementById('adminPanel').style.display = 'block';
+                window.scrollTo(0, document.getElementById('adminPanel').offsetTop);
+            } else if(pass != null) {
+                alert("Incorrect Password!");
+            }
+        }
+
+        function hideAdmin() {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
 
         function handleSignup() {
             const name = document.getElementById('userName').value;
             const phone = document.getElementById('userPhone').value;
-            if(!name || !phone) { alert("Fill all fields!"); return; }
-            var formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScGhlhZtgQk9QC5uqQv6L9Ne_-WVLLHoYxRzJd5WYrmubM2WQ/formResponse";
-            fetch(${formUrl}?entry.75173003=${encodeURIComponent(name)}&entry.1151320485=${encodeURIComponent(phone)}&entry.428181070=${encodeURIComponent(currentService)}&submit=Submit, { mode: 'no-cors' });
+            if(!name || !phone) { alert("Please fill info!"); return; }
+            alert("Booking Recorded!");
             closeModal('signupModal');
-            alert("Booked!");
-            window.open(https://wa.me/923152458657?text=${encodeURIComponent("Salam! New Booking: "+name+" ("+phone+") for "+currentService)});
+            window.open("https://wa.me/923152458657?text=New Booking: " + name);
         }
-
-        function showAdmin() {
-            const pass = prompt("Admin Password:");
-            if (pass === "1234") {
-                const panel = document.getElementById('adminPanel');
-                panel.style.display = "block";
-                window.location.href = "#adminPanel";
-            } else if(pass !== null) { alert("Incorrect!"); }
-        }
-
-        function hideAdmin() { document.getElementById('adminPanel').style.display = "none"; }
 
         function generateInvoice() {
-            let name = document.getElementById('cust_inv_name').value || "Valued Customer";
+            let name = document.getElementById('cust_inv_name').value || "Customer";
             let phone = document.getElementById('cust_inv_phone').value;
             let total = 0;
             let rows = "";
-            let waText = *DN/HQ SERVICES INVOICE*\nCustomer: ${name}\n\n;
+            let waText = "DN/HQ SERVICES INVOICE\nCustomer: " + name + "\n\n";
 
             function addRow(qId, rId, label, isFixed) {
-                let q = document.getElementById(qId).value;
-                let r = isFixed ? rId : document.getElementById(rId).value;
+                let q = parseInt(document.getElementById(qId).value) || 0;
+                let r = isFixed ? rId : parseInt(document.getElementById(rId).value);
                 if(q > 0) {
                     let sub = q * r;
                     total += sub;
-                    rows += <tr><td class='border p-2'>${label}</td><td class='border p-2 text-center'>${q}</td><td class='border p-2 text-right'>${r}</td><td class='border p-2 text-right'>${sub}</td></tr>;
+                    rows += <tr><td class='border p-2'>${label}</td><td class='border p-2 text-center'>${q}</td><td class='border p-2 text-right'>${sub}</td></tr>;
                     waText += • ${label} (x${q}): Rs ${sub}\n;
                 }
             }
@@ -192,38 +153,42 @@
             addRow('q_switch', 'r_switch', 'Switch Board', false);
             addRow('q_wiring', 'r_wiring', 'Point Wiring', false);
             addRow('q_db', 'r_db', 'DB Box Fixing', false);
-            addRow('q_acm', 3500, 'AC Master Service', true);
-            addRow('q_acn', 2500, 'AC Normal Service', true);
+            addRow('q_acm', 3500, 'AC Master', true);
+            addRow('q_acn', 2500, 'AC Normal', true);
             addRow('q_aci', 3000, 'AC Installation', true);
             addRow('q_g1', 6500, 'Gas 1 Ton', true);
             addRow('q_g15', 8500, 'Gas 1.5 Ton', true);
 
             if(document.getElementById('visit_charge').checked) {
                 total += 1000;
-                rows += <tr><td class='border p-2'>Visit Charges</td><td class='border p-2 text-center'>-</td><td class='border p-2 text-right'>1000</td><td class='border p-2 text-right'>1000</td></tr>;
+                rows += <tr><td class='border p-2'>Visit Charges</td><td class='border p-2 text-center'>-</td><td class='border p-2 text-right'>1000</td></tr>;
                 waText += • Visit Charges: Rs 1000\n;
             }
 
-            if(total === 0) { alert("Enter quantity!"); return; }
-            waText += \n*TOTAL: Rs ${total}*\n_Thank you!_;
+            if(total === 0) { alert("Please enter items!"); return; }
+            waText += \n*GRAND TOTAL: Rs ${total}*;
 
             const disp = document.getElementById('receipt-display');
-            disp.style.display = "block";
+            disp.style.display = 'block';
             disp.innerHTML = `
-                <div class='text-center mb-4'><h2 class='text-2xl font-black'>DN/HQ SERVICES</h2><p class='text-xs'>Karachi | 0315-2458657</p></div>
-                <div class='flex justify-between mb-4 text-sm'><span><b>Customer:</b> ${name}</span><span><b>Date:</b> ${new Date().toLocaleDateString()}</span></div>
-                <table class='w-full border mb-4 text-sm'><thead><tr class='bg-gray-100'><th>Service</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table>
-                <h3 class='text-right text-xl font-black'>TOTAL: Rs ${total}</h3>
-                <div class='mt-6 flex gap-2 no-print'>
-                    <button onclick='window.print()' class='bg-blue-600 text-white px-4 py-2 rounded'>Print</button>
-                    <button onclick='sendInvWA("${phone}", "${encodeURIComponent(waText)}")' class='bg-green-600 text-white px-4 py-2 rounded'>WhatsApp</button>
-                </div>`;
+                <div class="text-center font-bold text-xl mb-4">DN/HQ SERVICES</div>
+                <div class="flex justify-between text-sm mb-4"><span>Client: ${name}</span><span>Date: ${new Date().toLocaleDateString()}</span></div>
+                <table class="w-full border-collapse border text-sm mb-4">
+                    <tr class="bg-gray-200"><th>Service</th><th>Qty</th><th>Total</th></tr>
+                    ${rows}
+                </table>
+                <div class="text-right font-black text-xl border-t-2 pt-2">Total: Rs ${total}</div>
+                <div class="mt-6 flex gap-2 no-print">
+                    <button onclick="window.print()" class="bg-blue-600 text-white px-4 py-2 rounded flex-1">Print Bill</button>
+                    <button onclick="sendWA('${phone}', '${encodeURIComponent(waText)}')" class="bg-green-600 text-white px-4 py-2 rounded flex-1">Send WhatsApp</button>
+                </div>
+            `;
         }
 
-        function sendInvWA(p, m) {
-            if(!p) { alert("Enter phone!"); return; }
+        function sendWA(p, m) {
+            if(!p) { alert("Enter Phone Number!"); return; }
             let cp = p.startsWith('0') ? '92' + p.slice(1) : p;
-            window.open(https://wa.me/${cp}?text=${m});
+            window.open("https://wa.me/" + cp + "?text=" + m);
         }
     </script>
 </body>
