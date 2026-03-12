@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DN/HQ SERVICES</title>
+    <title>DN/HQ SERVICES - PROFESSIONAL</title>
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f4f7f6; text-align: center; }
-        .header { background: #0f172a; color: #fbbf24; padding: 20px; font-size: 24px; font-weight: bold; }
-        .hero { background: #1e293b; color: white; padding: 40px 20px; border-bottom: 5px solid #fbbf24; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f0f2f5; text-align: center; }
+        .header { background: #0f172a; color: #fbbf24; padding: 20px; font-size: 24px; font-weight: bold; border-bottom: 4px solid #fbbf24; }
+        .hero { background: #1e293b; color: white; padding: 30px; }
         
-        /* Service Cards */
         .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; gap: 20px; }
-        .card { background: white; width: 300px; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .card { background: white; width: 320px; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 8px solid #ccc; }
         
-        /* Direct Booking Buttons */
         .book-btn { 
-            display: block; width: 100%; padding: 15px; margin: 10px 0; 
+            display: block; width: 100%; padding: 12px; margin: 8px 0; 
             background: #fbbf24; color: black; text-decoration: none; 
-            font-weight: bold; border-radius: 8px; font-size: 16px; border: 1px solid #000;
+            font-weight: bold; border-radius: 8px; font-size: 14px; border: 1px solid #000;
         }
 
-        /* Admin Section */
-        #adminSection { display: none; background: white; padding: 20px; margin: 20px; border: 2px solid #333; text-align: left; max-width: 500px; margin-left: auto; margin-right: auto; border-radius: 10px; }
-        .input-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .gen-btn { background: #16a34a; color: white; padding: 15px; width: 100%; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 18px; }
+        /* Admin Dashboard Styles */
+        #adminSection { display: none; background: white; padding: 20px; margin: 20px auto; border: 2px solid #333; text-align: left; max-width: 800px; border-radius: 10px; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .column { background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #cbd5e1; }
+        .input-field { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .gen-btn { background: #16a34a; color: white; padding: 15px; width: 100%; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 18px; margin-top: 10px; }
         
-        #finalBill { display: none; margin-top: 20px; padding: 15px; border: 2px dashed #000; background: #fff; }
+        @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } }
+        #finalBill { display: none; margin-top: 20px; padding: 15px; border: 2px dashed #000; background: #fff; font-family: monospace; }
     </style>
 </head>
 <body>
@@ -34,96 +35,118 @@
 
     <div class="hero">
         <h1>AC & ELECTRICAL EXPERTS</h1>
-        <p>Professional Technical Solutions</p>
-        <button onclick="checkAdmin()" style="background:#334155; color:#fbbf24; border:none; padding:8px 15px; cursor:pointer; border-radius:5px;">Admin Login</button>
+        <p>Karachi's No.1 Professional Technical Team</p>
+        <button onclick="checkAdmin()" style="background:#334155; color:#fbbf24; border:1px solid; padding:8px 15px; cursor:pointer; border-radius:5px; font-weight:bold;">Admin Login</button>
     </div>
 
     <div class="container">
-        <div class="card" style="border-top: 10px solid #3b82f6;">
+        <div class="card" style="border-color: #3b82f6;">
             <h2 style="color:#3b82f6;">AC SERVICES</h2>
             <a href="https://wa.me/923152458657?text=Booking: AC Master Service" class="book-btn">Master Service (3500)</a>
-            <a href="https://wa.me/923152458657?text=Booking: AC General Service" class="book-btn">General Service (2500)</a>
+            <a href="https://wa.me/923152458657?text=Booking: AC Normal Service" class="book-btn">Normal Service (2500)</a>
+            <a href="https://wa.me/923152458657?text=Booking: AC Installation" class="book-btn">AC Installation (4500)</a>
             <a href="https://wa.me/923152458657?text=Booking: AC Gas Refill" class="book-btn">Gas Refill (5000)</a>
+            <a href="https://wa.me/923152458657?text=Booking: AC Leakage Repair" class="book-btn">Leakage Repair</a>
         </div>
 
-        <div class="card" style="border-top: 10px solid #fbbf24;">
+        <div class="card" style="border-color: #fbbf24;">
             <h2 style="color:#fbbf24;">ELECTRICIAN</h2>
             <a href="https://wa.me/923152458657?text=Booking: Light Point Work" class="book-btn">Light Point (500)</a>
-            <a href="https://wa.me/923152458657?text=Booking: Wiring Work" class="book-btn">Wiring Point (1500)</a>
+            <a href="https://wa.me/923152458657?text=Booking: New Wiring" class="book-btn">New Wiring (1500)</a>
             <a href="https://wa.me/923152458657?text=Booking: DB Box Fix" class="book-btn">DB Box Fix (2500)</a>
+            <a href="https://wa.me/923152458657?text=Booking: UPS/Inverter Setting" class="book-btn">UPS Setting</a>
+            <a href="https://wa.me/923152458657?text=Booking: Circuit Breaker Replacement" class="book-btn">Breaker Change</a>
         </div>
     </div>
 
     <div id="adminSection">
-        <h2 style="text-align:center;">BILL GENERATOR</h2>
-        <input type="text" id="cName" class="input-field" placeholder="Customer Name">
-        <input type="tel" id="cPhone" class="input-field" placeholder="WhatsApp Number">
+        <h2 style="text-align:center; color:#0f172a;">BILL GENERATOR</h2>
+        <div style="background:#eee; padding:10px; border-radius:10px; margin-bottom:15px;">
+            <input type="text" id="cName" class="input-field" placeholder="Customer Name">
+            <input type="tel" id="cPhone" class="input-field" placeholder="WhatsApp (e.g. 03152458657)">
+        </div>
         
-        <hr>
-        <p><b>Enter Quantity:</b></p>
-        Light Pts (500): <input type="number" id="q_light" class="input-field" value="0">
-        Wiring Pts (1500): <input type="number" id="q_wire" class="input-field" value="0">
-        AC Master (3500): <input type="number" id="q_acm" class="input-field" value="0">
-        AC Normal (2500): <input type="number" id="q_acn" class="input-field" value="0">
+        <div class="admin-grid">
+            <div class="column">
+                <h3 style="color:#fbbf24; margin-top:0;">Electrical Bill</h3>
+                Light Pts (500): <input type="number" id="q_light" class="input-field" value="0">
+                Wiring Pts (1500): <input type="number" id="q_wire" class="input-field" value="0">
+                DB Box (2500): <input type="number" id="q_db" class="input-field" value="0">
+            </div>
 
-        <button class="gen-btn" onclick="processBill()">GENERATE RECEIPT</button>
+            <div class="column">
+                <h3 style="color:#3b82f6; margin-top:0;">AC Technician Bill</h3>
+                Master Svc (3500): <input type="number" id="q_acm" class="input-field" value="0">
+                Normal Svc (2500): <input type="number" id="q_acn" class="input-field" value="0">
+                Installation (4500): <input type="number" id="q_aci" class="input-field" value="0">
+                Gas Refill (5000): <input type="number" id="q_acg" class="input-field" value="0">
+            </div>
+        </div>
+
+        <button class="gen-btn" onclick="processBill()">GENERATE FINAL RECEIPT</button>
 
         <div id="finalBill">
             <div id="billContent"></div>
-            <button class="gen-btn" style="background:#25d366; margin-top:10px;" onclick="whatsappBill()">SEND VIA WHATSAPP</button>
+            <button class="gen-btn" style="background:#25d366;" onclick="whatsappBill()">SEND TO WHATSAPP</button>
         </div>
+
+        <h3 style="margin-top:30px; text-align:center;">Job Record Sheet</h3>
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml" style="width:100%; height:400px; border:1px solid #ccc;"></iframe>
     </div>
 
     <script>
         function checkAdmin() {
-            var pass = prompt("Enter Password:");
+            var pass = prompt("Admin Password:");
             if(pass === "1234") {
                 document.getElementById('adminSection').style.display = 'block';
                 window.scrollTo(0, document.body.scrollHeight);
-            } else {
-                alert("Wrong Password!");
-            }
+            } else { alert("Access Denied!"); }
         }
 
         function processBill() {
             var name = document.getElementById('cName').value || "Customer";
             var l = parseInt(document.getElementById('q_light').value) || 0;
             var w = parseInt(document.getElementById('q_wire').value) || 0;
+            var db = parseInt(document.getElementById('q_db').value) || 0;
             var am = parseInt(document.getElementById('q_acm').value) || 0;
             var an = parseInt(document.getElementById('q_acn').value) || 0;
+            var ai = parseInt(document.getElementById('q_aci').value) || 0;
+            var ag = parseInt(document.getElementById('q_acg').value) || 0;
 
-            var total = (l * 500) + (w * 1500) + (am * 3500) + (an * 2500);
+            var total = (l * 500) + (w * 1500) + (db * 2500) + (am * 3500) + (an * 2500) + (ai * 4500) + (ag * 5000);
 
-            if(total === 0) {
-                alert("Please add at least one item!");
-                return;
-            }
+            if(total === 0) { alert("Please enter quantity!"); return; }
 
             window.totalBill = total;
             window.clientName = name;
 
             document.getElementById('finalBill').style.display = 'block';
             document.getElementById('billContent').innerHTML = 
-                "<center><b>DN/HQ SERVICES</b></center><br>" +
-                "Client: " + name + "<br>" +
-                "--------------------------<br>" +
-                (l > 0 ? "Light Points: " + l + "<br>" : "") +
-                (w > 0 ? "Wiring Points: " + w + "<br>" : "") +
-                (am > 0 ? "AC Master: " + am + "<br>" : "") +
-                (an > 0 ? "AC Normal: " + an + "<br>" : "") +
-                "--------------------------<br>" +
-                "<b>TOTAL AMOUNT: Rs " + total + "</b>";
+                "<center><b>=== DN/HQ SERVICES ===</b></center><br>" +
+                "<b>Client:</b> " + name + "<br>" +
+                "------------------------------<br>" +
+                (l > 0 ? "Light Points: " + l + " (Rs " + (l*500) + ")<br>" : "") +
+                (w > 0 ? "Wiring Points: " + w + " (Rs " + (w*1500) + ")<br>" : "") +
+                (db > 0 ? "DB Box Work: " + db + " (Rs " + (db*2500) + ")<br>" : "") +
+                (am > 0 ? "AC Master Svc: " + am + " (Rs " + (am*3500) + ")<br>" : "") +
+                (an > 0 ? "AC Normal Svc: " + an + " (Rs " + (an*2500) + ")<br>" : "") +
+                (ai > 0 ? "AC Install: " + ai + " (Rs " + (ai*4500) + ")<br>" : "") +
+                (ag > 0 ? "AC Gas Refill: " + ag + " (Rs " + (ag*5000) + ")<br>" : "") +
+                "------------------------------<br>" +
+                "<b>TOTAL BILL: Rs " + total + "</b>";
         }
 
         function whatsappBill() {
             var phone = document.getElementById('cPhone').value;
-            if(!phone) { alert("Enter Phone Number!"); return; }
+            if(!phone) { alert("Customer Phone Missing!"); return; }
             if(phone.startsWith('0')) phone = "92" + phone.substring(1);
             
-            var msg = "DN/HQ SERVICES RECEIPT%0A" +
+            var msg = "=== DN/HQ SERVICES RECEIPT ===%0A" +
                       "Client: " + window.clientName + "%0A" +
-                      "Total Bill: Rs " + window.totalBill + "%0A" +
-                      "Thank you for your trust!";
+                      "------------------------------%0A" +
+                      "Total Amount: Rs " + window.totalBill + "%0A" +
+                      "------------------------------%0A" +
+                      "Thank you for choosing us!";
             
             window.open("https://wa.me/" + phone + "?text=" + msg);
         }
