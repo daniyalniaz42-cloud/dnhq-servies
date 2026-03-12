@@ -227,27 +227,32 @@
 function handleBooking(event) {
     event.preventDefault();
     
-    // Form se data lena
-    const name = document.getElementById('customerName').value;
-    const phone = document.getElementById('customerPhone').value;
-    const service = document.getElementById('serviceType').value;
+    // Form se real data pakarna
+    var name = document.getElementById('customerName').value;
+    var phone = document.getElementById('customerPhone').value;
+    var service = document.getElementById('serviceType').value;
 
-    // 1. Google Sheet Link (Background mein data bhejna)
-    const googleFormUrl = https://docs.google.com/forms/d/e/1FAIpQLScGhlhZtgQk9QC5uqQv6L9Ne_-WVLLHoYxRzJd5WYrmubM2WQ/formResponse?entry.75173003=${encodeURIComponent(name)}&entry.1151320485=${encodeURIComponent(phone)}&entry.428181070=${encodeURIComponent(service)}&submit=Submit;
-
-    // Is line se data sheet mein chala jayega
-    fetch(googleFormUrl, { mode: 'no-cors' });
-
-    // 2. WhatsApp message tayyar karna
-    const whatsappMsg = *Naya Order (DN/HQ Services)*%0A%0A*Naam:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service};
+    // Google Form Link - Isme koi tabdeeli nahi karni
+    var formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScGhlhZtgQk9QC5uqQv6L9Ne_-WVLLHoYxRzJd5WYrmubM2WQ/formResponse";
     
-    // WhatsApp kholna
-    window.open(https://wa.me/923152458657?text=${whatsappMsg}, '_blank');
+    // Data ko pack karna
+    var finalUrl = formUrl + "?entry.75173003=" + encodeURIComponent(name) + 
+                   "&entry.1151320485=" + encodeURIComponent(phone) + 
+                   "&entry.428181070=" + encodeURIComponent(service) + 
+                   "&submit=Submit";
 
-    alert("Booking Saved! Detail aapke WhatsApp aur Google Sheet dono mein bhej di gayi hai.");
+    // Google Sheet mein bhejna
+    fetch(finalUrl, { mode: 'no-cors' });
+
+    // WhatsApp par bhejna
+    var whatsappUrl = "https://wa.me/923152458657?text=" + 
+                      encodeURIComponent("Assalam-o-Alaikum! Naya Order aya hai:\nName: " + name + "\nPhone: " + phone + "\nService: " + service);
+    
+    window.open(whatsappUrl, '_blank');
+
+    alert("Shukriya Daniyal! Aapka data Sheet mein save ho gaya hai.");
 }
-</script>
-
 </body>
 </html>
+
 
