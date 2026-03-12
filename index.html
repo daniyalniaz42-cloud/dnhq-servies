@@ -3,141 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DN/HQ SERVICES | FIXED</title>
+    <title>DN/HQ SERVICES | FINAL FIX</title>
     <style>
-        /* CSS FIXES */
-        * { box-sizing: border-box; }
-        body { font-family: sans-serif; margin: 0; padding: 0; background: #f0f2f5; }
+        body { font-family: sans-serif; margin: 0; background: #f1f5f9; text-align: center; }
+        .nav { background: #0f172a; padding: 20px; color: #eab308; display: flex; justify-content: space-between; align-items: center; }
+        .hero { background: #1e293b; color: white; padding: 60px 20px; border-bottom: 8px solid #eab308; }
         
-        .nav { background: #0f172a; color: #eab308; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .hero { background: #1e293b; color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid #eab308; }
-        
-        /* Original Cards Vibe */
-        .container { padding: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .card { background: white; width: 300px; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .card.ac { border-bottom: 6px solid #3b82f6; }
-        .card.elec { border-bottom: 6px solid #eab308; }
-        .card.ind { border-bottom: 6px solid #334155; }
-
-        /* BUTTONS - SUPER CLICKABLE */
-        .btn { 
-            display: block; width: 100%; padding: 12px; margin-top: 10px;
-            border: none; border-radius: 8px; font-weight: bold; 
-            cursor: pointer !important; position: relative; z-index: 999;
+        /* Links ko button jaisa banane ke liye */
+        .btn-link { 
+            display: inline-block; 
+            background: #eab308; 
+            color: black; 
+            padding: 15px 30px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border-radius: 10px;
+            margin: 10px;
+            border: 2px solid #000;
         }
-
-        /* OVERLAYS */
-        #adminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; padding: 20px; overflow-y: auto; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; }
-        .modal-box { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 350px; text-align: center; }
         
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; }
+        .card-container { display: flex; flex-wrap: wrap; justify-content: center; padding: 30px; gap: 20px; }
+        .card { background: white; width: 300px; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .footer { background: #0f172a; color: white; padding: 20px; margin-top: 50px; }
     </style>
-
-    <script>
-        // JS ko Head mein rakha hai taake pehle load ho
-        function showAdmin() {
-            var p = prompt("Enter Password:");
-            if(p === "1234") {
-                document.getElementById('adminPanel').style.display = 'block';
-            }
-        }
-
-        function closeAdmin() {
-            document.getElementById('adminPanel').style.display = 'none';
-        }
-
-        var selectedService = "";
-        function openModal(svc) {
-            selectedService = svc;
-            document.getElementById('svcTitle').innerText = svc;
-            document.getElementById('bookingModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('bookingModal').style.display = 'none';
-        }
-
-        function confirmAction() {
-            var n = document.getElementById('uName').value;
-            var p = document.getElementById('uPhone').value;
-            if(!n || !p) { alert("Details den!"); return; }
-
-            // Google Sheet submission
-            var formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScGhlhZtgQk9QC5uqQv6L9Ne_-WVLLHoYxRzJd5WYrmubM2WQ/formResponse";
-            fetch(${formUrl}?entry.75173003=${encodeURIComponent(n)}&entry.1151320485=${encodeURIComponent(p)}&entry.428181070=${encodeURIComponent(selectedService)}&submit=Submit, { mode: 'no-cors' });
-
-            alert("Booking Confirmed!");
-            window.open("https://wa.me/923152458657?text=New Booking: " + n + " for " + selectedService);
-            closeModal();
-        }
-
-        function sendWhatsAppBill() {
-            var n = document.getElementById('bName').value;
-            var p = document.getElementById('bPhone').value;
-            var t = document.getElementById('bTotal').value;
-            window.open("https://wa.me/92" + p.substring(1) + "?text=DN/HQ SERVICES BILL: Rs " + t);
-        }
-    </script>
 </head>
 <body>
 
     <div class="nav">
-        <b style="font-size: 20px;">DN/HQ SERVICES</b>
-        <button class="btn" style="width: auto; background: #334155; color: #eab308; margin: 0;" onclick="showAdmin()">Admin</button>
+        <b style="font-size: 22px;">DN/HQ SERVICES</b>
+        <a href="https://github.com/daniyalniaz42-cloud/dnhq-servies/edit/main/index.html" style="color:#eab308; text-decoration:none; border:1px solid; padding:5px;">Edit Code</a>
     </div>
 
     <div class="hero">
-        <h1 style="margin: 0;">AC & ELECTRICAL</h1>
-        <p>Karachi's Technical Experts</p>
-        <button class="btn" style="width: 200px; margin: 20px auto; background: #eab308; color: black;" onclick="openModal('Main Page Booking')">BOOK NOW</button>
+        <h1>AC & ELECTRICAL EXPERTS</h1>
+        <p>Reliable Services in Karachi</p>
+        <a href="https://wa.me/923152458657?text=I%20want%20to%20book%20a%20service" class="btn-link">BOOK ON WHATSAPP</a>
     </div>
 
-    <div class="container">
-        <div class="card ac">
-            <h2>AC Technician</h2>
-            <p>Maintenance & Repair</p>
-            <button class="btn" style="background: #3b82f6; color: white;" onclick="openModal('AC Technician')">Select Service</button>
+    <div class="card-container">
+        <div class="card" style="border-bottom: 8px solid #3b82f6;">
+            <h2 style="color:#3b82f6;">AC TECHNICIAN</h2>
+            <p>Maintenance & Installation</p>
+            <a href="https://wa.me/923152458657?text=I%20need%20AC%20Technician" class="btn-link" style="background:#3b82f6; color:white;">SELECT</a>
         </div>
 
-        <div class="card elec">
-            <h2>Electrician</h2>
-            <p>Wiring & Installation</p>
-            <button class="btn" style="background: #eab308; color: black;" onclick="openModal('Electrician')">Select Service</button>
-        </div>
-
-        <div class="card ind">
-            <h2>Industrial</h2>
-            <p>Maintenance & Panels</p>
-            <button class="btn" style="background: #334155; color: white;" onclick="openModal('Industrial')">Select Service</button>
+        <div class="card" style="border-bottom: 8px solid #eab308;">
+            <h2 style="color:#eab308;">ELECTRICIAN</h2>
+            <p>Wiring & Electrical Work</p>
+            <a href="https://wa.me/923152458657?text=I%20need%20Electrician" class="btn-link">SELECT</a>
         </div>
     </div>
 
-    <div id="adminPanel">
-        <div style="display: flex; justify-content: space-between;">
-            <h2>Admin Panel</h2>
-            <button onclick="closeAdmin()" style="background: red; color: white; border: none; padding: 10px;">X</button>
-        </div>
-        <hr>
-        <div style="background: #eee; padding: 15px; border-radius: 10px; margin-top: 10px;">
-            <h3>Quick Bill</h3>
-            <input type="text" id="bName" placeholder="Customer Name">
-            <input type="tel" id="bPhone" placeholder="WhatsApp">
-            <input type="number" id="bTotal" placeholder="Total Amount">
-            <button class="btn" style="background: green; color: white;" onclick="sendWhatsAppBill()">Send Bill</button>
-        </div>
-        <br>
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml" style="width:100%; height:300px; border: 1px solid #000;"></iframe>
-    </div>
-
-    <div id="bookingModal" class="modal">
-        <div class="modal-box">
-            <h2 id="svcTitle">Booking</h2>
-            <input type="text" id="uName" placeholder="Your Name">
-            <input type="tel" id="uPhone" placeholder="Phone Number">
-            <button class="btn" style="background: #eab308; color: black;" onclick="confirmAction()">Confirm</button>
-            <button onclick="closeModal()" style="background: none; border: none; color: red; margin-top: 10px; cursor: pointer;">Cancel</button>
-        </div>
+    <div class="footer">
+        <p>© 2026 DN/HQ SERVICES - Karachi</p>
     </div>
 
 </body>
