@@ -3,182 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DN/HQ Services</title>
+    <title>DN/HQ SERVICES</title>
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f1f5f9; text-align: center; color: #333; }
-        .nav { background: #0f172a; padding: 15px; display: flex; justify-content: space-between; align-items: center; color: #eab308; position: sticky; top: 0; z-index: 9999; }
-        .hero { background: #1e293b; color: white; padding: 30px; border-bottom: 8px solid #eab308; }
-        .card-container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; gap: 20px; }
-        .card { background: white; width: 280px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-bottom: 5px solid #ccc; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f0f2f5; text-align: center; color: #1a1a1a; }
+        .nav { background: #0f172a; padding: 20px; color: #fbbf24; font-size: 24px; font-weight: bold; border-bottom: 4px solid #fbbf24; }
+        .hero { background: #1e293b; color: white; padding: 40px 20px; }
         
-        /* Solid Buttons */
-        .click-btn { display: block; width: 100%; padding: 12px; margin-top: 10px; background: #eab308; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        /* Solid Clickable Links */
+        .action-link { 
+            display: block; background: #fbbf24; color: #000; 
+            padding: 15px; text-decoration: none; font-weight: bold; 
+            border-radius: 8px; margin: 10px 0; border: 2px solid #000; font-size: 16px;
+        }
         
-        /* Booking Options Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; align-items: center; justify-content: center; }
-        .modal-box { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 350px; }
-
-        /* Admin & Billing */
-        #adminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 20000; padding: 20px; text-align: left; overflow-y: auto; }
-        .bill-form { background: #f8fafc; padding: 15px; border-radius: 10px; border: 2px solid #cbd5e1; margin-bottom: 20px; display: none; }
-        .active-form { display: block !important; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
-        input, select { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; gap: 20px; }
+        .card { background: white; width: 320px; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 8px solid #ccc; }
         
-        #receiptArea { display: none; border: 2px dashed #334155; padding: 15px; background: #fff; margin-top: 20px; font-family: monospace; }
-        .tab-btn { padding: 15px; border: none; cursor: pointer; font-weight: bold; background: #cbd5e1; border-radius: 8px; width: 48%; font-size: 14px; }
-        .tab-active { background: #eab308; color: black; border: 2px solid #000; }
+        /* Admin Section */
+        #adminArea { display: none; background: #fff; margin: 20px auto; padding: 25px; border-radius: 15px; max-width: 500px; border: 3px solid #0f172a; text-align: left; }
+        .input-group { margin-bottom: 15px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        
+        .admin-btn { background: #334155; color: #fbbf24; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .gen-btn { background: #16a34a; color: white; width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="nav">
-        <b>DN/HQ SERVICES</b>
-        <button onclick="var p=prompt('Password:'); if(p==='1234') document.getElementById('adminPanel').style.display='block';" style="background:#334155; color:#eab308; border:1px solid; padding:8px 15px; cursor:pointer; font-weight:bold; border-radius:5px;">Admin Login</button>
-    </div>
+    <div class="nav">DN/HQ SERVICES</div>
 
     <div class="hero">
-        <h1>AC & ELECTRICAL EXPERTS</h1>
-        <p>Karachi's No.1 Technical Service</p>
+        <h1 style="margin:0;">AC & ELECTRICAL EXPERTS</h1>
+        <p>Karachi's Trusted Professional Service</p>
+        <button class="admin-btn" onclick="var p=prompt('Admin Password:'); if(p==='1234') document.getElementById('adminArea').style.display='block';">Admin Login</button>
     </div>
 
-    <div class="card-container">
+    <div class="container">
         <div class="card" style="border-color: #3b82f6;">
-            <h2 style="color:#3b82f6;">AC Service</h2>
-            <button class="click-btn" style="background:#3b82f6; color:white;" onclick="openOptions('AC')">Book Service</button>
+            <h2 style="color:#3b82f6;">AC TECHNICIAN</h2>
+            <p>Select service to book on WhatsApp:</p>
+            <a href="https://wa.me/923152458657?text=New%20Booking:%20AC%20Master%20Service" class="action-link" style="background:#3b82f6; color:white;">AC Master Service</a>
+            <a href="https://wa.me/923152458657?text=New%20Booking:%20AC%20Gas%20Refill" class="action-link" style="background:#60a5fa; color:white;">AC Gas Refill</a>
         </div>
-        <div class="card" style="border-color: #eab308;">
-            <h2 style="color:#eab308;">Electrician</h2>
-            <button class="click-btn" onclick="openOptions('Electrical')">Book Service</button>
+
+        <div class="card" style="border-color: #fbbf24;">
+            <h2 style="color:#fbbf24;">ELECTRICIAN</h2>
+            <p>Select service to book on WhatsApp:</p>
+            <a href="https://wa.me/923152458657?text=New%20Booking:%20Light%20Point%20Work" class="action-link">Light Point Work</a>
+            <a href="https://wa.me/923152458657?text=New%20Booking:%20Wiring%20Work" class="action-link" style="background:#fef3c7;">New Wiring</a>
         </div>
     </div>
 
-    <div id="bookingModal" class="modal">
-        <div class="modal-box">
-            <h3 id="optTitle">Select Work</h3>
-            <select id="userWork">
-                </select>
-            <input type="text" id="userName" placeholder="Your Name">
-            <button class="click-btn" style="background:#25d366; color:white;" onclick="finalWhatsApp()">Confirm & WhatsApp</button>
-            <button onclick="document.getElementById('bookingModal').style.display='none'" style="background:none; border:none; color:red; margin-top:15px; cursor:pointer; font-weight:bold;">CANCEL</button>
+    <div id="adminArea">
+        <h2 style="text-align:center; margin-top:0;">BILLING GENERATOR</h2>
+        <div class="input-group">
+            <label>Customer Name:</label>
+            <input type="text" id="custName" placeholder="Name">
         </div>
-    </div>
-
-    <div id="adminPanel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="margin:0;">BILLING SYSTEM</h2>
-            <button onclick="document.getElementById('adminPanel').style.display='none';" style="background:red; color:white; border:none; padding:10px 20px; border-radius:5px; font-weight:bold;">Logout</button>
+        <div class="input-group">
+            <label>WhatsApp Number:</label>
+            <input type="tel" id="custPhone" placeholder="03xxxxxxxxx">
         </div>
+        
         <hr>
-        
-        <input type="text" id="cName" placeholder="Customer Name">
-        <input type="tel" id="cPhone" placeholder="WhatsApp Number">
-        
-        <div style="margin: 20px 0; display: flex; justify-content: space-between;">
-            <button id="btnElec" class="tab-btn tab-active" onclick="switchForm('elec')">Electrician Bill</button>
-            <button id="btnAC" class="tab-btn" onclick="switchForm('ac')">AC Bill</button>
+        <h4 style="margin:10px 0;">Items (Quantity likhein):</h4>
+        <div class="input-group">
+            <label>Light Points (Rs 500):</label>
+            <input type="number" id="lp" value="0">
+        </div>
+        <div class="input-group">
+            <label>Wiring Points (Rs 1500):</label>
+            <input type="number" id="wp" value="0">
+        </div>
+        <div class="input-group">
+            <label>AC Master Svc (Rs 3500):</label>
+            <input type="number" id="acm" value="0">
+        </div>
+        <div class="input-group">
+            <label>AC Normal Svc (Rs 2500):</label>
+            <input type="number" id="acn" value="0">
         </div>
 
-        <div id="formElec" class="bill-form active-form">
-            <h3>Electrician Price List</h3>
-            <div class="grid">
-                <div>Light Point (500): <input type="number" id="e_l" value="0"></div>
-                <div>Wiring Pt (1500): <input type="number" id="e_w" value="0"></div>
-                <div>Socket (200): <input type="number" id="e_s" value="0"></div>
-                <div>DB Box (2500): <input type="number" id="e_d" value="0"></div>
-            </div>
-            <button class="click-btn" style="background:green; color:white; margin-top:10px;" onclick="doBill('elec')">Generate Electrician Bill</button>
-        </div>
+        <button class="gen-btn" onclick="generateFinalBill()">GENERATE BILL</button>
 
-        <div id="formAC" class="bill-form">
-            <h3>AC Service Price List</h3>
-            <div class="grid">
-                <div>Master (3500): <input type="number" id="a_m" value="0"></div>
-                <div>Normal (2500): <input type="number" id="a_n" value="0"></div>
-                <div>Install (4500): <input type="number" id="a_i" value="0"></div>
-                <div>Gas Refill (5000): <input type="number" id="a_g" value="0"></div>
-            </div>
-            <button class="click-btn" style="background:green; color:white; margin-top:10px;" onclick="doBill('ac')">Generate AC Bill</button>
-        </div>
-
-        <div id="receiptArea">
-            <div id="res"></div>
-            <button class="click-btn" style="background:#25d366; color:white;" onclick="sendToWA()">Send Bill to WhatsApp</button>
+        <div id="billPreview" style="display:none; margin-top:20px; padding:15px; border:2px dashed #333; background:#f9f9f9;">
+            <div id="billContent"></div>
+            <button class="gen-btn" style="background:#25d366;" onclick="sendToWhatsApp()">SEND TO WHATSAPP</button>
         </div>
     </div>
 
     <script>
-        // Booking System
-        let currentType = "";
-        function openOptions(type) {
-            currentType = type;
-            document.getElementById('optTitle').innerText = type + " Services";
-            let sel = document.getElementById('userWork');
-            if(type === 'AC') {
-                sel.innerHTML = '<option>General Service</option><option>Master Service</option><option>Installation</option><option>Gas Refill</option>';
-            } else {
-                sel.innerHTML = '<option>Light Point Work</option><option>New Wiring</option><option>DB Box Fitting</option><option>UPS Setting</option>';
-            }
-            document.getElementById('bookingModal').style.display = 'flex';
-        }
+        function generateFinalBill() {
+            let name = document.getElementById('custName').value || "Customer";
+            let l = parseInt(document.getElementById('lp').value) || 0;
+            let w = parseInt(document.getElementById('wp').value) || 0;
+            let m = parseInt(document.getElementById('acm').value) || 0;
+            let n = parseInt(document.getElementById('acn').value) || 0;
 
-        function finalWhatsApp() {
-            let n = document.getElementById('userName').value;
-            let w = document.getElementById('userWork').value;
-            if(!n) { alert("Enter Name"); return; }
-            window.open(https://wa.me/923152458657?text=Booking: ${currentType}%0AWork: ${w}%0AName: ${n});
-            document.getElementById('bookingModal').style.display = 'none';
-        }
-
-        // Admin Billing System
-        function switchForm(f) {
-            document.getElementById('formElec').classList.remove('active-form');
-            document.getElementById('formAC').classList.remove('active-form');
-            document.getElementById('btnElec').classList.remove('tab-active');
-            document.getElementById('btnAC').classList.remove('tab-active');
+            let total = (l * 500) + (w * 1500) + (m * 3500) + (n * 2500);
             
-            if(f === 'elec') {
-                document.getElementById('formElec').classList.add('active-form');
-                document.getElementById('btnElec').classList.add('tab-active');
-            } else {
-                document.getElementById('formAC').classList.add('active-form');
-                document.getElementById('btnAC').classList.add('tab-active');
+            if(total === 0) {
+                alert("Koi item select karein!");
+                return;
             }
+
+            window.currentTotal = total;
+            window.currentName = name;
+
+            document.getElementById('billPreview').style.display = 'block';
+            document.getElementById('billContent').innerHTML = `
+                <center><b>DN/HQ SERVICES RECEIPT</b></center><br>
+                <b>Name:</b> ${name}<br>
+                ----------------------------<br>
+                ${l > 0 ? 'Light Points: ' + l + '<br>' : ''}
+                ${w > 0 ? 'Wiring Points: ' + w + '<br>' : ''}
+                ${m > 0 ? 'AC Master Svc: ' + m + '<br>' : ''}
+                ${n > 0 ? 'AC Normal Svc: ' + n + '<br>' : ''}
+                ----------------------------<br>
+                <b>GRAND TOTAL: Rs ${total}</b>
+            `;
         }
 
-        function doBill(t) {
-            let n = document.getElementById('cName').value || "Valued Customer";
-            let total = 0; let det = "";
+        function sendToWhatsApp() {
+            let phone = document.getElementById('custPhone').value;
+            if(!phone) { alert("Phone number likhein!"); return; }
+            if(phone.startsWith('0')) phone = "92" + phone.substring(1);
             
-            if(t === 'elec') {
-                let l = document.getElementById('e_l').value;
-                let w = document.getElementById('e_w').value;
-                let s = document.getElementById('e_s').value;
-                let d = document.getElementById('e_d').value;
-                total = (l*500) + (w*1500) + (s*200) + (d*2500);
-                det = (l>0?Light Pts: ${l}<br>:'') + (w>0?Wiring Pts: ${w}<br>:'') + (s>0?Sockets: ${s}<br>:'') + (d>0?DB Work: ${d}<br>:'');
-            } else {
-                let m = document.getElementById('a_m').value;
-                let r = document.getElementById('a_n').value;
-                let i = document.getElementById('a_i').value;
-                let g = document.getElementById('a_g').value;
-                total = (m*3500) + (r*2500) + (i*4500) + (g*5000);
-                det = (m>0?Master Svc: ${m}<br>:'') + (r>0?Normal Svc: ${r}<br>:'') + (i>0?Installation: ${i}<br>:'') + (g>0?Gas Refill: ${g}<br>:'');
-            }
-
-            if(total === 0) { alert("Please add points or services!"); return; }
-            window.finalAmt = total; window.client = n;
-            document.getElementById('receiptArea').style.display = 'block';
-            document.getElementById('res').innerHTML = <center><b>DN/HQ SERVICES</b></center><br>Client: ${n}<br>------------------<br>${det}------------------<br><b>TOTAL BILL: Rs ${total}</b>;
-        }
-
-        function sendToWA() {
-            let p = document.getElementById('cPhone').value;
-            if(!p) { alert("Enter Phone Number!"); return; }
-            if(p.startsWith('0')) p = "92" + p.substring(1);
-            let msg = *DN/HQ SERVICES*%0AClient: ${window.client}%0ATotal Bill: *Rs ${window.finalAmt}*%0A_Thank you for choosing us!_;
-            window.open("https://wa.me/" + p + "?text=" + msg);
+            let msg = *DN/HQ SERVICES RECEIPT*%0A*Name:* ${window.currentName}%0A*Total Bill:* Rs ${window.currentTotal}%0A_Thank you for your business!_;
+            window.open("https://wa.me/" + phone + "?text=" + msg);
         }
     </script>
+
 </body>
 </html>
