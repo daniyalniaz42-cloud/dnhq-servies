@@ -2,162 +2,176 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DN/HQ Services | Professional AC & Electrical</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DN/HQ Services | Professional Billing</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        /* Click Fix: Force everything to be clickable */
-        .force-click {
-            position: relative !important;
-            z-index: 9999 !important;
-            pointer-events: auto !important;
-            cursor: pointer !important;
-        }
-        .modal { 
-            display: none; 
-            position: fixed; 
-            z-index: 10000; 
-            left: 0; top: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.8); 
-            align-items: center; justify-content: center; 
-        }
+        /* BASE STYLES */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; }
+
+        /* NAVBAR */
+        .nav { background: #0f172a; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; color: white; position: sticky; top: 0; z-index: 9999; }
+        .logo { color: #eab308; font-size: 20px; font-weight: 900; }
+        .admin-btn { background: #334155; color: #eab308; border: 1px solid #eab308; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        /* HERO */
+        .hero { background: #1e293b; color: white; padding: 60px 20px; text-align: center; border-bottom: 8px solid #eab308; }
+        .hero h1 { font-size: 30px; margin: 0; text-transform: uppercase; }
+        .hero p { color: #94a3b8; margin: 10px 0 25px; }
+        .book-main { background: #eab308; color: #000; padding: 15px 30px; border: none; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; }
+
+        /* SERVICE CARDS */
+        .services-grid { padding: 40px 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .card { background: white; width: 300px; padding: 30px 20px; border-radius: 15px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-bottom: 6px solid #ccc; }
+        .card i { font-size: 40px; margin-bottom: 15px; }
+        .card h3 { margin: 10px 0; font-size: 22px; }
+        .card.ac { border-color: #3b82f6; } .card.ac i { color: #3b82f6; }
+        .card.elec { border-color: #eab308; } .card.elec i { color: #eab308; }
+        .card.ind { border-color: #334155; } .card.ind i { color: #334155; }
+        .card-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
+
+        /* ADMIN PANEL */
+        #adminPanel { display: none; padding: 20px; background: #fff; position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; z-index: 10000; }
+        .billing-box { background: #f8fafc; padding: 20px; border-radius: 15px; border: 1px solid #ddd; margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-top: 5px; }
+        .gen-btn { background: #16a34a; color: white; padding: 15px; width: 100%; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10001; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
+        
+        #receipt { display: none; margin-top: 20px; padding: 15px; border: 2px dashed #333; background: #fff; }
     </style>
 </head>
-<body class="bg-gray-50 text-slate-900">
+<body>
 
-    <nav class="bg-slate-900 p-4 text-white flex justify-between items-center sticky top-0 z-[5000] shadow-xl">
-        <div class="text-2xl font-black text-yellow-400">DN/HQ SERVICES</div>
-        <button onclick="showAdmin()" class="force-click bg-slate-800 border border-yellow-500 px-4 py-1 rounded text-yellow-500 font-bold hover:bg-yellow-500 hover:text-black transition">
-            Admin Login
-        </button>
-    </nav>
-
-    <div id="main-content">
-        <section class="h-[400px] flex items-center justify-center text-center text-white bg-slate-800 border-b-8 border-yellow-500 relative">
-            <div class="z-10 px-4">
-                <h1 class="text-5xl font-extrabold mb-4 tracking-tight uppercase">AC & Electrical Experts</h1>
-                <p class="text-xl mb-8 text-gray-300">Karachi's Trusted Technical Solutions</p>
-                <button onclick="openModal('General Inquiry')" class="force-click bg-yellow-500 text-slate-900 px-10 py-4 rounded-xl font-black text-xl shadow-2xl hover:scale-105 transition">
-                    Book Now
-                </button>
-            </div>
-        </section>
-
-        <section class="py-16 px-6 max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-blue-500 text-center">
-                    <i class="fas fa-snowflake text-4xl text-blue-600 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">AC Technician</h3>
-                    <button onclick="openModal('AC Technician')" class="force-click w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Book Now</button>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-yellow-500 text-center">
-                    <i class="fas fa-plug text-4xl text-yellow-600 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">Electrician</h3>
-                    <button onclick="openModal('Electrician')" class="force-click w-full bg-yellow-500 text-slate-900 py-3 rounded-lg font-bold">Book Now</button>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-slate-700 text-center">
-                    <i class="fas fa-tools text-4xl text-slate-700 mb-6"></i>
-                    <h3 class="text-2xl font-bold mb-4">Maintenance</h3>
-                    <button onclick="openModal('Maintenance')" class="force-click w-full bg-slate-800 text-white py-3 rounded-lg font-bold">Book Now</button>
-                </div>
-            </div>
-        </section>
+    <div class="nav">
+        <div class="logo">DN/HQ SERVICES</div>
+        <button class="admin-btn" onclick="showAdmin()">Admin Login</button>
     </div>
 
-    <section id="adminPanel" style="display:none;" class="py-10 px-4 bg-gray-100 min-h-screen">
-        <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-2xl border-t-8 border-slate-900">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-black">ADMIN DASHBOARD</h2>
-                <button onclick="hideAdmin()" class="force-click bg-red-600 text-white px-4 py-2 rounded font-bold">Logout</button>
+    <div id="mainPage">
+        <div class="hero">
+            <h1>AC & Electrical Experts</h1>
+            <p>Trusted Technical Services in Karachi</p>
+            <button class="book-main" onclick="openModal('General Inquiry')">Book Now</button>
+        </div>
+
+        <div class="services-grid">
+            <div class="card ac">
+                <i class="fas fa-snowflake"></i>
+                <h3>AC Technician</h3>
+                <button class="card-btn" style="background:#3b82f6" onclick="openModal('AC Technician')">Book Now</button>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
-                    <p class="font-bold border-b mb-3">ELECTRICAL</p>
-                    Board Qty: <input type="number" id="q_sw" class="w-full p-2 border rounded mb-2" value="0">
-                    Wiring Points: <input type="number" id="q_wp" class="w-full p-2 border rounded" value="0">
-                </div>
-                <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
-                    <p class="font-bold border-b mb-3">AC SERVICES</p>
-                    Master (3500): <input type="number" id="q_m" class="w-full p-2 border rounded mb-2" value="0">
-                    Normal (2500): <input type="number" id="q_n" class="w-full p-2 border rounded" value="0">
-                </div>
+            <div class="card elec">
+                <i class="fas fa-bolt"></i>
+                <h3>Electrician</h3>
+                <button class="card-btn" style="background:#eab308; color:#000" onclick="openModal('Electrician')">Book Now</button>
             </div>
-
-            <input type="text" id="inv_name" placeholder="Customer Name" class="w-full p-3 border rounded mb-2">
-            <input type="tel" id="inv_phone" placeholder="WhatsApp Number" class="w-full p-3 border rounded mb-4">
-            <button onclick="genInvoice()" class="force-click w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg">Generate Bill</button>
-            
-            <div id="receipt" class="mt-6"></div>
-
-            <div class="mt-10">
-                <h3 class="font-bold mb-2">Live Bookings</h3>
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml?widget=true&amp;headers=false" class="w-full h-80 border rounded"></iframe>
+            <div class="card ind">
+                <i class="fas fa-industry"></i>
+                <h3>Maintenance</h3>
+                <button class="card-btn" style="background:#334155" onclick="openModal('Maintenance')">Book Now</button>
             </div>
         </div>
-    </section>
+    </div>
+
+    <div id="adminPanel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2>ADMIN PANEL</h2>
+            <button onclick="hideAdmin()" style="background:red; color:white; border:none; padding:8px 15px; border-radius:5px;">Close</button>
+        </div>
+        <hr>
+        <div class="billing-box">
+            <h3>Invoice Generator</h3>
+            <div class="input-group">
+                <label>Customer Name:</label>
+                <input type="text" id="inv_name" placeholder="Name">
+            </div>
+            <div class="input-group">
+                <label>WhatsApp Number:</label>
+                <input type="tel" id="inv_phone" placeholder="03XXXXXXXXX">
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div>AC Master (3500): <input type="number" id="q_acm" value="0"></div>
+                <div>AC Normal (2500): <input type="number" id="q_acn" value="0"></div>
+                <div>Switch Board (500): <input type="number" id="q_sb" value="0"></div>
+                <div>Visit Fee (1000): <input type="checkbox" id="v_fee" style="width:auto"></div>
+            </div>
+            <button class="gen-btn" onclick="generateBill()">Generate & Send WhatsApp</button>
+            <div id="receipt"></div>
+        </div>
+
+        <h3>Recent Bookings (Google Sheet)</h3>
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml?widget=true&amp;headers=false" style="width:100%; height:400px; border:1px solid #ccc; border-radius:10px;"></iframe>
+    </div>
 
     <div id="bookingModal" class="modal">
-        <div class="bg-white p-8 rounded-3xl w-full max-w-sm text-center shadow-2xl">
-            <h3 class="text-2xl font-black mb-4 uppercase">Booking</h3>
-            <p id="svcLabel" class="text-blue-600 font-bold mb-4"></p>
-            <input type="text" id="uName" placeholder="Name" class="w-full p-3 border mb-3 rounded-xl">
-            <input type="tel" id="uPhone" placeholder="Mobile Number" class="w-full p-3 border mb-6 rounded-xl">
-            <button onclick="submitBooking()" class="force-click w-full bg-yellow-500 text-slate-900 p-4 rounded-xl font-black">Confirm</button>
-            <button onclick="closeModal()" class="force-click text-red-500 mt-4 block mx-auto font-bold">Cancel</button>
+        <div class="modal-content">
+            <h2 id="svcTitle">Booking</h2>
+            <input type="text" id="uName" placeholder="Full Name">
+            <input type="tel" id="uPhone" placeholder="Phone Number">
+            <button class="gen-btn" style="background:#eab308; color:#000; margin-top:10px;" onclick="saveBooking()">Confirm Booking</button>
+            <button onclick="closeModal()" style="background:none; border:none; color:red; margin-top:15px; cursor:pointer;">Cancel</button>
         </div>
     </div>
 
     <script>
-        let currentSvc = "";
+        var selectedSvc = "";
+
         function openModal(svc) {
-            currentSvc = svc;
-            document.getElementById('svcLabel').innerText = svc;
+            selectedSvc = svc;
+            document.getElementById('svcTitle').innerText = svc;
             document.getElementById('bookingModal').style.display = 'flex';
         }
-        function closeModal() { document.getElementById('bookingModal').style.display = 'none'; }
+
+        function closeModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+        }
 
         function showAdmin() {
-            let p = prompt("Password:");
+            var p = prompt("Password:");
             if(p === "1234") {
                 document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('main-content').style.display = 'none';
-            }
-        }
-        function hideAdmin() {
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
+                window.scrollTo(0,0);
+            } else if(p !== null) { alert("Wrong Password!"); }
         }
 
-        function submitBooking() {
-            let n = document.getElementById('uName').value;
-            let p = document.getElementById('uPhone').value;
-            if(!n || !p) { alert("Fill all!"); return; }
-            alert("Booking Saved!");
-            window.open(https://wa.me/923152458657?text=New Booking: ${n} for ${currentSvc});
+        function hideAdmin() {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        function saveBooking() {
+            var n = document.getElementById('uName').value;
+            var p = document.getElementById('uPhone').value;
+            if(!n || !p) { alert("Fill Details!"); return; }
+            
+            // Google Sheet submission
+            var formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScGhlhZtgQk9QC5uqQv6L9Ne_-WVLLHoYxRzJd5WYrmubM2WQ/formResponse";
+            fetch(${formUrl}?entry.75173003=${encodeURIComponent(n)}&entry.1151320485=${encodeURIComponent(p)}&entry.428181070=${encodeURIComponent(selectedSvc)}&submit=Submit, { mode: 'no-cors' });
+
+            alert("Booking Saved! Opening WhatsApp...");
+            window.open("https://wa.me/923152458657?text=New Booking: " + n + " for " + selectedSvc);
             closeModal();
         }
 
-        function genInvoice() {
-            let n = document.getElementById('inv_name').value || "Client";
-            let p = document.getElementById('inv_phone').value;
-            let total = (document.getElementById('q_m').value * 3500) + (document.getElementById('q_n').value * 2500) + (document.getElementById('q_sw').value * 500);
+        function generateBill() {
+            var name = document.getElementById('inv_name').value || "Customer";
+            var phone = document.getElementById('inv_phone').value;
+            var total = (document.getElementById('q_acm').value * 3500) + 
+                        (document.getElementById('q_acn').value * 2500) + 
+                        (document.getElementById('q_sb').value * 500);
             
-            if(total === 0) { alert("Enter Qty!"); return; }
-            let waMsg = *DN/HQ SERVICES*\nClient: ${n}\nTotal: Rs ${total};
+            if(document.getElementById('v_fee').checked) { total += 1000; }
             
-            document.getElementById('receipt').innerHTML = `
-                <div class="p-6 border-4 border-double border-black bg-white">
-                    <h2 class="text-center font-bold text-xl">DN/HQ SERVICES</h2>
-                    <p><b>Client:</b> ${n}</p>
-                    <hr class="my-2">
-                    <h3 class="text-right text-2xl font-black">Total: Rs ${total}</h3>
-                    <div class="flex gap-2 mt-4">
-                        <button onclick="window.print()" class="force-click bg-blue-600 text-white p-2 rounded flex-1">Print</button>
-                        <button onclick="window.open('https://wa.me/92${p.substring(1)}?text=${encodeURIComponent(waMsg)}')" class="force-click bg-green-600 text-white p-2 rounded flex-1">WhatsApp</button>
-                    </div>
-                </div>`;
+            if(total === 0) { alert("Add Items!"); return; }
+            
+            var msg = *DN/HQ SERVICES*\nName: ${name}\nTotal: Rs ${total};
+            document.getElementById('receipt').style.display = 'block';
+            document.getElementById('receipt').innerHTML = <h4>Bill Generated</h4><p>Total: Rs ${total}</p><button onclick="window.open('https://wa.me/92${phone.substring(1)}?text=${encodeURIComponent(msg)}')">Send to WhatsApp</button>;
         }
     </script>
 </body>
