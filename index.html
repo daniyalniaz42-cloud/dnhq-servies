@@ -2,136 +2,162 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DN/HQ Services | V2.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DN/HQ Services | Professional AC & Electrical</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Click block hone se bachane ke liye sab se ahem settings */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-        body { font-family: sans-serif; margin: 0; background: #f1f5f9; }
-        
-        .nav { background: #0f172a; padding: 15px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10001; }
-        .hero { background: #1e293b; color: white; padding: 50px 20px; text-align: center; border-bottom: 5px solid #eab308; position: relative; z-index: 5; }
-        
-        /* Buttons ko click-ready banane ke liye classes */
-        .clickable { 
-            cursor: pointer !important; 
-            pointer-events: auto !important; 
-            position: relative; 
-            z-index: 50; 
+        /* Click Fix: Force everything to be clickable */
+        .force-click {
+            position: relative !important;
+            z-index: 9999 !important;
+            pointer-events: auto !important;
+            cursor: pointer !important;
         }
-
-        .services { padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .card { background: white; width: 300px; padding: 20px; border-radius: 15px; text-align: center; shadow: 0 4px 6px rgba(0,0,0,0.1); border-bottom: 5px solid #333; }
-        
-        #adminPanel { display: none; padding: 20px; background: #fff; min-height: 100vh; position: relative; z-index: 100; }
-        
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; }
-        .btn-green { background: #16a34a; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; }
-        
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 20000; align-items: center; justify-content: center; }
-        .modal-box { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 10000; 
+            left: 0; top: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.8); 
+            align-items: center; justify-content: center; 
+        }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-slate-900">
 
-    <div class="nav">
-        <div style="color:#eab308; font-weight:900;">DN/HQ SERVICES</div>
-        <button class="clickable" onclick="showAdmin()" style="background:#334155; color:white; border:none; padding:5px 10px; border-radius:5px;">Admin Login</button>
-    </div>
+    <nav class="bg-slate-900 p-4 text-white flex justify-between items-center sticky top-0 z-[5000] shadow-xl">
+        <div class="text-2xl font-black text-yellow-400">DN/HQ SERVICES</div>
+        <button onclick="showAdmin()" class="force-click bg-slate-800 border border-yellow-500 px-4 py-1 rounded text-yellow-500 font-bold hover:bg-yellow-500 hover:text-black transition">
+            Admin Login
+        </button>
+    </nav>
 
-    <div id="main-view">
-        <div class="hero">
-            <h1 style="margin:0;">AC & ELECTRICAL</h1>
-            <p>Reliable Services in Karachi</p>
-            <button class="clickable" onclick="openModal('General')" style="background:#eab308; padding:12px 25px; border:none; border-radius:25px; font-weight:bold;">BOOK NOW</button>
-        </div>
-
-        <div class="services">
-            <div class="card" style="border-color: #3b82f6;">
-                <i class="fas fa-snowflake" style="font-size:40px; color:#3b82f6;"></i>
-                <h3>AC Technician</h3>
-                <button class="clickable" onclick="openModal('AC Technician')" style="background:#3b82f6; color:white; width:100%; padding:10px; border:none; border-radius:8px;">Select Service</button>
+    <div id="main-content">
+        <section class="h-[400px] flex items-center justify-center text-center text-white bg-slate-800 border-b-8 border-yellow-500 relative">
+            <div class="z-10 px-4">
+                <h1 class="text-5xl font-extrabold mb-4 tracking-tight uppercase">AC & Electrical Experts</h1>
+                <p class="text-xl mb-8 text-gray-300">Karachi's Trusted Technical Solutions</p>
+                <button onclick="openModal('General Inquiry')" class="force-click bg-yellow-500 text-slate-900 px-10 py-4 rounded-xl font-black text-xl shadow-2xl hover:scale-105 transition">
+                    Book Now
+                </button>
             </div>
-            <div class="card" style="border-color: #eab308;">
-                <i class="fas fa-bolt" style="font-size:40px; color:#eab308;"></i>
-                <h3>Electrician</h3>
-                <button class="clickable" onclick="openModal('Electrician')" style="background:#eab308; color:black; width:100%; padding:10px; border:none; border-radius:8px;">Select Service</button>
+        </section>
+
+        <section class="py-16 px-6 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-blue-500 text-center">
+                    <i class="fas fa-snowflake text-4xl text-blue-600 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">AC Technician</h3>
+                    <button onclick="openModal('AC Technician')" class="force-click w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Book Now</button>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-yellow-500 text-center">
+                    <i class="fas fa-plug text-4xl text-yellow-600 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">Electrician</h3>
+                    <button onclick="openModal('Electrician')" class="force-click w-full bg-yellow-500 text-slate-900 py-3 rounded-lg font-bold">Book Now</button>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-2xl border-b-8 border-slate-700 text-center">
+                    <i class="fas fa-tools text-4xl text-slate-700 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">Maintenance</h3>
+                    <button onclick="openModal('Maintenance')" class="force-click w-full bg-slate-800 text-white py-3 rounded-lg font-bold">Book Now</button>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
 
-    <div id="adminPanel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2>Admin Dashboard</h2>
-            <button onclick="hideAdmin()" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px;">Logout</button>
+    <section id="adminPanel" style="display:none;" class="py-10 px-4 bg-gray-100 min-h-screen">
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-2xl border-t-8 border-slate-900">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-black">ADMIN DASHBOARD</h2>
+                <button onclick="hideAdmin()" class="force-click bg-red-600 text-white px-4 py-2 rounded font-bold">Logout</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                    <p class="font-bold border-b mb-3">ELECTRICAL</p>
+                    Board Qty: <input type="number" id="q_sw" class="w-full p-2 border rounded mb-2" value="0">
+                    Wiring Points: <input type="number" id="q_wp" class="w-full p-2 border rounded" value="0">
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                    <p class="font-bold border-b mb-3">AC SERVICES</p>
+                    Master (3500): <input type="number" id="q_m" class="w-full p-2 border rounded mb-2" value="0">
+                    Normal (2500): <input type="number" id="q_n" class="w-full p-2 border rounded" value="0">
+                </div>
+            </div>
+
+            <input type="text" id="inv_name" placeholder="Customer Name" class="w-full p-3 border rounded mb-2">
+            <input type="tel" id="inv_phone" placeholder="WhatsApp Number" class="w-full p-3 border rounded mb-4">
+            <button onclick="genInvoice()" class="force-click w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg">Generate Bill</button>
+            
+            <div id="receipt" class="mt-6"></div>
+
+            <div class="mt-10">
+                <h3 class="font-bold mb-2">Live Bookings</h3>
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml?widget=true&amp;headers=false" class="w-full h-80 border rounded"></iframe>
+            </div>
         </div>
-        <hr>
-        <div style="background:#f8fafc; padding:20px; border-radius:15px; margin-bottom:20px;">
-            <h3>Generate Bill</h3>
-            <input type="text" id="c_name" placeholder="Customer Name">
-            <input type="tel" id="c_phone" placeholder="WhatsApp Number">
-            <p>AC Master (3500): <input type="number" id="v_acm" value="0"></p>
-            <p>Electric Board (500): <input type="number" id="v_eb" value="0"></p>
-            <button class="btn-green clickable" onclick="makeBill()">Create & Send</button>
-        </div>
-        
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml?widget=true&amp;headers=false" style="width:100%; height:400px; border:1px solid #ccc;"></iframe>
-    </div>
+    </section>
 
     <div id="bookingModal" class="modal">
-        <div class="modal-box">
-            <h3 id="svcTitle">Booking</h3>
-            <input type="text" id="uName" placeholder="Your Name">
-            <input type="tel" id="uPhone" placeholder="Mobile Number">
-            <button class="btn-green clickable" onclick="sendBooking()">Confirm</button>
-            <button onclick="closeModal()" style="background:none; border:none; color:red; margin-top:15px;">Cancel</button>
+        <div class="bg-white p-8 rounded-3xl w-full max-w-sm text-center shadow-2xl">
+            <h3 class="text-2xl font-black mb-4 uppercase">Booking</h3>
+            <p id="svcLabel" class="text-blue-600 font-bold mb-4"></p>
+            <input type="text" id="uName" placeholder="Name" class="w-full p-3 border mb-3 rounded-xl">
+            <input type="tel" id="uPhone" placeholder="Mobile Number" class="w-full p-3 border mb-6 rounded-xl">
+            <button onclick="submitBooking()" class="force-click w-full bg-yellow-500 text-slate-900 p-4 rounded-xl font-black">Confirm</button>
+            <button onclick="closeModal()" class="force-click text-red-500 mt-4 block mx-auto font-bold">Cancel</button>
         </div>
     </div>
 
     <script>
-        function showAdmin() {
-            let pass = prompt("Enter Password:");
-            if(pass === "1234") {
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('main-view').style.display = 'none';
-            } else if(pass !== null) { alert("Wrong!"); }
-        }
-
-        function hideAdmin() {
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('main-view').style.display = 'block';
-        }
-
+        let currentSvc = "";
         function openModal(svc) {
-            document.getElementById('svcTitle').innerText = svc;
+            currentSvc = svc;
+            document.getElementById('svcLabel').innerText = svc;
             document.getElementById('bookingModal').style.display = 'flex';
         }
+        function closeModal() { document.getElementById('bookingModal').style.display = 'none'; }
 
-        function closeModal() {
-            document.getElementById('bookingModal').style.display = 'none';
+        function showAdmin() {
+            let p = prompt("Password:");
+            if(p === "1234") {
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('main-content').style.display = 'none';
+            }
+        }
+        function hideAdmin() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
         }
 
-        function sendBooking() {
+        function submitBooking() {
             let n = document.getElementById('uName').value;
             let p = document.getElementById('uPhone').value;
-            if(!n || !p) { alert("Fill details!"); return; }
-            alert("Sent! Opening WhatsApp...");
-            window.open("https://wa.me/923152458657?text=New Booking: " + n);
+            if(!n || !p) { alert("Fill all!"); return; }
+            alert("Booking Saved!");
+            window.open(https://wa.me/923152458657?text=New Booking: ${n} for ${currentSvc});
             closeModal();
         }
 
-        function makeBill() {
-            let name = document.getElementById('c_name').value || "Customer";
-            let phone = document.getElementById('c_phone').value;
-            let acm = document.getElementById('v_acm').value;
-            let eb = document.getElementById('v_eb').value;
-            let total = (acm * 3500) + (eb * 500);
+        function genInvoice() {
+            let n = document.getElementById('inv_name').value || "Client";
+            let p = document.getElementById('inv_phone').value;
+            let total = (document.getElementById('q_m').value * 3500) + (document.getElementById('q_n').value * 2500) + (document.getElementById('q_sw').value * 500);
             
-            if(total === 0) { alert("Add items!"); return; }
+            if(total === 0) { alert("Enter Qty!"); return; }
+            let waMsg = *DN/HQ SERVICES*\nClient: ${n}\nTotal: Rs ${total};
             
-            let msg = *DN/HQ SERVICES*\nName: ${name}\nTotal: Rs ${total};
-            window.open(https://wa.me/92${phone.substring(1)}?text=${encodeURIComponent(msg)});
+            document.getElementById('receipt').innerHTML = `
+                <div class="p-6 border-4 border-double border-black bg-white">
+                    <h2 class="text-center font-bold text-xl">DN/HQ SERVICES</h2>
+                    <p><b>Client:</b> ${n}</p>
+                    <hr class="my-2">
+                    <h3 class="text-right text-2xl font-black">Total: Rs ${total}</h3>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="window.print()" class="force-click bg-blue-600 text-white p-2 rounded flex-1">Print</button>
+                        <button onclick="window.open('https://wa.me/92${p.substring(1)}?text=${encodeURIComponent(waMsg)}')" class="force-click bg-green-600 text-white p-2 rounded flex-1">WhatsApp</button>
+                    </div>
+                </div>`;
         }
     </script>
 </body>
