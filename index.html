@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DN/HQ SERVICES - PROFESSIONAL</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f0f2f5; text-align: center; }
-        .header { background: #0f172a; color: #fbbf24; padding: 20px; font-size: 24px; font-weight: bold; border-bottom: 4px solid #fbbf24; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f0f2f5; text-align: center; padding-bottom: 60px; }
+        
+        /* LOGO STYLE - Perfect for Black T-Shirt Print */
+        .logo-container { padding: 10px; display: inline-block; }
+        .logo-icon { 
+            width: 80px; height: 80px; background: #0f172a; border: 4px solid #fbbf24; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; margin: 0 auto 10px; color: #fbbf24;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+        }
+        .logo-text { color: #fbbf24; font-size: 24px; font-weight: bold; letter-spacing: 2px; }
+        .logo-subtext { color: white; font-size: 10px; letter-spacing: 3px; display: block; margin-top: -5px; }
+
+        .header { background: #0f172a; padding: 25px 20px; border-bottom: 4px solid #fbbf24; }
         .hero { background: #1e293b; color: white; padding: 30px; }
         
         .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; gap: 20px; }
         .card { background: white; width: 320px; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 8px solid #ccc; position: relative; }
         
         .book-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: #fbbf24; color: black; text-decoration: none; font-weight: bold; border-radius: 8px; font-size: 14px; border: 1px solid #000; }
-        
-        /* Service Details Style */
         .info-link { display: inline-block; margin-bottom: 10px; color: #3b82f6; cursor: pointer; text-decoration: underline; font-size: 13px; font-weight: bold; }
 
         /* Modal / Pop-up */
@@ -31,13 +41,25 @@
         .gen-btn { background: #16a34a; color: white; padding: 15px; width: 100%; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 18px; margin-top: 10px; }
         .clear-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; margin-bottom: 5px; }
 
-        @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } }
+        /* Footer */
+        .footer { background: #0f172a; color: white; padding: 30px 10px; margin-top: 50px; border-top: 4px solid #fbbf24; }
+        .footer-content { display: flex; flex-wrap: wrap; justify-content: space-around; max-width: 1000px; margin: auto; }
+        .footer-box { margin: 10px; min-width: 250px; text-align: left; }
+        .copyright { background: #0b111e; padding: 15px; font-size: 12px; color: #888; margin-top: 20px; }
+
+        @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } .footer-box { text-align: center; } }
         #finalBill { display: none; margin-top: 20px; padding: 15px; border: 2px dashed #000; background: #fff; font-family: monospace; }
     </style>
 </head>
 <body>
 
-    <div class="header">DN/HQ SERVICES</div>
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo-icon">⚡❄️</div>
+            <div class="logo-text">DN/HQ</div>
+            <span class="logo-subtext">SERVICES</span>
+        </div>
+    </header>
 
     <div class="hero">
         <h1>AC & ELECTRICAL EXPERTS</h1>
@@ -66,26 +88,16 @@
         </div>
     </div>
 
-    <div id="detailsModal" class="modal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeDetails()">&times;</span>
-            <h3 id="modalTitle">Service Details</h3>
-            <div id="modalContent" style="font-size: 14px; line-height: 1.6;"></div>
-        </div>
-    </div>
-
     <div id="adminSection">
         <div class="admin-header">
             <h2 style="margin:0; color:#0f172a;">BILL GENERATOR</h2>
             <button onclick="logoutAdmin()" style="background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">Logout</button>
         </div>
-
-        <div style="background:#eee; padding:10px; border-radius:10px; margin-bottom:15px; position:relative;">
+        <div style="background:#eee; padding:10px; border-radius:10px; margin-bottom:15px;">
             <button class="clear-btn" style="float:right;" onclick="clearCustomer()">Clear Customer</button>
             <input type="text" id="cName" class="input-field" placeholder="Customer Name">
-            <input type="tel" id="cPhone" class="input-field" placeholder="WhatsApp (e.g. 03152458657)">
+            <input type="tel" id="cPhone" class="input-field" placeholder="WhatsApp Number">
         </div>
-        
         <div class="admin-grid">
             <div class="column">
                 <button class="clear-btn" onclick="clearColumn('elec')">Reset Electrical</button>
@@ -94,7 +106,6 @@
                 Wiring Pts (1500): <input type="number" id="q_wire" class="input-field" value="0">
                 DB Box (2500): <input type="number" id="q_db" class="input-field" value="0">
             </div>
-
             <div class="column">
                 <button class="clear-btn" onclick="clearColumn('ac')">Reset AC</button>
                 <h3 style="color:#3b82f6; margin-top:0;">AC Technician Bill</h3>
@@ -105,17 +116,44 @@
                 Gas 1.5ton (8500): <input type="number" id="q_acg15" class="input-field" value="0">
             </div>
         </div>
-
         <button class="gen-btn" onclick="processBill()">GENERATE FINAL RECEIPT</button>
-
-        <div id="finalBill">
-            <div id="billContent"></div>
-            <button class="gen-btn" style="background:#25d366;" onclick="whatsappBill()">SEND TO WHATSAPP</button>
-        </div>
-
+        <div id="finalBill"><div id="billContent"></div><button class="gen-btn" style="background:#25d366;" onclick="whatsappBill()">SEND TO WHATSAPP</button></div>
         <h3 style="margin-top:30px; text-align:center;">Job Record Sheet</h3>
         <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQh7oi7i-aqkfxZPRJ6MnQTnkgjm2RP5t_R4lhuGHtMz98ZCNyAqaefyOVRdWLZ4de4fAWLwXzwGKXx/pubhtml" style="width:100%; height:400px; border:1px solid #ccc;"></iframe>
     </div>
+
+    <div id="detailsModal" class="modal">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeDetails()">&times;</span>
+            <h3 id="modalTitle">Service Details</h3>
+            <div id="modalContent" style="font-size: 14px; line-height: 1.6;"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-box">
+                <div class="logo-container" style="text-align: left;">
+                    <div class="logo-text" style="font-size: 20px;">DN/HQ</div>
+                    <span class="logo-subtext" style="color: #888;">SERVICES</span>
+                </div>
+                <p style="margin-top: 10px;">Professional Technicians in Karachi.</p>
+                <p><b>Location:</b> Korangi, Karachi</p>
+            </div>
+            <div class="footer-box">
+                <h4>CONTACT</h4>
+                <p>📞 +92 315 2458657</p>
+                <p>💬 WhatsApp 24/7</p>
+            </div>
+            <div class="footer-box">
+                <h4>FOLLOW US</h4>
+                <p>Facebook | TikTok | YouTube</p>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 DN/HQ SERVICES | Expert Engineering Solutions.
+        </div>
+    </footer>
 
     <script>
         function checkAdmin() {
@@ -125,48 +163,25 @@
                 window.scrollTo(0, document.body.scrollHeight);
             } else { alert("Access Denied!"); }
         }
-
-        function logoutAdmin() {
-            document.getElementById('adminSection').style.display = 'none';
-            window.scrollTo(0, 0);
-        }
-
-        function clearCustomer() {
-            document.getElementById('cName').value = "";
-            document.getElementById('cPhone').value = "";
-        }
-
+        function logoutAdmin() { document.getElementById('adminSection').style.display = 'none'; window.scrollTo(0, 0); }
+        function clearCustomer() { document.getElementById('cName').value = ""; document.getElementById('cPhone').value = ""; }
         function clearColumn(type) {
-            if(type === 'elec') {
-                document.getElementById('q_light').value = 0;
-                document.getElementById('q_wire').value = 0;
-                document.getElementById('q_db').value = 0;
-            } else {
-                document.getElementById('q_acm').value = 0;
-                document.getElementById('q_acn').value = 0;
-                document.getElementById('q_aci').value = 0;
-                document.getElementById('q_acg1').value = 0;
-                document.getElementById('q_acg15').value = 0;
-            }
+            if(type === 'elec') { document.getElementById('q_light').value = 0; document.getElementById('q_wire').value = 0; document.getElementById('q_db').value = 0; }
+            else { document.getElementById('q_acm').value = 0; document.getElementById('q_acn').value = 0; document.getElementById('q_aci').value = 0; document.getElementById('q_acg1').value = 0; document.getElementById('q_acg15').value = 0; }
         }
-
         function openDetails(type) {
             var title = document.getElementById('modalTitle');
             var content = document.getElementById('modalContent');
             if(type === 'ac') {
-                title.innerText = "AC Service Provision";
-                content.innerHTML = "• <b>Master Service:</b> Chemical wash, indoor & outdoor cleaning.<br>• <b>Normal Service:</b> Filter and basic water wash.<br>• <b>Gas Refill:</b> Complete gas charging with leakage check.<br>• <b>Installation:</b> Safe mounting with copper pipe insulation.";
+                title.innerText = "AC Service Details";
+                content.innerHTML = "• Chemical wash with deep blower cleaning.<br>• Gas pressure checking and top-up.<br>• Indoor and outdoor unit service.<br>• Leakage testing and repair.";
             } else {
-                title.innerText = "Electrical Service Provision";
-                content.innerHTML = "• <b>Light Points:</b> Complete wiring and holder fitting.<br>• <b>New Wiring:</b> Internal house wiring with PVC pipes.<br>• <b>DB Box:</b> Load distribution and breaker setting.<br>• <b>Breakers:</b> Replacement of faulty circuit breakers.";
+                title.innerText = "Electrician Details";
+                content.innerHTML = "• New house wiring and fitting.<br>• Circuit breaker installation and balancing.<br>• Fault detection and short circuit repair.<br>• UPS and Inverter installation.";
             }
             document.getElementById('detailsModal').style.display = 'flex';
         }
-
-        function closeDetails() {
-            document.getElementById('detailsModal').style.display = 'none';
-        }
-
+        function closeDetails() { document.getElementById('detailsModal').style.display = 'none'; }
         function processBill() {
             var name = document.getElementById('cName').value || "Customer";
             var l = parseInt(document.getElementById('q_light').value) || 0;
@@ -177,46 +192,19 @@
             var ai = parseInt(document.getElementById('q_aci').value) || 0;
             var ag1 = parseInt(document.getElementById('q_acg1').value) || 0;
             var ag15 = parseInt(document.getElementById('q_acg15').value) || 0;
-
             var total = (l * 500) + (w * 1500) + (db * 2500) + (am * 3500) + (an * 2500) + (ai * 3000) + (ag1 * 6500) + (ag15 * 8500);
-
             if(total === 0) { alert("Please enter quantity!"); return; }
-
-            window.totalBill = total;
-            window.clientName = name;
-
+            window.totalBill = total; window.clientName = name;
             document.getElementById('finalBill').style.display = 'block';
-            document.getElementById('billContent').innerHTML = 
-                "<center><b>=== DN/HQ SERVICES ===</b></center><br>" +
-                "<b>Client:</b> " + name + "<br>" +
-                "------------------------------<br>" +
-                (l > 0 ? "Light Points: " + l + "<br>" : "") +
-                (w > 0 ? "Wiring Points: " + w + "<br>" : "") +
-                (db > 0 ? "DB Box Work: " + db + "<br>" : "") +
-                (am > 0 ? "AC Master Svc: " + am + "<br>" : "") +
-                (an > 0 ? "AC Normal Svc: " + an + "<br>" : "") +
-                (ai > 0 ? "AC Install: " + ai + "<br>" : "") +
-                (ag1 > 0 ? "Gas Refill 1ton: " + ag1 + "<br>" : "") +
-                (ag15 > 0 ? "Gas Refill 1.5ton: " + ag15 + "<br>" : "") +
-                "------------------------------<br>" +
-                "<b>TOTAL BILL: Rs " + total + "</b>";
+            document.getElementById('billContent').innerHTML = "<center><b>=== DN/HQ SERVICES ===</b></center><br><b>Client:</b> " + name + "<br>------------------------------<br>" + (l > 0 ? "Light Points: " + l + "<br>" : "") + (w > 0 ? "Wiring Points: " + w + "<br>" : "") + (db > 0 ? "DB Box Work: " + db + "<br>" : "") + (am > 0 ? "AC Master Svc: " + am + "<br>" : "") + (an > 0 ? "AC Normal Svc: " + an + "<br>" : "") + (ai > 0 ? "AC Install: " + ai + "<br>" : "") + (ag1 > 0 ? "Gas Refill 1ton: " + ag1 + "<br>" : "") + (ag15 > 0 ? "Gas Refill 1.5ton: " + ag15 + "<br>" : "") + "------------------------------<br><b>TOTAL BILL: Rs " + total + "</b>";
         }
-
         function whatsappBill() {
             var phone = document.getElementById('cPhone').value;
             if(!phone) { alert("Customer Phone Missing!"); return; }
             if(phone.startsWith('0')) phone = "92" + phone.substring(1);
-            
-            var msg = "=== DN/HQ SERVICES RECEIPT ===%0A" +
-                      "Client: " + window.clientName + "%0A" +
-                      "------------------------------%0A" +
-                      "Total Amount: Rs " + window.totalBill + "%0A" +
-                      "------------------------------%0A" +
-                      "Thank you for choosing us!";
-            
+            var msg = "=== DN/HQ SERVICES RECEIPT ===%0A*Client:* " + window.clientName + "%0A*Total Amount:* Rs " + window.totalBill + "%0A_Thank you for choosing us!_";
             window.open("https://wa.me/" + phone + "?text=" + msg);
         }
     </script>
-
 </body>
 </html>
