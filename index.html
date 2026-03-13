@@ -10,21 +10,27 @@
         .hero { background: #1e293b; color: white; padding: 30px; }
         
         .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; gap: 20px; }
-        .card { background: white; width: 320px; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 8px solid #ccc; }
+        .card { background: white; width: 320px; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 8px solid #ccc; position: relative; }
         
-        .book-btn { 
-            display: block; width: 100%; padding: 12px; margin: 8px 0; 
-            background: #fbbf24; color: black; text-decoration: none; 
-            font-weight: bold; border-radius: 8px; font-size: 14px; border: 1px solid #000;
-        }
+        .book-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: #fbbf24; color: black; text-decoration: none; font-weight: bold; border-radius: 8px; font-size: 14px; border: 1px solid #000; }
+        
+        /* Service Details Style */
+        .info-link { display: inline-block; margin-bottom: 10px; color: #3b82f6; cursor: pointer; text-decoration: underline; font-size: 13px; font-weight: bold; }
 
-        /* Admin Dashboard Styles */
+        /* Modal / Pop-up */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-box { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; text-align: left; position: relative; }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 25px; cursor: pointer; color: red; }
+
+        /* Admin Dashboard */
         #adminSection { display: none; background: white; padding: 20px; margin: 20px auto; border: 2px solid #333; text-align: left; max-width: 800px; border-radius: 10px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; margin-bottom: 15px; padding-bottom: 10px; }
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .column { background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #cbd5e1; }
+        .column { background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #cbd5e1; position: relative; }
         .input-field { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
         .gen-btn { background: #16a34a; color: white; padding: 15px; width: 100%; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 18px; margin-top: 10px; }
-        
+        .clear-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; margin-bottom: 5px; }
+
         @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } }
         #finalBill { display: none; margin-top: 20px; padding: 15px; border: 2px dashed #000; background: #fff; font-family: monospace; }
     </style>
@@ -42,33 +48,47 @@
     <div class="container">
         <div class="card" style="border-color: #3b82f6;">
             <h2 style="color:#3b82f6;">AC SERVICES</h2>
+            <span class="info-link" onclick="openDetails('ac')">What we provide in AC Services?</span>
             <a href="https://wa.me/923152458657?text=Booking: AC Master Service" class="book-btn">Master Service (3500)</a>
             <a href="https://wa.me/923152458657?text=Booking: AC Normal Service" class="book-btn">Normal Service (2500)</a>
             <a href="https://wa.me/923152458657?text=Booking: AC Installation" class="book-btn">AC Installation with 10ft pipe (3000)</a>
-            <a href="https://wa.me/923152458657?text=Booking: AC Gas Refill" class="book-btn">Gas Refill 1ton (6500)</a>
-            <a href="https://wa.me/923152458657?text=Booking: AC Gas Refill" class="book-btn">Gas Refill 1.5ton (8500)</a>
-            <a href="https://wa.me/923152458657?text=Booking: AC Leakage Repair" class="book-btn">Leakage Repair</a>
+            <a href="https://wa.me/923152458657?text=Booking: AC Gas Refill 1ton" class="book-btn">Gas Refill 1ton (6500)</a>
+            <a href="https://wa.me/923152458657?text=Booking: AC Gas Refill 1.5ton" class="book-btn">Gas Refill 1.5ton (8500)</a>
         </div>
 
         <div class="card" style="border-color: #fbbf24;">
             <h2 style="color:#fbbf24;">ELECTRICIAN</h2>
+            <span class="info-link" onclick="openDetails('elec')">What we provide in Electrical?</span>
             <a href="https://wa.me/923152458657?text=Booking: Light Point Work" class="book-btn">Light Point (500)</a>
             <a href="https://wa.me/923152458657?text=Booking: New Wiring" class="book-btn">New Wiring (1500)</a>
             <a href="https://wa.me/923152458657?text=Booking: DB Box Fix" class="book-btn">DB Box Fix (2500)</a>
-            <a href="https://wa.me/923152458657?text=Booking: UPS/Inverter Setting" class="book-btn">UPS Setting</a>
             <a href="https://wa.me/923152458657?text=Booking: Circuit Breaker Replacement" class="book-btn">Breaker Change (200) </a>
         </div>
     </div>
 
+    <div id="detailsModal" class="modal">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeDetails()">&times;</span>
+            <h3 id="modalTitle">Service Details</h3>
+            <div id="modalContent" style="font-size: 14px; line-height: 1.6;"></div>
+        </div>
+    </div>
+
     <div id="adminSection">
-        <h2 style="text-align:center; color:#0f172a;">BILL GENERATOR</h2>
-        <div style="background:#eee; padding:10px; border-radius:10px; margin-bottom:15px;">
+        <div class="admin-header">
+            <h2 style="margin:0; color:#0f172a;">BILL GENERATOR</h2>
+            <button onclick="logoutAdmin()" style="background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">Logout</button>
+        </div>
+
+        <div style="background:#eee; padding:10px; border-radius:10px; margin-bottom:15px; position:relative;">
+            <button class="clear-btn" style="float:right;" onclick="clearCustomer()">Clear Customer</button>
             <input type="text" id="cName" class="input-field" placeholder="Customer Name">
             <input type="tel" id="cPhone" class="input-field" placeholder="WhatsApp (e.g. 03152458657)">
         </div>
         
         <div class="admin-grid">
             <div class="column">
+                <button class="clear-btn" onclick="clearColumn('elec')">Reset Electrical</button>
                 <h3 style="color:#fbbf24; margin-top:0;">Electrical Bill</h3>
                 Light Pts (500): <input type="number" id="q_light" class="input-field" value="0">
                 Wiring Pts (1500): <input type="number" id="q_wire" class="input-field" value="0">
@@ -76,12 +96,13 @@
             </div>
 
             <div class="column">
+                <button class="clear-btn" onclick="clearColumn('ac')">Reset AC</button>
                 <h3 style="color:#3b82f6; margin-top:0;">AC Technician Bill</h3>
-                Master Svc (3500): <input type="number" id="q_acm" class="input-field" value="0">
-                Normal Svc (2500): <input type="number" id="q_acn" class="input-field" value="0">
-                Installation (3000): <input type="number" id="q_aci" class="input-field" value="0">
-                Gas Refill 1ton (6500): <input type="number" id="q_acg" class="input-field" value="0">
-                Gas Refill 1.5ton (8500): <input type="number" id="q_acg" class="input-field" value="0">
+                Master (3500): <input type="number" id="q_acm" class="input-field" value="0">
+                Normal (2500): <input type="number" id="q_acn" class="input-field" value="0">
+                Install (3000): <input type="number" id="q_aci" class="input-field" value="0">
+                Gas 1ton (6500): <input type="number" id="q_acg1" class="input-field" value="0">
+                Gas 1.5ton (8500): <input type="number" id="q_acg15" class="input-field" value="0">
             </div>
         </div>
 
@@ -105,6 +126,47 @@
             } else { alert("Access Denied!"); }
         }
 
+        function logoutAdmin() {
+            document.getElementById('adminSection').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        function clearCustomer() {
+            document.getElementById('cName').value = "";
+            document.getElementById('cPhone').value = "";
+        }
+
+        function clearColumn(type) {
+            if(type === 'elec') {
+                document.getElementById('q_light').value = 0;
+                document.getElementById('q_wire').value = 0;
+                document.getElementById('q_db').value = 0;
+            } else {
+                document.getElementById('q_acm').value = 0;
+                document.getElementById('q_acn').value = 0;
+                document.getElementById('q_aci').value = 0;
+                document.getElementById('q_acg1').value = 0;
+                document.getElementById('q_acg15').value = 0;
+            }
+        }
+
+        function openDetails(type) {
+            var title = document.getElementById('modalTitle');
+            var content = document.getElementById('modalContent');
+            if(type === 'ac') {
+                title.innerText = "AC Service Provision";
+                content.innerHTML = "• <b>Master Service:</b> Chemical wash, indoor & outdoor cleaning.<br>• <b>Normal Service:</b> Filter and basic water wash.<br>• <b>Gas Refill:</b> Complete gas charging with leakage check.<br>• <b>Installation:</b> Safe mounting with copper pipe insulation.";
+            } else {
+                title.innerText = "Electrical Service Provision";
+                content.innerHTML = "• <b>Light Points:</b> Complete wiring and holder fitting.<br>• <b>New Wiring:</b> Internal house wiring with PVC pipes.<br>• <b>DB Box:</b> Load distribution and breaker setting.<br>• <b>Breakers:</b> Replacement of faulty circuit breakers.";
+            }
+            document.getElementById('detailsModal').style.display = 'flex';
+        }
+
+        function closeDetails() {
+            document.getElementById('detailsModal').style.display = 'none';
+        }
+
         function processBill() {
             var name = document.getElementById('cName').value || "Customer";
             var l = parseInt(document.getElementById('q_light').value) || 0;
@@ -113,9 +175,10 @@
             var am = parseInt(document.getElementById('q_acm').value) || 0;
             var an = parseInt(document.getElementById('q_acn').value) || 0;
             var ai = parseInt(document.getElementById('q_aci').value) || 0;
-            var ag = parseInt(document.getElementById('q_acg').value) || 0;
+            var ag1 = parseInt(document.getElementById('q_acg1').value) || 0;
+            var ag15 = parseInt(document.getElementById('q_acg15').value) || 0;
 
-            var total = (l * 500) + (w * 1500) + (db * 2500) + (am * 3500) + (an * 2500) + (ai * 4500) + (ag * 5000);
+            var total = (l * 500) + (w * 1500) + (db * 2500) + (am * 3500) + (an * 2500) + (ai * 3000) + (ag1 * 6500) + (ag15 * 8500);
 
             if(total === 0) { alert("Please enter quantity!"); return; }
 
@@ -127,13 +190,14 @@
                 "<center><b>=== DN/HQ SERVICES ===</b></center><br>" +
                 "<b>Client:</b> " + name + "<br>" +
                 "------------------------------<br>" +
-                (l > 0 ? "Light Points: " + l + " (Rs " + (l*500) + ")<br>" : "") +
-                (w > 0 ? "Wiring Points: " + w + " (Rs " + (w*1500) + ")<br>" : "") +
-                (db > 0 ? "DB Box Work: " + db + " (Rs " + (db*2500) + ")<br>" : "") +
-                (am > 0 ? "AC Master Svc: " + am + " (Rs " + (am*3500) + ")<br>" : "") +
-                (an > 0 ? "AC Normal Svc: " + an + " (Rs " + (an*2500) + ")<br>" : "") +
-                (ai > 0 ? "AC Install: " + ai + " (Rs " + (ai*4500) + ")<br>" : "") +
-                (ag > 0 ? "AC Gas Refill: " + ag + " (Rs " + (ag*5000) + ")<br>" : "") +
+                (l > 0 ? "Light Points: " + l + "<br>" : "") +
+                (w > 0 ? "Wiring Points: " + w + "<br>" : "") +
+                (db > 0 ? "DB Box Work: " + db + "<br>" : "") +
+                (am > 0 ? "AC Master Svc: " + am + "<br>" : "") +
+                (an > 0 ? "AC Normal Svc: " + an + "<br>" : "") +
+                (ai > 0 ? "AC Install: " + ai + "<br>" : "") +
+                (ag1 > 0 ? "Gas Refill 1ton: " + ag1 + "<br>" : "") +
+                (ag15 > 0 ? "Gas Refill 1.5ton: " + ag15 + "<br>" : "") +
                 "------------------------------<br>" +
                 "<b>TOTAL BILL: Rs " + total + "</b>";
         }
@@ -156,5 +220,3 @@
 
 </body>
 </html>
-
-
