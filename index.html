@@ -7,55 +7,57 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f0f2f5; text-align: center; color: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f4f7f6; color: #333; }
         
-        /* Header & Logo Left */
-        .header { background: #0f172a; padding: 15px 5%; border-bottom: 3px solid #fbbf24; display: flex; align-items: center; justify-content: flex-start; }
+        /* Header Fix with Hidden Admin Trigger */
+        .header { background: #0f172a; padding: 15px 5%; border-bottom: 3px solid #fbbf24; display: flex; justify-content: space-between; align-items: center; }
+        .logo-box { display: flex; align-items: center; }
         .logo-circle { width: 45px; height: 45px; border: 2px solid #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fbbf24; margin-right: 12px; }
-        .logo-text-group { text-align: left; }
-        .logo-main { color: #fbbf24; font-size: 18px; font-weight: bold; display: block; line-height: 1; }
-        .logo-sub { color: white; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; }
+        .logo-text { text-align: left; }
+        .logo-text b { color: #fbbf24; font-size: 18px; display: block; line-height: 1; }
+        .logo-text small { color: white; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; }
+        .admin-trigger { color: #1e293b; font-size: 18px; cursor: pointer; padding: 5px; }
 
-        .hero { background: #1e293b; color: white; padding: 35px 10px; }
-        .hero h1 { margin: 0; font-size: 24px; color: #fbbf24; }
+        .hero { background: #1e293b; color: white; padding: 40px 10px; text-align: center; }
+        .hero h1 { margin: 0; font-size: 26px; color: #fbbf24; }
 
-        /* Original Card Design */
-        .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; gap: 20px; }
-        .card { background: white; width: 320px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #fbbf24; }
-        .book-btn { display: block; width: 100%; padding: 12px; margin: 6px 0; background: #fbbf24; color: black; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 13px; border: 1px solid #000; }
+        /* Professional Cards (Original Prices) */
+        .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 30px 15px; gap: 20px; }
+        .card { background: white; width: 330px; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-top: 6px solid #fbbf24; box-sizing: border-box; }
+        .card h2 { margin-top: 0; color: #1e293b; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .book-btn { display: block; width: 100%; padding: 14px; margin: 10px 0; background: #fbbf24; color: black; text-decoration: none; font-weight: bold; border-radius: 8px; font-size: 14px; border: 1px solid #000; text-align: center; transition: 0.3s; }
+        .book-btn:hover { background: #fcd34d; transform: translateY(-2px); }
+
+        /* Admin Section - Popup Style for better access */
+        #adminSection { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .admin-content { max-width: 600px; margin: 0 auto; text-align: left; }
+        .input-f { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
         
-        /* Admin Section */
-        #adminSection { display: none; background: white; padding: 25px; margin: 20px auto; max-width: 800px; border-radius: 10px; border: 2px solid #0f172a; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .input-f { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        
-        /* Bill Display */
-        #billBox { display: none; margin-top: 20px; background: white; padding: 20px; border: 1px solid #ddd; }
-        .bill-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
-        .bill-table th, .bill-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        /* Bill & Table */
+        #billBox { margin-top: 20px; border: 1px solid #eee; padding: 20px; background: #fff; }
+        .bill-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        .bill-table th, .bill-table td { border: 1px solid #eee; padding: 10px; text-align: left; }
 
         /* Footer & Socials */
-        .footer { background: #0f172a; color: white; padding: 40px 20px; margin-top: 50px; }
-        .social-links { margin-bottom: 20px; }
-        .social-links a { color: #fbbf24; font-size: 24px; margin: 0 15px; text-decoration: none; transition: 0.3s; }
+        .footer { background: #0f172a; color: white; padding: 40px 20px; margin-top: 50px; text-align: center; }
+        .social-links { margin-bottom: 25px; }
+        .social-links a { color: #fbbf24; font-size: 28px; margin: 0 15px; text-decoration: none; }
         .social-links a:hover { color: white; }
 
-        /* Secure Admin Login in Footer */
-        .admin-login-box { margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155; }
-        .admin-input { background: #1e293b; border: 1px solid #334155; color: white; padding: 8px; border-radius: 4px; width: 150px; font-size: 12px; }
-        .admin-btn { background: #334155; color: #fbbf24; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-
-        @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .card { width: 100%; } }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <div class="logo-circle">⚡❄️</div>
-        <div class="logo-text-group">
-            <span class="logo-main">DN/HQ</span>
-            <span class="logo-sub">Services</span>
+        <div class="logo-box">
+            <div class="logo-circle">⚡❄️</div>
+            <div class="logo-text">
+                <b>DN/HQ</b>
+                <small>Services</small>
+            </div>
         </div>
+        <i class="fas fa-cog admin-trigger" onclick="promptAdmin()"></i>
     </header>
 
     <div class="hero">
@@ -66,81 +68,72 @@
     <div class="container">
         <div class="card" style="border-color: #3b82f6;">
             <h2 style="color:#3b82f6;">AC SERVICES</h2>
-            <a href="https://wa.me/923152458657?text=AC Master Service" class="book-btn">Master Service (3500)</a>
-            <a href="https://wa.me/923152458657?text=AC Normal Service" class="book-btn">Normal Service (2500)</a>
-            <a href="https://wa.me/923152458657?text=AC Installation" class="book-btn">Installation (3000)</a>
-            <a href="https://wa.me/923152458657?text=AC Gas Refill" class="book-btn">Gas Refill (6500)</a>
+            <a href="https://wa.me/923152458657?text=Booking Master Service" class="book-btn">Master Service (3500)</a>
+            <a href="https://wa.me/923152458657?text=Booking Normal Service" class="book-btn">Normal Service (2500)</a>
+            <a href="https://wa.me/923152458657?text=Booking Installation" class="book-btn">Installation (3000)</a>
+            <a href="https://wa.me/923152458657?text=Booking Gas Refill" class="book-btn">Gas Refill (6500)</a>
         </div>
 
         <div class="card" style="border-color: #fbbf24;">
             <h2 style="color:#fbbf24;">ELECTRICIAN</h2>
-            <a href="https://wa.me/923152458657?text=Light Point" class="book-btn">Light Point (500)</a>
-            <a href="https://wa.me/923152458657?text=New Wiring" class="book-btn">New Wiring (1500)</a>
-            <a href="https://wa.me/923152458657?text=DB Box Fix" class="book-btn">DB Box Fix (2500)</a>
-            <a href="https://wa.me/923152458657?text=Breaker Change" class="book-btn">Breaker Change (200)</a>
+            <a href="https://wa.me/923152458657?text=Booking Light Point" class="book-btn">Light Point (500)</a>
+            <a href="https://wa.me/923152458657?text=Booking New Wiring" class="book-btn">New Wiring (1500)</a>
+            <a href="https://wa.me/923152458657?text=Booking DB Box Fix" class="book-btn">DB Box Fix (2500)</a>
+            <a href="https://wa.me/923152458657?text=Booking Breaker Change" class="book-btn">Breaker Change (200)</a>
         </div>
     </div>
 
     <div id="adminSection">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #eee; margin-bottom:15px;">
-            <h3 style="margin:0;">BILL GENERATOR (ADMIN)</h3>
-            <button onclick="location.reload()" style="background:red; color:white; border:none; padding:8px 15px; cursor:pointer; border-radius:5px;">Logout</button>
-        </div>
-        
-        <input type="text" id="cn" class="input-f" placeholder="Customer Name">
-        <input type="tel" id="cp" class="input-f" placeholder="WhatsApp Number">
-        
-        <div class="admin-grid">
-            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border:1px solid #ddd;">
-                <h4 style="margin:0 0 10px 0; color:#fbbf24;">Electrical Work</h4>
-                Light Pts: <input type="number" id="q1" class="input-f" value="0">
-                Wiring: <input type="number" id="q2" class="input-f" value="0">
-                DB Box: <input type="number" id="q3" class="input-f" value="0">
+        <div class="admin-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #fbbf24; padding-bottom:10px;">
+                <h2 style="margin:0;">BILL GENERATOR</h2>
+                <button onclick="document.getElementById('adminSection').style.display='none'" style="background:red; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">CLOSE</button>
             </div>
-            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border:1px solid #ddd;">
-                <h4 style="margin:0 0 10px 0; color:#3b82f6;">AC Work</h4>
-                Master: <input type="number" id="q4" class="input-f" value="0">
-                Normal: <input type="number" id="q5" class="input-f" value="0">
-                Install: <input type="number" id="q6" class="input-f" value="0">
+            
+            <br>
+            <label><b>Customer Name:</b></label>
+            <input type="text" id="cn" class="input-f" placeholder="Enter Name">
+            
+            <label><b>Work Quantities:</b></label>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+                <div style="background:#f9f9f9; padding:10px; border-radius:8px;">
+                    <small>Light Pts (500):</small> <input type="number" id="q1" class="input-f" value="0">
+                    <small>Wiring (1500):</small> <input type="number" id="q2" class="input-f" value="0">
+                </div>
+                <div style="background:#f9f9f9; padding:10px; border-radius:8px;">
+                    <small>AC Master (3500):</small> <input type="number" id="q3" class="input-f" value="0">
+                    <small>AC Normal (2500):</small> <input type="number" id="q4" class="input-f" value="0">
+                </div>
             </div>
-        </div>
-        <button onclick="genBill()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:15px; font-weight:bold; cursor:pointer; border-radius:5px; font-size:16px;">GENERATE PDF RECEIPT</button>
 
-        <div id="billBox">
-            <div id="billArea"></div>
-            <div style="display:flex; gap:10px; margin-top:15px;">
-                <button onclick="savePDF()" style="flex:1; padding:12px; background:#334155; color:white; border:none; cursor:pointer; border-radius:5px; font-weight:bold;">⬇️ Download PDF</button>
-                <button onclick="sendWhatsApp()" style="flex:1; padding:12px; background:#25d366; color:white; border:none; cursor:pointer; border-radius:5px; font-weight:bold;">📱 WhatsApp Client</button>
+            <button onclick="genBill()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:20px; border-radius:8px; font-weight:bold; font-size:16px; cursor:pointer;">GENERATE PDF BILL</button>
+
+            <div id="billBox" style="display:none;">
+                <div id="billPrint"></div>
+                <button onclick="savePDF()" style="width:100%; padding:15px; background:#0f172a; color:white; border:none; margin-top:15px; border-radius:8px; font-weight:bold; cursor:pointer;">DOWNLOAD PDF RECEIPT</button>
             </div>
         </div>
     </div>
 
     <footer class="footer">
         <div class="social-links">
-            <a href="https://facebook.com/yourpage" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://youtube.com/@yourchannel" target="_blank"><i class="fab fa-youtube"></i></a>
-            <a href="https://tiktok.com/@yourprofile" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="https://facebook.com/dnhqservices" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://youtube.com/@dnhqservices" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://tiktok.com/@dnhqservices" target="_blank"><i class="fab fa-tiktok"></i></a>
         </div>
         
         <p><b>DN/HQ SERVICES</b> | Karachi Professional Technical Team</p>
         <p>Contact: +92 315 2458657</p>
-
-        <div class="admin-login-box">
-            <input type="password" id="adminPass" class="admin-input" placeholder="Admin Password">
-            <button class="admin-btn" onclick="checkLogin()">Login</button>
-        </div>
     </footer>
 
     <script>
-        // Admin Access Fix
-        function checkLogin() {
-            var p = document.getElementById('adminPass').value;
-            if(p === "dnhq123") {
+        // Simple and Direct Admin Logic
+        function promptAdmin() {
+            var p = prompt("Enter Admin Password:");
+            if (p === "dnhq123") {
                 document.getElementById('adminSection').style.display = 'block';
-                document.getElementById('adminSection').scrollIntoView({behavior: 'smooth'});
-                document.getElementById('adminPass').value = ""; // Clear pass
-            } else {
-                alert("Access Denied! Wrong Password.");
+            } else if (p !== null) {
+                alert("Wrong Password!");
             }
         }
 
@@ -150,54 +143,39 @@
             var q2 = parseInt(document.getElementById('q2').value) || 0;
             var q3 = parseInt(document.getElementById('q3').value) || 0;
             var q4 = parseInt(document.getElementById('q4').value) || 0;
-            var q5 = parseInt(document.getElementById('q5').value) || 0;
-            var q6 = parseInt(document.getElementById('q6').value) || 0;
 
-            var total = (q1*500) + (q2*1500) + (q3*2500) + (q4*3500) + (q5*2500) + (q6*3000);
+            var total = (q1*500) + (q2*1500) + (q3*3500) + (q4*2500);
             if(total === 0) { alert("Please add some work quantity!"); return; }
 
-            window.finalAmt = total; window.client = name;
-
+            window.cName = name;
             var rows = "";
-            if(q1>0) rows += <tr><td>Light Points</td><td>${q1}</td><td>500</td><td>${q1*500}</td></tr>;
-            if(q2>0) rows += <tr><td>Wiring Work</td><td>${q2}</td><td>1500</td><td>${q2*1500}</td></tr>;
-            if(q3>0) rows += <tr><td>DB Box Fix</td><td>${q3}</td><td>2500</td><td>${q3*2500}</td></tr>;
-            if(q4>0) rows += <tr><td>AC Master Service</td><td>${q4}</td><td>3500</td><td>${q4*3500}</td></tr>;
-            if(q5>0) rows += <tr><td>AC Normal Service</td><td>${q5}</td><td>2500</td><td>${q5*2500}</td></tr>;
-            if(q6>0) rows += <tr><td>AC Installation</td><td>${q6}</td><td>3000</td><td>${q6*3000}</td></tr>;
+            if(q1>0) rows += <tr><td>Light Points</td><td>${q1}</td><td>Rs ${q1*500}</td></tr>;
+            if(q2>0) rows += <tr><td>Wiring Work</td><td>${q2}</td><td>Rs ${q2*1500}</td></tr>;
+            if(q3>0) rows += <tr><td>AC Master Service</td><td>${q3}</td><td>Rs ${q3*3500}</td></tr>;
+            if(q4>0) rows += <tr><td>AC Normal Service</td><td>${q4}</td><td>Rs ${q4*2500}</td></tr>;
 
             document.getElementById('billBox').style.display = 'block';
-            document.getElementById('billArea').innerHTML = `
-                <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:10px;">
+            document.getElementById('billPrint').innerHTML = `
+                <div style="text-align:center; border-bottom:2px solid #333; padding-bottom:10px;">
                     <h2 style="margin:0;">DN/HQ SERVICES</h2>
-                    <p style="margin:0; font-size:12px;">AC & Electrical Specialists | Karachi</p>
-                    <small>Contact: 0315-2458657</small>
+                    <p style="margin:0; font-size:12px;">Karachi Professional Technicians | 0315-2458657</p>
                 </div>
-                <p style="font-size:13px;"><b>Date:</b> ${new Date().toLocaleDateString()}<br><b>Client Name:</b> ${name}</p>
+                <p><b>Date:</b> ${new Date().toLocaleDateString()}<br><b>Client:</b> ${name}</p>
                 <table class="bill-table">
-                    <tr style="background:#eee;"><th>Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr>
+                    <tr style="background:#eee;"><th>Description</th><th>Qty</th><th>Total</th></tr>
                     ${rows}
-                    <tr style="background:#f9f9f9;"><td colspan="3" style="text-align:right;"><b>Grand Total:</b></td><td><b>Rs ${total}</b></td></tr>
+                    <tr style="background:#f9f9f9;"><td><b>Grand Total</b></td><td></td><td><b>Rs ${total}</b></td></tr>
                 </table>
-                <p style="text-align:center; font-size:10px; margin-top:20px; border-top:1px solid #eee; padding-top:10px;">Thank you for your business! Expert Work Guaranteed.</p>
+                <p style="text-align:center; font-size:10px; margin-top:25px; border-top:1px solid #eee; padding-top:10px;">Expert Service. Expert Results.</p>
             `;
-            document.getElementById('billBox').scrollIntoView({behavior: 'smooth'});
         }
 
         function savePDF() {
-            const el = document.getElementById('billArea');
+            const el = document.getElementById('billPrint');
             html2pdf().from(el).set({
-                margin: 10, filename: 'DNHQ_Bill_' + window.client + '.pdf',
+                margin: 10, filename: 'Receipt_' + window.cName + '.pdf',
                 html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' }
             }).save();
-        }
-
-        function sendWhatsApp() {
-            var phone = document.getElementById('cp').value;
-            if(!phone) { alert("Please enter client WhatsApp number!"); return; }
-            if(phone.startsWith('0')) phone = "92" + phone.substring(1);
-            var msg = *DN/HQ SERVICES RECEIPT*%0A*Client:* ${window.client}%0A*Total Amount:* Rs ${window.finalAmt}%0A_PDF Receipt is also generated._;
-            window.open("https://wa.me/" + phone + "?text=" + msg);
         }
     </script>
 </body>
