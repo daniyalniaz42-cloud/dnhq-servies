@@ -9,7 +9,7 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f0f2f5; text-align: center; color: #333; }
         
-        /* Professional Header - Logo Left */
+        /* Header */
         .header { background: #0f172a; padding: 15px 5%; border-bottom: 3px solid #fbbf24; display: flex; align-items: center; justify-content: flex-start; }
         .logo-circle { width: 45px; height: 45px; border: 2px solid #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fbbf24; margin-right: 12px; }
         .logo-text { text-align: left; }
@@ -19,30 +19,28 @@
         .hero { background: #1e293b; color: white; padding: 40px 10px; }
         .hero h1 { margin: 0; font-size: 26px; color: #fbbf24; }
 
-        /* Original Card Design */
+        /* Cards */
         .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 25px; gap: 20px; }
         .card { background: white; width: 330px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid #fbbf24; }
-        .card h2 { color: #1e293b; font-size: 20px; margin-bottom: 15px; }
         .book-btn { display: block; width: 100%; padding: 12px; margin: 6px 0; background: #fbbf24; color: black; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 13px; border: 1px solid #000; box-sizing: border-box; }
 
-        /* Admin Section - Bill Generator */
-        #adminSection { display: none; background: white; padding: 25px; margin: 20px auto; max-width: 800px; border-radius: 10px; border: 2px solid #0f172a; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        /* ADMIN SECTION - Default hidden with !important */
+        #adminSection { display: none !important; background: white; padding: 25px; margin: 20px auto; max-width: 800px; border-radius: 10px; border: 3px solid #16a34a; text-align: left; }
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .input-f { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
+        .input-f { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
         
-        /* Bill & PDF Style */
+        /* Bill Area */
         #billBox { display: none; margin-top: 20px; padding: 20px; border: 1px solid #ddd; background: #fff; }
-        .bill-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
-        .bill-table th, .bill-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
 
-        /* Footer & Admin Login */
+        /* Footer */
         .footer { background: #0f172a; color: white; padding: 50px 20px; margin-top: 50px; }
         .social-links { margin-bottom: 25px; }
-        .social-links a { color: #fbbf24; font-size: 28px; margin: 0 15px; text-decoration: none; }
+        .social-links a { color: #fbbf24; font-size: 28px; margin: 0 15px; }
         
-        .admin-footer-zone { margin-top: 30px; padding-top: 20px; border-top: 1px solid #334155; }
-        .admin-input-small { background: #1e293b; border: 1px solid #334155; color: white; padding: 10px; border-radius: 5px; width: 160px; outline: none; }
-        .admin-login-btn { background: #334155; color: #fbbf24; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        /* Admin Login Area */
+        .admin-login-zone { margin-top: 30px; padding: 20px; border: 1px solid #334155; border-radius: 10px; background: #111827; }
+        .admin-input-field { padding: 12px; border-radius: 5px; border: 1px solid #fbbf24; width: 200px; margin-bottom: 10px; font-size: 16px; }
+        .admin-submit-btn { background: #fbbf24; color: #000; padding: 12px 30px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px; }
 
         @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } }
     </style>
@@ -51,10 +49,7 @@
 
     <header class="header">
         <div class="logo-circle">⚡❄️</div>
-        <div class="logo-text">
-            <b>DN/HQ</b>
-            <small>SERVICES</small>
-        </div>
+        <div class="logo-text"><b>DN/HQ</b><small>SERVICES</small></div>
     </header>
 
     <div class="hero">
@@ -81,119 +76,95 @@
     </div>
 
     <div id="adminSection">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #fbbf24; padding-bottom:10px;">
-            <h3 style="margin:0;">BILL GENERATOR (ADMIN)</h3>
-            <button onclick="location.reload()" style="background:red; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">Logout</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #16a34a; padding-bottom:10px;">
+            <h2 style="margin:0; color:#16a34a;">ADMIN DASHBOARD</h2>
+            <button onclick="location.reload()" style="background:#000; color:#fff; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">Logout</button>
         </div>
         
         <br>
-        <input type="text" id="custName" class="input-f" placeholder="Customer Name">
+        <label>Customer Name:</label>
+        <input type="text" id="custName" class="input-f" placeholder="Enter name here...">
         
         <div class="admin-grid">
-            <div style="background:#f9f9f9; padding:15px; border-radius:8px;">
-                <h4 style="margin:0 0 10px 0; color:#fbbf24;">Electrical Work</h4>
+            <div style="background:#f0fdf4; padding:15px; border-radius:8px; border:1px solid #bbf7d0;">
+                <h4 style="margin:0 0 10px 0;">Electrical Work</h4>
                 Light Pts: <input type="number" id="q_lp" class="input-f" value="0">
                 Wiring: <input type="number" id="q_wr" class="input-f" value="0">
-                DB Box: <input type="number" id="q_db" class="input-f" value="0">
-                Breaker: <input type="number" id="q_br" class="input-f" value="0">
             </div>
-            <div style="background:#f9f9f9; padding:15px; border-radius:8px;">
-                <h4 style="margin:0 0 10px 0; color:#3b82f6;">AC Work</h4>
+            <div style="background:#eff6ff; padding:15px; border-radius:8px; border:1px solid #bfdbfe;">
+                <h4 style="margin:0 0 10px 0;">AC Work</h4>
                 Master Svc: <input type="number" id="q_am" class="input-f" value="0">
-                Normal Svc: <input type="number" id="q_an" class="input-f" value="0">
                 Install: <input type="number" id="q_ai" class="input-f" value="0">
-                Gas Refill: <input type="number" id="q_ag" class="input-f" value="0">
             </div>
         </div>
         
-        <button onclick="generatePDFBill()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:20px; font-weight:bold; border-radius:8px; font-size:16px; cursor:pointer;">GENERATE FINAL BILL</button>
+        <button onclick="makeBillNow()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:20px; font-weight:bold; border-radius:8px; font-size:18px; cursor:pointer;">GENERATE FINAL BILL</button>
 
         <div id="billBox">
-            <div id="billCapture"></div>
-            <button onclick="downloadBillPDF()" style="width:100%; padding:15px; background:#0f172a; color:white; border:none; margin-top:15px; border-radius:8px; font-weight:bold; cursor:pointer;">DOWNLOAD PDF</button>
+            <div id="billContent" style="background:#fff; padding:20px; border:1px solid #333;"></div>
+            <button onclick="downloadBill()" style="width:100%; padding:15px; background:#0f172a; color:white; border:none; margin-top:15px; border-radius:8px; font-weight:bold;">DOWNLOAD PDF</button>
         </div>
     </div>
 
     <footer class="footer">
         <div class="social-links">
-            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
-            <a href="https://tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
         </div>
         
-        <p><b>DN/HQ SERVICES</b> | Karachi Professional Technical Team</p>
+        <p><b>DN/HQ SERVICES</b> | Karachi</p>
         <p>Contact: +92 315 2458657</p>
 
-        <div class="admin-footer-zone">
-            <input type="password" id="adminPass" class="admin-input-small" placeholder="Admin Password">
-            <button class="admin-login-btn" onclick="checkAdminAccess()">Admin Login</button>
+        <div class="admin-login-zone">
+            <p style="color:#fbbf24; margin-bottom:10px; font-weight:bold;">STAFF ONLY AREA</p>
+            <input type="password" id="passCode" class="admin-input-field" placeholder="Enter Admin Pin">
+            <br>
+            <button class="admin-submit-btn" onclick="triggerAdmin()">LOGIN TO DASHBOARD</button>
         </div>
     </footer>
 
     <script>
-        // Admin Login Script
-        function checkAdminAccess() {
-            var pass = document.getElementById('adminPass').value;
-            if(pass === "dnhq123") {
-                document.getElementById('adminSection').style.display = 'block';
-                document.getElementById('adminSection').scrollIntoView({behavior: 'smooth'});
+        function triggerAdmin() {
+            var pin = document.getElementById('passCode').value;
+            var dashboard = document.getElementById('adminSection');
+            
+            if(pin === "dnhq123") {
+                // Force display using setProperty to override CSS
+                dashboard.style.setProperty('display', 'block', 'important');
+                dashboard.scrollIntoView({behavior: 'smooth'});
+                alert("Login Successful! Dashboard is now visible above the footer.");
             } else {
-                alert("Incorrect Password!");
+                alert("Incorrect PIN!");
             }
         }
 
-        function generatePDFBill() {
+        function makeBillNow() {
             var name = document.getElementById('custName').value || "Customer";
             var q_lp = parseInt(document.getElementById('q_lp').value) || 0;
             var q_wr = parseInt(document.getElementById('q_wr').value) || 0;
-            var q_db = parseInt(document.getElementById('q_db').value) || 0;
-            var q_br = parseInt(document.getElementById('q_br').value) || 0;
             var q_am = parseInt(document.getElementById('q_am').value) || 0;
-            var q_an = parseInt(document.getElementById('q_an').value) || 0;
             var q_ai = parseInt(document.getElementById('q_ai').value) || 0;
-            var q_ag = parseInt(document.getElementById('q_ag').value) || 0;
 
-            var total = (q_lp*500) + (q_wr*1500) + (q_db*2500) + (q_br*200) + (q_am*3500) + (q_an*2500) + (q_ai*3000) + (q_ag*6500);
-            if(total === 0) { alert("Please add work quantities!"); return; }
-
-            window.finalClient = name;
-            var rows = "";
-            if(q_lp>0) rows += <tr><td>Light Points</td><td>${q_lp}</td><td>500</td><td>${q_lp*500}</td></tr>;
-            if(q_wr>0) rows += <tr><td>Wiring Work</td><td>${q_wr}</td><td>1500</td><td>${q_wr*1500}</td></tr>;
-            if(q_db>0) rows += <tr><td>DB Box Fix</td><td>${q_db}</td><td>2500</td><td>${q_db*2500}</td></tr>;
-            if(q_br>0) rows += <tr><td>Breaker Change</td><td>${q_br}</td><td>200</td><td>${q_br*200}</td></tr>;
-            if(q_am>0) rows += <tr><td>AC Master Svc</td><td>${q_am}</td><td>3500</td><td>${q_am*3500}</td></tr>;
-            if(q_an>0) rows += <tr><td>AC Normal Svc</td><td>${q_an}</td><td>2500</td><td>${q_an*2500}</td></tr>;
-            if(q_ai>0) rows += <tr><td>AC Install</td><td>${q_ai}</td><td>3000</td><td>${q_ai*3000}</td></tr>;
-            if(q_ag>0) rows += <tr><td>AC Gas Refill</td><td>${q_ag}</td><td>6500</td><td>${q_ag*6500}</td></tr>;
+            var total = (q_lp*500) + (q_wr*1500) + (q_am*3500) + (q_ai*3000);
+            window.client = name;
 
             document.getElementById('billBox').style.display = 'block';
-            document.getElementById('billCapture').innerHTML = `
-                <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:15px;">
-                    <h2 style="margin:0;">DN/HQ SERVICES</h2>
-                    <p style="margin:0; font-size:12px;">Karachi's No.1 Professional Technical Team</p>
-                    <small>0315-2458657</small>
-                </div>
-                <p style="font-size:13px;"><b>Date:</b> ${new Date().toLocaleDateString()}<br><b>Client:</b> ${name}</p>
-                <table class="bill-table">
-                    <tr style="background:#eee;"><th>Work Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr>
-                    ${rows}
-                    <tr style="background:#f9f9f9;">
-                        <td colspan="3" style="text-align:right;"><b>GRAND TOTAL:</b></td>
-                        <td><b>Rs ${total}</b></td>
-                    </tr>
-                </table>
-                <p style="text-align:center; font-size:10px; margin-top:20px; border-top:1px solid #eee; padding-top:10px;">Expert Technical Solutions Karachi.</p>
+            document.getElementById('billContent').innerHTML = `
+                <h2 style="text-align:center; border-bottom:2px solid #000;">DN/HQ SERVICES</h2>
+                <p><b>Client:</b> ${name} | <b>Date:</b> ${new Date().toLocaleDateString()}</p>
+                <p>Light Points: ${q_lp} x 500 = ${q_lp*500}</p>
+                <p>Wiring: ${q_wr} x 1500 = ${q_wr*1500}</p>
+                <p>AC Master: ${q_am} x 3500 = ${q_am*3500}</p>
+                <p>AC Install: ${q_ai} x 3000 = ${q_ai*3000}</p>
+                <hr>
+                <h3>TOTAL BILL: Rs ${total}</h3>
             `;
-            document.getElementById('billBox').scrollIntoView({behavior: 'smooth'});
         }
 
-        function downloadBillPDF() {
-            const element = document.getElementById('billCapture');
-            html2pdf().from(element).set({
-                margin: 10, filename: 'DNHQ_Bill_' + window.finalClient + '.pdf',
-                html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' }
-            }).save();
+        function downloadBill() {
+            const element = document.getElementById('billContent');
+            html2pdf().from(element).save('Bill_' + window.client + '.pdf');
         }
     </script>
 </body>
