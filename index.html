@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Official</title>
+    <title>DNHQ SERVICES | Professional Billing</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
     <style>
-        :root { --primary: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
+        :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 160px; }
 
         .brand-header { background: #000; padding: 40px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
@@ -22,23 +25,24 @@
             margin-bottom: 12px; padding: 18px; display: flex; justify-content: space-between; 
             align-items: center; cursor: pointer; transition: 0.2s;
         }
-        .svc-item:active { transform: scale(0.97); }
         .svc-item.selected { border: 2px solid var(--gold); background: #000; }
         .svc-meta b { display: block; font-size: 17px; color: white; margin-bottom: 4px; }
         .svc-meta p { font-size: 13px; color: #94a3b8; margin: 0; }
         .svc-rate { text-align: right; font-weight: 800; color: var(--gold); font-size: 16px; }
 
+        /* Multi-Action Booking Bar */
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
-        .checkout-inner { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; }
-        .btn-wa { background: #22c55e; color: white; padding: 16px 35px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; }
+        .checkout-inner { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; gap: 10px; }
+        .btn-wa { background: #22c55e; color: white; padding: 16px 20px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; flex: 1; font-size: 14px; }
+        .btn-pdf { background: #ef4444; color: white; padding: 16px 20px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; display: none; flex: 1; font-size: 14px; }
 
         #adminView { display: none; background: #111827; margin: 20px; padding: 25px; border-radius: 20px; border: 1px solid #374151; }
-        .log-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        .log-table th { background: #000; padding: 12px; text-align: left; border-bottom: 1px solid var(--gold); }
-        .log-table td { padding: 12px; border-bottom: 1px solid #1f2937; color: #e5e7eb; }
+        .log-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
+        .log-table th { background: #000; padding: 10px; text-align: left; border-bottom: 1px solid var(--gold); }
+        .log-table td { padding: 10px; border-bottom: 1px solid #1f2937; color: #e5e7eb; }
 
         footer { background: #000; color: #64748b; padding: 60px 20px; text-align: center; }
-        .admin-link { display: inline-block; margin-top: 15px; font-size: 12px; color: var(--gold); cursor: pointer; text-decoration: underline; opacity: 0.7; }
+        .admin-link { display: inline-block; margin-top: 15px; font-size: 12px; color: var(--gold); cursor: pointer; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -49,120 +53,133 @@
     </header>
 
     <div class="wrapper">
-        
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
-        
         <div class="svc-item" onclick="toggleSvc(this, 'Master Service', 3500)">
             <div class="svc-meta"><b>Master Service</b><p>Deep chemical wash & outdoor</p></div>
             <div class="svc-rate">Rs 3,500</div>
         </div>
-
-        <div class="svc-item" onclick="toggleSvc(this, 'Normal Service', 2500)">
-            <div class="svc-meta"><b>Normal Service</b><p>Filter & coil cleaning service</p></div>
-            <div class="svc-rate">Rs 2,500</div>
-        </div>
-
         <div class="svc-item" onclick="toggleSvc(this, 'Gas Charging (1 Ton)', 6500)">
             <div class="svc-meta"><b>Gas Charging (1 Ton)</b><p>Full R22/R410 refill</p></div>
             <div class="svc-rate">Rs 6,500</div>
         </div>
-
         <div class="svc-item" onclick="toggleSvc(this, 'Gas Charging (1.5 Ton)', 8500)">
             <div class="svc-meta"><b>Gas Charging (1.5 Ton)</b><p>Full R22/R410 refill</p></div>
             <div class="svc-rate">Rs 8,500</div>
         </div>
-
         <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 3000)">
-            <div class="svc-meta"><b>Installation</b><p>Proper mounting & vacuuming</p></div>
+            <div class="svc-meta"><b>Installation</b><p>Unit mounting & setup</p></div>
             <div class="svc-rate">Rs 3,000</div>
-        </div>
-
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Dismantle', 1500)">
-            <div class="svc-meta"><b>Dismantling</b><p>Safe removal with gas locking</p></div>
-            <div class="svc-rate">Rs 1,500</div>
         </div>
 
         <div class="section-tag"><h2>Electrician</h2><div class="section-line"></div></div>
-
         <div class="svc-item" onclick="toggleSvc(this, 'Fault Repair', 1000)">
-            <div class="svc-meta"><b>Short Circuit</b><p>Emergency fault tracing</p></div>
+            <div class="svc-meta"><b>Short Circuit</b><p>Fault tracing & repair</p></div>
             <div class="svc-rate">Rs 1,000</div>
         </div>
-
-        <div class="svc-item" onclick="toggleSvc(this, 'New Wiring', 1500)">
-            <div class="svc-meta"><b>New Point Wiring</b><p>Complete point setup</p></div>
-            <div class="svc-rate">Rs 1,500</div>
-        </div>
-
-        <div class="svc-item" onclick="toggleSvc(this, 'UPS Install', 3000)">
-            <div class="svc-meta"><b>UPS Installation</b><p>Inverter/UPS wiring setup</p></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 3000)">
+            <div class="svc-meta"><b>UPS Install</b><p>Wiring & battery setup</p></div>
             <div class="svc-rate">Rs 3,000</div>
         </div>
 
-        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 2500)">
-            <div class="svc-meta"><b>DB Box Fitting</b><p>Main breaker panel dressing</p></div>
-            <div class="svc-rate">Rs 2,500</div>
-        </div>
-
         <div class="section-tag"><h2>Appliances</h2><div class="section-line"></div></div>
-        
         <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas', 5500)">
             <div class="svc-meta"><b>Fridge Gas</b><p>Gas refilling & leak test</p></div>
             <div class="svc-rate">Rs 5,500</div>
-        </div>
-
-        <div class="svc-item" onclick="toggleSvc(this, 'Compressor Fitting', 4500)">
-            <div class="svc-meta"><b>Compressor Labor</b><p>Installation of compressor</p></div>
-            <div class="svc-rate">Rs 4,500</div>
-        </div>
-
-        <div class="svc-item" onclick="toggleSvc(this, 'Machine Repair', 1500)">
-            <div class="svc-meta"><b>WM Repair</b><p>Automatic/Manual work</p></div>
-            <div class="svc-rate">Rs 1,500</div>
         </div>
     </div>
 
     <div class="checkout-bar" id="cart">
         <div class="checkout-inner">
-            <div><small>Total Estimate</small><div style="font-size:24px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
-            <button class="btn-wa" onclick="sendOrder()">BOOK NOW</button>
+            <div style="flex: 1;"><small>Total Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
+            <button class="btn-wa" id="btnBook" onclick="processOrder()">BOOK & SEND</button>
+            <button class="btn-pdf" id="btnDownloadPDF" onclick="downloadPDF()">PDF BILL</button>
         </div>
     </div>
 
     <div id="adminView">
-        <h2 style="color:var(--gold);">Sales History</h2>
+        <h2 style="color:var(--gold);">Records</h2>
         <div style="overflow-x:auto;"><table class="log-table"><thead><tr><th>Date</th><th>Client</th><th>Work</th><th>Bill</th></tr></thead><tbody id="logItems"></tbody></table></div>
         <button onclick="localStorage.removeItem('dnhq_final_db'); renderLogs();" style="margin-top:20px; color:red; background:none; border:none; cursor:pointer;">Delete Records</button>
-        <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; padding:15px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Close Panel</button>
+        <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; padding:15px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Close</button>
     </div>
 
     <footer>
         <div style="color:var(--gold); font-weight:900; font-size:20px;">DNHQ SERVICES</div>
-        <p style="font-size:12px; color:#4b5563;">Developed by Muhammad Daniyal</p>
+        <p style="font-size:12px;">Developed by Muhammad Daniyal</p>
         <div class="admin-link" onclick="openAdmin()">Manager Portal</div>
     </footer>
 
     <script>
         let cart = [];
+        let lastOrder = null;
+
         function toggleSvc(el, name, price) {
             const idx = cart.findIndex(c => c.name === name);
             if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
             else { cart.push({name, price}); el.classList.add('selected'); }
-            const bar = document.getElementById('cart');
+            
             const total = cart.reduce((a, b) => a + b.price, 0);
-            if (cart.length > 0) { bar.style.display = 'block'; document.getElementById('billTotal').innerText = total.toLocaleString(); } 
-            else { bar.style.display = 'none'; }
+            document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
+            document.getElementById('billTotal').innerText = total.toLocaleString();
+            document.getElementById('btnDownloadPDF').style.display = 'none'; // Hide PDF until booked
         }
-        function sendOrder() {
-            const user = prompt("Customer Name:") || "Client";
+
+        function processOrder() {
+            const user = prompt("Customer Name:") || "Valued Client";
             const total = cart.reduce((a, b) => a + b.price, 0);
             const work = cart.map(c => c.name).join(", ");
-            const log = { date: new Date().toLocaleDateString(), client: user, work: work, total: total };
+            
+            lastOrder = { name: user, items: [...cart], total: total, date: new Date().toLocaleDateString() };
+
+            // Save to DB
             let history = JSON.parse(localStorage.getItem('dnhq_final_db') || '[]');
-            history.push(log); localStorage.setItem('dnhq_final_db', JSON.stringify(history));
-            window.open("https://wa.me/923152458657?text=" + encodeURIComponent(`*DNHQ ORDER*\nClient: ${user}\nWork: ${work}\n*Total: Rs ${total.toLocaleString()}*`));
+            history.push({ date: lastOrder.date, client: user, work: work, total: total });
+            localStorage.setItem('dnhq_final_db', JSON.stringify(history));
+
+            // Show PDF button
+            document.getElementById('btnDownloadPDF').style.display = 'block';
+
+            // WhatsApp
+            window.open("https://wa.me/923152458657?text=" + encodeURIComponent(`*DNHQ SERVICES - BILL*\nClient: ${user}\nServices: ${work}\n*Total: Rs ${total.toLocaleString()}*`));
         }
-        function openAdmin() { if(prompt("PIN:") === "dnhq123") { document.getElementById('adminView').style.display = 'block'; renderLogs(); document.getElementById('adminView').scrollIntoView(); } }
+
+        function downloadPDF() {
+            if(!lastOrder) return;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Header
+            doc.setFillColor(0, 0, 0);
+            doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(251, 191, 36);
+            doc.setFontSize(22);
+            doc.text("DNHQ SERVICES", 105, 25, { align: "center" });
+            
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(12);
+            doc.text(`Invoice For: ${lastOrder.name}`, 20, 50);
+            doc.text(`Date: ${lastOrder.date}`, 150, 50);
+
+            // Table
+            const rows = lastOrder.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]);
+            doc.autoTable({
+                startY: 60,
+                head: [['Service Description', 'Amount']],
+                body: rows,
+                theme: 'striped',
+                headStyles: { fillColor: [0, 0, 0] }
+            });
+
+            const finalY = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(14);
+            doc.text(`Total Payable: Rs ${lastOrder.total.toLocaleString()}`, 140, finalY);
+
+            doc.setFontSize(10);
+            doc.text("Developed by Muhammad Daniyal", 105, 280, { align: "center" });
+            doc.save(`DNHQ_Bill_${lastOrder.name}.pdf`);
+        }
+
+        function openAdmin() { if(prompt("PIN:") === "dnhq123") { document.getElementById('adminView').style.display = 'block'; renderLogs(); } }
         function renderLogs() {
             const data = JSON.parse(localStorage.getItem('dnhq_final_db') || '[]');
             document.getElementById('logItems').innerHTML = data.reverse().map(d => `<tr><td>${d.date}</td><td>${d.client}</td><td>${d.work}</td><td>Rs ${d.total.toLocaleString()}</td></tr>`).join('');
