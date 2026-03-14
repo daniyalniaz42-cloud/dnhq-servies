@@ -149,21 +149,17 @@
             const work = cart.map(c => c.name).join(", ");
             const date = new Date().toLocaleDateString();
 
-            // Store in Admin DB
             let history = JSON.parse(localStorage.getItem('dnhq_final_secure') || '[]');
             history.push({ date, client: user, work: work, total: total, items: [...cart] });
             localStorage.setItem('dnhq_final_secure', JSON.stringify(history));
 
-            // WhatsApp Notification
             const msg = `*NEW DNHQ ORDER*\nClient: ${user}\nServices: ${work}\n*Est. Total: Rs ${total.toLocaleString()}*`;
             window.open("https://wa.me/923152458657?text=" + encodeURIComponent(msg));
             
-            // Reset UI
             alert("Order placed! DNHQ team will contact you soon.");
             location.reload();
         }
 
-        // ADMIN FUNCTIONS
         function openAdmin() {
             if(prompt("PIN:") === "dnhq123") {
                 document.getElementById('adminView').style.display = 'block';
@@ -186,67 +182,43 @@
         }
 
         function generateAdminPDF(order) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // 1. Logo Adding Logic
-    const logoImg = "1773452778552.jpeg"; 
-    
-    // Header Background
-    doc.setFillColor(0, 0, 0);
-    doc.rect(0, 0, 210, 50, 'F');
-
-    // Logo on PDF (x, y, width, height)
-    doc.addImage(logoImg, 'JPEG', 15, 10, 30, 30);
-
-    doc.setTextColor(251, 191, 36); 
-    doc.setFontSize(22);
-    doc.setFont("helvetica", "bold");
-    doc.text("DNHQ SERVICES", 55, 25);
-    
-    doc.setFontSize(10);
-    doc.setTextColor(255, 255, 255);
-    doc.text("Professional AC & Electrical Solutions", 55, 33);
-    doc.text("Karachi, Pakistan | +92 315 2458657", 55, 38);
-
-    // Invoice Info
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(12);
-    doc.text(`Client Name: ${order.client}`, 20, 65);
-    doc.text(`Date: ${order.date}`, 150, 65);
-
-    // Table
-    doc.autoTable({
-        startY: 75,
-        head: [['Service Description', 'Amount']],
-        body: order.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]),
-        theme: 'striped',
-        headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] },
-        styles: { fontSize: 11 }
-    });
-
-    const finalY = doc.lastAutoTable.finalY + 15;
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text(`Total Amount: Rs ${order.total.toLocaleString()}`, 130, finalY);
-
-    // Footer
-    doc.setFontSize(9);
-    doc.setTextColor(100);
-    doc.text("This is a computer generated invoice by DNHQ Services.", 105, 285, { align: "center" });
-    
-    doc.save(`DNHQ_Invoice_${order.client}.pdf`);
-}
-            const finalY = doc.lastAutoTable.finalY + 15;
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(16);
-            doc.text(`Grand Total: Rs ${order.total.toLocaleString()}`, 140, finalY);
-
-            doc.setFontSize(10);
-            doc.text("Thank you for choosing DNHQ Services!", 105, 270, { align: "center" });
-            doc.text("Developed by Muhammad Daniyal", 105, 280, { align: "center" });
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const logoImg = "1773452778552.jpeg"; 
             
-            doc.save(`DNHQ_Bill_${order.client}.pdf`);
+            doc.setFillColor(0, 0, 0);
+            doc.rect(0, 0, 210, 50, 'F');
+            doc.addImage(logoImg, 'JPEG', 15, 10, 30, 30);
+            doc.setTextColor(251, 191, 36); 
+            doc.setFontSize(22);
+            doc.setFont("helvetica", "bold");
+            doc.text("DNHQ SERVICES", 55, 25);
+            doc.setFontSize(10);
+            doc.setTextColor(255, 255, 255);
+            doc.text("Professional AC & Electrical Solutions", 55, 33);
+            doc.text("Karachi, Pakistan | +92 315 2458657", 55, 38);
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(12);
+            doc.text(`Client Name: ${order.client}`, 20, 65);
+            doc.text(`Date: ${order.date}`, 150, 65);
+
+            doc.autoTable({
+                startY: 75,
+                head: [['Service Description', 'Amount']],
+                body: order.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]),
+                theme: 'striped',
+                headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
+            });
+
+            const finalY = doc.lastAutoTable.finalY + 15;
+            doc.setFontSize(16);
+            doc.setFont("helvetica", "bold");
+            doc.text(`Total Amount: Rs ${order.total.toLocaleString()}`, 130, finalY);
+            doc.setFontSize(9);
+            doc.setTextColor(100);
+            doc.text("This is a computer generated invoice by DNHQ Services.", 105, 285, { align: "center" });
+            doc.save(`DNHQ_Invoice_${order.client}.pdf`);
         }
     </script>
 </body>
