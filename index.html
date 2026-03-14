@@ -6,194 +6,203 @@
     <title>DNHQ SERVICES | Karachi</title>
     <style>
         :root { --dark: #0f172a; --gold: #fbbf24; }
-        body { font-family: sans-serif; margin: 0; background: #f1f5f9; padding-bottom: 120px; }
+        body { font-family: sans-serif; margin: 0; background: #f8fafc; padding-bottom: 140px; }
         
-        .header { background: var(--dark); padding: 15px; display: flex; align-items: center; border-bottom: 3px solid var(--gold); }
-        .logo { height: 40px; margin-right: 10px; }
-        .logo-txt { color: white; line-height: 1; }
-        .logo-txt b { color: var(--gold); font-size: 20px; }
+        /* Logo Placeholder Fix */
+        .logo-box { background: #1e293b; padding: 10px; text-align: center; border-bottom: 3px solid var(--gold); }
+        .logo-here { color: var(--gold); font-size: 12px; font-weight: bold; border: 1px dashed var(--gold); padding: 5px; display: inline-block; margin-bottom: 5px; }
+        .actual-logo { height: 50px; display: block; margin: 0 auto; }
 
+        .hero { background: #1e293b; color: white; padding: 20px; text-align: center; border-bottom: 1px solid #334155; }
         .container { padding: 15px; max-width: 500px; margin: 0 auto; }
-        .section-title { font-weight: bold; margin: 20px 0 10px; color: var(--dark); border-left: 4px solid var(--gold); padding-left: 10px; }
+        
+        .cat-title { font-weight: bold; margin: 20px 0 10px; color: var(--dark); border-left: 5px solid var(--gold); padding-left: 10px; text-transform: uppercase; }
 
-        /* Service Button Style */
-        .svc-card {
-            width: 100%; background: white; border: 1px solid #ddd; 
+        /* Full Service List */
+        .svc-item {
+            width: 100%; background: white; border: 1px solid #e2e8f0; 
             border-radius: 12px; margin-bottom: 10px; padding: 15px;
             display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; box-sizing: border-box;
+            cursor: pointer; box-sizing: border-box; -webkit-tap-highlight-color: transparent;
         }
-        .svc-card.active { border: 2px solid var(--gold); background: #fffbeb; }
-        .info { text-align: left; pointer-events: none; }
-        .info b { display: block; font-size: 16px; color: #1e293b; }
-        .price { font-weight: bold; color: var(--dark); pointer-events: none; }
+        .svc-item.active { border: 2px solid var(--gold); background: #fffbeb; }
+        .details { text-align: left; pointer-events: none; }
+        .details b { display: block; font-size: 16px; color: #1e293b; }
+        .details span { font-size: 12px; color: #64748b; }
+        .amt { font-weight: bold; color: var(--dark); pointer-events: none; }
 
-        /* Bottom Bar */
-        .bottom-bar {
+        /* Footer Bar */
+        .footer-cart {
             position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: white; border-top: 2px solid var(--gold);
+            background: white; border-top: 3px solid var(--gold);
             padding: 15px; display: none; box-sizing: border-box; z-index: 1000;
         }
-        .bar-flex { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto; }
-        .btn-wa { background: #25d366; color: white; padding: 12px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+        .cart-flex { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto; }
+        .btn-order { background: #25d366; color: white; padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
 
-        /* Admin Styles */
+        /* Admin UI */
         #adminPanel { display: none; background: white; margin: 15px; padding: 20px; border-radius: 12px; border: 2px solid var(--dark); }
         .inp { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        .history-table th, .history-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .history-table th { background: #f4f4f4; }
+        .history-list { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
+        .history-list th, .history-list td { border: 1px solid #eee; padding: 8px; text-align: left; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <img src="1773452778552.png" class="logo" alt="Logo" onerror="this.src='https://via.placeholder.com/40'">
-        <div class="logo-txt"><b>DNHQ</b><br><small>SERVICES</small></div>
+    <div class="logo-box">
+        <div class="logo-here">LOGO HERE</div>
+        <img src="1773452778552.png" class="actual-logo" alt="DNHQ Logo" onerror="this.style.display='none'">
+        <div style="color:white; font-size:20px; font-weight:bold; margin-top:5px;">DNHQ <span style="color:var(--gold)">SERVICES</span></div>
+    </div>
+
+    <div class="hero">
+        <h3 style="margin:0;">KARACHI TECHNICAL EXPERTS</h3>
+        <p style="margin:5px 0 0; font-size:13px; opacity:0.8;">Select multiple services for estimate</p>
     </div>
 
     <div class="container">
-        <div class="section-title">AC SERVICES</div>
-        <div class="svc-card" onclick="selectSvc(this, 'Master Service', 3500)">
-            <div class="info"><b>Master Service</b><small>Chemical Deep Wash</small></div>
-            <div class="price">Rs 3500</div>
+        <div class="cat-title">AC SERVICES</div>
+        <div class="svc-item" onclick="toggle(this, 'AC Master Service', 3500)">
+            <div class="details"><b>Master Service</b><span>Full Chemical Deep Clean</span></div>
+            <div class="amt">Rs 3500</div>
         </div>
-        <div class="svc-card" onclick="selectSvc(this, 'Normal Service', 2500)">
-            <div class="info"><b>Normal Service</b><small>Filter & Coil Cleaning</small></div>
-            <div class="price">Rs 2500</div>
+        <div class="svc-item" onclick="toggle(this, 'AC Normal Service', 2500)">
+            <div class="details"><b>Normal Service</b><span>Filter & Coil Wash</span></div>
+            <div class="amt">Rs 2500</div>
         </div>
-        <div class="svc-card" onclick="selectSvc(this, 'Installation', 3000)">
-            <div class="info"><b>Installation</b><small>Split Unit Setup</small></div>
-            <div class="price">Rs 3000</div>
+        <div class="svc-item" onclick="toggle(this, 'AC Installation', 3000)">
+            <div class="details"><b>AC Installation</b><span>New Split Unit Setup</span></div>
+            <div class="amt">Rs 3000</div>
         </div>
-        <div class="svc-card" onclick="selectSvc(this, 'Gas Refill', 6500)">
-            <div class="info"><b>Gas Refill</b><small>Full Charge (R22/R410)</small></div>
-            <div class="price">Rs 6500</div>
+        <div class="svc-item" onclick="toggle(this, 'AC Gas Refill', 6500)">
+            <div class="details"><b>Gas Refill</b><span>Full Charge (R22/R410)</span></div>
+            <div class="amt">Rs 6500</div>
+        </div>
+        <div class="svc-item" onclick="toggle(this, 'Copper Pipe', 1500)">
+            <div class="details"><b>Copper Pipe</b><span>Per Foot with Insulation</span></div>
+            <div class="amt">Rs 1500</div>
         </div>
 
-        <div class="section-title">ELECTRICIAN</div>
-        <div class="svc-card" onclick="selectSvc(this, 'Light Point', 500)">
-            <div class="info"><b>Light Point</b><small>Fitting & Repair</small></div>
-            <div class="price">Rs 500</div>
+        <div class="cat-title">ELECTRICIAN</div>
+        <div class="svc-item" onclick="toggle(this, 'Light Point', 500)">
+            <div class="details"><b>Light Point</b><span>Repair or New Fitting</span></div>
+            <div class="amt">Rs 500</div>
         </div>
-        <div class="svc-card" onclick="selectSvc(this, 'New Wiring', 1500)">
-            <div class="info"><b>New Wiring</b><small>Per Point Complete</small></div>
-            <div class="price">Rs 1500</div>
+        <div class="svc-item" onclick="toggle(this, 'New Wiring', 1500)">
+            <div class="details"><b>New Wiring</b><span>Complete Point Wiring</span></div>
+            <div class="amt">Rs 1500</div>
         </div>
-        <div class="svc-card" onclick="selectSvc(this, 'UPS Install', 3000)">
-            <div class="info"><b>UPS Installation</b><small>Inverter Connection</small></div>
-            <div class="price">Rs 3000</div>
+        <div class="svc-item" onclick="toggle(this, 'UPS Installation', 3000)">
+            <div class="details"><b>UPS Install</b><span>Battery & Inverter Setup</span></div>
+            <div class="amt">Rs 3000</div>
         </div>
-        <div class="svc-card" onclick="selectSvc(this, 'Short Circuit', 1000)">
-            <div class="info"><b>Fault Repair</b><small>Emergency Tracing</small></div>
-            <div class="price">Rs 1000</div>
+        <div class="svc-item" onclick="toggle(this, 'DB Box Fitting', 2500)">
+            <div class="details"><b>DB Box</b><span>Circuit Breaker Box</span></div>
+            <div class="amt">Rs 2500</div>
+        </div>
+        <div class="svc-item" onclick="toggle(this, 'Short Circuit', 1000)">
+            <div class="details"><b>Fault Repair</b><span>Emergency Troubleshooting</span></div>
+            <div class="amt">Rs 1000</div>
         </div>
     </div>
 
-    <div class="bottom-bar" id="bar">
-        <div class="bar-flex">
-            <div id="summary">0 Selected<br><b>Total: Rs 0</b></div>
-            <button class="btn-wa" onclick="bookWA()">BOOK NOW</button>
+    <div class="footer-cart" id="cartBar">
+        <div class="cart-flex">
+            <div id="cartStatus">0 Services<br><b>Total: Rs 0</b></div>
+            <button class="btn-order" onclick="confirmOrder()">BOOK NOW</button>
         </div>
     </div>
 
     <div id="adminPanel">
-        <h3>ORDER & BILL HISTORY</h3>
-        <p style="font-size:12px; color:red;">Data is saved locally in this browser.</p>
-        
-        <div style="overflow-x:auto;">
-            <table class="history-table" id="historyTable">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Services</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody id="historyBody"></tbody>
-            </table>
-        </div>
-        <button onclick="clearHistory()" style="margin-top:10px; color:red; background:none; border:none; cursor:pointer;">Clear All History</button>
-        <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; padding:10px; background:var(--dark); color:white; border:none; border-radius:5px;">Logout</button>
+        <h3 style="border-bottom: 2px solid var(--dark)">ADMIN RECORD</h3>
+        <input type="text" id="custName" class="inp" placeholder="Customer Name">
+        <table class="history-list">
+            <thead>
+                <tr><th>Date</th><th>Customer</th><th>Work</th><th>Bill</th></tr>
+            </thead>
+            <tbody id="logBody"></tbody>
+        </table>
+        <button onclick="clearLogs()" style="color:red; background:none; border:none; margin-top:10px; cursor:pointer;">Clear All History</button>
+        <button onclick="location.reload()" style="width:100%; margin-top:20px; padding:10px; background:var(--dark); color:white; border:none; border-radius:5px;">Logout</button>
     </div>
 
-    <footer style="text-align:center; padding:30px; background:#1e293b; color:white; margin-top:20px;">
-        <p>DNHQ SERVICES Karachi</p>
-        <small onclick="openAdmin()" style="color:#64748b; cursor:pointer; text-decoration:underline;">Admin Access</small>
+    <footer style="text-align:center; padding:40px; background:#1e293b; color:white; margin-top:20px;">
+        <p><b>DNHQ SERVICES</b><br>Karachi, Pakistan</p>
+        <small onclick="accessAdmin()" style="color:#64748b; cursor:pointer; text-decoration:underline;">Admin Dashboard</small>
     </footer>
 
     <script>
-        let currentSelection = [];
+        let selected = [];
 
-        function selectSvc(el, name, price) {
-            const idx = currentSelection.findIndex(s => s.name === name);
-            if (idx > -1) {
-                currentSelection.splice(idx, 1);
+        function toggle(el, name, price) {
+            const i = selected.findIndex(s => s.name === name);
+            if (i > -1) {
+                selected.splice(i, 1);
                 el.classList.remove('active');
             } else {
-                currentSelection.push({name, price});
+                selected.push({name, price});
                 el.classList.add('active');
             }
-            updateBar();
+            refreshBar();
         }
 
-        function updateBar() {
-            const bar = document.getElementById('bar');
-            const total = currentSelection.reduce((s, i) => s + i.price, 0);
-            if (currentSelection.length > 0) {
+        function refreshBar() {
+            const bar = document.getElementById('cartBar');
+            const total = selected.reduce((a, b) => a + b.price, 0);
+            if (selected.length > 0) {
                 bar.style.display = 'block';
-                document.getElementById('summary').innerHTML = currentSelection.length + " Service(s)<br><b>Total: Rs " + total + "</b>";
+                document.getElementById('cartStatus').innerHTML = selected.length + " Service(s)<br><b>Total: Rs " + total + "</b>";
             } else {
                 bar.style.display = 'none';
             }
         }
 
-        function bookWA() {
-            let total = 0;
-            let list = "";
-            currentSelection.forEach(s => {
-                list += `- ${s.name} (Rs ${s.price})\n`;
-                total += s.price;
-            });
-
-            // Save to LocalStorage (History)
-            const order = {
+        function confirmOrder() {
+            const customer = prompt("Please enter Customer Name:") || "Unknown";
+            const total = selected.reduce((a, b) => a + b.price, 0);
+            const work = selected.map(s => s.name).join(", ");
+            
+            // Save to Local Browser Memory
+            const record = {
                 date: new Date().toLocaleDateString(),
-                services: currentSelection.map(s => s.name).join(", "),
-                total: total
+                name: customer,
+                work: work,
+                bill: total
             };
-            let history = JSON.parse(localStorage.getItem('dnhq_orders') || '[]');
-            history.push(order);
-            localStorage.setItem('dnhq_orders', JSON.stringify(history));
+            
+            let data = JSON.parse(localStorage.getItem('dnhq_records') || '[]');
+            data.push(record);
+            localStorage.setItem('dnhq_records', JSON.stringify(data));
 
-            const msg = `*DNHQ NEW ORDER*\n\n${list}\n*GRAND TOTAL: Rs ${total}*`;
+            // Send to WhatsApp
+            const msg = `*DNHQ NEW ORDER*\nCustomer: ${customer}\nWork: ${work}\n*TOTAL: Rs ${total}*`;
             window.open("https://wa.me/923152458657?text=" + encodeURIComponent(msg));
         }
 
-        function openAdmin() {
-            if(prompt("PIN:") === "dnhq123") {
+        function accessAdmin() {
+            if(prompt("Admin PIN:") === "dnhq123") {
                 document.getElementById('adminPanel').style.display = 'block';
-                loadHistory();
+                showLogs();
                 document.getElementById('adminPanel').scrollIntoView();
             }
         }
 
-        function loadHistory() {
-            const history = JSON.parse(localStorage.getItem('dnhq_orders') || '[]');
-            const body = document.getElementById('historyBody');
-            body.innerHTML = history.map(h => `
+        function showLogs() {
+            const data = JSON.parse(localStorage.getItem('dnhq_records') || '[]');
+            document.getElementById('logBody').innerHTML = data.map(d => `
                 <tr>
-                    <td>${h.date}</td>
-                    <td>${h.services}</td>
-                    <td>Rs ${h.total}</td>
+                    <td>${d.date}</td>
+                    <td>${d.name}</td>
+                    <td>${d.work}</td>
+                    <td>Rs ${d.bill}</td>
                 </tr>
             `).join('');
         }
 
-        function clearHistory() {
-            if(confirm("Saara record mita dein?")) {
-                localStorage.removeItem('dnhq_orders');
-                loadHistory();
+        function clearLogs() {
+            if(confirm("Mita den sara record?")) {
+                localStorage.removeItem('dnhq_records');
+                showLogs();
             }
         }
     </script>
