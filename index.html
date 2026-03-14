@@ -9,39 +9,35 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f7f6; text-align: center; color: #333; }
         
-        /* Fixed Professional Header */
         .header { background: #0f172a; padding: 15px 5%; border-bottom: 3px solid #3c5e8b; display: flex; align-items: center; justify-content: flex-start; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
-        /* IMPORTANT: Replace 'logo.png' with your actual file name */
-        .logo-img { height: 50px; object-fit: contain; }
+        .logo-img { height: 55px; object-fit: contain; }
         .logo-text-box { text-align: left; color: white; }
-        .logo-text-box b { font-size: 20px; color: #fbbf24; display: block; line-height: 1; }
+        .logo-text-box b { font-size: 22px; color: #fbbf24; display: block; line-height: 1; }
         .logo-text-box small { font-size: 10px; letter-spacing: 1px; }
 
         .hero { background: #1e293b; color: white; padding: 40px 10px; border-bottom: 4px solid #fbbf24; }
         .hero h1 { margin: 0; font-size: 26px; color: #fbbf24; text-transform: uppercase; }
 
-        /* Service Cards */
         .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 25px; gap: 20px; }
-        .card { background: white; width: 320px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #fbbf24; position: relative; }
-        .card h2 { margin: 0 0 10px; font-size: 22px; color: #0f172a; }
-        .service-list { font-size: 13px; color: #666; margin-bottom: 15px; }
-        .book-btn { display: block; width: 100%; padding: 12px; background: #fbbf24; color: black; text-decoration: none; font-weight: bold; border-radius: 6px; border: 1px solid #000; box-sizing: border-box; }
+        .card { background: white; width: 340px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #fbbf24; }
+        .card h2 { margin: 0 0 10px; font-size: 22px; color: #0f172a; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        
+        .service-item { display: flex; justify-content: space-between; font-size: 14px; padding: 8px 0; border-bottom: 1px dashed #ddd; }
+        .service-item b { color: #d97706; }
 
-        /* Admin Dashboard - Forced Visibility Logic */
-        #adminSection { display: none !important; background: white; padding: 20px; margin: 20px auto; max-width: 800px; border: 2px solid #16a34a; border-radius: 10px; text-align: left; }
+        .book-btn { display: block; width: 100%; padding: 12px; background: #fbbf24; color: black; text-decoration: none; font-weight: bold; border-radius: 6px; border: 1px solid #000; margin-top: 15px; }
+
+        #adminSection { display: none !important; background: white; padding: 20px; margin: 20px auto; max-width: 900px; border: 2px solid #16a34a; border-radius: 10px; text-align: left; }
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
         .input-f { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
 
-        /* Bill Sheet */
         #billBox { display: none; margin-top: 20px; background: #fff; border: 2px solid #000; padding: 20px; text-align: left; }
         .bill-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .bill-table th, .bill-table td { border: 1px solid #000; padding: 8px; font-size: 13px; }
 
-        /* Footer & Hidden Admin Access */
         .footer { background: #0f172a; color: white; padding: 30px 20px; margin-top: 50px; }
         .admin-trigger { color: #1e293b; font-size: 12px; cursor: pointer; margin-top: 15px; display: inline-block; }
-        .admin-trigger:hover { color: #fbbf24; }
 
         @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } }
     </style>
@@ -50,7 +46,7 @@
 
     <header class="header">
         <div class="logo-container">
-            <img src="logo.png" alt="DNHQ Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/50x50?text=DNHQ'">
+            <img src="1773452778552.png" alt="DNHQ Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/55x55?text=DNHQ'">
             <div class="logo-text-box">
                 <b>DNHQ</b>
                 <small>SERVICES</small>
@@ -66,46 +62,65 @@
     <div class="container">
         <div class="card" style="border-top-color: #3b82f6;">
             <h2 style="color: #3b82f6;">AC SERVICES</h2>
-            <p class="service-list">Master Service | Installation | Gas Refill</p>
-            <a href="https://wa.me/923152458657" class="book-btn">Book Now via WhatsApp</a>
+            <div class="service-item"><span>Master Service</span> <b>Rs 3500</b></div>
+            <div class="service-item"><span>Normal Service</span> <b>Rs 2500</b></div>
+            <div class="service-item"><span>Installation</span> <b>Rs 3000</b></div>
+            <div class="service-item"><span>Gas Refill (Full)</span> <b>Rs 6500</b></div>
+            <div class="service-item"><span>Copper Pipe (per ft)</span> <b>Rs 1500</b></div>
+            <div class="service-item"><span>Dismantle</span> <b>Rs 1500</b></div>
+            <a href="https://wa.me/923152458657" class="book-btn">Book AC Service</a>
         </div>
 
         <div class="card">
-            <h2>ELECTRICIAN</h2>
-            <p class="service-list">New Wiring | DB Box | Light Points</p>
-            <a href="https://wa.me/923152458657" class="book-btn">Book Now via WhatsApp</a>
+            <h2 style="color: #fbbf24;">ELECTRICIAN</h2>
+            <div class="service-item"><span>Light Point</span> <b>Rs 500</b></div>
+            <div class="service-item"><span>New Wiring (Point)</span> <b>Rs 1500</b></div>
+            <div class="service-item"><span>DB Box Fitting</span> <b>Rs 2500</b></div>
+            <div class="service-item"><span>Breaker Replacement</span> <b>Rs 200</b></div>
+            <div class="service-item"><span>UPS Installation</span> <b>Rs 3000</b></div>
+            <div class="service-item"><span>Short Circuit Repair</span> <b>Rs 1000</b></div>
+            <a href="https://wa.me/923152458657" class="book-btn">Book Electrician</a>
         </div>
     </div>
 
     <div id="adminSection">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #16a34a; padding-bottom:10px;">
             <h3 style="margin:0;">ADMIN BILLING PANEL</h3>
-            <button onclick="location.reload()" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px;">Logout</button>
+            <button onclick="location.reload()" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Logout</button>
         </div>
+        
         <input type="text" id="custName" class="input-f" placeholder="Customer Name">
+        
         <div class="admin-grid">
-            <div style="background:#f9f9f9; padding:10px; border-radius:5px;">
-                <h4 style="margin:0 0 10px; color:#16a34a;">Electrical</h4>
+            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border:1px solid #ddd;">
+                <h4 style="margin:0 0 10px; color:#16a34a;">Electrical Work</h4>
                 Light Pts: <input type="number" id="q_lp" class="input-f" value="0">
                 Wiring: <input type="number" id="q_wr" class="input-f" value="0">
+                DB Box: <input type="number" id="q_db" class="input-f" value="0">
+                Breaker: <input type="number" id="q_br" class="input-f" value="0">
+                UPS Inst: <input type="number" id="q_ups" class="input-f" value="0">
             </div>
-            <div style="background:#f9f9f9; padding:10px; border-radius:5px;">
+            <div style="background:#f9f9f9; padding:15px; border-radius:8px; border:1px solid #ddd;">
                 <h4 style="margin:0 0 10px; color:#3b82f6;">AC Work</h4>
                 Master: <input type="number" id="q_am" class="input-f" value="0">
+                Normal: <input type="number" id="q_an" class="input-f" value="0">
                 Install: <input type="number" id="q_ai" class="input-f" value="0">
+                Gas (Full): <input type="number" id="q_ag" class="input-f" value="0">
+                Pipe (ft): <input type="number" id="q_ap" class="input-f" value="0">
             </div>
         </div>
-        <button onclick="generateBill()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer;">GENERATE RECEIPT</button>
+        
+        <button onclick="generateBill()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer; font-size:16px;">GENERATE RECEIPT</button>
 
         <div id="billBox">
             <div id="billPrint"></div>
-            <button onclick="downloadPDF()" style="width:100%; padding:10px; background:#0f172a; color:white; border:none; margin-top:10px; border-radius:5px;">Download PDF</button>
+            <button onclick="downloadPDF()" style="width:100%; padding:12px; background:#0f172a; color:white; border:none; margin-top:10px; border-radius:5px; cursor:pointer; font-weight:bold;">Download PDF Receipt</button>
         </div>
     </div>
 
     <footer class="footer">
-        <p><b>DNHQ SERVICES</b> | Karachi</p>
-        <p>Contact: +92 315 2458657</p>
+        <p><b>DNHQ SERVICES</b> | Korangi, Karachi</p>
+        <p>WhatsApp: +92 315 2458657</p>
         <span class="admin-trigger" onclick="adminLogin()"><i class="fas fa-lock"></i> Staff Login</span>
     </footer>
 
@@ -115,46 +130,67 @@
             if(pin === "dnhq123") {
                 document.getElementById('adminSection').style.setProperty('display', 'block', 'important');
                 document.getElementById('adminSection').scrollIntoView({behavior: 'smooth'});
-            } else {
-                alert("Access Denied!");
-            }
+            } else { alert("Access Denied!"); }
         }
 
         function generateBill() {
-            var name = document.getElementById('custName').value || "Customer";
-            var lp = parseInt(document.getElementById('q_lp').value) || 0;
-            var wr = parseInt(document.getElementById('q_wr').value) || 0;
-            var am = parseInt(document.getElementById('q_am').value) || 0;
-            var ai = parseInt(document.getElementById('q_ai').value) || 0;
+            var name = document.getElementById('custName').value || "Valued Customer";
+            
+            var items = [
+                { n: "Light Point", q: parseInt(document.getElementById('q_lp').value) || 0, r: 500 },
+                { n: "Wiring Point", q: parseInt(document.getElementById('q_wr').value) || 0, r: 1500 },
+                { n: "DB Box Fitting", q: parseInt(document.getElementById('q_db').value) || 0, r: 2500 },
+                { n: "Breaker Change", q: parseInt(document.getElementById('q_br').value) || 0, r: 200 },
+                { n: "UPS Installation", q: parseInt(document.getElementById('q_ups').value) || 0, r: 3000 },
+                { n: "AC Master Service", q: parseInt(document.getElementById('q_am').value) || 0, r: 3500 },
+                { n: "AC Normal Service", q: parseInt(document.getElementById('q_an').value) || 0, r: 2500 },
+                { n: "AC Installation", q: parseInt(document.getElementById('q_ai').value) || 0, r: 3000 },
+                { n: "AC Gas (Full)", q: parseInt(document.getElementById('q_ag').value) || 0, r: 6500 },
+                { n: "Copper Pipe (ft)", q: parseInt(document.getElementById('q_ap').value) || 0, r: 1500 }
+            ];
 
-            var total = (lp*500) + (wr*1500) + (am*3500) + (ai*3000);
-            if(total === 0) { alert("Enter work details!"); return; }
+            var rows = "";
+            var grandTotal = 0;
+
+            items.forEach(function(item) {
+                if(item.q > 0) {
+                    var lineTotal = item.q * item.r;
+                    rows += <tr><td>${item.n}</td><td>${item.q}</td><td>${item.r}</td><td>${lineTotal}</td></tr>;
+                    grandTotal += lineTotal;
+                }
+            });
+
+            if(grandTotal === 0) { alert("Pehle kaam ki quantity likhein!"); return; }
 
             window.client = name;
-            var rows = "";
-            if(lp>0) rows += <tr><td>Light Points</td><td>${lp}</td><td>500</td><td>${lp*500}</td></tr>;
-            if(wr>0) rows += <tr><td>Wiring</td><td>${wr}</td><td>1500</td><td>${wr*1500}</td></tr>;
-            if(am>0) rows += <tr><td>AC Master</td><td>${am}</td><td>3500</td><td>${am*3500}</td></tr>;
-            if(ai>0) rows += <tr><td>AC Install</td><td>${ai}</td><td>3000</td><td>${ai*3000}</td></tr>;
-
             document.getElementById('billBox').style.display = 'block';
             document.getElementById('billPrint').innerHTML = `
-                <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:10px;">
+                <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:15px;">
                     <h2 style="margin:0;">DNHQ SERVICES</h2>
-                    <p style="margin:0; font-size:12px;">Professional Karachi Technical Team | 0315-2458657</p>
+                    <p style="margin:0; font-size:12px;">Professional Technical Team Karachi | 0315-2458657</p>
                 </div>
-                <p><b>Customer:</b> ${name} <span style="float:right;"><b>Date:</b> ${new Date().toLocaleDateString()}</span></p>
+                <p style="font-size:14px;"><b>Customer:</b> ${name} <span style="float:right;"><b>Date:</b> ${new Date().toLocaleDateString()}</span></p>
                 <table class="bill-table">
-                    <tr><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th></tr>
+                    <tr style="background:#eee;"><th>Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr>
                     ${rows}
-                    <tr style="background:#eee; font-weight:bold;"><td colspan="3" style="text-align:right;">Grand Total:</td><td>Rs ${total}</td></tr>
+                    <tr style="background:#f4f4f4; font-weight:bold;">
+                        <td colspan="3" style="text-align:right;">Grand Total:</td>
+                        <td>Rs ${grandTotal}</td>
+                    </tr>
                 </table>
+                <p style="text-align:center; font-size:10px; margin-top:20px; color:#555;">Expert AC & Electrical Solutions.<br>Thank you for choosing DNHQ Services!</p>
             `;
+            document.getElementById('billBox').scrollIntoView({behavior: 'smooth'});
         }
 
         function downloadPDF() {
             const element = document.getElementById('billPrint');
-            html2pdf().from(element).save('DNHQ_Bill_' + window.client + '.pdf');
+            html2pdf().from(element).set({
+                margin: 10,
+                filename: 'DNHQ_Bill_' + window.client + '.pdf',
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save();
         }
     </script>
 </body>
