@@ -8,101 +8,115 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --dark: #0f172a; --gold: #fbbf24; --blue: #3b82f6; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f1f5f9; padding-bottom: 100px; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f1f5f9; padding-bottom: 120px; }
         
-        .header { background: var(--dark); padding: 15px; border-bottom: 3px solid #334155; display: flex; align-items: center; gap: 10px; }
+        /* Header */
+        .header { background: var(--dark); padding: 15px; border-bottom: 3px solid #334155; display: flex; align-items: center; gap: 10px; position: relative; z-index: 100; }
         .logo-img { height: 45px; border-radius: 5px; }
         .logo-text { text-align: left; color: white; line-height: 1; }
         .logo-text b { color: var(--gold); font-size: 20px; }
 
         .hero { background: #1e293b; color: white; padding: 30px 15px; border-bottom: 4px solid var(--gold); text-align: center; }
         
-        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 15px; }
-        .card { background: white; width: 100%; max-width: 350px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .card-header { background: #eee; padding: 10px; font-weight: bold; border-bottom: 2px solid var(--gold); }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 15px; position: relative; z-index: 10; }
+        .card { background: white; width: 100%; max-width: 360px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid var(--gold); }
+        .card-header { background: #f8fafc; padding: 12px; font-weight: bold; border-bottom: 1px solid #eee; font-size: 18px; }
 
-        /* Multiple Selection Style */
+        /* Service Item Clickable */
         .item { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer;
-            transition: 0.2s; user-select: none;
+            padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer;
+            transition: 0.2s; position: relative; z-index: 20; background: #fff;
         }
-        .item:last-child { border: none; }
-        .item.selected { background: #fffbeb; border-left: 5px solid var(--gold); }
-        .item-info { text-align: left; }
-        .item-info span { display: block; font-size: 14px; font-weight: 600; }
-        .item-info small { color: #666; font-size: 12px; }
-        .check-icon { color: #ccc; font-size: 18px; }
-        .selected .check-icon { color: var(--gold); }
+        .item:hover { background: #f0f9ff; }
+        .item.selected { background: #fffbeb; border-left: 6px solid var(--gold); }
+        .item-info { text-align: left; pointer-events: none; }
+        .item-info span { display: block; font-size: 15px; font-weight: 600; color: #1e293b; }
+        .item-info small { color: #64748b; font-size: 12px; }
+        .price-tag { font-weight: bold; color: #1e293b; pointer-events: none; }
+        .check-icon { color: #cbd5e1; font-size: 20px; transition: 0.3s; }
+        .selected .check-icon { color: var(--gold); transform: scale(1.2); }
 
-        /* Floating Cart / Booking Bar */
+        /* Bottom Floating Bar */
         .booking-bar { 
             position: fixed; bottom: 0; left: 0; width: 100%; background: white; 
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.2); padding: 15px; 
-            display: none; border-top: 2px solid var(--gold); z-index: 1000;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.15); padding: 15px; 
+            display: none; border-top: 3px solid var(--gold); z-index: 999;
         }
-        .bar-flex { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto; }
-        .total-text b { font-size: 20px; color: #16a34a; }
-        .wa-btn { background: #25d366; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; }
+        .bar-flex { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; }
+        .total-text b { font-size: 22px; color: #16a34a; }
+        .wa-btn { background: #25d366; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; border: none; cursor: pointer; font-size: 16px; }
 
         /* Admin UI */
-        #adminPanel { display: none; background: white; margin: 20px auto; max-width: 800px; padding: 20px; border-radius: 10px; border: 2px solid #16a34a; text-align: left; }
-        .admin-input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        #adminPanel { display: none; background: white; margin: 20px auto; max-width: 800px; padding: 25px; border-radius: 12px; border: 2px solid #16a34a; text-align: left; }
+        .admin-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
 
         footer { background: var(--dark); color: white; padding: 40px 20px; text-align: center; }
-        .staff-btn { display: inline-block; margin-top: 20px; color: #444; font-size: 11px; cursor: pointer; text-decoration: underline; }
+        .staff-link { display: inline-block; margin-top: 25px; color: #64748b; font-size: 13px; cursor: pointer; text-decoration: none; padding: 10px; border: 1px solid #334155; border-radius: 5px; }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <img src="1773452778552.png" class="logo-img" alt="Logo" onerror="this.src='https://via.placeholder.com/50'">
+        <img src="1773452778552.png" class="logo-img" alt="DNHQ Logo" onerror="this.src='https://via.placeholder.com/50'">
         <div class="logo-text"><b>DNHQ</b><br><small>SERVICES</small></div>
     </header>
 
     <div class="hero">
         <h2 style="margin:0; color:var(--gold);">KARACHI TECHNICAL EXPERTS</h2>
-        <p style="margin:5px 0 0; opacity:0.8;">Select services to see instant estimate</p>
+        <p style="margin:5px 0 0; opacity:0.8;">Select multiple services for instant estimate</p>
     </div>
 
     <div class="container">
         <div class="card">
             <div class="card-header" style="color:var(--blue);">AC SERVICES</div>
             <div class="item" onclick="toggleItem(this, 'AC Master Service', 3500)">
-                <div class="item-info"><span>Master Service</span><small>Deep Chemical Wash</small></div>
-                <b>Rs 3500</b> <i class="fas fa-check-circle check-icon"></i>
+                <div class="item-info"><span>Master Service</span><small>Full Chemical Wash</small></div>
+                <div class="price-tag">Rs 3500</div> <i class="fas fa-check-circle check-icon"></i>
             </div>
             <div class="item" onclick="toggleItem(this, 'AC Normal Service', 2500)">
                 <div class="item-info"><span>Normal Service</span><small>Filter & Coil Cleaning</small></div>
-                <b>Rs 2500</b> <i class="fas fa-check-circle check-icon"></i>
+                <div class="price-tag">Rs 2500</div> <i class="fas fa-check-circle check-icon"></i>
             </div>
             <div class="item" onclick="toggleItem(this, 'AC Installation', 3000)">
-                <div class="item-info"><span>Installation</span><small>Proper Vacuuming</small></div>
-                <b>Rs 3000</b> <i class="fas fa-check-circle check-icon"></i>
+                <div class="item-info"><span>Installation</span><small>Split AC Unit</small></div>
+                <div class="price-tag">Rs 3000</div> <i class="fas fa-check-circle check-icon"></i>
             </div>
             <div class="item" onclick="toggleItem(this, 'AC Gas Refill', 6500)">
                 <div class="item-info"><span>Gas Refill</span><small>Full R22/R410 Load</small></div>
-                <b>Rs 6500</b> <i class="fas fa-check-circle check-icon"></i>
+                <div class="price-tag">Rs 6500</div> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'Copper Pipe Fitting', 1500)">
+                <div class="item-info"><span>Copper Pipe</span><small>Per Foot (Gauge 22)</small></div>
+                <div class="price-tag">Rs 1500</div> <i class="fas fa-check-circle check-icon"></i>
             </div>
         </div>
 
         <div class="card">
             <div class="card-header" style="color:#d97706;">ELECTRICIAN</div>
             <div class="item" onclick="toggleItem(this, 'Light Point Fitting', 500)">
-                <div class="item-info"><span>Light Point</span><small>Per Point Rate</small></div>
-                <b>Rs 500</b> <i class="fas fa-check-circle check-icon"></i>
+                <div class="item-info"><span>Light Point</span><small>New/Old Point Repair</small></div>
+                <div class="price-tag">Rs 500</div> <i class="fas fa-check-circle check-icon"></i>
             </div>
-            <div class="item" onclick="toggleItem(this, 'New Wiring', 1500)">
-                <div class="item-info"><span>New Wiring</span><small>Complete Setup</small></div>
-                <b>Rs 1500</b> <i class="fas fa-check-circle check-icon"></i>
+            <div class="item" onclick="toggleItem(this, 'New Wiring Setup', 1500)">
+                <div class="item-info"><span>New Wiring</span><small>Per Point Complete</small></div>
+                <div class="price-tag">Rs 1500</div> <i class="fas fa-check-circle check-icon"></i>
             </div>
-            <div class="item" onclick="toggleItem(this, 'UPS Installation', 3000)">
-                <div class="item-info"><span>UPS Install</span><small>Inverter/UPS Setup</small></div>
-                <b>Rs 3000</b> <i class="fas fa-check-circle check-icon"></i>
+            <div class="item" onclick="toggleItem(this, 'UPS/Inverter Install', 3000)">
+                <div class="item-info"><span>UPS Install</span><small>Proper Connection</small></div>
+                <div class="price-tag">Rs 3000</div> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'DB Box Fitting', 2500)">
+                <div class="item-info"><span>DB Box Fitting</span><small>Circuit Distribution</small></div>
+                <div class="price-tag">Rs 2500</div> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'Breaker Replacement', 200)">
+                <div class="item-info"><span>Breaker Change</span><small>Single Pole Breaker</small></div>
+                <div class="price-tag">Rs 200</div> <i class="fas fa-check-circle check-icon"></i>
             </div>
             <div class="item" onclick="toggleItem(this, 'Short Circuit Repair', 1000)">
-                <div class="item-info"><span>Fault Repair</span><small>Emergency Service</small></div>
-                <b>Rs 1000</b> <i class="fas fa-check-circle check-icon"></i>
+                <div class="item-info"><span>Fault Repair</span><small>Emergency Trace</small></div>
+                <div class="price-tag">Rs 1000</div> <i class="fas fa-check-circle check-icon"></i>
             </div>
         </div>
     </div>
@@ -110,7 +124,7 @@
     <div class="booking-bar" id="bookingBar">
         <div class="bar-flex">
             <div class="total-text">
-                <small id="itemsCount">0 Items Selected</small><br>
+                <small id="itemsCount">0 Services Selected</small><br>
                 <b>Total: Rs <span id="totalPrice">0</span></b>
             </div>
             <button class="wa-btn" onclick="sendWhatsApp()">
@@ -120,18 +134,18 @@
     </div>
 
     <div id="adminPanel">
-        <h3>ADMIN BILL GENERATOR</h3>
+        <h3 style="border-bottom:2px solid #16a34a; padding-bottom:10px;">DNHQ BILL GENERATOR</h3>
         <input type="text" id="billCust" class="admin-input" placeholder="Customer Name">
-        <textarea id="billDetails" class="admin-input" placeholder="Job Details..." rows="3"></textarea>
-        <input type="number" id="billTotal" class="admin-input" placeholder="Total Amount">
-        <button onclick="downloadPDF()" style="width:100%; padding:15px; background:var(--dark); color:white; border:none; border-radius:5px; font-weight:bold;">DOWNLOAD PDF RECEIPT</button>
-        <button onclick="location.reload()" style="width:100%; margin-top:10px; background:none; border:none; color:red;">Logout</button>
+        <textarea id="billDetails" class="admin-input" placeholder="Job Description (e.g. 2 AC Service, 5 Light Points)" rows="4"></textarea>
+        <input type="number" id="billTotal" class="admin-input" placeholder="Final Amount (Rs)">
+        <button onclick="downloadPDF()" style="width:100%; padding:15px; background:var(--dark); color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">DOWNLOAD PDF RECEIPT</button>
+        <button onclick="location.reload()" style="width:100%; margin-top:15px; background:none; border:none; color:red; cursor:pointer;">Logout</button>
     </div>
 
     <footer>
         <p><b>DNHQ SERVICES</b><br>Karachi, Pakistan</p>
-        <p style="font-size:12px; opacity:0.6;">Contact: 0315-2458657</p>
-        <div class="staff-btn" onclick="adminLogin()">Staff Access</div>
+        <p style="font-size:12px; opacity:0.6;">Professional Solutions | Reliable Partner</p>
+        <div class="staff-link" onclick="adminLogin()">Staff Access</div>
     </footer>
 
     <script>
@@ -139,24 +153,19 @@
 
         function toggleItem(el, name, price) {
             const index = selectedItems.findIndex(item => item.name === name);
-            
             if (index > -1) {
-                // Remove if already selected
                 selectedItems.splice(index, 1);
                 el.classList.remove('selected');
             } else {
-                // Add if new
                 selectedItems.push({ name, price });
                 el.classList.add('selected');
             }
-            
-            updateBar();
+            updateUI();
         }
 
-        function updateBar() {
+        function updateUI() {
             const bar = document.getElementById('bookingBar');
             const total = selectedItems.reduce((sum, item) => sum + item.price, 0);
-            
             if (selectedItems.length > 0) {
                 bar.style.display = 'block';
                 document.getElementById('itemsCount').innerText = selectedItems.length + " Service(s) Selected";
@@ -173,38 +182,47 @@
                 list += ${i+1}. ${item.name} (Rs ${item.price})%0A;
                 total += item.price;
             });
-
-            const msg = *DNHQ SERVICES BOOKING*%0A%0A*Selected Services:*%0A${list}%0A*Estimated Total: Rs ${total}*%0A%0APlease confirm my booking.;
+            const msg = *DNHQ SERVICES BOOKING*%0A%0A*Selected Services:*%0A${list}%0A*Total Estimate: Rs ${total}*%0A%0A_Please contact me for confirmation._;
             window.open(https://wa.me/923152458657?text=${msg});
         }
 
         function adminLogin() {
-            const pass = prompt("Enter PIN:");
+            const pass = prompt("Enter Admin PIN:");
             if(pass === "dnhq123") {
                 document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('adminPanel').scrollIntoView();
-            } else { alert("Wrong Access!"); }
+                document.getElementById('adminPanel').scrollIntoView({behavior: 'smooth'});
+            } else { alert("Access Denied!"); }
         }
 
         function downloadPDF() {
-            const name = document.getElementById('billCust').value || "Customer";
+            const name = document.getElementById('billCust').value || "Valued Customer";
             const details = document.getElementById('billDetails').value;
             const total = document.getElementById('billTotal').value;
+            if(!total) { alert("Please enter total amount"); return; }
 
             const content = `
-                <div style="padding:40px; border:2px solid #000; text-align:left;">
-                    <h1 style="text-align:center;">DNHQ SERVICES</h1>
-                    <p style="text-align:center;">Professional Technical Team Karachi</p>
+                <div style="padding:40px; border:3px solid #000; font-family:sans-serif;">
+                    <div style="text-align:center;">
+                        <h1 style="margin:0; color:#0f172a;">DNHQ SERVICES</h1>
+                        <p>Karachi Technical Experts | 0315-2458657</p>
+                    </div>
                     <hr>
-                    <p><b>Customer:</b> ${name}</p>
+                    <p><b>Bill To:</b> ${name}</p>
                     <p><b>Date:</b> ${new Date().toLocaleDateString()}</p>
-                    <p><b>Job Description:</b><br>${details}</p>
-                    <hr>
+                    <div style="min-height:150px; border:1px solid #eee; padding:10px; margin:20px 0;">
+                        <b>Work Details:</b><br>${details.replace(/\n/g, '<br>')}
+                    </div>
                     <h2 style="text-align:right;">Grand Total: Rs ${total}</h2>
-                    <p style="text-align:center; margin-top:50px; font-size:12px;">Thank you for choosing DNHQ!</p>
+                    <hr>
+                    <p style="text-align:center; font-size:12px;">This is a computer generated receipt.<br>Thank you for your business!</p>
                 </div>
             `;
-            html2pdf().from(content).save('DNHQ_Bill.pdf');
+            html2pdf().from(content).set({
+                margin: 10,
+                filename: 'DNHQ_Receipt_'+name+'.pdf',
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save();
         }
     </script>
 </body>
