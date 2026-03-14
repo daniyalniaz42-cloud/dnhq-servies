@@ -3,214 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Official Karachi</title>
+    <title>DNHQ SERVICES | Official</title>
     <style>
-        :root { --primary-dark: #070a13; --accent-gold: #fbbf24; --text-light: #f1f5f9; --card-bg: #1e293b; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: #0f172a; color: var(--text-light); padding-bottom: 160px; -webkit-tap-highlight-color: transparent; }
+        :root { --dark-bg: #070a13; --card-bg: #111827; --gold: #fbbf24; --text: #f1f5f9; }
+        body { font-family: sans-serif; margin: 0; background: var(--dark-bg); color: var(--text); padding-bottom: 160px; }
 
-        /* Smooth Top Banner */
-        .top-info { background: #161e2e; color: #94a3b8; font-size: 11px; padding: 10px; text-align: center; border-bottom: 1px solid #1f293a; font-weight: 600; }
+        /* Premium Header */
+        .header-main { background: #000000; padding: 40px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 25px 25px; }
+        .logo-img { height: 85px; display: block; margin: 0 auto; filter: drop-shadow(0 4px 10px rgba(251, 191, 36, 0.3)); }
+        .brand-name { color: var(--gold); font-size: 26px; font-weight: 900; margin-top: 15px; letter-spacing: 2px; text-transform: uppercase; }
 
-        /* Premium Dark Header */
-        .brand-header-box { background: var(--primary-dark); padding: 40px 20px 20px; text-align: center; border-bottom: 4px solid var(--accent-gold); border-radius: 0 0 30px 30px; }
-        .branded-logo { height: 90px; display: block; margin: 0 auto; filter: drop-shadow(0 5px 15px rgba(251, 191, 36, 0.2)); }
+        .container { padding: 15px; max-width: 600px; margin: 0 auto; }
         
-        /* Font and Color Changed - Standard Bold Gold Sans-serif */
-        .brand-text-official { color: var(--accent-gold); font-size: 26px; font-weight: 900; margin-top: 15px; letter-spacing: 1.5px; text-transform: uppercase; font-family: sans-serif; }
+        /* Category Styling */
+        .cat-row { display: flex; align-items: center; margin: 30px 0 15px; }
+        .cat-row h2 { font-size: 14px; font-weight: 800; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .cat-divider { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.3); margin-left: 15px; }
 
-        .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
-        
-        /* Modern Section Headers */
-        .cat-title-official { display: flex; align-items: center; margin: 35px 0 15px; }
-        .cat-title-official h2 { font-size: 14px; font-weight: 800; color: #e2e8f0; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
-        .cat-line-gold { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.4); margin-left: 15px; }
-
-        /* Branded Service Cards */
-        .svc-box-modern {
-            background: var(--card-bg); border: 1px solid #334155; border-radius: 18px; 
-            margin-bottom: 12px; padding: 20px; display: flex; justify-content: space-between; 
-            align-items: center; cursor: pointer; transition: 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        /* Service Cards */
+        .svc-card {
+            background: var(--card-bg); border: 1px solid #1f2937; border-radius: 18px; 
+            margin-bottom: 12px; padding: 18px; display: flex; justify-content: space-between; 
+            align-items: center; cursor: pointer; transition: 0.2s;
         }
-        .svc-box-modern:active { transform: scale(0.96); }
-        .svc-box-modern.selected { border: 2px solid var(--accent-gold); background: #070a13; box-shadow: 0 10px 30px rgba(251, 191, 36, 0.1); }
-        
-        .svc-left-meta b { display: block; font-size: 17px; color: white; margin-bottom: 5px; }
-        .svc-left-meta p { font-size: 13px; color: #94a3b8; margin: 0; line-height: 1.4; }
-        
-        .svc-right-price { text-align: right; min-width: 90px; }
-        .price-text { display: block; font-weight: 800; color: white; font-size: 16px; }
-        .price-suffix { font-size: 10px; color: rgba(251, 191, 36, 0.7); font-weight: bold; }
+        .svc-card.active { border: 2px solid var(--gold); background: #000; box-shadow: 0 0 20px rgba(251, 191, 36, 0.1); }
+        .svc-info b { display: block; font-size: 17px; color: white; margin-bottom: 4px; }
+        .svc-info span { font-size: 13px; color: #94a3b8; }
+        .svc-price { text-align: right; font-weight: 800; color: var(--gold); font-size: 16px; }
 
-        /* Floating Booking Bar */
-        .booking-bar-float {
+        /* Booking Bar */
+        .booking-bar {
             position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
-            border-top: 2px solid var(--accent-gold); padding: 20px; 
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            border-top: 2px solid var(--gold); padding: 20px; 
             display: none; box-sizing: border-box; z-index: 2000;
-            box-shadow: 0 -15px 40px rgba(0,0,0,0.2);
         }
-        .bar-internal { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; }
-        .total-bill-info small { color: #94a3b8; font-size: 12px; text-transform: uppercase; font-weight: bold; }
-        .total-bill-info div { font-size: 26px; font-weight: 900; color: white; }
-        .btn-confirm { 
-            background: #22c55e; color: white; padding: 16px 35px; 
-            border-radius: 14px; border: none; font-weight: bold; 
-            font-size: 16px; cursor: pointer; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4);
-        }
+        .bar-flex { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; }
+        .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; }
 
-        /* Admin Dashboard Styles */
-        #adminViewBox { display: none; background: #161e2e; margin: 20px; padding: 25px; border-radius: 20px; border: 1px solid #334155; }
-        .table-scroller { overflow-x: auto; }
-        .data-table-logged { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
-        .data-table-logged th { background: #0f172a; padding: 12px; text-align: left; color: #94a3b8; font-weight: 600; border-bottom: 1px solid #334155; }
-        .data-table-logged td { padding: 12px; border-bottom: 1px solid #1e293b; color: #e2e8f0; }
+        /* Admin UI */
+        #adminView { display: none; background: #111827; margin: 20px; padding: 25px; border-radius: 20px; border: 1px solid #374151; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; color: #e5e7eb; }
+        .admin-table th { background: #000; padding: 12px; text-align: left; border-bottom: 1px solid var(--gold); }
+        .admin-table td { padding: 12px; border-bottom: 1px solid #1f2937; }
 
-        /* Premium Footer */
-        .branded-footer { background: var(--primary-dark); color: #e2e8f0; padding: 60px 20px 20px; text-align: center; border-radius: 30px 30px 0 0; }
-        .dev-credit-official { font-size: 12px; color: #475569; margin-top: 40px; }
-        .footer-logo-text { color: var(--accent-gold); font-size: 20px; font-weight: 800; font-family: sans-serif; text-transform: uppercase; margin-bottom: 5px; }
+        /* Footer */
+        footer { background: #000; color: #94a3b8; padding: 50px 20px; text-align: center; margin-top: 40px; }
+        .dev-line { font-size: 12px; margin-top: 20px; color: #4b5563; }
+        .admin-btn { display: inline-block; margin-top: 15px; font-size: 11px; color: #6b7280; text-decoration: underline; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="top-info">Malir, Korangi, Gulshan, DHA, Clifton - Emergency Visit Available</div>
-
-    <header class="brand-header-box">
-        <img src="1773452778552.jpeg" class="branded-logo" alt="DNHQ Logo" onerror="this.style.display='none'">
-        <div class="brand-text-official">DNHQ SERVICES</div>
+    <header class="header-main">
+        <img src="1773452778552.jpeg" class="logo-img" alt="DNHQ" onerror="this.style.display='none'">
+        <div class="brand-name">DNHQ SERVICES</div>
     </header>
 
-    <div class="wrapper">
-        
-        <div class="cat-title-official"><h2>Air Conditioning</h2><div class="cat-line-gold"></div></div>
-        
-        <div class="svc-box-modern" onclick="handleTap(this, 'Master Service', 3500)">
-            <div class="svc-left-meta"><b>Master Service</b><p>Chemical deepest wash & outdoor service</p></div>
-            <div class="svc-right-price"><span class="price-text">Rs 3,500</span><span class="price-suffix">JOB</span></div>
+    <div class="container">
+        <div class="cat-row"><h2>Air Conditioning</h2><div class="cat-divider"></div></div>
+        <div class="svc-card" onclick="selectItem(this, 'AC Master Service', 3500)">
+            <div class="svc-info"><b>Master Service</b><span>Deep chemical wash & outdoor</span></div>
+            <div class="svc-price">Rs 3,500</div>
+        </div>
+        <div class="svc-card" onclick="selectItem(this, 'Normal Service', 2500)">
+            <div class="svc-info"><b>Normal Service</b><span>Filter & coil cleaning</span></div>
+            <div class="svc-price">Rs 2,500</div>
+        </div>
+        <div class="svc-card" onclick="selectItem(this, 'AC Gas Refill', 6500)">
+            <div class="svc-info"><b>Gas Charging</b><span>R22 / R410 Full Charge</span></div>
+            <div class="svc-price">Rs 6,500</div>
+        </div>
+        <div class="svc-card" onclick="selectItem(this, 'Installation', 3000)">
+            <div class="svc-info"><b>AC Installation</b><span>New unit mounting</span></div>
+            <div class="svc-price">Rs 3,000</div>
+        </div>
+        <div class="svc-card" onclick="selectItem(this, 'Dismantling', 1500)">
+            <div class="svc-info"><b>AC Removal</b><span>Safely uninstall unit</span></div>
+            <div class="svc-price">Rs 1,500</div>
         </div>
 
-        <div class="svc-box-modern" onclick="handleTap(this, 'Full Gas Charging', 6500)">
-            <div class="svc-left-meta"><b>Gas Refill</b><p>Complete R22/R410 charging with pressure test</p></div>
-            <div class="svc-right-price"><span class="price-text">Rs 6,500</span><span class="price-suffix">FULL</span></div>
+        <div class="cat-row"><h2>Electrician</h2><div class="cat-divider"></div></div>
+        <div class="svc-card" onclick="selectItem(this, 'Fault Repair', 1000)">
+            <div class="svc-info"><b>Short Circuit</b><span>Fault tracing & repair</span></div>
+            <div class="svc-price">Rs 1,000</div>
+        </div>
+        <div class="svc-card" onclick="selectItem(this, 'DB Box Fitting', 2500)">
+            <div class="svc-info"><b>Breaker Box</b><span>DB dressing & fitting</span></div>
+            <div class="svc-price">Rs 2,500</div>
+        </div>
+        <div class="svc-card" onclick="selectItem(this, 'UPS Setup', 3000)">
+            <div class="svc-info"><b>UPS Install</b><span>Battery & Inverter wiring</span></div>
+            <div class="svc-price">Rs 3,000</div>
+        </div>
+        <div class="svc-card" onclick="selectItem(this, 'New Wiring', 1500)">
+            <div class="svc-info"><b>Point Wiring</b><span>New point with ducting</span></div>
+            <div class="svc-price">Rs 1,500</div>
         </div>
 
-        <div class="svc-box-modern" onclick="handleTap(this, 'AC Installation', 3000)">
-            <div class="svc-left-meta"><b>Installation</b><p>Professional split unit indoor/outdoor setup</p></div>
-            <div class="svc-right-price"><span class="price-text">Rs 3,000</span><span class="price-suffix">UNIT</span></div>
+        <div class="cat-row"><h2>Fridge & Machine</h2><div class="cat-divider"></div></div>
+        <div class="svc-card" onclick="selectItem(this, 'Fridge Gas', 5500)">
+            <div class="svc-info"><b>Fridge Gas</b><span>Gas refilling & leak test</span></div>
+            <div class="svc-price">Rs 5,500</div>
         </div>
-
-        <div class="cat-title-official"><h2>Electrician</h2><div class="cat-line-gold"></div></div>
-
-        <div class="svc-box-modern" onclick="handleTap(this, 'Electrical Fault Trace', 1000)">
-            <div class="svc-left-meta"><b>Short Circuit Repair</b><p>Tracing faults and fixing breakers/wiring</p></div>
-            <div class="svc-right-price"><span class="price-text">Rs 1,000</span><span class="price-suffix">VISIT</span></div>
-        </div>
-
-        <div class="svc-box-modern" onclick="handleTap(this, 'DB Box Dressing', 2500)">
-            <div class="svc-left-meta"><b>DB Panel Dressing</b><p>Organizing circuit breaker panels</p></div>
-            <div class="svc-right-price"><span class="price-text">Rs 2,500</span><span class="price-suffix">JOB</span></div>
-        </div>
-
-        <div class="svc-box-modern" onclick="handleTap(this, 'New Point Wiring', 1500)">
-            <div class="svc-left-meta"><b>Point Wiring</b><p>New light/power point with ducting & socket</p></div>
-            <div class="svc-right-price"><span class="price-text">Rs 1,500</span><span class="price-suffix">POINT</span></div>
+        <div class="svc-card" onclick="selectItem(this, 'Washing Machine', 1500)">
+            <div class="svc-info"><b>WM Repair</b><span>Automatic/Manual motor work</span></div>
+            <div class="svc-price">Rs 1,500</div>
         </div>
     </div>
 
-    <div class="booking-bar-float" id="billingBar">
-        <div class="bar-internal">
-            <div class="total-bill-info">
-                <small id="qtyCount">0 Items</small>
-                <div>Rs <span id="billGrandTotal">0</span></div>
-            </div>
-            <button class="btn-confirm" onclick="finishOrder()">BOOK NOW</button>
+    <div class="booking-bar" id="cartBar">
+        <div class="bar-flex">
+            <div><small>Total Bill</small><div style="font-size:22px; font-weight:900;">Rs <span id="totalVal">0</span></div></div>
+            <button class="btn-wa" onclick="confirmOrder()">BOOK NOW</button>
         </div>
     </div>
 
-    <div id="adminViewBox">
-        <h2 style="margin:0; color:white;">Branded Sales History</h2>
-        <div class="table-scroller">
-            <table class="data-table-logged">
-                <thead><tr><th>Date</th><th>Client</th><th>Services</th><th>Bill</th></tr></thead>
-                <tbody id="logItemsBody"></tbody>
+    <div id="adminView">
+        <h2 style="color:var(--gold); margin:0 0 15px;">Sales Record</h2>
+        <div style="overflow-x:auto;">
+            <table class="admin-table">
+                <thead><tr><th>Date</th><th>Customer</th><th>Work</th><th>Bill</th></tr></thead>
+                <tbody id="adminBody"></tbody>
             </table>
         </div>
-        <button onclick="localStorage.removeItem('dnhq_final_logs'); refreshDashboard();" style="margin-top:20px; color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold;">Mita den sara record</button>
-        <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; padding:15px; background:#0f172a; color:white; border:none; border-radius:12px;">Close Admin Panel</button>
+        <button onclick="localStorage.removeItem('dnhq_final'); showLogs();" style="margin-top:20px; color:red; background:none; border:none; cursor:pointer;">Clear Logs</button>
+        <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; padding:12px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Exit Admin</button>
     </div>
 
-    <footer class="branded-footer">
-        <div class="footer-logo-text">DNHQ SERVICES</div>
-        <p style="font-size: 13px; margin: 0; opacity: 0.8;">Karachi's No.1 Professional Technical Team</p>
-        <p style="font-size: 12px; margin-top: 5px; opacity: 0.6;">Contact: 0315-2458657</p>
-        <p class="dev-credit-official">Developed by Muhammad Daniyal</p>
+    <footer>
+        <div style="color:var(--gold); font-weight:900; font-size:20px;">DNHQ SERVICES</div>
+        <p>Expert Technicians in Karachi</p>
+        <div class="dev-line">Developed by Muhammad Daniyal</div>
+        <div class="admin-btn" onclick="openAdmin()">Admin Access</div>
     </footer>
 
     <script>
-        let selection = [];
+        let selected = [];
 
-        function handleTap(el, name, price) {
-            const index = selection.findIndex(s => s.name === name);
-            if (index > -1) {
-                selection.splice(index, 1);
-                el.classList.remove('selected');
+        function selectItem(el, name, price) {
+            const i = selected.findIndex(s => s.name === name);
+            if (i > -1) {
+                selected.splice(i, 1);
+                el.classList.remove('active');
             } else {
-                selection.push({name, price});
-                el.classList.add('selected');
+                selected.push({name, price});
+                el.classList.add('active');
             }
-            
-            const bar = document.getElementById('billingBar');
-            const total = selection.reduce((acc, curr) => acc + curr.price, 0);
-            
-            if (selection.length > 0) {
+            const bar = document.getElementById('cartBar');
+            const total = selected.reduce((a, b) => a + b.price, 0);
+            if (selected.length > 0) {
                 bar.style.display = 'block';
-                document.getElementById('qtyCount').innerText = selection.length + " SELECTED";
-                document.getElementById('billGrandTotal').innerText = total.toLocaleString();
+                document.getElementById('totalVal').innerText = total.toLocaleString();
             } else {
                 bar.style.display = 'none';
             }
         }
 
-        function finishOrder() {
-            const customer = prompt("Please enter Client Name:") || "Client";
-            const total = selection.reduce((acc, curr) => acc + curr.price, 0);
-            const work = selection.map(s => s.name).join(", ");
+        function confirmOrder() {
+            const name = prompt("Customer Name:") || "Client";
+            const total = selected.reduce((a, b) => a + b.price, 0);
+            const work = selected.map(s => s.name).join(", ");
             
-            // Save to Local Browser Database
-            const ticket = {
-                date: new Date().toLocaleDateString(),
-                customer: customer,
-                services: work,
-                bill: total
-            };
-            
-            let currentLogs = JSON.parse(localStorage.getItem('dnhq_final_logs') || '[]');
-            currentLogs.push(ticket);
-            localStorage.setItem('dnhq_final_logs', JSON.stringify(currentLogs));
+            const log = { date: new Date().toLocaleDateString(), customer: name, work: work, bill: total };
+            let logs = JSON.parse(localStorage.getItem('dnhq_final') || '[]');
+            logs.push(log);
+            localStorage.setItem('dnhq_final', JSON.stringify(logs));
 
-            // Generate WhatsApp Link
-            const waLink = `https://wa.me/923152458657?text=${encodeURIComponent("*DNHQ BRANDED ORDER*\n\n*Name:* " + customer + "\n*Work:* " + work + "\n*TOTAL:* Rs " + total.toLocaleString())}`;
-            window.open(waLink);
+            const msg = `*DNHQ SERVICES ORDER*\nName: ${name}\nWork: ${work}\n*Total: Rs ${total.toLocaleString()}*`;
+            window.open("https://wa.me/923152458657?text=" + encodeURIComponent(msg));
         }
 
-        function triggerDashboard() {
-            if(prompt("Access Key:") === "dnhq123") {
-                document.getElementById('adminViewBox').style.display = 'block';
-                refreshDashboard();
-                document.getElementById('adminViewBox').scrollIntoView({behavior: 'smooth'});
+        function openAdmin() {
+            if(prompt("PIN:") === "dnhq123") {
+                document.getElementById('adminView').style.display = 'block';
+                showLogs();
+                document.getElementById('adminView').scrollIntoView();
             }
         }
 
-        function refreshDashboard() {
-            const logs = JSON.parse(localStorage.getItem('dnhq_final_logs') || '[]');
-            document.getElementById('logItemsBody').innerHTML = logs.reverse().map(l => `
-                <tr>
-                    <td>${l.date}</td>
-                    <td><b>${l.customer}</b></td>
-                    <td>${l.services}</td>
-                    <td>Rs ${l.bill.toLocaleString()}</td>
-                </tr>
+        function showLogs() {
+            const logs = JSON.parse(localStorage.getItem('dnhq_final') || '[]');
+            document.getElementById('adminBody').innerHTML = logs.reverse().map(l => `
+                <tr><td>${l.date}</td><td>${l.customer}</td><td>${l.work}</td><td>Rs ${l.bill.toLocaleString()}</td></tr>
             `).join('');
         }
     </script>
