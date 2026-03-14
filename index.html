@@ -5,191 +5,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DNHQ SERVICES | Karachi</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --dark: #0f172a; --gold: #fbbf24; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f8fafc; padding-bottom: 120px; -webkit-tap-highlight-color: transparent; }
+        :root { --dark: #0f172a; --gold: #fbbf24; --green: #25d366; }
+        body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 150px; }
         
-        .header { background: var(--dark); padding: 15px; border-bottom: 3px solid #334155; display: flex; align-items: center; gap: 10px; }
-        .logo-img { height: 40px; border-radius: 4px; }
-        .logo-text { color: white; line-height: 1; text-align: left; }
+        /* Header Fix */
+        .header { background: var(--dark); padding: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 3px solid var(--gold); }
+        .logo-img { height: 45px; border-radius: 4px; }
+        .logo-text { color: white; line-height: 1.1; }
         .logo-text b { color: var(--gold); font-size: 18px; }
 
-        .hero { background: #1e293b; color: white; padding: 25px 15px; text-align: center; border-bottom: 4px solid var(--gold); }
-        
+        .hero { background: #1e293b; color: white; padding: 25px 15px; text-align: center; }
+
+        /* Container & Cards */
         .container { padding: 15px; max-width: 500px; margin: 0 auto; }
-        .category-title { font-size: 18px; font-weight: bold; color: var(--dark); margin: 20px 0 10px; text-align: left; border-left: 4px solid var(--gold); padding-left: 10px; }
+        .category { font-weight: bold; margin: 20px 0 10px; color: var(--dark); border-left: 5px solid var(--gold); padding-left: 10px; }
 
-        /* Service Item - High Clickability */
-        .service-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 10px; }
-        .item { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 18px 15px; cursor: pointer; border-bottom: 1px solid #f1f5f9;
-            transition: background 0.2s; position: relative;
+        /* Real Button Approach - This fixes Click Issue */
+        .service-btn {
+            width: 100%; background: white; border: 1px solid #ddd; 
+            border-radius: 10px; margin-bottom: 10px; padding: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; -webkit-appearance: none; text-align: left;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .item:active { background: #f0f9ff; }
-        .item.selected { background: #fffbeb; border-left: 5px solid var(--gold); }
+        .service-btn.active { border: 2px solid var(--gold); background: #fffbeb; }
         
-        .info { pointer-events: none; text-align: left; }
-        .info span { display: block; font-weight: 700; color: #1e293b; font-size: 15px; }
-        .info small { color: #64748b; font-size: 12px; }
-        
-        .price { font-weight: bold; color: var(--dark); pointer-events: none; margin-right: 10px; }
-        .check { color: #e2e8f0; font-size: 20px; pointer-events: none; }
-        .selected .check { color: var(--gold); }
+        .info b { display: block; font-size: 16px; color: #1e293b; }
+        .info span { font-size: 12px; color: #64748b; }
+        .price { font-weight: bold; color: var(--dark); font-size: 15px; }
 
-        /* Floating Booking Bar */
-        .booking-bar { 
-            position: fixed; bottom: 0; left: 0; width: 100%; background: white; 
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.1); padding: 15px 20px; 
-            display: none; border-top: 2px solid var(--gold); z-index: 1000; box-sizing: border-box;
+        /* Floating Cart Bar */
+        .cart-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: white; border-top: 3px solid var(--gold);
+            padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            display: none; z-index: 9999; box-sizing: border-box;
         }
-        .bar-flex { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto; }
-        .wa-btn { background: #25d366; color: white; padding: 14px 24px; border-radius: 10px; text-decoration: none; font-weight: bold; border: none; font-size: 16px; cursor: pointer; }
+        .bar-inner { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto; }
+        .book-btn { background: var(--green); color: white; padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; font-size: 16px; cursor: pointer; }
 
-        #adminPanel { display: none; background: white; padding: 20px; margin: 20px; border-radius: 12px; border: 2px solid #16a34a; text-align: left; }
-        .inp { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-
-        footer { padding: 40px 20px; background: var(--dark); color: white; text-align: center; font-size: 14px; }
-        .admin-link { margin-top: 20px; display: inline-block; color: #475569; text-decoration: none; font-size: 12px; }
+        #adminPanel { display: none; background: white; margin: 15px; padding: 20px; border-radius: 10px; border: 2px solid var(--dark); }
+        .inp { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <img src="1773452778552.png" class="logo-img" alt="DNHQ" onerror="this.src='https://via.placeholder.com/40'">
+    <div class="header">
+        <img src="1773452778552.png" class="logo-img" alt="DNHQ" onerror="this.src='https://via.placeholder.com/45'">
         <div class="logo-text"><b>DNHQ</b><br><small>SERVICES</small></div>
-    </header>
+    </div>
 
     <div class="hero">
-        <h2 style="margin:0;">KARACHI TECHNICAL TEAM</h2>
-        <p style="margin:5px 0 0; opacity:0.8; font-size: 14px;">Select services below to see total cost</p>
+        <h2 style="margin:0;">KARACHI TECHNICAL EXPERTS</h2>
+        <p style="margin:5px 0; opacity:0.8;">Tap services to select</p>
     </div>
 
     <div class="container">
-        <div class="category-title">AC SERVICES</div>
-        <div class="service-card">
-            <div class="item" data-name="AC Master Service" data-price="3500">
-                <div class="info"><span>Master Service</span><small>Full Chemical Deep Clean</small></div>
-                <div style="display:flex; align-items:center;"><span class="price">Rs 3500</span><i class="fas fa-check-circle check"></i></div>
-            </div>
-            <div class="item" data-name="AC Normal Service" data-price="2500">
-                <div class="info"><span>Normal Service</span><small>Filter & Coil Service</small></div>
-                <div style="display:flex; align-items:center;"><span class="price">Rs 2500</span><i class="fas fa-check-circle check"></i></div>
-            </div>
-            <div class="item" data-name="AC Installation" data-price="3000">
-                <div class="info"><span>AC Installation</span><small>Split Unit Fitting</small></div>
-                <div style="display:flex; align-items:center;"><span class="price">Rs 3000</span><i class="fas fa-check-circle check"></i></div>
-            </div>
-            <div class="item" data-name="AC Gas Refill" data-price="6500">
-                <div class="info"><span>Gas Refill</span><small>R22 / R410 Full Charge</small></div>
-                <div style="display:flex; align-items:center;"><span class="price">Rs 6500</span><i class="fas fa-check-circle check"></i></div>
-            </div>
-        </div>
+        <div class="category">AC SERVICES</div>
+        <button class="service-btn" onclick="selectItem(this, 'AC Master Service', 3500)">
+            <div class="info"><b>Master Service</b><span>Chemical Deep Cleaning</span></div>
+            <div class="price">Rs 3500</div>
+        </button>
+        <button class="service-btn" onclick="selectItem(this, 'AC Normal Service', 2500)">
+            <div class="info"><b>Normal Service</b><span>Filter & Coil Wash</span></div>
+            <div class="price">Rs 2500</div>
+        </button>
+        <button class="service-btn" onclick="selectItem(this, 'AC Installation', 3000)">
+            <div class="info"><b>Installation</b><span>Split Unit Setup</span></div>
+            <div class="price">Rs 3000</div>
+        </button>
+        <button class="service-btn" onclick="selectItem(this, 'AC Gas Refill', 6500)">
+            <div class="info"><b>Gas Refill</b><span>Full Gas Charge</span></div>
+            <div class="price">Rs 6500</div>
+        </button>
 
-        <div class="category-title">ELECTRICIAN</div>
-        <div class="service-card">
-            <div class="item" data-name="Light Point Fitting" data-price="500">
-                <div class="info"><span>Light Point</span><small>Per Point Fitting/Repair</small></div>
-                <div style="display:flex; align-items:center;"><span class="price">Rs 500</span><i class="fas fa-check-circle check"></i></div>
-            </div>
-            <div class="item" data-name="New Wiring Setup" data-price="1500">
-                <div class="info"><span>New Wiring</span><small>Complete Point Wiring</small></div>
-                <div style="display:flex; align-items:center;"><span class="price">Rs 1500</span><i class="fas fa-check-circle check"></i></div>
-            </div>
-            <div class="item" data-name="UPS Installation" data-price="3000">
-                <div class="info"><span>UPS Installation</span><small>Inverter/UPS Setup</small></div>
-                <div style="display:flex; align-items:center;"><span class="price">Rs 3000</span><i class="fas fa-check-circle check"></i></div>
-            </div>
-            <div class="item" data-name="Short Circuit Repair" data-price="1000">
-                <div class="info"><span>Fault Repair</span><small>Emergency Troubleshooting</small></div>
-                <div style="display:flex; align-items:center;"><span class="price">Rs 1000</span><i class="fas fa-check-circle check"></i></div>
-            </div>
-        </div>
+        <div class="category">ELECTRICIAN</div>
+        <button class="service-btn" onclick="selectItem(this, 'Light Point Fitting', 500)">
+            <div class="info"><b>Light Point</b><span>Per Point Fitting</span></div>
+            <div class="price">Rs 500</div>
+        </button>
+        <button class="service-btn" onclick="selectItem(this, 'New Wiring Point', 1500)">
+            <div class="info"><b>New Wiring</b><span>Complete Setup</span></div>
+            <div class="price">Rs 1500</div>
+        </button>
+        <button class="service-btn" onclick="selectItem(this, 'UPS Installation', 3000)">
+            <div class="info"><b>UPS Install</b><span>Proper Fitting</span></div>
+            <div class="price">Rs 3000</div>
+        </button>
+        <button class="service-btn" onclick="selectItem(this, 'Short Circuit Repair', 1000)">
+            <div class="info"><b>Fault Repair</b><span>Emergency Trace</span></div>
+            <div class="price">Rs 1000</div>
+        </button>
     </div>
 
-    <div class="booking-bar" id="bookingBar">
-        <div class="bar-flex">
+    <div class="cart-bar" id="cartBar">
+        <div class="bar-inner">
             <div style="text-align:left;">
-                <small id="countText" style="color:#64748b;">0 Selected</small><br>
-                <b style="font-size:20px; color:#16a34a;">Rs <span id="totalDisplay">0</span></b>
+                <span id="qtyText" style="font-size:12px; color:#666;">0 Selected</span><br>
+                <b style="font-size:18px; color:var(--dark);">Total: Rs <span id="totalTxt">0</span></b>
             </div>
-            <button class="wa-btn" id="waSendBtn"><i class="fab fa-whatsapp"></i> BOOK NOW</button>
+            <button class="book-btn" onclick="sendToWA()">BOOK NOW</button>
         </div>
     </div>
 
     <div id="adminPanel">
-        <h3>BILL GENERATOR</h3>
-        <input type="text" id="bCust" class="inp" placeholder="Customer Name">
-        <textarea id="bDesc" class="inp" placeholder="Work Details..." rows="3"></textarea>
-        <input type="number" id="bTotal" class="inp" placeholder="Total Amount">
-        <button onclick="makePDF()" style="width:100%; padding:15px; background:var(--dark); color:white; border:none; border-radius:8px; font-weight:bold;">DOWNLOAD PDF</button>
+        <h3>ADMIN BILLING</h3>
+        <input type="text" id="aName" class="inp" placeholder="Customer Name">
+        <textarea id="aWork" class="inp" placeholder="Work Done..."></textarea>
+        <input type="number" id="aTotal" class="inp" placeholder="Total Amount">
+        <button onclick="genPDF()" style="width:100%; padding:15px; background:var(--dark); color:white; border:none; border-radius:5px;">DOWNLOAD PDF</button>
     </div>
 
-    <footer>
-        <p><b>DNHQ SERVICES</b><br>Karachi, Pakistan | 0315-2458657</p>
-        <a href="#" class="admin-link" id="adminTrigger">Staff Login</a>
-    </footer>
+    <div style="text-align:center; padding:40px; background:#1e293b; color:white;">
+        <p><b>DNHQ SERVICES</b> | Karachi</p>
+        <button onclick="adminLogin()" style="background:none; border:none; color:#64748b; text-decoration:underline;">Staff Login</button>
+    </div>
 
     <script>
-        let selectedList = [];
+        let cart = [];
 
-        // Click Handler for Items
-        document.querySelectorAll('.item').forEach(element => {
-            element.addEventListener('click', function() {
-                const name = this.getAttribute('data-name');
-                const price = parseInt(this.getAttribute('data-price'));
-                
-                const index = selectedList.findIndex(x => x.name === name);
-                if (index > -1) {
-                    selectedList.splice(index, 1);
-                    this.classList.remove('selected');
-                } else {
-                    selectedList.push({ name, price });
-                    this.classList.add('selected');
-                }
-                
-                renderBar();
-            });
-        });
+        function selectItem(btn, name, price) {
+            const index = cart.findIndex(i => i.name === name);
+            if (index > -1) {
+                cart.splice(index, 1);
+                btn.classList.remove('active');
+            } else {
+                cart.push({name, price});
+                btn.classList.add('active');
+            }
+            render();
+        }
 
-        function renderBar() {
-            const bar = document.getElementById('bookingBar');
-            const total = selectedList.reduce((s, i) => s + i.price, 0);
-            
-            if (selectedList.length > 0) {
+        function render() {
+            const bar = document.getElementById('cartBar');
+            const total = cart.reduce((s, i) => s + i.price, 0);
+            if (cart.length > 0) {
                 bar.style.display = 'block';
-                document.getElementById('countText').innerText = selectedList.length + " Service(s)";
-                document.getElementById('totalDisplay').innerText = total;
+                document.getElementById('qtyText').innerText = cart.length + " Service(s)";
+                document.getElementById('totalTxt').innerText = total;
             } else {
                 bar.style.display = 'none';
             }
         }
 
-        // WhatsApp Sender
-        document.getElementById('waSendBtn').addEventListener('click', function() {
+        function sendToWA() {
             let total = 0;
-            let text = "DNHQ SERVICES - NEW ORDER%0A%0A";
-            selectedList.forEach((item, idx) => {
-                text += ${idx+1}. ${item.name} (Rs ${item.price})%0A;
+            let list = "DNHQ SERVICES BOOKING%0A";
+            cart.forEach((item, i) => {
+                list += ${i+1}. ${item.name} (Rs ${item.price})%0A;
                 total += item.price;
             });
-            text += %0A*TOTAL ESTIMATE: Rs ${total}*%0A%0APlease confirm booking for Karachi area.;
-            window.open(https://wa.me/923152458657?text=${text});
-        });
+            list += %0A*TOTAL: Rs ${total}*%0A%0A_Booking for Karachi area._;
+            window.open(https://wa.me/923152458657?text=${list});
+        }
 
-        // Admin Login
-        document.getElementById('adminTrigger').addEventListener('click', function(e) {
-            e.preventDefault();
-            if(prompt("Enter PIN:") === "dnhq123") {
+        function adminLogin() {
+            if(prompt("PIN:") === "dnhq123") {
                 document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('adminPanel').scrollIntoView();
             }
-        });
+        }
 
-        function makePDF() {
-            const content = <div style="padding:30px; border:2px solid #000;"><h1>DNHQ SERVICES</h1><hr><p><b>Customer:</b> ${document.getElementById('bCust').value}</p><p><b>Work:</b> ${document.getElementById('bDesc').value}</p><h2>Total: Rs ${document.getElementById('bTotal').value}</h2></div>;
-            html2pdf().from(content).save('DNHQ_Bill.pdf');
+        function genPDF() {
+            const div = <div><h1>DNHQ Bill</h1><p>Customer: ${document.getElementById('aName').value}</p><p>Total: Rs ${document.getElementById('aTotal').value}</p></div>;
+            html2pdf().from(div).save('DNHQ.pdf');
         }
     </script>
 </body>
