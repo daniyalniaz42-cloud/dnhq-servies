@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Professional Billing</title>
+    <title>DNHQ SERVICES | Complete Solutions</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     
@@ -30,7 +30,6 @@
         .svc-meta p { font-size: 13px; color: #94a3b8; margin: 0; }
         .svc-rate { text-align: right; font-weight: 800; color: var(--gold); font-size: 16px; }
 
-        /* Multi-Action Booking Bar */
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
         .checkout-inner { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; gap: 10px; }
         .btn-wa { background: #22c55e; color: white; padding: 16px 20px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; flex: 1; font-size: 14px; }
@@ -53,10 +52,15 @@
     </header>
 
     <div class="wrapper">
+        
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Master Service', 3500)">
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)">
             <div class="svc-meta"><b>Master Service</b><p>Deep chemical wash & outdoor</p></div>
             <div class="svc-rate">Rs 3,500</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Normal Service', 2500)">
+            <div class="svc-meta"><b>Normal Service</b><p>Filter & basic cleaning</p></div>
+            <div class="svc-rate">Rs 2,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'Gas Charging (1 Ton)', 6500)">
             <div class="svc-meta"><b>Gas Charging (1 Ton)</b><p>Full R22/R410 refill</p></div>
@@ -67,24 +71,52 @@
             <div class="svc-rate">Rs 8,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 3000)">
-            <div class="svc-meta"><b>Installation</b><p>Unit mounting & setup</p></div>
+            <div class="svc-meta"><b>Installation</b><p>New unit mounting & setup</p></div>
             <div class="svc-rate">Rs 3,000</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Dismantle', 1500)">
+            <div class="svc-meta"><b>Dismantling</b><p>Safe removal with gas locking</p></div>
+            <div class="svc-rate">Rs 1,500</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Capacitor Change', 1200)">
+            <div class="svc-meta"><b>Capacitor Replace</b><p>High quality capacitor & fitting</p></div>
+            <div class="svc-rate">Rs 1,200</div>
         </div>
 
         <div class="section-tag"><h2>Electrician</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Fault Repair', 1000)">
-            <div class="svc-meta"><b>Short Circuit</b><p>Fault tracing & repair</p></div>
+            <div class="svc-meta"><b>Short Circuit</b><p>Fault tracing & emergency repair</p></div>
             <div class="svc-rate">Rs 1,000</div>
         </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'DB Box Fitting', 2500)">
+            <div class="svc-meta"><b>DB Panel Dressing</b><p>Breaker box wiring & fitting</p></div>
+            <div class="svc-rate">Rs 2,500</div>
+        </div>
         <div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 3000)">
-            <div class="svc-meta"><b>UPS Install</b><p>Wiring & battery setup</p></div>
+            <div class="svc-meta"><b>UPS/Inverter Setup</b><p>Wiring & battery connection</p></div>
             <div class="svc-rate">Rs 3,000</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Point Wiring', 1500)">
+            <div class="svc-meta"><b>New Point Wiring</b><p>Ducting & socket installation</p></div>
+            <div class="svc-rate">Rs 1,500</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fan Installation', 800)">
+            <div class="svc-meta"><b>Fan Repair/Fitting</b><p>Ceiling or bracket fan mounting</p></div>
+            <div class="svc-rate">Rs 800</div>
         </div>
 
         <div class="section-tag"><h2>Appliances</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas', 5500)">
-            <div class="svc-meta"><b>Fridge Gas</b><p>Gas refilling & leak test</p></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 5500)">
+            <div class="svc-meta"><b>Fridge Gas</b><p>Leak testing & gas refilling</p></div>
             <div class="svc-rate">Rs 5,500</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Compressor Labor', 4500)">
+            <div class="svc-meta"><b>Compressor Fitting</b><p>Installation labor charges</p></div>
+            <div class="svc-rate">Rs 4,500</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Washing Machine', 1500)">
+            <div class="svc-meta"><b>WM Repair</b><p>Automatic/Manual troubleshooting</p></div>
+            <div class="svc-rate">Rs 1,500</div>
         </div>
     </div>
 
@@ -97,10 +129,10 @@
     </div>
 
     <div id="adminView">
-        <h2 style="color:var(--gold);">Records</h2>
+        <h2 style="color:var(--gold);">Sales History</h2>
         <div style="overflow-x:auto;"><table class="log-table"><thead><tr><th>Date</th><th>Client</th><th>Work</th><th>Bill</th></tr></thead><tbody id="logItems"></tbody></table></div>
-        <button onclick="localStorage.removeItem('dnhq_final_db'); renderLogs();" style="margin-top:20px; color:red; background:none; border:none; cursor:pointer;">Delete Records</button>
-        <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; padding:15px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Close</button>
+        <button onclick="localStorage.removeItem('dnhq_final_db'); renderLogs();" style="margin-top:20px; color:red; background:none; border:none; cursor:pointer;">Clear All</button>
+        <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; padding:15px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Close Panel</button>
     </div>
 
     <footer>
@@ -121,25 +153,21 @@
             const total = cart.reduce((a, b) => a + b.price, 0);
             document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
             document.getElementById('billTotal').innerText = total.toLocaleString();
-            document.getElementById('btnDownloadPDF').style.display = 'none'; // Hide PDF until booked
+            document.getElementById('btnDownloadPDF').style.display = 'none';
         }
 
         function processOrder() {
-            const user = prompt("Customer Name:") || "Valued Client";
+            const user = prompt("Customer Name:") || "Client";
             const total = cart.reduce((a, b) => a + b.price, 0);
             const work = cart.map(c => c.name).join(", ");
             
             lastOrder = { name: user, items: [...cart], total: total, date: new Date().toLocaleDateString() };
 
-            // Save to DB
             let history = JSON.parse(localStorage.getItem('dnhq_final_db') || '[]');
             history.push({ date: lastOrder.date, client: user, work: work, total: total });
             localStorage.setItem('dnhq_final_db', JSON.stringify(history));
 
-            // Show PDF button
             document.getElementById('btnDownloadPDF').style.display = 'block';
-
-            // WhatsApp
             window.open("https://wa.me/923152458657?text=" + encodeURIComponent(`*DNHQ SERVICES - BILL*\nClient: ${user}\nServices: ${work}\n*Total: Rs ${total.toLocaleString()}*`));
         }
 
@@ -148,7 +176,6 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
-            // Header
             doc.setFillColor(0, 0, 0);
             doc.rect(0, 0, 210, 40, 'F');
             doc.setTextColor(251, 191, 36);
@@ -157,24 +184,24 @@
             
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(12);
-            doc.text(`Invoice For: ${lastOrder.name}`, 20, 50);
-            doc.text(`Date: ${lastOrder.date}`, 150, 50);
+            doc.text(`Invoice For: ${lastOrder.name}`, 20, 55);
+            doc.text(`Date: ${lastOrder.date}`, 150, 55);
 
-            // Table
             const rows = lastOrder.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]);
             doc.autoTable({
-                startY: 60,
+                startY: 65,
                 head: [['Service Description', 'Amount']],
                 body: rows,
                 theme: 'striped',
-                headStyles: { fillColor: [0, 0, 0] }
+                headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
             });
 
             const finalY = doc.lastAutoTable.finalY + 10;
-            doc.setFontSize(14);
-            doc.text(`Total Payable: Rs ${lastOrder.total.toLocaleString()}`, 140, finalY);
+            doc.setFont("helvetica", "bold");
+            doc.text(`Total Amount: Rs ${lastOrder.total.toLocaleString()}`, 140, finalY);
 
             doc.setFontSize(10);
+            doc.text("Thank you for choosing DNHQ Services!", 105, 270, { align: "center" });
             doc.text("Developed by Muhammad Daniyal", 105, 280, { align: "center" });
             doc.save(`DNHQ_Bill_${lastOrder.name}.pdf`);
         }
