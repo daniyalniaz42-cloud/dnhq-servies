@@ -23,15 +23,23 @@
         .card { background: white; width: 340px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #fbbf24; }
         .card h2 { margin: 0 0 10px; font-size: 22px; color: #0f172a; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         
-        .service-item { display: flex; justify-content: space-between; font-size: 14px; padding: 8px 0; border-bottom: 1px dashed #ddd; }
+        .service-item { display: flex; justify-content: space-between; font-size: 14px; padding: 10px 0; border-bottom: 1px dashed #ddd; cursor: pointer; transition: 0.2s; }
+        .service-item:hover { background: #fffbeb; }
         .service-item b { color: #d97706; }
 
-        .book-btn { display: block; width: 100%; padding: 12px; background: #fbbf24; color: black; text-decoration: none; font-weight: bold; border-radius: 6px; border: 1px solid #000; margin-top: 15px; }
+        /* Estimation Popup Style */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; text-align: left; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        .modal-content h3 { margin-top: 0; color: #0f172a; border-bottom: 2px solid #fbbf24; padding-bottom: 10px; }
+        .est-input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+        .total-box { background: #f0fdf4; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; margin-bottom: 15px; text-align: center; }
+        .total-box b { font-size: 20px; color: #16a34a; }
+        .final-wa-btn { display: block; width: 100%; padding: 15px; background: #25d366; color: white; text-align: center; text-decoration: none; font-weight: bold; border-radius: 8px; font-size: 16px; border: none; cursor: pointer; }
 
+        /* Admin Section Stays Same */
         #adminSection { display: none !important; background: white; padding: 20px; margin: 20px auto; max-width: 900px; border: 2px solid #16a34a; border-radius: 10px; text-align: left; }
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
         .input-f { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-
         #billBox { display: none; margin-top: 20px; background: #fff; border: 2px solid #000; padding: 20px; text-align: left; }
         .bill-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .bill-table th, .bill-table td { border: 1px solid #000; padding: 8px; font-size: 13px; }
@@ -62,24 +70,36 @@
     <div class="container">
         <div class="card" style="border-top-color: #3b82f6;">
             <h2 style="color: #3b82f6;">AC SERVICES</h2>
-            <div class="service-item"><span>Master Service</span> <b>Rs 3500</b></div>
-            <div class="service-item"><span>Normal Service</span> <b>Rs 2500</b></div>
-            <div class="service-item"><span>Installation</span> <b>Rs 3000</b></div>
-            <div class="service-item"><span>Gas Refill (Full)</span> <b>Rs 6500</b></div>
-            <div class="service-item"><span>Copper Pipe (per ft)</span> <b>Rs 1500</b></div>
-            <div class="service-item"><span>Dismantle</span> <b>Rs 1500</b></div>
-            <a href="https://wa.me/923152458657" class="book-btn">Book AC Service</a>
+            <div class="service-item" onclick="openEst('AC Master Service', 3500)"><span>Master Service</span> <b>Rs 3500</b></div>
+            <div class="service-item" onclick="openEst('AC Normal Service', 2500)"><span>Normal Service</span> <b>Rs 2500</b></div>
+            <div class="service-item" onclick="openEst('AC Installation', 3000)"><span>Installation</span> <b>Rs 3000</b></div>
+            <div class="service-item" onclick="openEst('AC Gas Refill (Full)', 6500)"><span>Gas Refill (Full)</span> <b>Rs 6500</b></div>
+            <div class="service-item" onclick="openEst('AC Copper Pipe', 1500, 'ft')"><span>Copper Pipe (per ft)</span> <b>Rs 1500</b></div>
+            <div class="service-item" onclick="openEst('AC Dismantle', 1500)"><span>Dismantle</span> <b>Rs 1500</b></div>
         </div>
 
         <div class="card">
             <h2 style="color: #fbbf24;">ELECTRICIAN</h2>
-            <div class="service-item"><span>Light Point</span> <b>Rs 500</b></div>
-            <div class="service-item"><span>New Wiring (Point)</span> <b>Rs 1500</b></div>
-            <div class="service-item"><span>DB Box Fitting</span> <b>Rs 2500</b></div>
-            <div class="service-item"><span>Breaker Replacement</span> <b>Rs 200</b></div>
-            <div class="service-item"><span>UPS Installation</span> <b>Rs 3000</b></div>
-            <div class="service-item"><span>Short Circuit Repair</span> <b>Rs 1000</b></div>
-            <a href="https://wa.me/923152458657" class="book-btn">Book Electrician</a>
+            <div class="service-item" onclick="openEst('Light Point Fitting', 500)"><span>Light Point</span> <b>Rs 500</b></div>
+            <div class="service-item" onclick="openEst('New Wiring (Point)', 1500)"><span>New Wiring (Point)</span> <b>Rs 1500</b></div>
+            <div class="service-item" onclick="openEst('DB Box Fitting', 2500)"><span>DB Box Fitting</span> <b>Rs 2500</b></div>
+            <div class="service-item" onclick="openEst('Breaker Replacement', 200)"><span>Breaker Replacement</span> <b>Rs 200</b></div>
+            <div class="service-item" onclick="openEst('UPS Installation', 3000)"><span>UPS Installation</span> <b>Rs 3000</b></div>
+            <div class="service-item" onclick="openEst('Short Circuit Repair', 1000)"><span>Short Circuit Repair</span> <b>Rs 1000</b></div>
+        </div>
+    </div>
+
+    <div id="estModal" class="modal">
+        <div class="modal-content">
+            <h3 id="estTitle">Service Name</h3>
+            <p style="font-size: 14px; color: #666;">Enter quantity/units to see the estimate:</p>
+            <input type="number" id="estQty" class="est-input" value="1" oninput="calculateEst()">
+            <div class="total-box">
+                <span>Estimated Cost:</span><br>
+                <b id="estDisplay">Rs 0</b>
+            </div>
+            <button class="final-wa-btn" onclick="sendToWA()">Confirm & Book via WhatsApp</button>
+            <button onclick="closeEst()" style="width:100%; background:none; border:none; margin-top:10px; color:red; cursor:pointer;">Cancel</button>
         </div>
     </div>
 
@@ -88,33 +108,29 @@
             <h3 style="margin:0;">ADMIN BILLING PANEL</h3>
             <button onclick="location.reload()" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Logout</button>
         </div>
-        
         <input type="text" id="custName" class="input-f" placeholder="Customer Name">
-        
         <div class="admin-grid">
             <div style="background:#f9f9f9; padding:15px; border-radius:8px; border:1px solid #ddd;">
-                <h4 style="margin:0 0 10px; color:#16a34a;">Electrical Work</h4>
+                <h4 style="margin:0 0 10px; color:#16a34a;">Electrical</h4>
                 Light Pts: <input type="number" id="q_lp" class="input-f" value="0">
                 Wiring: <input type="number" id="q_wr" class="input-f" value="0">
                 DB Box: <input type="number" id="q_db" class="input-f" value="0">
                 Breaker: <input type="number" id="q_br" class="input-f" value="0">
-                UPS Inst: <input type="number" id="q_ups" class="input-f" value="0">
+                UPS: <input type="number" id="q_ups" class="input-f" value="0">
             </div>
             <div style="background:#f9f9f9; padding:15px; border-radius:8px; border:1px solid #ddd;">
                 <h4 style="margin:0 0 10px; color:#3b82f6;">AC Work</h4>
                 Master: <input type="number" id="q_am" class="input-f" value="0">
                 Normal: <input type="number" id="q_an" class="input-f" value="0">
                 Install: <input type="number" id="q_ai" class="input-f" value="0">
-                Gas (Full): <input type="number" id="q_ag" class="input-f" value="0">
-                Pipe (ft): <input type="number" id="q_ap" class="input-f" value="0">
+                Gas: <input type="number" id="q_ag" class="input-f" value="0">
+                Pipe: <input type="number" id="q_ap" class="input-f" value="0">
             </div>
         </div>
-        
-        <button onclick="generateBill()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer; font-size:16px;">GENERATE RECEIPT</button>
-
+        <button onclick="generateBill()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer;">GENERATE RECEIPT</button>
         <div id="billBox">
             <div id="billPrint"></div>
-            <button onclick="downloadPDF()" style="width:100%; padding:12px; background:#0f172a; color:white; border:none; margin-top:10px; border-radius:5px; cursor:pointer; font-weight:bold;">Download PDF Receipt</button>
+            <button onclick="downloadPDF()" style="width:100%; padding:12px; background:#0f172a; color:white; border:none; margin-top:10px; border-radius:5px; cursor:pointer; font-weight:bold;">Download PDF</button>
         </div>
     </div>
 
@@ -125,6 +141,38 @@
     </footer>
 
     <script>
+        let currentPrice = 0;
+        let currentServiceName = "";
+        let currentUnit = "";
+
+        function openEst(name, price, unit = "") {
+            currentServiceName = name;
+            currentPrice = price;
+            currentUnit = unit;
+            document.getElementById('estTitle').innerText = name + (unit ? ` (Rs ${price}/${unit})` : ` (Rs ${price} each)`);
+            document.getElementById('estQty').value = 1;
+            document.getElementById('estModal').style.display = 'flex';
+            calculateEst();
+        }
+
+        function closeEst() {
+            document.getElementById('estModal').style.display = 'none';
+        }
+
+        function calculateEst() {
+            let qty = parseInt(document.getElementById('estQty').value) || 0;
+            let total = qty * currentPrice;
+            document.getElementById('estDisplay').innerText = "Rs " + total;
+        }
+
+        function sendToWA() {
+            let qty = document.getElementById('estQty').value || 1;
+            let total = qty * currentPrice;
+            let message = *DNHQ SERVICES - NEW BOOKING*%0A%0A*Service:* ${currentServiceName}%0A*Quantity:* ${qty} ${currentUnit}%0A*Estimated Cost:* Rs ${total}%0A%0A_Please confirm my booking for Karachi area._;
+            window.open(https://wa.me/923152458657?text=${message});
+            closeEst();
+        }
+
         function adminLogin() {
             var pin = prompt("Enter Admin PIN:");
             if(pin === "dnhq123") {
@@ -133,9 +181,9 @@
             } else { alert("Access Denied!"); }
         }
 
+        // Generate Bill & PDF logic stays same as previous version
         function generateBill() {
             var name = document.getElementById('custName').value || "Valued Customer";
-            
             var items = [
                 { n: "Light Point", q: parseInt(document.getElementById('q_lp').value) || 0, r: 500 },
                 { n: "Wiring Point", q: parseInt(document.getElementById('q_wr').value) || 0, r: 1500 },
@@ -148,10 +196,7 @@
                 { n: "AC Gas (Full)", q: parseInt(document.getElementById('q_ag').value) || 0, r: 6500 },
                 { n: "Copper Pipe (ft)", q: parseInt(document.getElementById('q_ap').value) || 0, r: 1500 }
             ];
-
-            var rows = "";
-            var grandTotal = 0;
-
+            var rows = ""; var grandTotal = 0;
             items.forEach(function(item) {
                 if(item.q > 0) {
                     var lineTotal = item.q * item.r;
@@ -159,37 +204,28 @@
                     grandTotal += lineTotal;
                 }
             });
-
             if(grandTotal === 0) { alert("Pehle kaam ki quantity likhein!"); return; }
-
             window.client = name;
             document.getElementById('billBox').style.display = 'block';
             document.getElementById('billPrint').innerHTML = `
                 <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:15px;">
                     <h2 style="margin:0;">DNHQ SERVICES</h2>
-                    <p style="margin:0; font-size:12px;">Professional Technical Team Karachi | 0315-2458657</p>
+                    <p style="margin:0; font-size:12px;">Karachi Technical Team | 0315-2458657</p>
                 </div>
-                <p style="font-size:14px;"><b>Customer:</b> ${name} <span style="float:right;"><b>Date:</b> ${new Date().toLocaleDateString()}</span></p>
+                <p><b>Customer:</b> ${name} <span style="float:right;"><b>Date:</b> ${new Date().toLocaleDateString()}</span></p>
                 <table class="bill-table">
                     <tr style="background:#eee;"><th>Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr>
                     ${rows}
-                    <tr style="background:#f4f4f4; font-weight:bold;">
-                        <td colspan="3" style="text-align:right;">Grand Total:</td>
-                        <td>Rs ${grandTotal}</td>
-                    </tr>
-                </table>
-                <p style="text-align:center; font-size:10px; margin-top:20px; color:#555;">Expert AC & Electrical Solutions.<br>Thank you for choosing DNHQ Services!</p>
-            `;
+                    <tr style="background:#f4f4f4; font-weight:bold;"><td colspan="3" style="text-align:right;">Grand Total:</td><td>Rs ${grandTotal}</td></tr>
+                </table>`;
             document.getElementById('billBox').scrollIntoView({behavior: 'smooth'});
         }
 
         function downloadPDF() {
             const element = document.getElementById('billPrint');
             html2pdf().from(element).set({
-                margin: 10,
-                filename: 'DNHQ_Bill_' + window.client + '.pdf',
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                margin: 10, filename: 'DNHQ_Bill_' + window.client + '.pdf',
+                html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' }
             }).save();
         }
     </script>
