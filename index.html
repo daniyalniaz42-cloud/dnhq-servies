@@ -3,205 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DNHQ SERVICES | Karachi Professional Technical Team</title>
+    <title>DNHQ SERVICES | Karachi Professional Team</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f7f6; text-align: center; color: #333; overflow-x: hidden; }
+        :root { --dark: #0f172a; --gold: #fbbf24; --blue: #3b82f6; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f1f5f9; padding-bottom: 100px; }
         
-        /* Header Fix */
-        .header { background: #0f172a; padding: 15px 5%; border-bottom: 3px solid #3c5e8b; display: flex; align-items: center; justify-content: flex-start; position: relative; z-index: 10; }
-        .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-img { height: 50px; object-fit: contain; }
-        .logo-text-box { text-align: left; color: white; }
-        .logo-text-box b { font-size: 20px; color: #fbbf24; display: block; line-height: 1; }
-        .logo-text-box small { font-size: 10px; letter-spacing: 1px; }
+        .header { background: var(--dark); padding: 15px; border-bottom: 3px solid #334155; display: flex; align-items: center; gap: 10px; }
+        .logo-img { height: 45px; border-radius: 5px; }
+        .logo-text { text-align: left; color: white; line-height: 1; }
+        .logo-text b { color: var(--gold); font-size: 20px; }
 
-        .hero { background: #1e293b; color: white; padding: 40px 10px; border-bottom: 4px solid #fbbf24; position: relative; z-index: 5; }
-        .hero h1 { margin: 0; font-size: 26px; color: #fbbf24; text-transform: uppercase; }
-
-        /* Cards and Items Fix */
-        .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 25px; gap: 20px; position: relative; z-index: 5; }
-        .card { background: white; width: 340px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #fbbf24; }
-        .card h2 { margin: 0 0 15px; font-size: 22px; color: #0f172a; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .hero { background: #1e293b; color: white; padding: 30px 15px; border-bottom: 4px solid var(--gold); text-align: center; }
         
-        .service-item { 
-            display: flex; justify-content: space-between; font-size: 14px; padding: 12px; 
-            border-bottom: 1px dashed #ddd; cursor: pointer; background: #fff;
-            transition: 0.2s; position: relative; z-index: 6; 
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 15px; }
+        .card { background: white; width: 100%; max-width: 350px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card-header { background: #eee; padding: 10px; font-weight: bold; border-bottom: 2px solid var(--gold); }
+
+        /* Multiple Selection Style */
+        .item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 12px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer;
+            transition: 0.2s; user-select: none;
         }
-        .service-item:hover { background: #f0f9ff; border-radius: 5px; transform: scale(1.02); }
-        .service-item b { color: #d97706; }
+        .item:last-child { border: none; }
+        .item.selected { background: #fffbeb; border-left: 5px solid var(--gold); }
+        .item-info { text-align: left; }
+        .item-info span { display: block; font-size: 14px; font-weight: 600; }
+        .item-info small { color: #666; font-size: 12px; }
+        .check-icon { color: #ccc; font-size: 18px; }
+        .selected .check-icon { color: var(--gold); }
 
-        /* Modal / Popup Fix */
-        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 85%; max-width: 350px; text-align: left; position: relative; }
-        .modal-content h3 { margin-top: 0; font-size: 18px; color: #0f172a; border-bottom: 2px solid #fbbf24; padding-bottom: 10px; }
-        .est-input { width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #eee; border-radius: 8px; font-size: 18px; box-sizing: border-box; }
-        .total-box { background: #f0fdf4; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; margin-bottom: 15px; text-align: center; }
-        .total-box b { font-size: 22px; color: #16a34a; }
-        .final-wa-btn { display: block; width: 100%; padding: 15px; background: #25d366; color: white; text-align: center; text-decoration: none; font-weight: bold; border-radius: 8px; font-size: 16px; border: none; cursor: pointer; }
-
-        /* Admin Dashboard Fix */
-        #adminSection { display: none; background: white; padding: 20px; margin: 20px auto; max-width: 900px; border: 2px solid #16a34a; border-radius: 10px; text-align: left; position: relative; z-index: 10; }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .input-f { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        #billBox { display: none; margin-top: 20px; background: #fff; border: 2px solid #000; padding: 20px; }
-        .bill-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .bill-table th, .bill-table td { border: 1px solid #000; padding: 8px; font-size: 13px; }
-
-        /* Footer Fix */
-        .footer { background: #0f172a; color: white; padding: 30px 20px; margin-top: 50px; position: relative; z-index: 10; }
-        .admin-trigger { 
-            display: inline-block; padding: 10px 20px; background: #1e293b; color: #fbbf24; 
-            font-size: 12px; cursor: pointer; margin-top: 15px; border-radius: 5px; 
-            border: 1px solid #334155; 
+        /* Floating Cart / Booking Bar */
+        .booking-bar { 
+            position: fixed; bottom: 0; left: 0; width: 100%; background: white; 
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2); padding: 15px; 
+            display: none; border-top: 2px solid var(--gold); z-index: 1000;
         }
-        .admin-trigger:hover { background: #fbbf24; color: black; }
+        .bar-flex { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto; }
+        .total-text b { font-size: 20px; color: #16a34a; }
+        .wa-btn { background: #25d366; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; }
 
-        @media (max-width: 600px) { .admin-grid { grid-template-columns: 1fr; } }
+        /* Admin UI */
+        #adminPanel { display: none; background: white; margin: 20px auto; max-width: 800px; padding: 20px; border-radius: 10px; border: 2px solid #16a34a; text-align: left; }
+        .admin-input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
+
+        footer { background: var(--dark); color: white; padding: 40px 20px; text-align: center; }
+        .staff-btn { display: inline-block; margin-top: 20px; color: #444; font-size: 11px; cursor: pointer; text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <div class="logo-container">
-            <img src="1773452778552.png" alt="DNHQ Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/50x50?text=DNHQ'">
-            <div class="logo-text-box">
-                <b>DNHQ</b>
-                <small>SERVICES</small>
-            </div>
-        </div>
+        <img src="1773452778552.png" class="logo-img" alt="Logo" onerror="this.src='https://via.placeholder.com/50'">
+        <div class="logo-text"><b>DNHQ</b><br><small>SERVICES</small></div>
     </header>
 
     <div class="hero">
-        <h1>AC & ELECTRICAL EXPERTS</h1>
-        <p>Karachi's No.1 Professional Technical Team</p>
+        <h2 style="margin:0; color:var(--gold);">KARACHI TECHNICAL EXPERTS</h2>
+        <p style="margin:5px 0 0; opacity:0.8;">Select services to see instant estimate</p>
     </div>
 
     <div class="container">
-        <div class="card" style="border-top-color: #3b82f6;">
-            <h2 style="color: #3b82f6;">AC SERVICES</h2>
-            <div class="service-item" onclick="openEst('AC Master Service', 3500)"><span>Master Service</span> <b>Rs 3500</b></div>
-            <div class="service-item" onclick="openEst('AC Normal Service', 2500)"><span>Normal Service</span> <b>Rs 2500</b></div>
-            <div class="service-item" onclick="openEst('AC Installation', 3000)"><span>Installation</span> <b>Rs 3000</b></div>
-            <div class="service-item" onclick="openEst('AC Gas Refill (Full)', 6500)"><span>Gas Refill (Full)</span> <b>Rs 6500</b></div>
-            <div class="service-item" onclick="openEst('AC Copper Pipe', 1500, 'ft')"><span>Copper Pipe (ft)</span> <b>Rs 1500</b></div>
-            <div class="service-item" onclick="openEst('AC Dismantle', 1500)"><span>Dismantle</span> <b>Rs 1500</b></div>
+        <div class="card">
+            <div class="card-header" style="color:var(--blue);">AC SERVICES</div>
+            <div class="item" onclick="toggleItem(this, 'AC Master Service', 3500)">
+                <div class="item-info"><span>Master Service</span><small>Deep Chemical Wash</small></div>
+                <b>Rs 3500</b> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'AC Normal Service', 2500)">
+                <div class="item-info"><span>Normal Service</span><small>Filter & Coil Cleaning</small></div>
+                <b>Rs 2500</b> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'AC Installation', 3000)">
+                <div class="item-info"><span>Installation</span><small>Proper Vacuuming</small></div>
+                <b>Rs 3000</b> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'AC Gas Refill', 6500)">
+                <div class="item-info"><span>Gas Refill</span><small>Full R22/R410 Load</small></div>
+                <b>Rs 6500</b> <i class="fas fa-check-circle check-icon"></i>
+            </div>
         </div>
 
         <div class="card">
-            <h2 style="color: #fbbf24;">ELECTRICIAN</h2>
-            <div class="service-item" onclick="openEst('Light Point Fitting', 500)"><span>Light Point</span> <b>Rs 500</b></div>
-            <div class="service-item" onclick="openEst('New Wiring (Point)', 1500)"><span>New Wiring</span> <b>Rs 1500</b></div>
-            <div class="service-item" onclick="openEst('DB Box Fitting', 2500)"><span>DB Box Fitting</span> <b>Rs 2500</b></div>
-            <div class="service-item" onclick="openEst('Breaker Replacement', 200)"><span>Breaker Replace</span> <b>Rs 200</b></div>
-            <div class="service-item" onclick="openEst('UPS Installation', 3000)"><span>UPS Install</span> <b>Rs 3000</b></div>
-            <div class="service-item" onclick="openEst('Short Circuit Repair', 1000)"><span>Fault Repair</span> <b>Rs 1000</b></div>
+            <div class="card-header" style="color:#d97706;">ELECTRICIAN</div>
+            <div class="item" onclick="toggleItem(this, 'Light Point Fitting', 500)">
+                <div class="item-info"><span>Light Point</span><small>Per Point Rate</small></div>
+                <b>Rs 500</b> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'New Wiring', 1500)">
+                <div class="item-info"><span>New Wiring</span><small>Complete Setup</small></div>
+                <b>Rs 1500</b> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'UPS Installation', 3000)">
+                <div class="item-info"><span>UPS Install</span><small>Inverter/UPS Setup</small></div>
+                <b>Rs 3000</b> <i class="fas fa-check-circle check-icon"></i>
+            </div>
+            <div class="item" onclick="toggleItem(this, 'Short Circuit Repair', 1000)">
+                <div class="item-info"><span>Fault Repair</span><small>Emergency Service</small></div>
+                <b>Rs 1000</b> <i class="fas fa-check-circle check-icon"></i>
+            </div>
         </div>
     </div>
 
-    <div id="estModal" class="modal">
-        <div class="modal-content">
-            <h3 id="estTitle">Service</h3>
-            <p style="font-size: 13px;">How many points/units?</p>
-            <input type="number" id="estQty" class="est-input" value="1" oninput="calculateEst()">
-            <div class="total-box">
-                <span style="font-size: 12px; color: #666;">Estimate:</span><br>
-                <b id="estDisplay">Rs 0</b>
+    <div class="booking-bar" id="bookingBar">
+        <div class="bar-flex">
+            <div class="total-text">
+                <small id="itemsCount">0 Items Selected</small><br>
+                <b>Total: Rs <span id="totalPrice">0</span></b>
             </div>
-            <button class="final-wa-btn" onclick="sendToWA()">Confirm on WhatsApp</button>
-            <button onclick="closeEst()" style="width:100%; background:none; border:none; margin-top:15px; color:red; cursor:pointer; font-weight:bold;">CLOSE</button>
+            <button class="wa-btn" onclick="sendWhatsApp()">
+                <i class="fab fa-whatsapp"></i> BOOK NOW
+            </button>
         </div>
     </div>
 
-    <div id="adminSection">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #16a34a; padding-bottom:10px;">
-            <h3>ADMIN BILLING</h3>
-            <button onclick="location.reload()" style="background:red; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">Logout</button>
-        </div>
-        <input type="text" id="custName" class="input-f" placeholder="Customer Name">
-        <div class="admin-grid">
-            <div style="background:#f9f9f9; padding:15px; border-radius:8px;">
-                <h4 style="color:#16a34a; margin-top:0;">Electrical</h4>
-                LP: <input type="number" id="q_lp" class="input-f" value="0">
-                WR: <input type="number" id="q_wr" class="input-f" value="0">
-                DB: <input type="number" id="q_db" class="input-f" value="0">
-            </div>
-            <div style="background:#f9f9f9; padding:15px; border-radius:8px;">
-                <h4 style="color:#3b82f6; margin-top:0;">AC Work</h4>
-                Master: <input type="number" id="q_am" class="input-f" value="0">
-                Normal: <input type="number" id="q_an" class="input-f" value="0">
-                Pipe: <input type="number" id="q_ap" class="input-f" value="0">
-            </div>
-        </div>
-        <button onclick="generateBill()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer;">GENERATE PDF BILL</button>
-        <div id="billBox">
-            <div id="billPrint"></div>
-            <button onclick="downloadPDF()" style="width:100%; padding:12px; background:#0f172a; color:white; border:none; margin-top:10px; border-radius:5px; cursor:pointer;">Download PDF</button>
-        </div>
+    <div id="adminPanel">
+        <h3>ADMIN BILL GENERATOR</h3>
+        <input type="text" id="billCust" class="admin-input" placeholder="Customer Name">
+        <textarea id="billDetails" class="admin-input" placeholder="Job Details..." rows="3"></textarea>
+        <input type="number" id="billTotal" class="admin-input" placeholder="Total Amount">
+        <button onclick="downloadPDF()" style="width:100%; padding:15px; background:var(--dark); color:white; border:none; border-radius:5px; font-weight:bold;">DOWNLOAD PDF RECEIPT</button>
+        <button onclick="location.reload()" style="width:100%; margin-top:10px; background:none; border:none; color:red;">Logout</button>
     </div>
 
-    <footer class="footer">
-        <p><b>DNHQ SERVICES</b> | Karachi</p>
-        <p>WhatsApp: +92 315 2458657</p>
-        <div class="admin-trigger" onclick="adminLogin()">
-            <i class="fas fa-lock"></i> STAFF LOGIN
-        </div>
+    <footer>
+        <p><b>DNHQ SERVICES</b><br>Karachi, Pakistan</p>
+        <p style="font-size:12px; opacity:0.6;">Contact: 0315-2458657</p>
+        <div class="staff-btn" onclick="adminLogin()">Staff Access</div>
     </footer>
 
     <script>
-        let currentPrice = 0;
-        let currentServiceName = "";
-        let currentUnit = "";
+        let selectedItems = [];
 
-        function openEst(name, price, unit = "") {
-            currentServiceName = name;
-            currentPrice = price;
-            currentUnit = unit;
-            document.getElementById('estTitle').innerText = name;
-            document.getElementById('estQty').value = 1;
-            document.getElementById('estModal').style.display = 'flex';
-            calculateEst();
+        function toggleItem(el, name, price) {
+            const index = selectedItems.findIndex(item => item.name === name);
+            
+            if (index > -1) {
+                // Remove if already selected
+                selectedItems.splice(index, 1);
+                el.classList.remove('selected');
+            } else {
+                // Add if new
+                selectedItems.push({ name, price });
+                el.classList.add('selected');
+            }
+            
+            updateBar();
         }
 
-        function closeEst() {
-            document.getElementById('estModal').style.display = 'none';
+        function updateBar() {
+            const bar = document.getElementById('bookingBar');
+            const total = selectedItems.reduce((sum, item) => sum + item.price, 0);
+            
+            if (selectedItems.length > 0) {
+                bar.style.display = 'block';
+                document.getElementById('itemsCount').innerText = selectedItems.length + " Service(s) Selected";
+                document.getElementById('totalPrice').innerText = total;
+            } else {
+                bar.style.display = 'none';
+            }
         }
 
-        function calculateEst() {
-            let qty = parseInt(document.getElementById('estQty').value) || 0;
-            document.getElementById('estDisplay').innerText = "Rs " + (qty * currentPrice);
-        }
+        function sendWhatsApp() {
+            let total = 0;
+            let list = "";
+            selectedItems.forEach((item, i) => {
+                list += ${i+1}. ${item.name} (Rs ${item.price})%0A;
+                total += item.price;
+            });
 
-        function sendToWA() {
-            let qty = document.getElementById('estQty').value || 1;
-            let total = qty * currentPrice;
-            let msg = *DNHQ SERVICES - BOOKING*%0A*Service:* ${currentServiceName}%0A*Qty:* ${qty} ${currentUnit}%0A*Total:* Rs ${total};
+            const msg = *DNHQ SERVICES BOOKING*%0A%0A*Selected Services:*%0A${list}%0A*Estimated Total: Rs ${total}*%0A%0APlease confirm my booking.;
             window.open(https://wa.me/923152458657?text=${msg});
-            closeEst();
         }
 
         function adminLogin() {
-            var pin = prompt("Admin Password:");
-            if(pin === "dnhq123") {
-                document.getElementById('adminSection').style.display = 'block';
-                document.getElementById('adminSection').scrollIntoView({behavior: 'smooth'});
-            } else { alert("Wrong Password!"); }
-        }
-
-        function generateBill() {
-            var name = document.getElementById('custName').value || "Customer";
-            var lp = (parseInt(document.getElementById('q_lp').value) || 0) * 500;
-            var am = (parseInt(document.getElementById('q_am').value) || 0) * 3500;
-            var total = lp + am;
-            window.client = name;
-            document.getElementById('billBox').style.display = 'block';
-            document.getElementById('billPrint').innerHTML = <h2 style="text-align:center;">DNHQ RECEIPT</h2><hr><p><b>Client:</b> ${name}</p><p><b>Total:</b> Rs ${total}</p>;
+            const pass = prompt("Enter PIN:");
+            if(pass === "dnhq123") {
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminPanel').scrollIntoView();
+            } else { alert("Wrong Access!"); }
         }
 
         function downloadPDF() {
-            html2pdf().from(document.getElementById('billPrint')).save('DNHQ_Bill.pdf');
+            const name = document.getElementById('billCust').value || "Customer";
+            const details = document.getElementById('billDetails').value;
+            const total = document.getElementById('billTotal').value;
+
+            const content = `
+                <div style="padding:40px; border:2px solid #000; text-align:left;">
+                    <h1 style="text-align:center;">DNHQ SERVICES</h1>
+                    <p style="text-align:center;">Professional Technical Team Karachi</p>
+                    <hr>
+                    <p><b>Customer:</b> ${name}</p>
+                    <p><b>Date:</b> ${new Date().toLocaleDateString()}</p>
+                    <p><b>Job Description:</b><br>${details}</p>
+                    <hr>
+                    <h2 style="text-align:right;">Grand Total: Rs ${total}</h2>
+                    <p style="text-align:center; margin-top:50px; font-size:12px;">Thank you for choosing DNHQ!</p>
+                </div>
+            `;
+            html2pdf().from(content).save('DNHQ_Bill.pdf');
         }
     </script>
 </body>
