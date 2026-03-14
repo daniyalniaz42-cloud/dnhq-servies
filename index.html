@@ -2,175 +2,156 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DNHQ SERVICES | Karachi</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root { --dark: #0f172a; --gold: #fbbf24; --green: #25d366; }
-        body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 150px; }
+        :root { --dark: #0f172a; --gold: #fbbf24; }
+        body { font-family: sans-serif; margin: 0; background: #f8fafc; color: #333; padding-bottom: 100px; }
         
         /* Header Fix */
-        .header { background: var(--dark); padding: 15px; display: flex; align-items: center; gap: 10px; border-bottom: 3px solid var(--gold); }
-        .logo-img { height: 45px; border-radius: 4px; }
+        .header { background: var(--dark); padding: 12px; display: flex; align-items: center; gap: 12px; border-bottom: 3px solid var(--gold); }
+        .logo-img { height: 40px; width: auto; display: block; }
         .logo-text { color: white; line-height: 1.1; }
         .logo-text b { color: var(--gold); font-size: 18px; }
 
-        .hero { background: #1e293b; color: white; padding: 25px 15px; text-align: center; }
-
-        /* Container & Cards */
+        .hero { background: #1e293b; color: white; padding: 20px; text-align: center; }
         .container { padding: 15px; max-width: 500px; margin: 0 auto; }
-        .category { font-weight: bold; margin: 20px 0 10px; color: var(--dark); border-left: 5px solid var(--gold); padding-left: 10px; }
-
-        /* Real Button Approach - This fixes Click Issue */
-        .service-btn {
-            width: 100%; background: white; border: 1px solid #ddd; 
-            border-radius: 10px; margin-bottom: 10px; padding: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; -webkit-appearance: none; text-align: left;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .service-btn.active { border: 2px solid var(--gold); background: #fffbeb; }
         
-        .info b { display: block; font-size: 16px; color: #1e293b; }
-        .info span { font-size: 12px; color: #64748b; }
-        .price { font-weight: bold; color: var(--dark); font-size: 15px; }
-
-        /* Floating Cart Bar */
-        .cart-bar {
-            position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: white; border-top: 3px solid var(--gold);
-            padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
-            display: none; z-index: 9999; box-sizing: border-box;
+        /* Service Buttons - Solid Click */
+        .svc-btn {
+            width: 100%; background: white; border: 2px solid #e2e8f0; 
+            border-radius: 12px; margin-bottom: 12px; padding: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: 0.2s; -webkit-tap-highlight-color: transparent;
         }
-        .bar-inner { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto; }
-        .book-btn { background: var(--green); color: white; padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .svc-btn.active { border-color: var(--gold); background: #fffbeb; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .svc-info { text-align: left; }
+        .svc-info b { display: block; font-size: 16px; margin-bottom: 2px; }
+        .svc-info span { font-size: 12px; color: #64748b; }
+        .price { font-weight: bold; font-size: 15px; color: var(--dark); }
 
-        #adminPanel { display: none; background: white; margin: 15px; padding: 20px; border-radius: 10px; border: 2px solid var(--dark); }
-        .inp { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        /* Floating Cart */
+        .cart-box {
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: white; border-top: 2px solid var(--gold);
+            padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            display: none; box-sizing: border-box; z-index: 1000;
+        }
+        .cart-inner { display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto; }
+        .book-now { background: #25d366; color: white; padding: 12px 24px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+
+        #adminArea { display: none; background: white; margin: 15px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .inp { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <img src="1773452778552.png" class="logo-img" alt="DNHQ" onerror="this.src='https://via.placeholder.com/45'">
-        <div class="logo-text"><b>DNHQ</b><br><small>SERVICES</small></div>
-    </div>
+<div class="header">
+    <img src="1773452778552.png" class="logo-img" alt="DNHQ Logo" onerror="this.src='https://via.placeholder.com/40x40?text=DNHQ'">
+    <div class="logo-text"><b>DNHQ</b><br><small>SERVICES</small></div>
+</div>
 
-    <div class="hero">
-        <h2 style="margin:0;">KARACHI TECHNICAL EXPERTS</h2>
-        <p style="margin:5px 0; opacity:0.8;">Tap services to select</p>
-    </div>
+<div class="hero">
+    <h3 style="margin:0;">KARACHI TECHNICAL TEAM</h3>
+    <p style="margin:5px 0 0; font-size:13px; opacity:0.8;">Select services for instant estimate</p>
+</div>
 
-    <div class="container">
-        <div class="category">AC SERVICES</div>
-        <button class="service-btn" onclick="selectItem(this, 'AC Master Service', 3500)">
-            <div class="info"><b>Master Service</b><span>Chemical Deep Cleaning</span></div>
-            <div class="price">Rs 3500</div>
-        </button>
-        <button class="service-btn" onclick="selectItem(this, 'AC Normal Service', 2500)">
-            <div class="info"><b>Normal Service</b><span>Filter & Coil Wash</span></div>
-            <div class="price">Rs 2500</div>
-        </button>
-        <button class="service-btn" onclick="selectItem(this, 'AC Installation', 3000)">
-            <div class="info"><b>Installation</b><span>Split Unit Setup</span></div>
-            <div class="price">Rs 3000</div>
-        </button>
-        <button class="service-btn" onclick="selectItem(this, 'AC Gas Refill', 6500)">
-            <div class="info"><b>Gas Refill</b><span>Full Gas Charge</span></div>
-            <div class="price">Rs 6500</div>
-        </button>
+<div class="container">
+    <h4 style="margin: 10px 0; border-left: 4px solid var(--gold); padding-left: 8px;">AC SERVICES</h4>
+    <button class="svc-btn" onclick="toggleSvc(this, 'AC Master Service', 3500)">
+        <div class="svc-info"><b>Master Service</b><span>Chemical Deep Wash</span></div>
+        <div class="price">Rs 3500</div>
+    </button>
+    <button class="svc-btn" onclick="toggleSvc(this, 'AC Gas Refill', 6500)">
+        <div class="svc-info"><b>Gas Refill</b><span>Full Charge</span></div>
+        <div class="price">Rs 6500</div>
+    </button>
 
-        <div class="category">ELECTRICIAN</div>
-        <button class="service-btn" onclick="selectItem(this, 'Light Point Fitting', 500)">
-            <div class="info"><b>Light Point</b><span>Per Point Fitting</span></div>
-            <div class="price">Rs 500</div>
-        </button>
-        <button class="service-btn" onclick="selectItem(this, 'New Wiring Point', 1500)">
-            <div class="info"><b>New Wiring</b><span>Complete Setup</span></div>
-            <div class="price">Rs 1500</div>
-        </button>
-        <button class="service-btn" onclick="selectItem(this, 'UPS Installation', 3000)">
-            <div class="info"><b>UPS Install</b><span>Proper Fitting</span></div>
-            <div class="price">Rs 3000</div>
-        </button>
-        <button class="service-btn" onclick="selectItem(this, 'Short Circuit Repair', 1000)">
-            <div class="info"><b>Fault Repair</b><span>Emergency Trace</span></div>
-            <div class="price">Rs 1000</div>
-        </button>
-    </div>
+    <h4 style="margin: 20px 0 10px; border-left: 4px solid var(--gold); padding-left: 8px;">ELECTRICIAN</h4>
+    <button class="svc-btn" onclick="toggleSvc(this, 'Light Point Fitting', 500)">
+        <div class="svc-info"><b>Light Point</b><span>New Fitting</span></div>
+        <div class="price">Rs 500</div>
+    </button>
+    <button class="svc-btn" onclick="toggleSvc(this, 'UPS Installation', 3000)">
+        <div class="svc-info"><b>UPS Install</b><span>Proper Setup</span></div>
+        <div class="price">Rs 3000</div>
+    </button>
+</div>
 
-    <div class="cart-bar" id="cartBar">
-        <div class="bar-inner">
-            <div style="text-align:left;">
-                <span id="qtyText" style="font-size:12px; color:#666;">0 Selected</span><br>
-                <b style="font-size:18px; color:var(--dark);">Total: Rs <span id="totalTxt">0</span></b>
-            </div>
-            <button class="book-btn" onclick="sendToWA()">BOOK NOW</button>
+<div class="cart-box" id="cart">
+    <div class="cart-inner">
+        <div>
+            <span id="items" style="font-size:12px; color:#666;">0 Items</span><br>
+            <b>Total: Rs <span id="total">0</span></b>
         </div>
+        <button class="book-now" onclick="sendWA()">BOOK NOW</button>
     </div>
+</div>
 
-    <div id="adminPanel">
-        <h3>ADMIN BILLING</h3>
-        <input type="text" id="aName" class="inp" placeholder="Customer Name">
-        <textarea id="aWork" class="inp" placeholder="Work Done..."></textarea>
-        <input type="number" id="aTotal" class="inp" placeholder="Total Amount">
-        <button onclick="genPDF()" style="width:100%; padding:15px; background:var(--dark); color:white; border:none; border-radius:5px;">DOWNLOAD PDF</button>
-    </div>
+<div id="adminArea">
+    <h3>Admin Billing</h3>
+    <input type="text" id="cName" class="inp" placeholder="Customer Name">
+    <input type="number" id="cTotal" class="inp" placeholder="Total Amount">
+    <button onclick="savePDF()" style="width:100%; padding:10px; background:var(--dark); color:white; border:none; border-radius:4px;">Save PDF</button>
+</div>
 
-    <div style="text-align:center; padding:40px; background:#1e293b; color:white;">
-        <p><b>DNHQ SERVICES</b> | Karachi</p>
-        <button onclick="adminLogin()" style="background:none; border:none; color:#64748b; text-decoration:underline;">Staff Login</button>
-    </div>
+<footer style="text-align:center; padding:30px; background:#1e293b; color:white; margin-top:20px;">
+    <p style="margin:0; font-size:14px;">DNHQ Services Karachi</p>
+    <small style="color:#64748b; cursor:pointer;" onclick="showAdmin()">Staff Access</small>
+</footer>
 
-    <script>
-        let cart = [];
+<script>
+    let myCart = [];
 
-        function selectItem(btn, name, price) {
-            const index = cart.findIndex(i => i.name === name);
-            if (index > -1) {
-                cart.splice(index, 1);
-                btn.classList.remove('active');
-            } else {
-                cart.push({name, price});
-                btn.classList.add('active');
-            }
-            render();
+    function toggleSvc(btn, name, price) {
+        const idx = myCart.findIndex(x => x.name === name);
+        if(idx > -1) {
+            myCart.splice(idx, 1);
+            btn.classList.remove('active');
+        } else {
+            myCart.push({name, price});
+            btn.classList.add('active');
         }
+        updateUI();
+    }
 
-        function render() {
-            const bar = document.getElementById('cartBar');
-            const total = cart.reduce((s, i) => s + i.price, 0);
-            if (cart.length > 0) {
-                bar.style.display = 'block';
-                document.getElementById('qtyText').innerText = cart.length + " Service(s)";
-                document.getElementById('totalTxt').innerText = total;
-            } else {
-                bar.style.display = 'none';
-            }
+    function updateUI() {
+        const cartDiv = document.getElementById('cart');
+        const total = myCart.reduce((s, i) => s + i.price, 0);
+        if(myCart.length > 0) {
+            cartDiv.style.display = 'block';
+            document.getElementById('items').innerText = myCart.length + " Service(s)";
+            document.getElementById('total').innerText = total;
+        } else {
+            cartDiv.style.display = 'none';
         }
+    }
 
-        function sendToWA() {
-            let total = 0;
-            let list = "DNHQ SERVICES BOOKING%0A";
-            cart.forEach((item, i) => {
-                list += ${i+1}. ${item.name} (Rs ${item.price})%0A;
-                total += item.price;
-            });
-            list += %0A*TOTAL: Rs ${total}*%0A%0A_Booking for Karachi area._;
-            window.open(https://wa.me/923152458657?text=${list});
-        }
+    function sendWA() {
+        let msg = "*DNHQ SERVICES ORDER*%0A%0A";
+        let total = 0;
+        myCart.forEach((item, i) => {
+            msg += `${i+1}. ${item.name} (Rs ${item.price})%0A`;
+            total += item.price;
+        });
+        msg += `%0A*Total Estimate: Rs ${total}*`;
+        window.open(`https://wa.me/923152458657?text=${msg}`);
+    }
 
-        function adminLogin() {
-            if(prompt("PIN:") === "dnhq123") {
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('adminPanel').scrollIntoView();
-            }
+    function showAdmin() {
+        if(prompt("Enter PIN:") === "dnhq123") {
+            document.getElementById('adminArea').style.display = 'block';
+            document.getElementById('adminArea').scrollIntoView();
         }
+    }
 
-        function genPDF() {
-            const div = <div><h1>DNHQ Bill</h1><p>Customer: ${document.getElementById('aName').value}</p><p>Total: Rs ${document.getElementById('aTotal').value}</p></div>;
-            html2pdf().from(div).save('DNHQ.pdf');
-        }
-    </script>
+    function savePDF() {
+        const n = document.getElementById('cName').value;
+        const t = document.getElementById('cTotal').value;
+        const html = `<div><h1>DNHQ RECEIPT</h1><p>Customer: ${n}</p><h3>Total: Rs ${t}</h3></div>`;
+        html2pdf().from(html).save('Bill.pdf');
+    }
+</script>
 </body>
 </html>
