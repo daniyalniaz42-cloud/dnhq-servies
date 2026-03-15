@@ -180,28 +180,59 @@
     }
 
     function generatePDF(order) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        // ✍️ EDIT OPTION BEFORE PDF
-        let finalWork = prompt("Service Details Edit Karein:", order.work) || order.work;
-        let finalTotal = prompt("Final Price Edit Karein:", order.total) || order.total;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // 1. Customer se Extra kaam poochein
+    let extraWork = prompt("Extra kaam ki detail likhein (e.g. 1 Extra Board Install):", "");
+    let extraCost = prompt("Is extra kaam ke kitne paise hain?", "0");
 
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,30,'F');
-        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 15, 20);
-        doc.setTextColor(0,0,0); doc.setFontSize(12);
-        doc.text(`Invoice For: ${order.client}`, 15, 45);
-        doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 52);
+    // PDF ki Designing
+    doc.setFillColor(0,0,0); 
+    doc.rect(0,0,210,30,'F');
+    doc.setTextColor(251, 191, 36); 
+    doc.setFontSize(22); 
+    doc.text("DNHQ SERVICES", 15, 20);
+    
+    doc.setTextColor(0,0,0); 
+    doc.setFontSize(12);
+    doc.text(`Invoice For: ${order.client}`, 15, 45);
+    doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 52);
 
-        doc.autoTable({
-            startY: 60,
-            head: [['Service Description', 'Amount']],
-            body: [[finalWork, `Rs ${finalTotal}`]],
-            headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
-        });
-        
-        doc.save(`DNHQ_${order.client}.pdf`);
+    // 2. Table ka data (Pehli row selection wali)
+    let tableBody = [
+        [order.work, `Rs ${order.total}`]
+    ];
+
+    // 3. Agar extra kaam dala hai toh doosri row add hogi
+    if (extraWork && extraWork.trim() !== "") {
+        tableBody.push([extraWork, `Rs ${extraCost}`]);
     }
+
+    // Paise jama (plus) karne ki logic
+    let finalTotal = parseInt(order.total) + (parseInt(extraCost) || 0);
+
+    // Table banana
+    doc.autoTable({
+        startY: 60,
+        head: [['Service Description', 'Amount']],
+        body: tableBody,
+        headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] },
+        theme: 'grid'
+    });
+
+    // Grand Total
+    doc.setFontSize(14);
+    doc.setFont(undefined, 'bold');
+    doc.text(`Grand Total: Rs ${finalTotal}`, 140, doc.lastAutoTable.finalY + 15);
+
+    doc.setFontSize(10);
+    doc.setFont(undefined, 'normal');
+    doc.text("Thank you for choosing DNHQ Services!", 15, doc.lastAutoTable.finalY + 25);
+
+    // PDF Save
+    doc.save(`DNHQ_Invoice_${order.client}.pdf`);
+}
     </script>
 </body>
 </html>
