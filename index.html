@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DNHQ SERVICES | Official</title>
-    <link rel="manifest" href="manifest.json?v=1.1">
+    <link rel="manifest" href="manifest.json?v=4">
     <meta name="theme-color" content="#fbbf24">
     <link rel="apple-touch-icon" href="1773452778552.jpeg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -15,10 +15,8 @@
         .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
         .logo-main { height: 85px; display: block; margin: 0 auto; }
         .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
-        
         #installBtn { display: none; background: #fbbf24; color: black; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; margin: 15px auto; cursor: pointer; animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
-
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
         .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
         .section-tag h2 { font-size: 14px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
@@ -45,45 +43,16 @@
 
     <div class="wrapper">
         <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)">
-            <div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div>
-        </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fancy Light Fitting', 0)">
-            <div class="svc-meta"><b>Fancy Fitting</b><p>Chandeliers & Profiles</p></div><div class="svc-rate">As per Work</div>
-        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fancy Light Fitting', 0)"><div class="svc-meta"><b>Fancy Fitting</b><p>Chandeliers & Profiles</p></div><div class="svc-rate">As per Work</div></div>
 
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)">
-            <div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div>
-        </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)">
-            <div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div>
-        </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 6500)">
-            <div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 6,500</div>
-        </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)">
-            <div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div>
-        </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)">
-            <div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div>
-        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
 
         <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)">
-            <div class="svc-meta"><b>Fault Finding</b><p>Tracing & Fixing</p></div><div class="svc-rate">Rs 1,000</div>
-        </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)">
-            <div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div>
-        </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'New Point Wiring', 1500)">
-            <div class="svc-meta"><b>New Point</b><p>Wiring with Socket</p></div><div class="svc-rate">Rs 1,500</div>
-        </div>
-
-        <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)">
-            <div class="svc-meta"><b>Gas Refill</b><p>Complete Charging</p></div><div class="svc-rate">Rs 7,500</div>
-        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Tracing & Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'New Point Wiring', 1500)"><div class="svc-meta"><b>New Point</b><p>Wiring with Socket</p></div><div class="svc-rate">Rs 1,500</div></div>
     </div>
 
     <div id="adminView">
@@ -107,17 +76,14 @@
     </footer>
    
     <script>
-    // 1. AUTO-UPDATE LOGIC
+    // 1. AUTO-UPDATE APP LOGIC
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').then(reg => {
             reg.onupdatefound = () => {
                 const installingWorker = reg.installing;
                 installingWorker.onstatechange = () => {
                     if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        // Jab naya code GitHub par aye, user ko pop-up dikhaye
-                        if(confirm("New Update Available for DNHQ App! Reload now?")) {
-                            window.location.reload();
-                        }
+                        if(confirm("New Update Available! Reload App?")) window.location.reload();
                     }
                 };
             };
@@ -126,23 +92,16 @@
 
     let cart = [];
     let deferredPrompt;
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3S2OPaEBKBRMH7dafrTCc0t95hKW1cjPtCHjLGr0gzzxP60wXc2mbdElKDvQPFsGuxg/exec";
+    // YAHAN APNA NAYA URL DALAIN
+    const SCRIPT_URL = "Yhttps://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
+        e.preventDefault(); deferredPrompt = e;
         document.getElementById('installBtn').style.display = 'block';
     });
 
     document.getElementById('installBtn').addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                document.getElementById('installBtn').style.display = 'none';
-            }
-            deferredPrompt = null;
-        }
+        if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
     });
 
     function toggleSvc(el, name, price) {
@@ -174,89 +133,52 @@
 
     async function loadLogs() {
         const container = document.getElementById('logItems');
-        container.innerHTML = "Fetching Records...";
+        container.innerHTML = "Fetching Fresh Data...";
         try {
-            const res = await fetch(SCRIPT_URL + "?v=" + new Date().getTime());
+            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
             const data = await res.json();
-            container.innerHTML = data.reverse().map((d, index) => `
-                <div class="log-card" style="background:#1a2233; padding:15px; border-radius:12px; margin-bottom:15px; border:1px solid #333;">
-                    <div style="display:flex; justify-content:space-between;">
-                        <b style="color:white;">${d.client}</b>
-                        <small style="color:#94a3b8;">${d.date || ''}</small>
-                    </div>
-                    <p style="margin:8px 0; font-size:13px; color:#cbd5e1;">${d.work}</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                        <span style="color:gold; font-weight:bold; font-size:16px;">Rs ${d.total}</span>
-                        <div style="display:flex; gap:10px;">
-                            <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; border:none; padding:6px 12px; border-radius:5px; font-weight:bold; cursor:pointer; color:black; font-size:12px;">PDF & EDIT</button>
-                            <button onclick="deleteRecord('${d.client}', ${d.total})" style="background:#ef4444; border:none; padding:6px 12px; border-radius:5px; font-weight:bold; cursor:pointer; color:white; font-size:12px;">DELETE</button>
+            container.innerHTML = data.reverse().map(d => `
+                <div class="log-card">
+                    <div style="display:flex; justify-content:space-between;"><b>${d.client}</b><small>${d.date || ''}</small></div>
+                    <p style="margin:5px 0; font-size:13px; color:#94a3b8;">${d.work}</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <b style="color:gold;">Rs ${d.total}</b>
+                        <div style="display:flex; gap:5px;">
+                            <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; border:none; padding:5px 10px; border-radius:5px; font-weight:bold;">PDF & EDIT</button>
+                            <button onclick="deleteRec('${d.client}', ${d.total})" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px;">DEL</button>
                         </div>
                     </div>
                 </div>
             `).join('');
-        } catch(e) { container.innerHTML = "Error loading data."; }
+        } catch(e) { container.innerHTML = "Error loading."; }
     }
 
-    // Delete Function (Ye bhi lazmi add karein agar pehle nahi tha)
-    async function deleteRecord(client, total) {
-        if(confirm(`Kya aap ${client} ka record delete karna chahte hain?`)) {
-            try {
-                // Google Sheet ko delete ki request bhejne ke liye
-                await fetch(SCRIPT_URL + `?del=true&client=${client}&total=${total}`);
-                alert("Record delete ho gaya! List refresh ho rahi hai...");
-                loadLogs(); // List dobara load karein
-            } catch(e) {
-                alert("Delete karne mein masla aaya.");
-            }
+    async function deleteRec(client, total) {
+        if(confirm("Delete this record?")) {
+            await fetch(SCRIPT_URL + `?del=true&client=${encodeURIComponent(client)}&total=${total}`, {mode: 'no-cors'});
+            setTimeout(() => loadLogs(), 1500);
         }
     }
-    // 📑 EXTRA WORK INVOICE LOGIC
+
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
-        let extraWork = prompt("Customer ka extra kaam likhein (e.g. 1 Extra Socket):", "");
-        let extraCost = prompt("Is extra kaam ke paise (Sirf Number):", "0");
+        let extraWork = prompt("Extra kaam (Empty if none):", "");
+        let extraCost = prompt("Extra paise:", "0");
 
-        doc.setFillColor(0,0,0); 
-        doc.rect(0,0,210,30,'F');
-        doc.setTextColor(251, 191, 36); 
-        doc.setFontSize(22); 
-        doc.text("DNHQ SERVICES", 15, 20);
-        
-        doc.setTextColor(0,0,0); 
-        doc.setFontSize(12);
-        doc.text(`Invoice For: ${order.client}`, 15, 45);
+        doc.setFillColor(0,0,0); doc.rect(0,0,210,30,'F');
+        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 15, 20);
+        doc.setTextColor(0,0,0); doc.setFontSize(12);
+        doc.text(`Invoice: ${order.client}`, 15, 45);
         doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 52);
 
-        // Table Rows: Pehli row main kaam, doosri row extra kaam
-        let tableBody = [
-            [order.work, `Rs ${order.total}`]
-        ];
+        let body = [[order.work, `Rs ${order.total}`]];
+        if (extraWork) body.push([extraWork, `Rs ${extraCost}`]);
+        let final = parseInt(order.total) + (parseInt(extraCost) || 0);
 
-        if (extraWork && extraWork.trim() !== "") {
-            tableBody.push([extraWork, `Rs ${extraCost}`]);
-        }
-
-        let finalTotal = parseInt(order.total) + (parseInt(extraCost) || 0);
-
-        doc.autoTable({
-            startY: 60,
-            head: [['Service Description', 'Amount']],
-            body: tableBody,
-            headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] },
-            theme: 'grid'
-        });
-
-        doc.setFontSize(14);
-        doc.setFont(undefined, 'bold');
-        doc.text(`Grand Total: Rs ${finalTotal}`, 140, doc.lastAutoTable.finalY + 15);
-
-        doc.setFontSize(10);
-        doc.setFont(undefined, 'normal');
-        doc.text("Generated by DNHQ Admin Panel", 15, doc.lastAutoTable.finalY + 25);
-
-        doc.save(`DNHQ_Invoice_${order.client}.pdf`);
+        doc.autoTable({ startY: 60, head: [['Description', 'Amount']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
+        doc.setFontSize(14); doc.text(`Grand Total: Rs ${final}`, 140, doc.lastAutoTable.finalY + 15);
+        doc.save(`DNHQ_${order.client}.pdf`);
     }
     </script>
 </body>
