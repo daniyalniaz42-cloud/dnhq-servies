@@ -19,7 +19,7 @@
         .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
         .section-tag h2 { font-size: 14px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
         .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
         .svc-item.selected { border: 2px solid var(--gold); background: #000; }
         .svc-meta b { display: block; font-size: 16px; color: white; }
         .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
@@ -39,7 +39,7 @@
     </header>
 
     <div class="wrapper">
-        <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
+        <div class="section-tag"><h2>Complete Home Projects</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)">
             <div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div>
         </div>
@@ -49,19 +49,19 @@
 
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)">
-            <div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div>
+            <div class="svc-meta"><b>Master Service</b><p>Deep Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)">
-            <div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div>
+            <div class="svc-meta"><b>Normal Service</b><p>Basic Cleaning</p></div><div class="svc-rate">Rs 2,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 6500)">
-            <div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 6,500</div>
+            <div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill R22/410</p></div><div class="svc-rate">Rs 6,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)">
-            <div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div>
+            <div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill R22/410</p></div><div class="svc-rate">Rs 8,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)">
-            <div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div>
+            <div class="svc-meta"><b>AC Installation</b><p>Indoor & Outdoor Complete</p></div><div class="svc-rate">Rs 4,000</div>
         </div>
 
         <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
@@ -75,10 +75,10 @@
             <div class="svc-meta"><b>New Point</b><p>Wiring with Socket</p></div><div class="svc-rate">Rs 1,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'UPS / Solar Setup', 5000)">
-            <div class="svc-meta"><b>UPS Setup</b><p>Backup Solution</p></div><div class="svc-rate">Rs 5,000</div>
+            <div class="svc-meta"><b>UPS Installation</b><p>Backup Solution</p></div><div class="svc-rate">Rs 5,000</div>
         </div>
 
-        <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
+        <div class="section-tag"><h2>Refrigerator / Fridge</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)">
             <div class="svc-meta"><b>Gas Refill</b><p>Complete Charging</p></div><div class="svc-rate">Rs 7,500</div>
         </div>
@@ -106,8 +106,8 @@
 
     <script>
     let cart = [];
-    // YAHAN APNA NEW URL DALEIN
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyG6cho-pygk6OD7XlPgvZ-3AdlsI1WMUCi1e_PtHvHrWwrcbfd4bSpH3rpB_sG1iIszQ/exec";
+    // AAPKA NAYA URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqrz159nHOXth5YNXimhEdze3Bykn_jPfldXtSz98utOvmIfjrUFgvZe_sU1oknyMKpQ/exec";
 
     function toggleSvc(el, name, price) {
         const idx = cart.findIndex(c => c.name === name);
@@ -140,33 +140,49 @@
 
     async function loadLogs() {
         const container = document.getElementById('logItems');
-        container.innerHTML = "Fetching...";
+        container.innerHTML = "<div style='text-align:center; padding:20px;'>Fetching Cloud Data...</div>";
         try {
-            const res = await fetch(SCRIPT_URL);
-            if (!res.ok) throw new Error();
+            const res = await fetch(SCRIPT_URL + "?nocache=" + Math.random());
             const data = await res.json();
+            
+            if (!data || data.length === 0) {
+                container.innerHTML = "<div style='text-align:center; padding:20px;'>No orders found.</div>";
+                return;
+            }
+
             container.innerHTML = data.reverse().map(d => `
-                <div class="log-card">
-                    <b>${d.client}</b> (${d.date || ''})<br>
-                    <small>${d.work}</small><br>
-                    <span style="color:gold;">Rs ${d.total}</span><br>
-                    <button onclick='generatePDF(${JSON.stringify(d)})' style="margin-top:10px; background:gold; border:none; padding:5px 10px; border-radius:5px; font-weight:bold; cursor:pointer;">PDF</button>
+                <div class="log-card" style="background:#1a2233; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #333;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <b style="color:#fbbf24;">${d.client}</b>
+                        <span style="font-size:11px; color:#94a3b8;">${d.date}</span>
+                    </div>
+                    <div style="font-size:13px; color:#f1f5f9; margin-bottom:10px;">${d.work}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <b style="color:#fbbf24;">Rs ${d.total}</b>
+                        <button onclick='generatePDF(${JSON.stringify(d)})' style="background:#fbbf24; color:#000; border:none; padding:5px 12px; border-radius:5px; font-weight:bold; cursor:pointer; font-size:12px;">PDF</button>
+                    </div>
                 </div>
             `).join('');
         } catch(e) { 
-            container.innerHTML = "<p style='color:red;'>Sync Error: Check Script URL & Deployment.</p>"; 
+            container.innerHTML = "<div style='color:red; text-align:center; padding:20px;'>Sync Error: Check Script Deployment.</div>"; 
         }
     }
 
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.text("DNHQ INVOICE", 15, 20);
+        doc.setFillColor(0,0,0); doc.rect(0,0,210,30,'F');
+        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 15, 20);
+        doc.setTextColor(0,0,0); doc.setFontSize(12);
+        doc.text(`Invoice For: ${order.client}`, 15, 45);
+        doc.text(`Date: ${order.date || ''}`, 15, 52);
         doc.autoTable({
-            startY: 30,
-            head: [['Client', 'Service', 'Total']],
-            body: [[order.client, order.work, `Rs ${order.total}`]],
+            startY: 60,
+            head: [['Service Description', 'Amount']],
+            body: [[order.work, `Rs ${order.total}`]],
+            headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
         });
+        doc.text("Thank you for your business!", 15, doc.lastAutoTable.finalY + 20);
         doc.save(`DNHQ_${order.client}.pdf`);
     }
     </script>
