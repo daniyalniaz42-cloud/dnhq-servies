@@ -27,7 +27,6 @@
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
         .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
         #adminView { display: none; background: #111827; margin: 10px; padding: 20px; border-radius: 20px; border: 1px solid #374151; position: relative; z-index: 3000; }
-        .log-table { width: 100%; border-collapse: collapse; font-size: 12px; color: white; margin-top: 10px; }
         footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
         #videoModal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
     </style>
@@ -46,9 +45,10 @@
     </div>
 
     <div class="wrapper">
+        
         <div class="section-tag"><h2>Complete Home Projects</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)">
-            <div class="svc-meta"><b>Complete Wiring</b><p>A to Z Home solution</p></div>
+            <div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div>
             <div class="svc-rate">Rate/Sq.Ft</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'Fancy Light Fitting', 0)">
@@ -58,12 +58,24 @@
 
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)">
-            <div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div>
+            <div class="svc-meta"><b>Master Service</b><p>Chemical wash & outdoor</p></div>
             <div class="svc-rate">Rs 3,500</div>
         </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)">
-            <div class="svc-meta"><b>Gas Charging</b><p>Refill R22/410</p></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)">
+            <div class="svc-meta"><b>Normal Service</b><p>Filter cleaning</p></div>
+            <div class="svc-rate">Rs 2,500</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Gas Charging (1 Ton)', 6500)">
+            <div class="svc-meta"><b>Gas (1 Ton)</b><p>Full R22/R410 refill</p></div>
+            <div class="svc-rate">Rs 6,500</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Gas Charging (1.5 Ton)', 8500)">
+            <div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full R22/R410 refill</p></div>
             <div class="svc-rate">Rs 8,500</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 3000)">
+            <div class="svc-meta"><b>AC Installation</b><p>Mounting & Setup</p></div>
+            <div class="svc-rate">Rs 3,000</div>
         </div>
 
         <div class="section-tag"><h2>Refrigerator / Fridge</h2><div class="section-line"></div></div>
@@ -71,36 +83,39 @@
             <div class="svc-meta"><b>Gas Refill</b><p>Complete charging</p></div>
             <div class="svc-rate">Rs 7,500</div>
         </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Thermostat Change', 2500)">
+            <div class="svc-meta"><b>Thermostat</b><p>Cooling Control</p></div>
+            <div class="svc-rate">Rs 2,500</div>
+        </div>
 
-        <div class="section-tag"><h2>Electrical Maintenance</h2><div class="section-line"></div></div>
+        <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)">
-            <div class="svc-meta"><b>Fault Fixing</b><p>Tracing & Repair</p></div>
+            <div class="svc-meta"><b>Fault Finding</b><p>Tracing & Fixing</p></div>
             <div class="svc-rate">Rs 1,000</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)">
             <div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div>
             <div class="svc-rate">Rs 3,000</div>
         </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Point Wiring', 1500)">
+            <div class="svc-meta"><b>New Point</b><p>Wiring with socket</p></div>
+            <div class="svc-rate">Rs 1,500</div>
+        </div>
         <div class="svc-item" onclick="toggleSvc(this, 'UPS / Solar Setup', 5000)">
-            <div class="svc-meta"><b>UPS Installation</b><p>Backup setup</p></div>
+            <div class="svc-meta"><b>UPS Installation</b><p>Battery setup</p></div>
             <div class="svc-rate">Rs 5,000</div>
         </div>
     </div>
 
     <div id="adminView">
-        <h3 style="color:var(--gold)">DNHQ ADMIN PORTAL</h3>
-        <div style="overflow-x:auto;">
-            <table class="log-table" border="1">
-                <thead><tr><th>Client</th><th>Work</th><th>Bill</th></tr></thead>
-                <tbody id="logItems"></tbody>
-            </table>
-        </div>
-        <button onclick="document.getElementById('adminView').style.display='none'" style="width:100%; margin-top:15px; padding:12px; background:var(--gold); border:none; border-radius:10px; font-weight:bold;">Close Panel</button>
+        <h3 style="color:var(--gold)">DNHQ ADMIN</h3>
+        <div id="logItems" style="color:white; font-size:12px;"></div>
+        <button onclick="document.getElementById('adminView').style.display='none'" style="width:100%; margin-top:10px; padding:10px;">Close</button>
     </div>
 
     <div class="checkout-bar" id="cart">
         <div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto;">
-            <div><small>Estimated Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
+            <div><small>Total Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
             <button class="btn-wa" onclick="placeOrder()">PLACE ORDER</button>
         </div>
     </div>
@@ -115,8 +130,8 @@
     </div>
 
     <footer>
-        <div style="color:var(--gold); font-weight:bold; font-size:18px;">DNHQ SERVICES</div>
-        <div onclick="openAdmin()" style="margin-top:15px; font-size:12px; cursor:pointer; opacity:0.6;">Admin Login</div>
+        <div style="color:var(--gold); font-weight:bold;">DNHQ SERVICES</div>
+        <div onclick="openAdmin()" style="margin-top:10px; font-size:12px; cursor:pointer; opacity:0.5;">Admin Login</div>
     </footer>
 
     <script>
@@ -133,18 +148,18 @@
     }
 
     async function placeOrder() {
-        const user = prompt("Customer Name:") || "Client";
+        const user = prompt("Client Name:") || "Client";
         const total = cart.reduce((a, b) => a + b.price, 0);
         const work = cart.map(c => c.name).join(", ");
         fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({client: user, work, total}) });
-        window.location.href = `https://wa.me/923152458657?text=*DNHQ NEW ORDER*%0AClient: ${user}%0AWork: ${work}%0ATotal: Rs ${total}`;
+        window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${user}%0AWork: ${work}%0ATotal: Rs ${total}`;
     }
 
     function openAdmin() {
-        if(prompt("Admin Password:") === "dnhq123") {
+        if(prompt("PIN:") === "dnhq123") {
             document.getElementById('adminView').style.display = 'block';
             fetch(SCRIPT_URL).then(r => r.json()).then(data => {
-                document.getElementById('logItems').innerHTML = data.reverse().map(d => `<tr><td>${d.client}</td><td>${d.work}</td><td>${d.total}</td></tr>`).join('');
+                document.getElementById('logItems').innerHTML = data.reverse().map(d => `<div style="border-bottom:1px solid #333; padding:5px;">${d.client}: ${d.work} (Rs ${d.total})</div>`).join('');
             });
         }
     }
@@ -157,9 +172,7 @@
         e.preventDefault(); deferredPrompt = e;
         document.getElementById('installBtn').style.display = 'inline-block';
     });
-    document.getElementById('installBtn').addEventListener('click', () => {
-        if(deferredPrompt) deferredPrompt.prompt();
-    });
+    document.getElementById('installBtn').addEventListener('click', () => { if(deferredPrompt) deferredPrompt.prompt(); });
     </script>
 </body>
 </html>
