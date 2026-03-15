@@ -53,7 +53,7 @@
         </button>
     </div>
 
-    <div class="wrapper">
+    <div class="wrapper" id="mainServices">
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Master Service', 3500)">
             <div class="svc-meta"><b>Master Service</b><p>Deep chemical wash & outdoor</p></div>
@@ -67,6 +67,10 @@
             <div class="svc-meta"><b>Gas (1 Ton)</b><p>Full R22/R410 refill</p></div>
             <div class="svc-rate">Rs 6,500</div>
         </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Gas Charging (1.5 Ton)', 8500)">
+            <div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full R22/R410 refill</p></div>
+            <div class="svc-rate">Rs 8,500</div>
+        </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 3000)">
             <div class="svc-meta"><b>Installation</b><p>Unit mounting & setup</p></div>
             <div class="svc-rate">Rs 3,000</div>
@@ -76,6 +80,10 @@
         <div class="svc-item" onclick="toggleSvc(this, 'Fault Repair', 1000)">
             <div class="svc-meta"><b>Short Circuit</b><p>Tracing & emergency repair</p></div>
             <div class="svc-rate">Rs 1,000</div>
+        </div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Point Wiring', 1500)">
+            <div class="svc-meta"><b>New Point</b><p>Wiring with socket</p></div>
+            <div class="svc-rate">Rs 1,500</div>
         </div>
     </div>
 
@@ -116,10 +124,12 @@
     let cart = [];
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxub7p8nDtfUMHfbvV_3gac66D-e0Epkd0bURizPRtB5L_jUknKMpRkyJ9UI7Hu0ddXYg/exec";
 
+    // Register Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js');
     }
 
+    // Install Button Logic
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -154,9 +164,9 @@
         const date = new Date().toLocaleDateString();
         try {
             fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: user, work, total, items: [...cart]}) });
-            alert("Sent to Cloud!");
+            alert("Order Sent to Cloud!");
         } catch (e) { console.log("Cloud Error"); }
-        window.location.href = "https://wa.me/923152458657?text=" + encodeURIComponent(`*NEW ORDER*\nClient: ${user}\nWork: ${work}\nTotal: Rs ${total}`);
+        window.location.href = "https://wa.me/923152458657?text=" + encodeURIComponent(`*DNHQ NEW ORDER*\nClient: ${user}\nWork: ${work}\nTotal: Rs ${total}`);
     }
 
     function openAdmin() {
