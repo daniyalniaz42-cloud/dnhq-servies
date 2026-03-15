@@ -1,0 +1,10 @@
+const CACHE_NAME = 'dnhq-v' + new Date().getTime(); // Har baar naya version
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+});
+self.addEventListener('activate', (event) => {
+  event.waitUntil(clients.claim());
+});
+self.addEventListener('fetch', (event) => {
+  event.respondWith(fetch(event.request)); // Direct internet se uthao cache se nahi
+});
