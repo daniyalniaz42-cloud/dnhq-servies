@@ -174,26 +174,42 @@
 
     async function loadLogs() {
         const container = document.getElementById('logItems');
-        container.innerHTML = "Fetching...";
+        container.innerHTML = "Fetching Records...";
         try {
             const res = await fetch(SCRIPT_URL + "?v=" + new Date().getTime());
             const data = await res.json();
-            container.innerHTML = data.reverse().map(d => `
-                <div class="log-card">
+            container.innerHTML = data.reverse().map((d, index) => `
+                <div class="log-card" style="background:#1a2233; padding:15px; border-radius:12px; margin-bottom:15px; border:1px solid #333;">
                     <div style="display:flex; justify-content:space-between;">
-                        <b>${d.client}</b>
-                        <small>${d.date || ''}</small>
+                        <b style="color:white;">${d.client}</b>
+                        <small style="color:#94a3b8;">${d.date || ''}</small>
                     </div>
-                    <p style="margin:5px 0; font-size:13px; color:#94a3b8;">${d.work}</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="color:gold; font-weight:bold;">Rs ${d.total}</span>
-                        <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; border:none; padding:5px 12px; border-radius:5px; font-weight:bold; cursor:pointer; color:black;">PDF & EDIT</button>
+                    <p style="margin:8px 0; font-size:13px; color:#cbd5e1;">${d.work}</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+                        <span style="color:gold; font-weight:bold; font-size:16px;">Rs ${d.total}</span>
+                        <div style="display:flex; gap:10px;">
+                            <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; border:none; padding:6px 12px; border-radius:5px; font-weight:bold; cursor:pointer; color:black; font-size:12px;">PDF & EDIT</button>
+                            <button onclick="deleteRecord('${d.client}', ${d.total})" style="background:#ef4444; border:none; padding:6px 12px; border-radius:5px; font-weight:bold; cursor:pointer; color:white; font-size:12px;">DELETE</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
         } catch(e) { container.innerHTML = "Error loading data."; }
     }
 
+    // Delete Function (Ye bhi lazmi add karein agar pehle nahi tha)
+    async function deleteRecord(client, total) {
+        if(confirm(`Kya aap ${client} ka record delete karna chahte hain?`)) {
+            try {
+                // Google Sheet ko delete ki request bhejne ke liye
+                await fetch(SCRIPT_URL + `?del=true&client=${client}&total=${total}`);
+                alert("Record delete ho gaya! List refresh ho rahi hai...");
+                loadLogs(); // List dobara load karein
+            } catch(e) {
+                alert("Delete karne mein masla aaya.");
+            }
+        }
+    }
     // 📑 EXTRA WORK INVOICE LOGIC
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
