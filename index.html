@@ -12,14 +12,19 @@
     <style>
         :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 160px; }
-        .brand-header { background: #000; padding: 40px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
+        .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
         .logo-main { height: 85px; display: block; margin: 0 auto; }
         .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
+        
+        /* Install Button Style */
+        #installBtn { display: none; background: #fbbf24; color: black; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; margin: 15px auto; cursor: pointer; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
+
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
         .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
         .section-tag h2 { font-size: 14px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
         .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .svc-item.selected { border: 2px solid var(--gold); background: #000; }
         .svc-meta b { display: block; font-size: 16px; color: white; }
         .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
@@ -36,10 +41,11 @@
     <header class="brand-header">
         <img src="1773452778552.jpeg" class="logo-main" alt="DNHQ">
         <div class="brand-title">DNHQ SERVICES</div>
+        <button id="installBtn">📲 INSTALL APP</button>
     </header>
 
     <div class="wrapper">
-        <div class="section-tag"><h2>Complete Home Projects</h2><div class="section-line"></div></div>
+        <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)">
             <div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div>
         </div>
@@ -49,19 +55,19 @@
 
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)">
-            <div class="svc-meta"><b>Master Service</b><p>Deep Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div>
+            <div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)">
-            <div class="svc-meta"><b>Normal Service</b><p>Basic Cleaning</p></div><div class="svc-rate">Rs 2,500</div>
+            <div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 6500)">
-            <div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill R22/410</p></div><div class="svc-rate">Rs 6,500</div>
+            <div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 6,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)">
-            <div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill R22/410</p></div><div class="svc-rate">Rs 8,500</div>
+            <div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div>
         </div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)">
-            <div class="svc-meta"><b>AC Installation</b><p>Indoor & Outdoor Complete</p></div><div class="svc-rate">Rs 4,000</div>
+            <div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div>
         </div>
 
         <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
@@ -74,11 +80,8 @@
         <div class="svc-item" onclick="toggleSvc(this, 'New Point Wiring', 1500)">
             <div class="svc-meta"><b>New Point</b><p>Wiring with Socket</p></div><div class="svc-rate">Rs 1,500</div>
         </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'UPS / Solar Setup', 5000)">
-            <div class="svc-meta"><b>UPS Installation</b><p>Backup Solution</p></div><div class="svc-rate">Rs 5,000</div>
-        </div>
 
-        <div class="section-tag"><h2>Refrigerator / Fridge</h2><div class="section-line"></div></div>
+        <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)">
             <div class="svc-meta"><b>Gas Refill</b><p>Complete Charging</p></div><div class="svc-rate">Rs 7,500</div>
         </div>
@@ -106,8 +109,26 @@
 
     <script>
     let cart = [];
-    // AAPKA NAYA URL
+    let deferredPrompt;
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqrz159nHOXth5YNXimhEdze3Bykn_jPfldXtSz98utOvmIfjrUFgvZe_sU1oknyMKpQ/exec";
+
+    // 📲 INSTALL APP LOGIC
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('installBtn').style.display = 'block';
+    });
+
+    document.getElementById('installBtn').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                document.getElementById('installBtn').style.display = 'none';
+            }
+            deferredPrompt = null;
+        }
+    });
 
     function toggleSvc(el, name, price) {
         const idx = cart.findIndex(c => c.name === name);
@@ -123,11 +144,9 @@
         const total = cart.reduce((a, b) => a + b.price, 0);
         const work = cart.map(c => c.name).join(", ");
         const date = new Date().toLocaleDateString();
-        
         try {
             fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: user, work, total}) });
-        } catch(e) { console.log("Sync Error"); }
-
+        } catch(e) {}
         window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${user}%0AWork: ${work}%0ATotal: Rs ${total}`;
     }
 
@@ -140,49 +159,47 @@
 
     async function loadLogs() {
         const container = document.getElementById('logItems');
-        container.innerHTML = "<div style='text-align:center; padding:20px;'>Fetching Cloud Data...</div>";
+        container.innerHTML = "Fetching...";
         try {
-            const res = await fetch(SCRIPT_URL + "?nocache=" + Math.random());
+            const res = await fetch(SCRIPT_URL + "?v=" + new Date().getTime());
             const data = await res.json();
-            
-            if (!data || data.length === 0) {
-                container.innerHTML = "<div style='text-align:center; padding:20px;'>No orders found.</div>";
-                return;
-            }
-
             container.innerHTML = data.reverse().map(d => `
-                <div class="log-card" style="background:#1a2233; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #333;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <b style="color:#fbbf24;">${d.client}</b>
-                        <span style="font-size:11px; color:#94a3b8;">${d.date}</span>
+                <div class="log-card">
+                    <div style="display:flex; justify-content:space-between;">
+                        <b>${d.client}</b>
+                        <small>${d.date || ''}</small>
                     </div>
-                    <div style="font-size:13px; color:#f1f5f9; margin-bottom:10px;">${d.work}</div>
+                    <p style="margin:5px 0; font-size:13px; color:#94a3b8;">${d.work}</p>
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <b style="color:#fbbf24;">Rs ${d.total}</b>
-                        <button onclick='generatePDF(${JSON.stringify(d)})' style="background:#fbbf24; color:#000; border:none; padding:5px 12px; border-radius:5px; font-weight:bold; cursor:pointer; font-size:12px;">PDF</button>
+                        <span style="color:gold; font-weight:bold;">Rs ${d.total}</span>
+                        <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; border:none; padding:5px 12px; border-radius:5px; font-weight:bold; cursor:pointer; color:black;">PDF</button>
                     </div>
                 </div>
             `).join('');
-        } catch(e) { 
-            container.innerHTML = "<div style='color:red; text-align:center; padding:20px;'>Sync Error: Check Script Deployment.</div>"; 
-        }
+        } catch(e) { container.innerHTML = "Error loading data."; }
     }
 
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
+        
+        // ✍️ EDIT OPTION BEFORE PDF
+        let finalWork = prompt("Service Details Edit Karein:", order.work) || order.work;
+        let finalTotal = prompt("Final Price Edit Karein:", order.total) || order.total;
+
         doc.setFillColor(0,0,0); doc.rect(0,0,210,30,'F');
         doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 15, 20);
         doc.setTextColor(0,0,0); doc.setFontSize(12);
         doc.text(`Invoice For: ${order.client}`, 15, 45);
-        doc.text(`Date: ${order.date || ''}`, 15, 52);
+        doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 52);
+
         doc.autoTable({
             startY: 60,
             head: [['Service Description', 'Amount']],
-            body: [[order.work, `Rs ${order.total}`]],
+            body: [[finalWork, `Rs ${finalTotal}`]],
             headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
         });
-        doc.text("Thank you for your business!", 15, doc.lastAutoTable.finalY + 20);
+        
         doc.save(`DNHQ_${order.client}.pdf`);
     }
     </script>
