@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DNHQ SERVICES | Official</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#fbbf24">
+    <link rel="apple-touch-icon" href="1773452778552.jpeg">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     
@@ -30,6 +35,7 @@
         .log-table th { background: #000; padding: 10px; text-align: left; border-bottom: 1px solid var(--gold); color: var(--gold); }
         .log-table td { padding: 12px 10px; border-bottom: 1px solid #1f2937; color: #e5e7eb; vertical-align: middle; }
         .btn-action { color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; margin: 2px; }
+        .install-btn { display: none; margin: 10px auto; background: #fbbf24; color: #000; padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); }
         footer { background: #000; color: #64748b; padding: 60px 20px; text-align: center; }
         .admin-link { display: inline-block; margin-top: 15px; font-size: 12px; color: var(--gold); cursor: pointer; text-decoration: underline; opacity: 0.6; }
     </style>
@@ -45,15 +51,8 @@
         <a href="javascript:void(0)" onclick="openVideo()" style="color: #fbbf24; text-decoration: none; font-weight: bold; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 30px; display: inline-block; background: rgba(251, 191, 36, 0.1); font-size: 14px; letter-spacing: 1px;">
             ✨ HOW TO BOOK SERVICE? (WATCH VIDEO)
         </a>
-    </div>
-
-    <div id="videoModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center;">
-        <div style="position: relative; width: 90%; max-width: 500px; border: 2px solid #fbbf24; border-radius: 15px; overflow: hidden;">
-            <span onclick="closeVideo()" style="position: absolute; right: 10px; top: 5px; color: white; font-size: 30px; cursor: pointer; z-index: 10000;">&times;</span>
-            <video id="tutVideo" controls width="100%" poster="1773452778552.jpeg">
-                <source src="tutorial.mp4" type="video/mp4">
-            </video>
-        </div>
+        <br>
+        <button id="installBtn" class="install-btn">📲 INSTALL DNHQ OFFICIAL APP</button>
     </div>
 
     <div class="wrapper">
@@ -78,32 +77,14 @@
             <div class="svc-meta"><b>Installation</b><p>Unit mounting & setup</p></div>
             <div class="svc-rate">Rs 3,000</div>
         </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Dismantle', 1500)">
-            <div class="svc-meta"><b>Dismantling</b><p>Safe removal with gas lock</p></div>
-            <div class="svc-rate">Rs 1,500</div>
-        </div>
 
         <div class="section-tag"><h2>Electrician</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Fault Repair', 1000)">
             <div class="svc-meta"><b>Short Circuit</b><p>Tracing & emergency repair</p></div>
             <div class="svc-rate">Rs 1,000</div>
         </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'DB Box Dressing', 2500)">
-            <div class="svc-meta"><b>DB Dressing</b><p>Breaker box wiring</p></div>
-            <div class="svc-rate">Rs 2,500</div>
-        </div>
         <div class="svc-item" onclick="toggleSvc(this, 'Point Wiring', 1500)">
             <div class="svc-meta"><b>New Point</b><p>Wiring with socket</p></div>
-            <div class="svc-rate">Rs 1,500</div>
-        </div>
-
-        <div class="section-tag"><h2>Appliances</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas', 5500)">
-            <div class="svc-meta"><b>Fridge Gas</b><p>Refilling & leak test</p></div>
-            <div class="svc-rate">Rs 5,500</div>
-        </div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Washing Machine', 1500)">
-            <div class="svc-meta"><b>WM Repair</b><p>Motor/System troubleshooting</p></div>
             <div class="svc-rate">Rs 1,500</div>
         </div>
     </div>
@@ -132,10 +113,42 @@
         <div class="admin-link" onclick="openAdmin()">Admin Login</div>
     </footer>
 
+    <div id="videoModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center;">
+        <div style="position: relative; width: 90%; max-width: 500px; border: 2px solid #fbbf24; border-radius: 15px; overflow: hidden;">
+            <span onclick="closeVideo()" style="position: absolute; right: 10px; top: 5px; color: white; font-size: 30px; cursor: pointer; z-index: 10000;">&times;</span>
+            <video id="tutVideo" controls width="100%" poster="1773452778552.jpeg">
+                <source src="tutorial.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
     <script>
     let cart = [];
-    // AAPKA GOOGLE SCRIPT URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxub7p8nDtfUMHfbvV_3gac66D-e0Epkd0bURizPRtB5L_jUknKMpRkyJ9UI7Hu0ddXYg/exec";
+
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+    }
+
+    // App Install Logic
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'inline-block';
+    });
+
+    installBtn.addEventListener('click', () => {
+        installBtn.style.display = 'none';
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+            if (choice.outcome === 'accepted') console.log('User installed DNHQ');
+            deferredPrompt = null;
+        });
+    });
 
     function toggleSvc(el, name, price) {
         const idx = cart.findIndex(c => c.name === name);
@@ -151,17 +164,14 @@
         const total = cart.reduce((a, b) => a + b.price, 0);
         const work = cart.map(c => c.name).join(", ");
         const date = new Date().toLocaleDateString();
-        
-        const orderData = { id: Date.now(), date, client: user, work: work, total: total, items: [...cart] };
+        const orderData = { id: Date.now(), date, client: user, work, total, items: [...cart] };
 
-        // Send to Google Sheets
         try {
             fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(orderData) });
-            alert("Order Sent to Cloud!");
+            alert("Sent to Google Sheets!");
         } catch (e) { console.log("Cloud Error"); }
 
-        const msg = `*NEW DNHQ ORDER*\nClient: ${user}\nServices: ${work}\n*Total: Rs ${total.toLocaleString()}*`;
-        window.location.href = "https://wa.me/923152458657?text=" + encodeURIComponent(msg);
+        window.location.href = "https://wa.me/923152458657?text=" + encodeURIComponent(`*DNHQ ORDER*\nClient: ${user}\nWork: ${work}\nTotal: Rs ${total}`);
     }
 
     function openAdmin() {
@@ -173,77 +183,64 @@
 
     async function renderLogs() {
         const logBody = document.getElementById('logItems');
-        logBody.innerHTML = "<tr><td colspan='5'>Syncing Cloud Data...</td></tr>";
+        logBody.innerHTML = "<tr><td colspan='5'>Syncing Cloud...</td></tr>";
         try {
             const res = await fetch(SCRIPT_URL);
-            const cloudData = await res.json();
-            logBody.innerHTML = cloudData.reverse().map(d => `
+            const data = await res.json();
+            logBody.innerHTML = data.reverse().map(d => `
                 <tr>
                     <td>${d.date}</td>
                     <td><b>${d.client}</b></td>
                     <td>${d.work}</td>
                     <td>Rs ${d.total.toLocaleString()}</td>
-                    <td>
-                        <button class="btn-action" style="background:#3b82f6" onclick='editAndPDF(${JSON.stringify(d)})'>EDIT & PDF</button>
-                    </td>
+                    <td><button class="btn-action" style="background:#3b82f6" onclick='editAndPDF(${JSON.stringify(d)})'>EDIT & PDF</button></td>
                 </tr>
             `).join('');
-        } catch (e) { logBody.innerHTML = "<tr><td colspan='5'>Cloud Sync Error!</td></tr>"; }
+        } catch (e) { logBody.innerHTML = "<tr><td colspan='5'>Sync Error!</td></tr>"; }
     }
 
     function editAndPDF(order) {
         let currentItems = [...order.items];
         let currentClient = order.client;
         let action = "";
-
         while (action !== "done") {
             let list = currentItems.map((it, i) => `${i+1}. ${it.name} (Rs ${it.price})`).join('\n');
-            action = prompt(`CLIENT: ${currentClient}\n\nITEMS:\n${list}\n\nType 'add' to add extra work,\nType 'name' to edit name,\nType 'done' for PDF`, "done");
-
+            action = prompt(`CLIENT: ${currentClient}\n\nITEMS:\n${list}\n\nType 'add', 'name', or 'done'`, "done");
             if (action === "add") {
-                let n = prompt("Naye kaam ka naam:");
+                let n = prompt("Service Name:");
                 let p = parseInt(prompt("Price:"));
-                if (n && p) currentItems.push({ name: n, price: p });
+                if (n && p) currentItems.push({name: n, price: p});
             } else if (action === "name") {
                 currentClient = prompt("New Name:", currentClient) || currentClient;
             }
         }
-
         const finalTotal = currentItems.reduce((a, b) => a + b.price, 0);
-        generateAdminPDF({ ...order, client: currentClient, items: currentItems, total: finalTotal });
+        generatePDF({ ...order, client: currentClient, items: currentItems, total: finalTotal });
     }
 
-    function generateAdminPDF(order) {
+    function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
         doc.setFillColor(0, 0, 0);
-        doc.rect(0, 0, 210, 45, 'F');
-        doc.setTextColor(251, 191, 36); 
+        doc.rect(0, 0, 210, 40, 'F');
+        doc.setTextColor(251, 191, 36);
         doc.setFontSize(22);
         doc.text("DNHQ SERVICES", 15, 25);
-        doc.setFontSize(10);
-        doc.setTextColor(255, 255, 255);
-        doc.text("Professional AC & Electrical Solutions", 15, 33);
-
         doc.setTextColor(0, 0, 0);
-        doc.text(`Client: ${order.client}`, 20, 60);
-        doc.text(`Date: ${order.date}`, 150, 60);
-
+        doc.text(`Client: ${order.client} | Date: ${order.date}`, 15, 50);
         doc.autoTable({
-            startY: 70,
-            head: [['Description', 'Amount']],
+            startY: 60,
+            head: [['Service', 'Amount']],
             body: order.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]),
-            theme: 'striped',
             headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
         });
-
         doc.text(`Total: Rs ${order.total.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
         doc.save(`DNHQ_${order.client}.pdf`);
     }
 
     function openVideo() { document.getElementById('videoModal').style.display = 'flex'; document.getElementById('tutVideo').play(); }
     function closeVideo() { document.getElementById('videoModal').style.display = 'none'; document.getElementById('tutVideo').pause(); }
-</script>
+    </script>
 </body>
 </html>
+
