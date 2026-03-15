@@ -106,8 +106,23 @@
         <div style="color:var(--gold); font-weight:bold;">DNHQ SERVICES</div>
         <div onclick="openAdmin()" style="margin-top:15px; font-size:12px; cursor:pointer; opacity:0.5;">Admin Login</div>
     </footer>
-
+   
     <script>
+        // Auto Update Logic
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    reg.onupdatefound = () => {
+      const installingWorker = reg.installing;
+      installingWorker.onstatechange = () => {
+        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          if(confirm("DNHQ Update Available! Reload App?")) {
+            window.location.reload();
+          }
+        }
+      };
+    };
+  });
+}
     let cart = [];
     let deferredPrompt;
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqrz159nHOXth5YNXimhEdze3Bykn_jPfldXtSz98utOvmIfjrUFgvZe_sU1oknyMKpQ/exec";
