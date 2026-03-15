@@ -25,15 +25,8 @@
         .svc-meta p { font-size: 13px; color: #94a3b8; margin: 0; }
         .svc-rate { text-align: right; font-weight: 800; color: var(--gold); font-size: 16px; }
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
-        .checkout-inner { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; }
-        .btn-wa { background: #22c55e; color: white; padding: 16px 35px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
-        #adminView { display: none; background: #111827; margin: 10px; padding: 20px; border-radius: 20px; border: 1px solid #374151; position: relative; z-index: 3000; }
-        .log-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; }
-        .log-table th { background: #000; padding: 10px; text-align: left; border-bottom: 1px solid var(--gold); color: var(--gold); }
-        .log-table td { padding: 12px 10px; border-bottom: 1px solid #1f2937; color: #e5e7eb; vertical-align: middle; }
-        .btn-action { color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; margin: 2px; }
+        .btn-wa { background: #22c55e; color: white; padding: 16px 35px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; }
         footer { background: #000; color: #64748b; padding: 60px 20px; text-align: center; }
-        .admin-link { display: inline-block; margin-top: 15px; font-size: 12px; color: var(--gold); cursor: pointer; text-decoration: underline; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -44,109 +37,76 @@
     </header>
 
     <div style="text-align: center; margin: 20px 0;">
-        <a href="javascript:void(0)" onclick="openVideo()" style="color: #fbbf24; text-decoration: none; font-weight: bold; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 30px; display: inline-block; background: rgba(251, 191, 36, 0.1); font-size: 14px; letter-spacing: 1px;">
-            ✨ HOW TO BOOK SERVICE? (WATCH VIDEO)
-        </a>
-        <br><br>
-        <button id="installBtn" style="display:none; color: #000; background: #fbbf24; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);">
-            📲 INSTALL DNHQ OFFICIAL APP
+        <button id="installBtn" style="display:none; color: #000; background: #fbbf24; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; margin-bottom: 15px;">
+            📲 INSTALL DNHQ APP
         </button>
+        <br>
+        <a href="javascript:void(0)" onclick="openVideo()" style="color: #fbbf24; text-decoration: none; font-size: 14px; border: 1px solid #fbbf24; padding: 8px 20px; border-radius: 25px;">
+            ✨ WATCH TUTORIAL
+        </a>
     </div>
 
-    <div class="wrapper" id="mainServices">
+    <div class="wrapper">
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
+        
         <div class="svc-item" onclick="toggleSvc(this, 'Master Service', 3500)">
             <div class="svc-meta"><b>Master Service</b><p>Deep chemical wash & outdoor</p></div>
             <div class="svc-rate">Rs 3,500</div>
         </div>
+
         <div class="svc-item" onclick="toggleSvc(this, 'Normal Service', 2500)">
             <div class="svc-meta"><b>Normal Service</b><p>Filter & basic cleaning</p></div>
             <div class="svc-rate">Rs 2,500</div>
         </div>
+
         <div class="svc-item" onclick="toggleSvc(this, 'Gas Charging (1 Ton)', 6500)">
             <div class="svc-meta"><b>Gas (1 Ton)</b><p>Full R22/R410 refill</p></div>
             <div class="svc-rate">Rs 6,500</div>
         </div>
+
         <div class="svc-item" onclick="toggleSvc(this, 'Gas Charging (1.5 Ton)', 8500)">
             <div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full R22/R410 refill</p></div>
             <div class="svc-rate">Rs 8,500</div>
         </div>
+
         <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 3000)">
             <div class="svc-meta"><b>Installation</b><p>Unit mounting & setup</p></div>
             <div class="svc-rate">Rs 3,000</div>
         </div>
 
         <div class="section-tag"><h2>Electrician</h2><div class="section-line"></div></div>
+        
         <div class="svc-item" onclick="toggleSvc(this, 'Fault Repair', 1000)">
             <div class="svc-meta"><b>Short Circuit</b><p>Tracing & emergency repair</p></div>
             <div class="svc-rate">Rs 1,000</div>
         </div>
+
         <div class="svc-item" onclick="toggleSvc(this, 'Point Wiring', 1500)">
             <div class="svc-meta"><b>New Point</b><p>Wiring with socket</p></div>
             <div class="svc-rate">Rs 1,500</div>
         </div>
+        
+        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 2500)">
+            <div class="svc-meta"><b>DB Dressing</b><p>Breaker organizing & labeling</p></div>
+            <div class="svc-rate">Rs 2,500</div>
+        </div>
     </div>
 
     <div class="checkout-bar" id="cart">
-        <div class="checkout-inner">
-            <div style="flex: 1;"><small>Estimate Total</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto;">
+            <div><small>Estimate Total</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
             <button class="btn-wa" onclick="placeOrder()">PLACE ORDER</button>
         </div>
     </div>
 
-    <div id="adminView">
-        <h2 style="color:var(--gold); margin-top:0;">DNHQ Manager Portal</h2>
-        <div style="overflow-x:auto;">
-            <table class="log-table">
-                <thead><tr><th>Date</th><th>Client</th><th>Work</th><th>Bill</th><th>Action</th></tr></thead>
-                <tbody id="logItems"></tbody>
-            </table>
-        </div>
-        <button onclick="document.getElementById('adminView').style.display='none'" style="display:block; width:100%; margin-top:20px; padding:15px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Close Panel</button>
-    </div>
-
     <footer>
-        <div style="color:var(--gold); font-weight:900; font-size:20px;">DNHQ SERVICES</div>
-        <p style="font-size:12px;">Developed by Muhammad Daniyal</p>
-        <div class="admin-link" onclick="openAdmin()">Admin Login</div>
+        <div style="color:var(--gold); font-weight:900; font-size:18px;">DNHQ SERVICES</div>
+        <p style="font-size:11px;">Muhammad Daniyal | Karachi, PK</p>
     </footer>
-
-    <div id="videoModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center;">
-        <div style="position: relative; width: 90%; max-width: 500px; border: 2px solid #fbbf24; border-radius: 15px; overflow: hidden;">
-            <span onclick="closeVideo()" style="position: absolute; right: 10px; top: 5px; color: white; font-size: 30px; cursor: pointer; z-index: 10000;">&times;</span>
-            <video id="tutVideo" controls width="100%" poster="1773452778552.jpeg">
-                <source src="tutorial.mp4" type="video/mp4">
-            </video>
-        </div>
-    </div>
 
     <script>
     let cart = [];
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxub7p8nDtfUMHfbvV_3gac66D-e0Epkd0bURizPRtB5L_jUknKMpRkyJ9UI7Hu0ddXYg/exec";
-
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
-    }
-
-    // Install Button Logic
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBtn.style.display = 'inline-block';
-    });
-
-    installBtn.addEventListener('click', () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choice) => {
-                if (choice.outcome === 'accepted') installBtn.style.display = 'none';
-                deferredPrompt = null;
-            });
-        }
-    });
 
     function toggleSvc(el, name, price) {
         const idx = cart.findIndex(c => c.name === name);
@@ -161,81 +121,26 @@
         const user = prompt("Customer Name:") || "Client";
         const total = cart.reduce((a, b) => a + b.price, 0);
         const work = cart.map(c => c.name).join(", ");
-        const date = new Date().toLocaleDateString();
-        try {
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: user, work, total, items: [...cart]}) });
-            alert("Order Sent to Cloud!");
-        } catch (e) { console.log("Cloud Error"); }
-        window.location.href = "https://wa.me/923152458657?text=" + encodeURIComponent(`*DNHQ NEW ORDER*\nClient: ${user}\nWork: ${work}\nTotal: Rs ${total}`);
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({client: user, work, total}) });
+        window.location.href = `https://wa.me/923152458657?text=*DNHQ NEW ORDER*%0AClient: ${user}%0AWork: ${work}%0ATotal: Rs ${total}`;
     }
 
-    function openAdmin() {
-        if(prompt("PIN:") === "dnhq123") {
-            document.getElementById('adminView').style.display = 'block';
-            renderLogs();
+    // PWA Install Script
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); deferredPrompt = e;
+        document.getElementById('installBtn').style.display = 'inline-block';
+    });
+    document.getElementById('installBtn').addEventListener('click', () => {
+        if(deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choice) => {
+                if (choice.outcome === 'accepted') document.getElementById('installBtn').style.display = 'none';
+                deferredPrompt = null;
+            });
         }
-    }
-
-    async function renderLogs() {
-        const logBody = document.getElementById('logItems');
-        logBody.innerHTML = "<tr><td colspan='5'>Syncing Cloud...</td></tr>";
-        try {
-            const res = await fetch(SCRIPT_URL);
-            const data = await res.json();
-            logBody.innerHTML = data.reverse().map(d => `
-                <tr>
-                    <td>${d.date}</td>
-                    <td><b>${d.client}</b></td>
-                    <td>${d.work}</td>
-                    <td>Rs ${d.total.toLocaleString()}</td>
-                    <td><button class="btn-action" style="background:#3b82f6" onclick='editAndPDF(${JSON.stringify(d)})'>EDIT & PDF</button></td>
-                </tr>
-            `).join('');
-        } catch (e) { logBody.innerHTML = "<tr><td colspan='5'>Sync Error!</td></tr>"; }
-    }
-
-    function editAndPDF(order) {
-        let currentItems = [...order.items];
-        let currentClient = order.client;
-        let action = "";
-        while (action !== "done") {
-            let list = currentItems.map((it, i) => `${i+1}. ${it.name} (Rs ${it.price})`).join('\n');
-            action = prompt(`CLIENT: ${currentClient}\n\nITEMS:\n${list}\n\nType 'add', 'name', or 'done'`, "done");
-            if (action === "add") {
-                let n = prompt("Service Name:");
-                let p = parseInt(prompt("Price:"));
-                if (n && p) currentItems.push({name: n, price: p});
-            } else if (action === "name") {
-                currentClient = prompt("New Name:", currentClient) || currentClient;
-            }
-        }
-        const finalTotal = currentItems.reduce((a, b) => a + b.price, 0);
-        generatePDF({ ...order, client: currentClient, items: currentItems, total: finalTotal });
-    }
-
-    function generatePDF(order) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.setFillColor(0, 0, 0);
-        doc.rect(0, 0, 210, 40, 'F');
-        doc.setTextColor(251, 191, 36);
-        doc.setFontSize(22);
-        doc.text("DNHQ SERVICES", 15, 25);
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(10);
-        doc.text(`Client: ${order.client} | Date: ${order.date}`, 15, 50);
-        doc.autoTable({
-            startY: 60,
-            head: [['Service Description', 'Amount']],
-            body: order.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]),
-            headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
-        });
-        doc.text(`Total: Rs ${order.total.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
-        doc.save(`DNHQ_${order.client}.pdf`);
-    }
-
-    function openVideo() { document.getElementById('videoModal').style.display = 'flex'; document.getElementById('tutVideo').play(); }
-    function closeVideo() { document.getElementById('videoModal').style.display = 'none'; document.getElementById('tutVideo').pause(); }
+    });
     </script>
 </body>
 </html>
+
