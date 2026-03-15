@@ -10,36 +10,26 @@
     <style>
         :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 160px; }
-
         .brand-header { background: #000; padding: 40px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
         .logo-main { height: 85px; display: block; margin: 0 auto; filter: drop-shadow(0 5px 15px rgba(251, 191, 36, 0.3)); }
         .brand-title { color: var(--gold); font-size: 26px; font-weight: 900; margin-top: 15px; letter-spacing: 2px; text-transform: uppercase; }
-
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
         .section-tag { display: flex; align-items: center; margin: 35px 0 15px; }
         .section-tag h2 { font-size: 13px; font-weight: 800; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
         .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-
-        .svc-item {
-            background: var(--card); border: 1px solid #1f2937; border-radius: 18px; 
-            margin-bottom: 12px; padding: 18px; display: flex; justify-content: space-between; 
-            align-items: center; cursor: pointer; transition: 0.2s;
-        }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 18px; margin-bottom: 12px; padding: 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
         .svc-item.selected { border: 2px solid var(--gold); background: #000; }
         .svc-meta b { display: block; font-size: 17px; color: white; margin-bottom: 4px; }
         .svc-meta p { font-size: 13px; color: #94a3b8; margin: 0; }
         .svc-rate { text-align: right; font-weight: 800; color: var(--gold); font-size: 16px; }
-
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
         .checkout-inner { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; }
         .btn-wa { background: #22c55e; color: white; padding: 16px 35px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
-
         #adminView { display: none; background: #111827; margin: 10px; padding: 20px; border-radius: 20px; border: 1px solid #374151; position: relative; z-index: 3000; }
         .log-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; }
         .log-table th { background: #000; padding: 10px; text-align: left; border-bottom: 1px solid var(--gold); color: var(--gold); }
         .log-table td { padding: 12px 10px; border-bottom: 1px solid #1f2937; color: #e5e7eb; vertical-align: middle; }
         .btn-action { color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; margin: 2px; }
-
         footer { background: #000; color: #64748b; padding: 60px 20px; text-align: center; }
         .admin-link { display: inline-block; margin-top: 15px; font-size: 12px; color: var(--gold); cursor: pointer; text-decoration: underline; opacity: 0.6; }
     </style>
@@ -127,14 +117,12 @@
 
     <div id="adminView">
         <h2 style="color:var(--gold); margin-top:0;">DNHQ Manager Portal</h2>
-        <button onclick="exportBackup()" style="background:#22c55e; color:white; border:none; padding:10px; border-radius:8px; margin-bottom:10px; font-weight:bold; cursor:pointer;">📥 Download Data Backup</button>
         <div style="overflow-x:auto;">
             <table class="log-table">
                 <thead><tr><th>Date</th><th>Client</th><th>Work</th><th>Bill</th><th>Action</th></tr></thead>
                 <tbody id="logItems"></tbody>
             </table>
         </div>
-        <button onclick="localStorage.removeItem('dnhq_final_secure'); renderLogs();" style="margin-top:20px; color:#ef4444; background:none; border:none; cursor:pointer;">[!] Wipe All Data</button>
         <button onclick="document.getElementById('adminView').style.display='none'" style="display:block; width:100%; margin-top:20px; padding:15px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Close Panel</button>
     </div>
 
@@ -146,38 +134,34 @@
 
     <script>
     let cart = [];
-    const STORAGE_KEY = 'dnhq_final_secure';
-
-    // PWA Service Worker Registration
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
-    }
+    // AAPKA GOOGLE SCRIPT URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxub7p8nDtfUMHfbvV_3gac66D-e0Epkd0bURizPRtB5L_jUknKMpRkyJ9UI7Hu0ddXYg/exec";
 
     function toggleSvc(el, name, price) {
         const idx = cart.findIndex(c => c.name === name);
         if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
         else { cart.push({name, price}); el.classList.add('selected'); }
-        
         const total = cart.reduce((a, b) => a + b.price, 0);
         document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
         document.getElementById('billTotal').innerText = total.toLocaleString();
     }
 
-    function placeOrder() {
+    async function placeOrder() {
         const user = prompt("Customer Name:") || "Client";
         const total = cart.reduce((a, b) => a + b.price, 0);
         const work = cart.map(c => c.name).join(", ");
         const date = new Date().toLocaleDateString();
-
-        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        history.push({ id: Date.now(), date, client: user, work: work, total: total, items: [...cart] });
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-
-        const msg = `*NEW DNHQ ORDER*\nClient: ${user}\nServices: ${work}\n*Est. Total: Rs ${total.toLocaleString()}*`;
-        const waUrl = "https://wa.me/923152458657?text=" + encodeURIComponent(msg);
         
-        alert("Order Saved! Opening WhatsApp...");
-        window.location.href = waUrl;
+        const orderData = { id: Date.now(), date, client: user, work: work, total: total, items: [...cart] };
+
+        // Send to Google Sheets
+        try {
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(orderData) });
+            alert("Order Sent to Cloud!");
+        } catch (e) { console.log("Cloud Error"); }
+
+        const msg = `*NEW DNHQ ORDER*\nClient: ${user}\nServices: ${work}\n*Total: Rs ${total.toLocaleString()}*`;
+        window.location.href = "https://wa.me/923152458657?text=" + encodeURIComponent(msg);
     }
 
     function openAdmin() {
@@ -187,50 +171,41 @@
         }
     }
 
-    function renderLogs() {
-        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        document.getElementById('logItems').innerHTML = data.slice().reverse().map((d) => `
-            <tr>
-                <td>${d.date}</td>
-                <td><b>${d.client}</b></td>
-                <td>${d.work}</td>
-                <td>Rs ${d.total.toLocaleString()}</td>
-                <td>
-                    <button class="btn-action" style="background:#3b82f6" onclick='editAndPDF(${JSON.stringify(d)})'>EDIT & PDF</button>
-                    <button class="btn-action" style="background:#ef4444" onclick='deleteOrder(${d.id})'>DEL</button>
-                </td>
-            </tr>
-        `).join('');
-    }
-
-    function deleteOrder(id) {
-        if(confirm("Order delete kar dein?")) {
-            let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            history = history.filter(item => item.id !== id);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-            renderLogs();
-        }
+    async function renderLogs() {
+        const logBody = document.getElementById('logItems');
+        logBody.innerHTML = "<tr><td colspan='5'>Syncing Cloud Data...</td></tr>";
+        try {
+            const res = await fetch(SCRIPT_URL);
+            const cloudData = await res.json();
+            logBody.innerHTML = cloudData.reverse().map(d => `
+                <tr>
+                    <td>${d.date}</td>
+                    <td><b>${d.client}</b></td>
+                    <td>${d.work}</td>
+                    <td>Rs ${d.total.toLocaleString()}</td>
+                    <td>
+                        <button class="btn-action" style="background:#3b82f6" onclick='editAndPDF(${JSON.stringify(d)})'>EDIT & PDF</button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (e) { logBody.innerHTML = "<tr><td colspan='5'>Cloud Sync Error!</td></tr>"; }
     }
 
     function editAndPDF(order) {
         let currentItems = [...order.items];
-        let action = "";
         let currentClient = order.client;
+        let action = "";
 
         while (action !== "done") {
-            let itemsList = currentItems.map((it, i) => `${i+1}. ${it.name} (Rs ${it.price})`).join('\n');
-            action = prompt(
-                `CLIENT: ${currentClient}\n\nITEMS:\n${itemsList}\n\n` +
-                `Options:\n- Type 'add' to add extra work\n- Type 'name' to change client name\n- Type 'done' to finish & save PDF`, 
-                "done"
-            );
+            let list = currentItems.map((it, i) => `${i+1}. ${it.name} (Rs ${it.price})`).join('\n');
+            action = prompt(`CLIENT: ${currentClient}\n\nITEMS:\n${list}\n\nType 'add' to add extra work,\nType 'name' to edit name,\nType 'done' for PDF`, "done");
 
             if (action === "add") {
-                let nSvc = prompt("Naye kaam ka naam (e.g. Extra Wire):");
-                let nPrc = parseInt(prompt("Uski Price (Sirf numbers):"));
-                if (nSvc && nPrc) { currentItems.push({ name: nSvc, price: nPrc }); }
+                let n = prompt("Naye kaam ka naam:");
+                let p = parseInt(prompt("Price:"));
+                if (n && p) currentItems.push({ name: n, price: p });
             } else if (action === "name") {
-                currentClient = prompt("Naya Client Name:", currentClient) || currentClient;
+                currentClient = prompt("New Name:", currentClient) || currentClient;
             }
         }
 
@@ -241,44 +216,30 @@
     function generateAdminPDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        const logoImg = "1773452778552.jpeg"; 
         
         doc.setFillColor(0, 0, 0);
-        doc.rect(0, 0, 210, 50, 'F');
-        doc.addImage(logoImg, 'JPEG', 15, 10, 30, 30);
+        doc.rect(0, 0, 210, 45, 'F');
         doc.setTextColor(251, 191, 36); 
         doc.setFontSize(22);
-        doc.text("DNHQ SERVICES", 55, 25);
+        doc.text("DNHQ SERVICES", 15, 25);
         doc.setFontSize(10);
         doc.setTextColor(255, 255, 255);
-        doc.text("Professional AC & Electrical Solutions", 55, 33);
-        doc.text("Karachi | +92 315 2458657", 55, 38);
+        doc.text("Professional AC & Electrical Solutions", 15, 33);
 
         doc.setTextColor(0, 0, 0);
-        doc.text(`Client: ${order.client}`, 20, 65);
-        doc.text(`Date: ${order.date}`, 150, 65);
+        doc.text(`Client: ${order.client}`, 20, 60);
+        doc.text(`Date: ${order.date}`, 150, 60);
 
         doc.autoTable({
-            startY: 75,
-            head: [['Service Description', 'Amount']],
+            startY: 70,
+            head: [['Description', 'Amount']],
             body: order.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]),
             theme: 'striped',
             headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
         });
 
-        doc.setFontSize(16);
-        doc.text(`Total: Rs ${order.total.toLocaleString()}`, 130, doc.lastAutoTable.finalY + 15);
+        doc.text(`Total: Rs ${order.total.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
         doc.save(`DNHQ_${order.client}.pdf`);
-    }
-
-    function exportBackup() {
-        const data = localStorage.getItem(STORAGE_KEY);
-        const blob = new Blob([data], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `DNHQ_Backup.json`;
-        a.click();
     }
 
     function openVideo() { document.getElementById('videoModal').style.display = 'flex'; document.getElementById('tutVideo').play(); }
