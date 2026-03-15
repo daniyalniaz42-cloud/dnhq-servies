@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DNHQ SERVICES | Official</title>
-    <link rel="manifest" href="manifest.json?v=3">
+    <link rel="manifest" href="manifest.json?v=1.1">
     <meta name="theme-color" content="#fbbf24">
     <link rel="apple-touch-icon" href="1773452778552.jpeg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,7 +16,6 @@
         .logo-main { height: 85px; display: block; margin: 0 auto; }
         .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
         
-        /* Install Button Style */
         #installBtn { display: none; background: #fbbf24; color: black; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; margin: 15px auto; cursor: pointer; animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
 
@@ -108,26 +107,27 @@
     </footer>
    
     <script>
-        // Auto Update Logic
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(reg => {
-    reg.onupdatefound = () => {
-      const installingWorker = reg.installing;
-      installingWorker.onstatechange = () => {
-        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          if(confirm("DNHQ Update Available! Reload App?")) {
-            window.location.reload();
-          }
-        }
-      };
-    };
-  });
-}
+    // 1. AUTO-UPDATE LOGIC
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+            reg.onupdatefound = () => {
+                const installingWorker = reg.installing;
+                installingWorker.onstatechange = () => {
+                    if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        // Jab naya code GitHub par aye, user ko pop-up dikhaye
+                        if(confirm("New Update Available for DNHQ App! Reload now?")) {
+                            window.location.reload();
+                        }
+                    }
+                };
+            };
+        });
+    }
+
     let cart = [];
     let deferredPrompt;
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqrz159nHOXth5YNXimhEdze3Bykn_jPfldXtSz98utOvmIfjrUFgvZe_sU1oknyMKpQ/exec";
 
-    // 📲 INSTALL APP LOGIC
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -187,67 +187,61 @@ if ('serviceWorker' in navigator) {
                     <p style="margin:5px 0; font-size:13px; color:#94a3b8;">${d.work}</p>
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span style="color:gold; font-weight:bold;">Rs ${d.total}</span>
-                        <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; border:none; padding:5px 12px; border-radius:5px; font-weight:bold; cursor:pointer; color:black;">PDF</button>
+                        <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; border:none; padding:5px 12px; border-radius:5px; font-weight:bold; cursor:pointer; color:black;">PDF & EDIT</button>
                     </div>
                 </div>
             `).join('');
         } catch(e) { container.innerHTML = "Error loading data."; }
     }
 
+    // 📑 EXTRA WORK INVOICE LOGIC
     function generatePDF(order) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // 1. Customer se Extra kaam poochein
-    let extraWork = prompt("Extra kaam ki detail likhein (e.g. 1 Extra Board Install):", "");
-    let extraCost = prompt("Is extra kaam ke kitne paise hain?", "0");
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        let extraWork = prompt("Customer ka extra kaam likhein (e.g. 1 Extra Socket):", "");
+        let extraCost = prompt("Is extra kaam ke paise (Sirf Number):", "0");
 
-    // PDF ki Designing
-    doc.setFillColor(0,0,0); 
-    doc.rect(0,0,210,30,'F');
-    doc.setTextColor(251, 191, 36); 
-    doc.setFontSize(22); 
-    doc.text("DNHQ SERVICES", 15, 20);
-    
-    doc.setTextColor(0,0,0); 
-    doc.setFontSize(12);
-    doc.text(`Invoice For: ${order.client}`, 15, 45);
-    doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 52);
+        doc.setFillColor(0,0,0); 
+        doc.rect(0,0,210,30,'F');
+        doc.setTextColor(251, 191, 36); 
+        doc.setFontSize(22); 
+        doc.text("DNHQ SERVICES", 15, 20);
+        
+        doc.setTextColor(0,0,0); 
+        doc.setFontSize(12);
+        doc.text(`Invoice For: ${order.client}`, 15, 45);
+        doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 52);
 
-    // 2. Table ka data (Pehli row selection wali)
-    let tableBody = [
-        [order.work, `Rs ${order.total}`]
-    ];
+        // Table Rows: Pehli row main kaam, doosri row extra kaam
+        let tableBody = [
+            [order.work, `Rs ${order.total}`]
+        ];
 
-    // 3. Agar extra kaam dala hai toh doosri row add hogi
-    if (extraWork && extraWork.trim() !== "") {
-        tableBody.push([extraWork, `Rs ${extraCost}`]);
+        if (extraWork && extraWork.trim() !== "") {
+            tableBody.push([extraWork, `Rs ${extraCost}`]);
+        }
+
+        let finalTotal = parseInt(order.total) + (parseInt(extraCost) || 0);
+
+        doc.autoTable({
+            startY: 60,
+            head: [['Service Description', 'Amount']],
+            body: tableBody,
+            headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] },
+            theme: 'grid'
+        });
+
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text(`Grand Total: Rs ${finalTotal}`, 140, doc.lastAutoTable.finalY + 15);
+
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        doc.text("Generated by DNHQ Admin Panel", 15, doc.lastAutoTable.finalY + 25);
+
+        doc.save(`DNHQ_Invoice_${order.client}.pdf`);
     }
-
-    // Paise jama (plus) karne ki logic
-    let finalTotal = parseInt(order.total) + (parseInt(extraCost) || 0);
-
-    // Table banana
-    doc.autoTable({
-        startY: 60,
-        head: [['Service Description', 'Amount']],
-        body: tableBody,
-        headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] },
-        theme: 'grid'
-    });
-
-    // Grand Total
-    doc.setFontSize(14);
-    doc.setFont(undefined, 'bold');
-    doc.text(`Grand Total: Rs ${finalTotal}`, 140, doc.lastAutoTable.finalY + 15);
-
-    doc.setFontSize(10);
-    doc.setFont(undefined, 'normal');
-    doc.text("Thank you for choosing DNHQ Services!", 15, doc.lastAutoTable.finalY + 25);
-
-    // PDF Save
-    doc.save(`DNHQ_Invoice_${order.client}.pdf`);
-}
     </script>
 </body>
 </html>
