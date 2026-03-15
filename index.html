@@ -46,6 +46,20 @@
         .admin-link { display: inline-block; margin-top: 15px; font-size: 12px; color: var(--gold); cursor: pointer; text-decoration: underline; opacity: 0.6; }
     </style>
 </head>
+<div style="text-align: center; margin: 20px 0;">
+    <a href="javascript:void(0)" onclick="openVideo()" style="color: #fbbf24; text-decoration: none; font-weight: bold; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 30px; display: inline-block; background: rgba(251, 191, 36, 0.1); font-size: 14px; letter-spacing: 1px;">
+        ✨ HOW TO BOOK SERVICE? (WATCH VIDEO)
+    </a>
+</div>
+
+<div id="videoModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center;">
+    <div style="position: relative; width: 90%; max-width: 500px; border: 2px solid #fbbf24; border-radius: 15px; overflow: hidden;">
+        <span onclick="closeVideo()" style="position: absolute; right: 10px; top: 5px; color: white; font-size: 30px; cursor: pointer; z-index: 10000;">&times;</span>
+        <video id="tutVideo" controls width="100%" poster="1773452778552.jpeg">
+            <source src="tutorial.mp4" type="video/mp4">
+        </video>
+    </div>
+    </div>
 <body>
 
     <header class="brand-header">
@@ -220,6 +234,15 @@
             doc.text("This is a computer generated invoice by DNHQ Services.", 105, 285, { align: "center" });
             doc.save(`DNHQ_Invoice_${order.client}.pdf`);
         }
+        function openVideo() {
+    document.getElementById('videoModal').style.display = 'flex';
+    document.getElementById('tutVideo').play();
+}
+
+function closeVideo() {
+    document.getElementById('videoModal').style.display = 'none';
+    document.getElementById('tutVideo').pause();
+}
     </script>
 </body>
 </html>
