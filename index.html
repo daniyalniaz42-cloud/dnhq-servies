@@ -145,138 +145,144 @@
     </footer>
 
     <script>
-        let cart = [];
-        const STORAGE_KEY = 'dnhq_final_secure';
+    let cart = [];
+    const STORAGE_KEY = 'dnhq_final_secure';
 
-        function toggleSvc(el, name, price) {
-            const idx = cart.findIndex(c => c.name === name);
-            if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
-            else { cart.push({name, price}); el.classList.add('selected'); }
-            
-            const total = cart.reduce((a, b) => a + b.price, 0);
-            document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
-            document.getElementById('billTotal').innerText = total.toLocaleString();
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+    }
+
+    function toggleSvc(el, name, price) {
+        const idx = cart.findIndex(c => c.name === name);
+        if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
+        else { cart.push({name, price}); el.classList.add('selected'); }
+        
+        const total = cart.reduce((a, b) => a + b.price, 0);
+        document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
+        document.getElementById('billTotal').innerText = total.toLocaleString();
+    }
+
+    function placeOrder() {
+        const user = prompt("Customer Name:") || "Client";
+        const total = cart.reduce((a, b) => a + b.price, 0);
+        const work = cart.map(c => c.name).join(", ");
+        const date = new Date().toLocaleDateString();
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        history.push({ id: Date.now(), date, client: user, work: work, total: total, items: [...cart] });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+
+        const msg = `*NEW DNHQ ORDER*\nClient: ${user}\nServices: ${work}\n*Est. Total: Rs ${total.toLocaleString()}*`;
+        const waUrl = "https://wa.me/923152458657?text=" + encodeURIComponent(msg);
+        
+        alert("Order Saved! Opening WhatsApp...");
+        window.location.href = waUrl;
+    }
+
+    function openAdmin() {
+        if(prompt("PIN:") === "dnhq123") {
+            document.getElementById('adminView').style.display = 'block';
+            renderLogs();
         }
+    }
 
-        function placeOrder() {
-            const user = prompt("Customer Name:") || "Client";
-            const total = cart.reduce((a, b) => a + b.price, 0);
-            const work = cart.map(c => c.name).join(", ");
-            const date = new Date().toLocaleDateString();
+    function renderLogs() {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        document.getElementById('logItems').innerHTML = data.slice().reverse().map((d) => `
+            <tr>
+                <td>${d.date}</td>
+                <td><b>${d.client}</b></td>
+                <td>${d.work}</td>
+                <td>Rs ${d.total.toLocaleString()}</td>
+                <td>
+                    <button class="btn-action" style="background:#3b82f6" onclick='editAndPDF(${JSON.stringify(d)})'>EDIT & PDF</button>
+                    <button class="btn-action" style="background:#ef4444" onclick='deleteOrder(${d.id})'>DEL</button>
+                </td>
+            </tr>
+        `).join('');
+    }
 
-            // 1. SAVE DATA FIRST
+    function deleteOrder(id) {
+        if(confirm("Order delete kar dein?")) {
             let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            history.push({ id: Date.now(), date, client: user, work: work, total: total, items: [...cart] });
+            history = history.filter(item => item.id !== id);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-
-            // 2. WHATSAPP REDIRECT (Location swap is more reliable for 1st time clicks)
-            const msg = `*NEW DNHQ ORDER*\nClient: ${user}\nServices: ${work}\n*Est. Total: Rs ${total.toLocaleString()}*`;
-            const waUrl = "https://wa.me/923152458657?text=" + encodeURIComponent(msg);
-            
-            alert("Order saved in Admin Panel! Now opening WhatsApp...");
-            window.location.href = waUrl;
+            renderLogs();
         }
+    }
 
-        function openAdmin() {
-            if(prompt("PIN:") === "dnhq123") {
-                document.getElementById('adminView').style.display = 'block';
-                renderLogs();
+    function editAndPDF(order) {
+        let currentItems = [...order.items];
+        let action = "";
+        let currentClient = order.client;
+
+        while (action !== "done") {
+            let itemsList = currentItems.map((it, i) => `${i+1}. ${it.name} (Rs ${it.price})`).join('\n');
+            action = prompt(
+                `CLIENT: ${currentClient}\n\nITEMS:\n${itemsList}\n\n` +
+                `Options:\n- Type 'add' to add extra work\n- Type 'name' to change client name\n- Type 'done' to finish & save PDF`, 
+                "done"
+            );
+
+            if (action === "add") {
+                let nSvc = prompt("Naye kaam ka naam (e.g. Extra Wire):");
+                let nPrc = parseInt(prompt("Uski Price (Sirf numbers):"));
+                if (nSvc && nPrc) { currentItems.push({ name: nSvc, price: nPrc }); }
+            } else if (action === "name") {
+                currentClient = prompt("Naya Client Name:", currentClient) || currentClient;
             }
         }
 
-        function renderLogs() {
-            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            document.getElementById('logItems').innerHTML = data.slice().reverse().map((d, index) => `
-                <tr>
-                    <td>${d.date}</td>
-                    <td><b>${d.client}</b></td>
-                    <td>${d.work}</td>
-                    <td>Rs ${d.total.toLocaleString()}</td>
-                    <td>
-                        <button class="btn-action" style="background:#3b82f6" onclick='editAndPDF(${JSON.stringify(d)})'>EDIT & PDF</button>
-                        <button class="btn-action" style="background:#ef4444" onclick='deleteOrder(${d.id})'>DEL</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
+        const finalTotal = currentItems.reduce((a, b) => a + b.price, 0);
+        generateAdminPDF({ ...order, client: currentClient, items: currentItems, total: finalTotal });
+    }
 
-        function deleteOrder(id) {
-            if(confirm("Are you sure to delete this order?")) {
-                let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-                history = history.filter(item => item.id !== id);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-                renderLogs();
-            }
-        }
+    function generateAdminPDF(order) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const logoImg = "1773452778552.jpeg"; 
+        
+        doc.setFillColor(0, 0, 0);
+        doc.rect(0, 0, 210, 50, 'F');
+        doc.addImage(logoImg, 'JPEG', 15, 10, 30, 30);
+        doc.setTextColor(251, 191, 36); 
+        doc.setFontSize(22);
+        doc.text("DNHQ SERVICES", 55, 25);
+        doc.setFontSize(10);
+        doc.setTextColor(255, 255, 255);
+        doc.text("Professional AC & Electrical Solutions", 55, 33);
+        doc.text("Karachi | +92 315 2458657", 55, 38);
 
-        function editAndPDF(order) {
-            // MANUAL EDITING BEFORE PDF
-            const newName = prompt("Edit Client Name:", order.client) || order.client;
-            const newWork = prompt("Edit Work Description:", order.work) || order.work;
-            const newTotal = parseInt(prompt("Edit Total Amount:", order.total)) || order.total;
+        doc.setTextColor(0, 0, 0);
+        doc.text(`Client: ${order.client}`, 20, 65);
+        doc.text(`Date: ${order.date}`, 150, 65);
 
-            const updatedOrder = { ...order, client: newName, work: newWork, total: newTotal };
-            generateAdminPDF(updatedOrder);
-        }
+        doc.autoTable({
+            startY: 75,
+            head: [['Service Description', 'Amount']],
+            body: order.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]),
+            theme: 'striped',
+            headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
+        });
 
-        function exportBackup() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            const blob = new Blob([data], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `DNHQ_Backup_${new Date().toLocaleDateString()}.json`;
-            a.click();
-        }
+        doc.setFontSize(16);
+        doc.text(`Total: Rs ${order.total.toLocaleString()}`, 130, doc.lastAutoTable.finalY + 15);
+        doc.save(`DNHQ_${order.client}.pdf`);
+    }
 
-        function generateAdminPDF(order) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const logoImg = "1773452778552.jpeg"; 
-            
-            doc.setFillColor(0, 0, 0);
-            doc.rect(0, 0, 210, 50, 'F');
-            doc.addImage(logoImg, 'JPEG', 15, 10, 30, 30);
-            doc.setTextColor(251, 191, 36); 
-            doc.setFontSize(22);
-            doc.setFont("helvetica", "bold");
-            doc.text("DNHQ SERVICES", 55, 25);
-            doc.setFontSize(10);
-            doc.setTextColor(255, 255, 255);
-            doc.text("Professional AC & Electrical Solutions", 55, 33);
-            doc.text("Karachi, Pakistan | +92 315 2458657", 55, 38);
+    function exportBackup() {
+        const data = localStorage.getItem(STORAGE_KEY);
+        const blob = new Blob([data], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `DNHQ_Backup.json`;
+        a.click();
+    }
 
-            doc.setTextColor(0, 0, 0);
-            doc.setFontSize(12);
-            doc.text(`Client Name: ${order.client}`, 20, 65);
-            doc.text(`Date: ${order.date}`, 150, 65);
-
-            doc.autoTable({
-                startY: 75,
-                head: [['Service Description', 'Amount']],
-                body: [[order.work, `Rs ${order.total.toLocaleString()}`]],
-                theme: 'striped',
-                headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
-            });
-
-            const finalY = doc.lastAutoTable.finalY + 15;
-            doc.setFontSize(16);
-            doc.setFont("helvetica", "bold");
-            doc.text(`Total Amount: Rs ${order.total.toLocaleString()}`, 130, finalY);
-            doc.setFontSize(9);
-            doc.setTextColor(100);
-            doc.text("This is a computer generated invoice by DNHQ Services.", 105, 285, { align: "center" });
-            doc.save(`DNHQ_Invoice_${order.client}.pdf`);
-        }
-
-        function openVideo() {
-            document.getElementById('videoModal').style.display = 'flex';
-            document.getElementById('tutVideo').play();
-        }
-        function closeVideo() {
-            document.getElementById('videoModal').style.display = 'none';
-            document.getElementById('tutVideo').pause();
-        }
-    </script>
+    function openVideo() { document.getElementById('videoModal').style.display = 'flex'; document.getElementById('tutVideo').play(); }
+    function closeVideo() { document.getElementById('videoModal').style.display = 'none'; document.getElementById('tutVideo').pause(); }
+</script>
 </body>
 </html>
