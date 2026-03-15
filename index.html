@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DNHQ SERVICES | Official</title>
-    <link rel="manifest" href="manifest.json?v=4">
+    <link rel="manifest" href="manifest.json?v=5">
     <meta name="theme-color" content="#fbbf24">
     <link rel="apple-touch-icon" href="1773452778552.jpeg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -31,6 +31,7 @@
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
         footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
+        .social-links a { color: var(--gold); text-decoration: none; margin: 0 10px; font-size: 14px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -48,11 +49,18 @@
 
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 6500)"><div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 6,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
 
         <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Tracing & Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'New Point Wiring', 1500)"><div class="svc-meta"><b>New Point</b><p>Wiring with Socket</p></div><div class="svc-rate">Rs 1,500</div></div>
+
+        <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Complete Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
     </div>
 
     <div id="adminView">
@@ -71,19 +79,23 @@
     </div>
 
     <footer>
-        <div style="color:var(--gold); font-weight:bold;">DNHQ SERVICES</div>
-        <div onclick="openAdmin()" style="margin-top:15px; font-size:12px; cursor:pointer; opacity:0.5;">Admin Login</div>
+        <div style="color:var(--gold); font-weight:bold; margin-bottom:10px;">DNHQ SERVICES</div>
+        <div class="social-links">
+            <a href="https://facebook.com/dnhqservices">Facebook</a> |
+            <a href="https://wa.me/923152458657">WhatsApp</a>
+        </div>
+        <div onclick="openAdmin()" style="margin-top:20px; font-size:12px; cursor:pointer; opacity:0.5;">Admin Login</div>
     </footer>
    
     <script>
-    // 1. AUTO-UPDATE APP LOGIC
+    // 1. AUTO-UPDATE
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').then(reg => {
             reg.onupdatefound = () => {
                 const installingWorker = reg.installing;
                 installingWorker.onstatechange = () => {
                     if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        if(confirm("New Update Available! Reload App?")) window.location.reload();
+                        if(confirm("New Update! Reload?")) window.location.reload();
                     }
                 };
             };
@@ -92,8 +104,8 @@
 
     let cart = [];
     let deferredPrompt;
-    // YAHAN APNA NAYA URL DALAIN
-    const SCRIPT_URL = "Yhttps://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
+    // YAHAN APNA GOOGLE SCRIPT URL PASTE KAREIN
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault(); deferredPrompt = e;
@@ -133,7 +145,7 @@
 
     async function loadLogs() {
         const container = document.getElementById('logItems');
-        container.innerHTML = "Fetching Fresh Data...";
+        container.innerHTML = "Fetching Records...";
         try {
             const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
             const data = await res.json();
@@ -144,13 +156,13 @@
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <b style="color:gold;">Rs ${d.total}</b>
                         <div style="display:flex; gap:5px;">
-                            <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; border:none; padding:5px 10px; border-radius:5px; font-weight:bold;">PDF & EDIT</button>
+                            <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; color:black; border:none; padding:5px 10px; border-radius:5px; font-weight:bold;">PDF</button>
                             <button onclick="deleteRec('${d.client}', ${d.total})" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px;">DEL</button>
                         </div>
                     </div>
                 </div>
             `).join('');
-        } catch(e) { container.innerHTML = "Error loading."; }
+        } catch(e) { container.innerHTML = "Error loading records. Check SCRIPT_URL."; }
     }
 
     async function deleteRec(client, total) {
@@ -163,19 +175,16 @@
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        let extraWork = prompt("Extra kaam (Empty if none):", "");
-        let extraCost = prompt("Extra paise:", "0");
-
+        let extraWork = prompt("Extra Work (e.g. 1 Board):", "");
+        let extraCost = prompt("Extra Amount:", "0");
         doc.setFillColor(0,0,0); doc.rect(0,0,210,30,'F');
         doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 15, 20);
         doc.setTextColor(0,0,0); doc.setFontSize(12);
         doc.text(`Invoice: ${order.client}`, 15, 45);
         doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 52);
-
         let body = [[order.work, `Rs ${order.total}`]];
         if (extraWork) body.push([extraWork, `Rs ${extraCost}`]);
         let final = parseInt(order.total) + (parseInt(extraCost) || 0);
-
         doc.autoTable({ startY: 60, head: [['Description', 'Amount']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
         doc.setFontSize(14); doc.text(`Grand Total: Rs ${final}`, 140, doc.lastAutoTable.finalY + 15);
         doc.save(`DNHQ_${order.client}.pdf`);
