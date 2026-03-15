@@ -30,42 +30,41 @@
         .svc-meta p { font-size: 13px; color: #94a3b8; margin: 0; }
         .svc-rate { text-align: right; font-weight: 800; color: var(--gold); font-size: 16px; }
 
-        /* Customer Checkout Bar */
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
         .checkout-inner { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; }
         .btn-wa { background: #22c55e; color: white; padding: 16px 35px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
 
-        /* Admin UI */
         #adminView { display: none; background: #111827; margin: 10px; padding: 20px; border-radius: 20px; border: 1px solid #374151; position: relative; z-index: 3000; }
         .log-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; }
         .log-table th { background: #000; padding: 10px; text-align: left; border-bottom: 1px solid var(--gold); color: var(--gold); }
         .log-table td { padding: 12px 10px; border-bottom: 1px solid #1f2937; color: #e5e7eb; vertical-align: middle; }
-        .btn-admin-pdf { background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; }
+        .btn-action { color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; margin: 2px; }
 
         footer { background: #000; color: #64748b; padding: 60px 20px; text-align: center; }
         .admin-link { display: inline-block; margin-top: 15px; font-size: 12px; color: var(--gold); cursor: pointer; text-decoration: underline; opacity: 0.6; }
     </style>
 </head>
-<div style="text-align: center; margin: 20px 0;">
-    <a href="javascript:void(0)" onclick="openVideo()" style="color: #fbbf24; text-decoration: none; font-weight: bold; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 30px; display: inline-block; background: rgba(251, 191, 36, 0.1); font-size: 14px; letter-spacing: 1px;">
-        ✨ HOW TO BOOK SERVICE? (WATCH VIDEO)
-    </a>
-</div>
-
-<div id="videoModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center;">
-    <div style="position: relative; width: 90%; max-width: 500px; border: 2px solid #fbbf24; border-radius: 15px; overflow: hidden;">
-        <span onclick="closeVideo()" style="position: absolute; right: 10px; top: 5px; color: white; font-size: 30px; cursor: pointer; z-index: 10000;">&times;</span>
-        <video id="tutVideo" controls width="100%" poster="1773452778552.jpeg">
-            <source src="tutorial.mp4" type="video/mp4">
-        </video>
-    </div>
-    </div>
 <body>
 
     <header class="brand-header">
-        <img src="1773452778552.jpeg" class="logo-main" alt="DNHQ" onerror="this.style.display='none'">
+        <img src="1773452778552.jpeg" class="logo-main" alt="DNHQ">
         <div class="brand-title">DNHQ SERVICES</div>
     </header>
+
+    <div style="text-align: center; margin: 20px 0;">
+        <a href="javascript:void(0)" onclick="openVideo()" style="color: #fbbf24; text-decoration: none; font-weight: bold; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 30px; display: inline-block; background: rgba(251, 191, 36, 0.1); font-size: 14px; letter-spacing: 1px;">
+            ✨ HOW TO BOOK SERVICE? (WATCH VIDEO)
+        </a>
+    </div>
+
+    <div id="videoModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center;">
+        <div style="position: relative; width: 90%; max-width: 500px; border: 2px solid #fbbf24; border-radius: 15px; overflow: hidden;">
+            <span onclick="closeVideo()" style="position: absolute; right: 10px; top: 5px; color: white; font-size: 30px; cursor: pointer; z-index: 10000;">&times;</span>
+            <video id="tutVideo" controls width="100%" poster="1773452778552.jpeg">
+                <source src="tutorial.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
 
     <div class="wrapper">
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
@@ -128,14 +127,15 @@
 
     <div id="adminView">
         <h2 style="color:var(--gold); margin-top:0;">DNHQ Manager Portal</h2>
+        <button onclick="exportBackup()" style="background:#22c55e; color:white; border:none; padding:10px; border-radius:8px; margin-bottom:10px; font-weight:bold; cursor:pointer;">📥 Download Data Backup</button>
         <div style="overflow-x:auto;">
             <table class="log-table">
                 <thead><tr><th>Date</th><th>Client</th><th>Work</th><th>Bill</th><th>Action</th></tr></thead>
                 <tbody id="logItems"></tbody>
             </table>
         </div>
-        <button onclick="localStorage.removeItem('dnhq_final_secure'); renderLogs();" style="margin-top:20px; color:red; background:none; border:none; cursor:pointer;">Clear History</button>
-        <button onclick="location.reload()" style="display:block; width:100%; margin-top:20px; padding:15px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Close Panel</button>
+        <button onclick="localStorage.removeItem('dnhq_final_secure'); renderLogs();" style="margin-top:20px; color:#ef4444; background:none; border:none; cursor:pointer;">[!] Wipe All Data</button>
+        <button onclick="document.getElementById('adminView').style.display='none'" style="display:block; width:100%; margin-top:20px; padding:15px; background:var(--gold); color:black; border:none; border-radius:10px; font-weight:bold;">Close Panel</button>
     </div>
 
     <footer>
@@ -146,6 +146,7 @@
 
     <script>
         let cart = [];
+        const STORAGE_KEY = 'dnhq_final_secure';
 
         function toggleSvc(el, name, price) {
             const idx = cart.findIndex(c => c.name === name);
@@ -163,36 +164,69 @@
             const work = cart.map(c => c.name).join(", ");
             const date = new Date().toLocaleDateString();
 
-            let history = JSON.parse(localStorage.getItem('dnhq_final_secure') || '[]');
-            history.push({ date, client: user, work: work, total: total, items: [...cart] });
-            localStorage.setItem('dnhq_final_secure', JSON.stringify(history));
+            // 1. SAVE DATA FIRST
+            let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            history.push({ id: Date.now(), date, client: user, work: work, total: total, items: [...cart] });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
 
+            // 2. WHATSAPP REDIRECT (Location swap is more reliable for 1st time clicks)
             const msg = `*NEW DNHQ ORDER*\nClient: ${user}\nServices: ${work}\n*Est. Total: Rs ${total.toLocaleString()}*`;
-            window.open("https://wa.me/923152458657?text=" + encodeURIComponent(msg));
+            const waUrl = "https://wa.me/923152458657?text=" + encodeURIComponent(msg);
             
-            alert("Order placed! DNHQ team will contact you soon.");
-            location.reload();
+            alert("Order saved in Admin Panel! Now opening WhatsApp...");
+            window.location.href = waUrl;
         }
 
         function openAdmin() {
             if(prompt("PIN:") === "dnhq123") {
                 document.getElementById('adminView').style.display = 'block';
                 renderLogs();
-                document.getElementById('adminView').scrollIntoView();
             }
         }
 
         function renderLogs() {
-            const data = JSON.parse(localStorage.getItem('dnhq_final_secure') || '[]');
-            document.getElementById('logItems').innerHTML = data.reverse().map((d, index) => `
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            document.getElementById('logItems').innerHTML = data.slice().reverse().map((d, index) => `
                 <tr>
                     <td>${d.date}</td>
                     <td><b>${d.client}</b></td>
                     <td>${d.work}</td>
                     <td>Rs ${d.total.toLocaleString()}</td>
-                    <td><button class="btn-admin-pdf" onclick='generateAdminPDF(${JSON.stringify(d)})'>SEND PDF</button></td>
+                    <td>
+                        <button class="btn-action" style="background:#3b82f6" onclick='editAndPDF(${JSON.stringify(d)})'>EDIT & PDF</button>
+                        <button class="btn-action" style="background:#ef4444" onclick='deleteOrder(${d.id})'>DEL</button>
+                    </td>
                 </tr>
             `).join('');
+        }
+
+        function deleteOrder(id) {
+            if(confirm("Are you sure to delete this order?")) {
+                let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                history = history.filter(item => item.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+                renderLogs();
+            }
+        }
+
+        function editAndPDF(order) {
+            // MANUAL EDITING BEFORE PDF
+            const newName = prompt("Edit Client Name:", order.client) || order.client;
+            const newWork = prompt("Edit Work Description:", order.work) || order.work;
+            const newTotal = parseInt(prompt("Edit Total Amount:", order.total)) || order.total;
+
+            const updatedOrder = { ...order, client: newName, work: newWork, total: newTotal };
+            generateAdminPDF(updatedOrder);
+        }
+
+        function exportBackup() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            const blob = new Blob([data], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `DNHQ_Backup_${new Date().toLocaleDateString()}.json`;
+            a.click();
         }
 
         function generateAdminPDF(order) {
@@ -220,7 +254,7 @@
             doc.autoTable({
                 startY: 75,
                 head: [['Service Description', 'Amount']],
-                body: order.items.map(i => [i.name, `Rs ${i.price.toLocaleString()}`]),
+                body: [[order.work, `Rs ${order.total.toLocaleString()}`]],
                 theme: 'striped',
                 headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36] }
             });
@@ -234,15 +268,15 @@
             doc.text("This is a computer generated invoice by DNHQ Services.", 105, 285, { align: "center" });
             doc.save(`DNHQ_Invoice_${order.client}.pdf`);
         }
-        function openVideo() {
-    document.getElementById('videoModal').style.display = 'flex';
-    document.getElementById('tutVideo').play();
-}
 
-function closeVideo() {
-    document.getElementById('videoModal').style.display = 'none';
-    document.getElementById('tutVideo').pause();
-}
+        function openVideo() {
+            document.getElementById('videoModal').style.display = 'flex';
+            document.getElementById('tutVideo').play();
+        }
+        function closeVideo() {
+            document.getElementById('videoModal').style.display = 'none';
+            document.getElementById('tutVideo').pause();
+        }
     </script>
 </body>
 </html>
