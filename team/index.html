@@ -2,29 +2,76 @@
 <html>
 <head>
     <title>Our Team - DNHQ Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: Arial; text-align: center; background: #e9ecef; }
-        .team-container { display: flex; justify-content: center; gap: 20px; padding: 40px; }
-        .member-card { background: white; padding: 20px; border-radius: 15px; width: 250px; border-top: 5px solid #28a745; }
-        .member-card img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
-        .cert-btn { display: inline-block; margin-top: 10px; padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; }
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #0f172a; color: white; margin: 0; padding: 20px; }
+        h1 { color: #fbbf24; margin-bottom: 30px; }
+        
+        /* Is se cards ek line mein ya ek ke niche ek gap ke sath aayenge */
+        .team-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 25px; 
+            padding: 10px; 
+        }
+
+        .member-card { 
+            background: #111827; 
+            padding: 25px; 
+            border-radius: 15px; 
+            width: 280px; 
+            border-top: 5px solid #fbbf24; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .member-card img { 
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 3px solid #fbbf24;
+            background: #1f2937; /* Image load na ho to ye color dikhega */
+        }
+
+        .member-card h3 { margin: 15px 0 5px; color: #fff; }
+        .member-card p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+
+        .cert-btn { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            background: #007bff; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            font-weight: bold;
+        }
+        
+        .back-link { display: block; margin-top: 40px; color: #fbbf24; text-decoration: none; }
     </style>
 </head>
 <body>
+
     <h1>Meet Our Certified Experts</h1>
+
     <div class="team-container">
         <div class="member-card">
-            <img src="employee1.jpeg" alt="DNHQ Technician">
+            <img src="employee1.jpeg" alt="Daniyal Niaz">
             <h3>Muhammad Daniyal Niaz</h3>
             <p>Senior Electrician</p>
             <a href="cert1.jpeg" class="cert-btn" target="_blank">View Certificate</a>
-            
-<div class="member-card">
-    <img src="employee2.jpeg" alt="Technician">
-    <h3>Hassan Qureshi</h3> <p>AC Technician</p> <a href="cert2.jpeg" class="cert-btn" target="_blank">View Certificate</a>
-</div>
+        </div>
+
+        <div class="member-card">
+            <img src="employee2.jpeg" alt="Hassan Qureshi">
+            <h3>Hassan Qureshi</h3>
+            <p>AC Technician</p>
+            <a href="cert2.jpeg" class="cert-btn" target="_blank">View Certificate</a>
         </div>
     </div>
-    <a href="../index.html">Back to Home</a>
+
+    <a href="../index.html" class="back-link">← Back to Home</a>
+
 </body>
 </html>
