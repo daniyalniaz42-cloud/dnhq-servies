@@ -1,24 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Our Work - DNHQ Services</title>
+    <title>Our Portfolio - DNHQ Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: Arial; text-align: center; background: #f4f4f4; }
-        .gallery { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
-        .card { background: white; margin: 10px; padding: 15px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300px; }
-        .card img { width: 100%; border-radius: 5px; }
-        h2 { color: #333; }
+        body { font-family: 'Segoe UI', sans-serif; text-align: center; background: #0f172a; color: white; margin: 0; padding: 20px; }
+        h1 { color: #fbbf24; margin-bottom: 30px; }
+        
+        .gallery-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 15px; 
+            padding: 10px; 
+        }
+
+        .portfolio-card { 
+            background: #111827; 
+            padding: 10px; 
+            border-radius: 12px; 
+            width: 280px; 
+            border: 1px solid #fbbf24;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .portfolio-card img { 
+            width: 100%; 
+            height: 200px; 
+            border-radius: 8px; 
+            object-fit: cover; 
+            display: block;
+        }
+
+        .back-link { display: block; margin-top: 40px; color: #fbbf24; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
-    <h1>Our Projects Portfolio</h1>
-    <div class="gallery">
-        <div class="card">
-            <img src="project1.jpg" alt="Work Photo">
-            <h3>Industrial Wiring</h3>
-            <p>Location: SITE Area, Karachi</p>
+
+    <h1>Our Work Gallery</h1>
+
+    <div class="gallery-container">
+        <div class="portfolio-card">
+            <img src="1.jpeg" alt="Work 1">
         </div>
+
+        <div class="portfolio-card">
+            <img src="2.jpeg" alt="Work 2">
         </div>
-    <a href="../index.html">Back to Home</a>
+
+        <div class="portfolio-card">
+            <img src="3.jpeg" alt="Work 3">
+        </div>
+
+        <div class="portfolio-card">
+            <img src="4.jpeg" alt="Work 4">
+        </div>
+
+        <div class="portfolio-card">
+            <img src="5.jpeg" alt="Work 5">
+        </div>
+    </div>
+
+    <a href="../index.html" class="back-link">← Back to Home</a>
+
 </body>
 </html>
