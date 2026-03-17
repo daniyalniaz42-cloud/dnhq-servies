@@ -22,7 +22,11 @@
             width: 280px; 
             border: 1px solid #fbbf24;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer; /* Click karne ka nishaan */
+            transition: 0.3s;
         }
+
+        .portfolio-card:hover { transform: scale(1.03); }
 
         .portfolio-card img { 
             width: 100%; 
@@ -32,36 +36,65 @@
             display: block;
         }
 
+        /* Full Screen Image Modal Style */
+        #imgModal {
+            display: none; 
+            position: fixed; 
+            z-index: 9999; 
+            padding-top: 50px; 
+            left: 0; top: 0; 
+            width: 100%; height: 100%; 
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+            border: 2px solid #fbbf24;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         .back-link { display: block; margin-top: 40px; color: #fbbf24; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <h1>Our Work Gallery</h1>
+    <p style="color: #94a3b8; font-size: 14px;">(Kisi bhi picture par click karke badi dekhein)</p>
 
     <div class="gallery-container">
-        <div class="portfolio-card">
-            <img src="1.jpeg" alt="Work 1">
-        </div>
+        <div class="portfolio-card" onclick="openModal('1.jpeg')"><img src="1.jpeg"></div>
+        <div class="portfolio-card" onclick="openModal('2.jpeg')"><img src="2.jpeg"></div>
+        <div class="portfolio-card" onclick="openModal('3.jpeg')"><img src="3.jpeg"></div>
+        <div class="portfolio-card" onclick="openModal('4.jpeg')"><img src="4.jpeg"></div>
+        <div class="portfolio-card" onclick="openModal('5.jpeg')"><img src="5.jpeg"></div>
+    </div>
 
-        <div class="portfolio-card">
-            <img src="2.jpeg" alt="Work 2">
-        </div>
-
-        <div class="portfolio-card">
-            <img src="3.jpeg" alt="Work 3">
-        </div>
-
-        <div class="portfolio-card">
-            <img src="4.jpeg" alt="Work 4">
-        </div>
-
-        <div class="portfolio-card">
-            <img src="5.jpeg" alt="Work 5">
-        </div>
+    <div id="imgModal" onclick="this.style.display='none'">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="fullImg">
     </div>
 
     <a href="../index.html" class="back-link">← Back to Home</a>
+
+    <script>
+        function openModal(imgSrc) {
+            document.getElementById("imgModal").style.display = "block";
+            document.getElementById("fullImg").src = imgSrc;
+        }
+    </script>
 
 </body>
 </html>
