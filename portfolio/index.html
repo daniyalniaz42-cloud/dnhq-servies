@@ -140,28 +140,8 @@ function rotateVid(id) {
     }
 }
 </script>
-let portfolioRotation = 0;
 
-function rotatePortfolioVid() {
-    const vid = document.getElementById("portfolioVid");
-    portfolioRotation += 90;
-    
-    if (portfolioRotation >= 360) {
-        portfolioRotation = 0;
-    }
-    
-    vid.style.transform = `rotate(${portfolioRotation}deg)`;
-    
-    // Rotation ke waqt video ka size adjust karna taake wo kategi nahi
-    if (portfolioRotation === 90 || portfolioRotation === 270) {
-        vid.style.width = "auto";
-        vid.style.height = "100%";
-    } else {
-        vid.style.width = "100%";
-        vid.style.height = "auto";
-    }
-}
-</script>
+
     <div id="imgModal" onclick="this.style.display='none'">
         <span class="close-btn">&times;</span>
         <img class="modal-content" id="fullImg">
