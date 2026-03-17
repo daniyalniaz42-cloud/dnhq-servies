@@ -57,11 +57,33 @@
         </div>
 
         <div style="text-align: center; margin-bottom: 25px;">
-    <video controls style="width: 80%; border-radius: 12px; border: 2px solid #fbbf24; background: #000;">
-        <source src="tutorial.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <button onclick="playVid()" id="vidBtn" class="nav-btn" style="background: #fbbf24; color: black; font-weight: bold; width: 80%; display: inline-block; cursor: pointer; border: none; padding: 12px 0; border-radius: 10px;">
+        <i class="fas fa-play-circle"></i> WATCH TUTORIAL
+    </button>
+
+    <div id="videoBox" style="display: none; margin-top: 15px;">
+        <video id="myVideo" controls style="width: 90%; border-radius: 12px; border: 2px solid #fbbf24; background: #000;">
+            <source src="tutorial.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 </div>
+
+<script>
+function playVid() {
+    var x = document.getElementById("videoBox");
+    var v = document.getElementById("myVideo");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        v.play(); // Click karte hi video start ho jayegi
+        document.getElementById("vidBtn").innerHTML = '<i class="fas fa-times-circle"></i> CLOSE VIDEO';
+    } else {
+        x.style.display = "none";
+        v.pause(); // Band karne par video ruk jayegi
+        document.getElementById("vidBtn").innerHTML = '<i class="fas fa-play-circle"></i> WATCH TUTORIAL';
+    }
+}
+</script>
 
 
         <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
