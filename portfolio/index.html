@@ -87,24 +87,63 @@
     <h2 style="color: #fbbf24;">Work Video Portfolio</h2>
     <p style="color: #94a3b8;">Watch our technical expertise in action</p>
 
-    <div style="max-width: 600px; margin: 20px auto; position: relative; padding: 15px;">
-        <button onclick="rotatePortfolioVid()" style="position: absolute; top: 25px; right: 25px; background: rgba(251, 191, 36, 0.8); color: black; border: none; border-radius: 5px; cursor: pointer; padding: 8px 12px; z-index: 10; font-weight: bold;">
-            <i class="fas fa-sync-alt"></i> Rotate Video
-        </button>
+    <div style="text-align: center; margin-top: 50px; margin-bottom: 40px;">
+    <h2 style="color: #fbbf24;">Work Video Portfolio</h2>
+    <p style="color: #94a3b8;">Watch our technical expertise in action</p>
 
+    <div style="max-width: 600px; margin: 20px auto; position: relative; padding: 15px;">
+        <button onclick="rotateVid('vid1')" style="position: absolute; top: 25px; right: 25px; background: rgba(251, 191, 36, 0.8); color: black; border: none; border-radius: 5px; cursor: pointer; padding: 8px 12px; z-index: 10; font-weight: bold;">
+            <i class="fas fa-sync-alt"></i> Rotate
+        </button>
         <div style="overflow: hidden; border-radius: 15px; border: 2px solid #fbbf24; background: #000; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;">
-            <video id="portfolioVid" controls style="width: 100%; height: 100%; transition: transform 0.4s ease-out;">
+            <video id="vid1" controls style="width: 100%; height: 100%; transition: transform 0.4s ease-out;">
                 <source src="v1.mp4" type="video/mp4">
-        <div style="overflow: hidden; border-radius: 15px; border: 2px solid #fbbf24; background: #000; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;">
-            <video id="portfolioVid" controls style="width: 100%; height: 100%; transition: transform 0.4s ease-out;">
-                <source src="v2.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
         </div>
+        <p style="margin-top: 10px; color: #fbbf24;">AC Master Service - Project 1</p>
     </div>
+
+    <div style="max-width: 600px; margin: 20px auto; position: relative; padding: 15px;">
+        <button onclick="rotateVid('vid2')" style="position: absolute; top: 25px; right: 25px; background: rgba(251, 191, 36, 0.8); color: black; border: none; border-radius: 5px; cursor: pointer; padding: 8px 12px; z-index: 10; font-weight: bold;">
+            <i class="fas fa-sync-alt"></i> Rotate
+        </button>
+        <div style="overflow: hidden; border-radius: 15px; border: 2px solid #fbbf24; background: #000; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;">
+            <video id="vid2" controls style="width: 100%; height: 100%; transition: transform 0.4s ease-out;">
+                <source src="v2.mp4" type="video/mp4"> </video>
+        </div>
+        <p style="margin-top: 10px; color: #fbbf24;">Electrical Wiring - Project 2</p>
+    </div>
+
 </div>
 
 <script>
+let rotations = {}; // Har video ki rotation store karne ke liye
+
+function rotateVid(id) {
+    const vid = document.getElementById(id);
+    
+    // Agar is ID ki rotation store nahi hai to 0 se shuru karein
+    if (rotations[id] === undefined) {
+        rotations[id] = 0;
+    }
+    
+    rotations[id] += 90;
+    if (rotations[id] >= 360) {
+        rotations[id] = 0;
+    }
+    
+    vid.style.transform = `rotate(${rotations[id]}deg)`;
+    
+    // Rotation ke waqt size adjustment
+    if (rotations[id] === 90 || rotations[id] === 270) {
+        vid.style.width = "auto";
+        vid.style.height = "100%";
+    } else {
+        vid.style.width = "100%";
+        vid.style.height = "auto";
+    }
+}
+</script>
 let portfolioRotation = 0;
 
 function rotatePortfolioVid() {
