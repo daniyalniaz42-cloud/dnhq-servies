@@ -67,12 +67,24 @@
             </div>
         </div>
 
+        <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fancy Light Fitting', 0)"><div class="svc-meta"><b>Fancy Fitting</b><p>Chandeliers & Profiles</p></div><div class="svc-rate">As per Work</div></div>
+
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 6500)"><div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 6,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
 
         <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Tracing & Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Switch And Sockets Include</p></div><div class="svc-rate">Rs 1,500</div></div>
+
+        <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Complete Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
     </div>
 
     <div id="adminView">
@@ -99,10 +111,21 @@
         </div>
     </div>
 
+    <footer>
+        <div style="color:var(--gold); font-weight:bold;">DNHQ SERVICES</div>
+        <div class="social-links">
+            <a href="https://instagram.com/dnhq_services"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/@dnhqservices"><i class="fab fa-youtube"></i></a>
+            <a href="https://twitter.com/dnhqservices"><i class="fab fa-twitter"></i></a>
+        </div>
+        <div onclick="openAdmin()" style="margin-top:20px; font-size:10px; cursor:pointer; opacity:0.4;">Admin Login</div>
+    </footer>
+   
     <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
     let cart = [];
 
+    // Video Function
     function playVid() {
         var x = document.getElementById("videoBox");
         var v = document.getElementById("myVideo");
@@ -115,6 +138,7 @@
         }
     }
 
+    // Toggle Services
     function toggleSvc(el, name, price) {
         const idx = cart.findIndex(c => c.name === name);
         if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
@@ -124,14 +148,15 @@
         document.getElementById('billTotal').innerText = total.toLocaleString();
     }
 
+    // WhatsApp Order
     async function placeOrder() {
         const user = prompt("Customer Name:") || "Client";
         const total = cart.reduce((a, b) => a + b.price, 0);
         const work = cart.map(c => c.name).join(", ");
-        const date = new Date().toLocaleDateString();
         window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${user}%0AWork: ${work}%0ATotal: Rs ${total}`;
     }
 
+    // Admin Access
     function openAdmin() {
         if(prompt("Enter PIN:") === "dnhq123") {
             document.getElementById('adminView').style.display = 'block';
@@ -139,17 +164,19 @@
         }
     }
 
+    // Manual Save
     function saveManualOrder() {
         const client = document.getElementById('mClient').value;
         const work = document.getElementById('mWork').value;
         const total = document.getElementById('mTotal').value;
         if(!client || !work || !total) return alert("Fill all fields!");
-        alert("Record added locally. Click BACKUP to sync with Sheet.");
-        loadLogs(); // Refresh list to show new manual item
+        alert("Record added locally. Click BACKUP to sync.");
+        loadLogs();
     }
 
+    // Backup to Google Sheet
     async function backupToSheet(btn, client, work, total) {
-        if(!confirm("Backup this record to Google Sheet?")) return;
+        if(!confirm("Backup this record?")) return;
         btn.innerHTML = "Syncing..."; btn.disabled = true;
         const date = new Date().toLocaleDateString();
         try {
@@ -161,6 +188,7 @@
         } catch(e) { btn.innerHTML = "❌ RETRY"; btn.disabled = false; }
     }
 
+    // Load Records
     async function loadLogs() {
         const container = document.getElementById('logItems');
         container.innerHTML = "Updating List...";
@@ -184,6 +212,7 @@
         } catch(e) { container.innerHTML = "Error loading logs."; }
     }
 
+    // Delete Record
     async function deleteRec(client, total) {
         if(confirm("Delete this record?")) {
             await fetch(SCRIPT_URL + `?del=true&client=${encodeURIComponent(client)}&total=${total}`, {mode: 'no-cors'});
@@ -191,6 +220,7 @@
         }
     }
 
+    // PDF Generator
     function generatePDF(order) {
         const { jsPDF } = window.jspdf; const doc = new jsPDF();
         doc.setFillColor(0,0,0); doc.rect(0,0,210,35,'F');
