@@ -258,23 +258,62 @@
     }
 
     function generatePDF(order) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,35,'F');
-        const img = document.getElementById('brandLogo');
-        try { doc.addImage(img, 'JPEG', 15, 5, 25, 25); } catch(e) {}
-        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 22);
-        doc.setTextColor(0,0,0); doc.setFontSize(12);
-        doc.text(`Invoice: ${order.client}`, 15, 50);
-        // Sirf pehle 10 characters uthayega (e.g. 2026-03-17)
-let cleanDate = order.date ? order.date.split('T')[0] : new Date().toLocaleDateString();
-doc.text(`Date: ${cleanDate}`, 15, 57);
-        let items = order.work.split(", ");
-        let body = items.map(item => [item, "Included"]);
-        doc.autoTable({ startY: 65, head: [['Description', 'Note']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
-        doc.setFontSize(14); doc.text(`Total Bill: Rs ${order.total.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
-        doc.save(`DNHQ_${order.client}.pdf`);
-    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Date ko saaf karne ke liye (T19:00... hatane ke liye)
+    let cleanDate = order.date ? order.date.split('T')[0] : new Date().toLocaleDateString();
+
+    // Black Header Bar
+    doc.setFillColor(0,0,0); 
+    doc.rect(0,0,210,40,'F'); 
+
+    // Logo (DNHQ)
+    const img = document.getElementById('brandLogo');
+    try { doc.addImage(img, 'JPEG', 15, 7, 25, 25); } catch(e) {}
+
+    // Brand Name & "INVOICE" Title
+    doc.setTextColor(251, 191, 36); 
+    doc.setFontSize(22); 
+    doc.setFont("helvetica", "bold");
+    doc.text("DNHQ SERVICES", 45, 20);
+    
+    doc.setFontSize(14);
+    doc.text("INVOICE", 45, 30); // Ab INVOICE saaf likha ayega
+
+    // Customer & Date Info
+    doc.setTextColor(0,0,0); 
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Customer: ${order.client}`, 15, 55);
+    doc.text(`Date: ${cleanDate}`, 15, 62); // Clean Date yahan use hogi
+
+    // Table Styling
+    let items = order.work.split(", ");
+    let body = items.map(item => [item, "Service Rendered"]);
+
+    doc.autoTable({ 
+        startY: 70, 
+        head: [['Work Description', 'Status']], 
+        body, 
+        headStyles: { fillColor: [0,0,0], textColor: [251,191,36] },
+        theme: 'grid'
+    });
+
+    // Grand Total
+    let finalY = doc.lastAutoTable.finalY;
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(`GRAND TOTAL: Rs ${parseInt(order.total).toLocaleString()}`, 120, finalY + 20);
+
+    // Footer Note
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text("Thank you for choosing DNHQ Services!", 15, finalY + 35);
+
+    // Save PDF
+    doc.save(`DNHQ_Invoice_${order.client}.pdf`);
+}
     </script>
 </body>
 </html>
