@@ -23,17 +23,12 @@
         .svc-meta p { font-size: 10px; color: #94a3b8; margin: 3px 0 0; }
         .svc-rate { color: var(--gold); font-weight: 800; font-size: 13px; text-align: right; }
 
-        /* ADMIN & RECORDS FIXED */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark); z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .admin-box { background: var(--card); border: 1px solid #374151; border-radius: 15px; padding: 18px; margin-bottom: 20px; }
         .cust-card { background: #1f2937; border-left: 5px solid var(--gold); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        
         .m-input { width: 100%; background: #000; border: 1px solid #374151; color: white; padding: 14px; border-radius: 10px; margin-bottom: 10px; box-sizing: border-box; }
         .btn { padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; width: 100%; }
         .btn-gold { background: var(--gold); color: #000; }
         .btn-pdf { background: #fff; color: #000; flex: 1; font-size: 11px; }
-        .btn-sync { background: #3b82f6; color: white; flex: 1; font-size: 11px; }
-        .btn-del { background: #ef4444; color: white; width: 45px; }
 
         .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 1000; }
     </style>
@@ -46,73 +41,57 @@
     </header>
 
     <div class="wrapper">
-        <button onclick="toggleVideo()" class="btn btn-gold" style="margin-bottom:20px;"><i class="fas fa-play"></i> TUTORIAL VIDEO</button>
-        <div id="videoBox" style="display:none; margin-bottom:20px; border:2px solid var(--gold); border-radius:15px; overflow:hidden;">
-            <video style="width:100%;" controls id="mainVid"><source src="tutorial.mp4"></video>
-        </div>
-
         <div class="section-tag"><span>Air Conditioning</span><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Master Service',3500)"><div class="svc-meta"><b>Master Service</b><p>Indoor/Outdoor Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Normal Service',2500)"><div class="svc-meta"><b>Normal Service</b><p>Filter & General Wash</p></div><div class="svc-rate">Rs 2,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Master Service',3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash (Indoor/Outdoor)</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Normal Service',2500)"><div class="svc-meta"><b>Normal Service</b><p>General Wash & Filter Clean</p></div><div class="svc-rate">Rs 2,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'AC Gas 1.0 Ton',6500)"><div class="svc-meta"><b>Gas Refill (1.0 Ton)</b><p>Full Gas Charging</p></div><div class="svc-rate">Rs 6,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'AC Gas 1.5 Ton',8500)"><div class="svc-meta"><b>Gas Refill (1.5 Ton)</b><p>Full Gas Charging</p></div><div class="svc-rate">Rs 8,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'AC Gas 2.0 Ton',10500)"><div class="svc-meta"><b>Gas Refill (2.0 Ton)</b><p>Full Gas Charging</p></div><div class="svc-rate">Rs 10,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Installation',4000)"><div class="svc-meta"><b>Installation</b><p>Standard Wall Mount</p></div><div class="svc-rate">Rs 4,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Dismantle',2000)"><div class="svc-meta"><b>Dismantle</b><p>Safe Removal</p></div><div class="svc-rate">Rs 2,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Leak Repair',3500)"><div class="svc-meta"><b>Leakage Repair</b><p>Tracing + Welding</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Capacitor Replacement',1200)"><div class="svc-meta"><b>Capacitor Replace</b><p>Fan/Compressor Capacitor</p></div><div class="svc-rate">Rs 1,200</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'PCB Repairing',3500)"><div class="svc-meta"><b>PCB Repairing</b><p>Indoor/Outdoor PCB Fix</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Magnetic Contactor',1800)"><div class="svc-meta"><b>Magnetic Contactor</b><p>Part Replacement</p></div><div class="svc-rate">Rs 1,800</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Fan Motor',4500)"><div class="svc-meta"><b>Fan Motor</b><p>Indoor/Outdoor Motor</p></div><div class="svc-rate">Rs 4,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Installation',4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor Setup</p></div><div class="svc-rate">Rs 4,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Dismantle',2000)"><div class="svc-meta"><b>Dismantle</b><p>Safe Unit Removal</p></div><div class="svc-rate">Rs 2,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Leak Repair',3500)"><div class="svc-meta"><b>Leakage Repair</b><p>Tracing + Copper Welding</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Capacitor Change',1200)"><div class="svc-meta"><b>Capacitor Replace</b><p>Fan/Compressor Part</p></div><div class="svc-rate">Rs 1,200</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC PCB Repair',3500)"><div class="svc-meta"><b>PCB Repairing</b><p>Circuit Board Fix</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Magnetic Contactor',1800)"><div class="svc-meta"><b>Magnetic Contactor</b><p>High Quality Replacement</p></div><div class="svc-rate">Rs 1,800</div></div>
 
-        <div class="section-tag"><span>Electrical Services</span><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Short Circuit Fix',1000)"><div class="svc-meta"><b>Short Circuit</b><p>Fault Finding & Tracing</p></div><div class="svc-rate">Rs 1,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'DB Dressing',3000)"><div class="svc-meta"><b>DB Dressing</b><p>Main Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'UPS Installation',2500)"><div class="svc-meta"><b>UPS Installation</b><p>Wiring & Connection</p></div><div class="svc-rate">Rs 2,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'1 Room Wiring',1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>New Point Setup</p></div><div class="svc-rate">Rs 1,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Fan Installation',500)"><div class="svc-meta"><b>Fan Fitting</b><p>Bracket/Ceiling Fan</p></div><div class="svc-rate">Rs 500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Switch Board Fix',800)"><div class="svc-meta"><b>Board Repair</b><p>Switch/Socket Change</p></div><div class="svc-rate">Rs 800</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Breaker Change',500)"><div class="svc-meta"><b>Breaker Change</b><p>DP/SP Breakers</p></div><div class="svc-rate">Rs 500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Holder/Dimmer',300)"><div class="svc-meta"><b>Holder/Dimmer</b><p>Installation</p></div><div class="svc-rate">Rs 300</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Main Line Work',2000)"><div class="svc-meta"><b>Main Line Work</b><p>Meter to Breaker Box</p></div><div class="svc-rate">Rs 2,000</div></div>
+        <div class="section-tag"><span>Electrical Work</span><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Short Circuit',1000)"><div class="svc-meta"><b>Short Circuit</b><p>Tracing & Fault Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'DB Dressing',3000)"><div class="svc-meta"><b>DB Dressing</b><p>Main Panel Management</p></div><div class="svc-rate">Rs 3,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'UPS Installation',2500)"><div class="svc-meta"><b>UPS Installation</b><p>Inverter & Battery Wiring</p></div><div class="svc-rate">Rs 2,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'1 Room Wiring',1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Open/Underground Wiring</p></div><div class="svc-rate">Rs 1,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Fan Fitting',500)"><div class="svc-meta"><b>Fan Installation</b><p>Ceiling/Bracket/Exhaust</p></div><div class="svc-rate">Rs 500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Switch Board Fix',800)"><div class="svc-meta"><b>Board Repair</b><p>Button/Socket Replace</p></div><div class="svc-rate">Rs 800</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Breaker Change',500)"><div class="svc-meta"><b>Breaker Change</b><p>DP or SP Breaker</p></div><div class="svc-rate">Rs 500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Dimmer/Holder',300)"><div class="svc-meta"><b>Dimmer/Holder</b><p>Replacement</p></div><div class="svc-rate">Rs 300</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Main Line Work',2000)"><div class="svc-meta"><b>Main Line Work</b><p>Meter to Distribution Box</p></div><div class="svc-rate">Rs 2,000</div></div>
 
-        <div class="section-tag"><span>Projects & Fridge</span><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Fridge Gas Refill',7500)"><div class="svc-meta"><b>Fridge Gas Charging</b><p>Leak Fix + Gas</p></div><div class="svc-rate">Rs 7,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Full House Wiring',0)"><div class="svc-meta"><b>Full House Wiring</b><p>Complete New Piping & Wire</p></div><div class="svc-rate">Quote</div></div>
+        <div class="section-tag"><span>Refrigerator</span><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Fridge Gas Refill',7500)"><div class="svc-meta"><b>Fridge Gas</b><p>Leak Fix + Refill</p></div><div class="svc-rate">Rs 7,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Full House Wiring',0)"><div class="svc-meta"><b>House Wiring</b><p>New Building Sq.Ft Basis</p></div><div class="svc-rate">Quote</div></div>
     </div>
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="color:var(--gold); margin:0;">DNHQ DASHBOARD</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" class="btn-del">X</button>
+            <h2 style="color:var(--gold);">DNHQ ADMIN</h2>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:8px 15px; border-radius:8px;">EXIT</button>
         </div>
-
-        <div class="admin-box">
-            <h3 style="margin-top:0; font-size:14px; color:var(--gold);">NEW RECORD</h3>
-            <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
-            <div style="display:flex; gap:5px;"><input type="text" id="mWork" class="m-input" style="flex:2;" placeholder="Work Description"><input type="number" id="mRate" class="m-input" style="flex:1;" placeholder="Rate"></div>
-            <button onclick="addBillItem()" class="btn btn-gold">+ ADD TO LIST</button>
-            <div id="mBillText" style="margin:10px 0; font-size:12px; color:#94a3b8;"></div>
-            <div style="display:flex; justify-content:space-between; font-weight:bold;">Total: <span id="mTotal" style="color:var(--gold);">Rs 0</span></div>
-            <button onclick="saveRecord()" class="btn" style="background:#22c55e; color:white; margin-top:10px;">SAVE RECORD</button>
-        </div>
-
-        <h3 style="font-size:14px; color:#94a3b8; margin-bottom:15px;">PREVIOUS RECORDS & PDF</h3>
         <div id="customerRecords"></div>
     </div>
 
     <div class="checkout-bar" id="cartBar">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div><small>Total Bill</small><div style="font-size:20px; font-weight:bold; color:var(--gold);">Rs <span id="finalPrice">0</span></div></div>
+            <div><small>Estimated Bill</small><div style="font-size:18px; font-weight:bold; color:var(--gold);">Rs <span id="cartTotal">0</span></div></div>
             <button onclick="sendOrder()" class="btn btn-gold" style="width:auto; padding:10px 30px;">BOOK NOW</button>
         </div>
     </div>
 
-    <footer style="text-align:center; padding:40px; opacity:0.3; font-size:11px;" onclick="adminLogin()">Admin Access © DNHQ</footer>
+    <footer style="text-align:center; padding:40px; opacity:0.3; font-size:12px; cursor:pointer;" onclick="adminLogin()">
+        Admin Panel Login © DNHQ Services
+    </footer>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
-        let cart = []; let manualList = [];
+        let cart = [];
 
         function toggleSvc(el, name, price) {
             const idx = cart.findIndex(c => c.name === name);
@@ -120,34 +99,14 @@
             else { cart.push({name, price}); el.classList.add('selected'); }
             const total = cart.reduce((a, b) => a + b.price, 0);
             document.getElementById('cartBar').style.display = cart.length > 0 ? 'block' : 'none';
-            document.getElementById('finalPrice').innerText = total.toLocaleString();
+            document.getElementById('cartTotal').innerText = total.toLocaleString();
         }
 
-        function adminLogin() { if(prompt("PIN:") === "dnhq123") { document.getElementById('adminView').style.display='block'; loadList(); } }
-
-        function addBillItem() {
-            const w = document.getElementById('mWork').value; const r = document.getElementById('mRate').value;
-            if(!w || !r) return;
-            manualList.push({w, r: parseInt(r)});
-            let t = 0;
-            document.getElementById('mBillText').innerHTML = manualList.map(i => { t += i.r; return `• ${i.w} (Rs ${i.r})`; }).join('<br>');
-            document.getElementById('mTotal').innerText = "Rs " + t;
-            document.getElementById('mWork').value = ''; document.getElementById('mRate').value = '';
+        function adminLogin() {
+            if(prompt("PIN:") === "dnhq123") { document.getElementById('adminView').style.display='block'; fetchList(); }
         }
 
-        async function saveRecord() {
-            const client = document.getElementById('mCust').value;
-            if(!client || manualList.length === 0) return alert("Enter Info!");
-            const work = manualList.map(i => i.w).join(", ");
-            const total = manualList.reduce((a, b) => a + b.r, 0);
-            
-            manualList = []; document.getElementById('mCust').value = ''; 
-            document.getElementById('mBillText').innerHTML = ''; document.getElementById('mTotal').innerText = "Rs 0";
-            alert("Local Saved. Use SYNC to Backup.");
-            loadList();
-        }
-
-        async function loadList() {
+        async function fetchList() {
             const container = document.getElementById('customerRecords');
             container.innerHTML = "Fetching Records...";
             try {
@@ -155,41 +114,28 @@
                 const data = await res.json();
                 container.innerHTML = data.reverse().map(d => `
                     <div class="cust-card">
-                        <div style="display:flex; justify-content:space-between;"><b>${d.client}</b><small>${d.date || ''}</small></div>
-                        <p style="font-size:11px; color:#94a3b8; margin:8px 0;">${d.work}</p>
-                        <b style="color:var(--gold); font-size:17px;">Rs ${d.total}</b>
-                        <div style="display:flex; gap:8px; margin-top:12px;">
-                            <button class="btn btn-sync" onclick="syncData(this, '${d.client}', '${d.work}', ${d.total})">SYNC CLOUD</button>
-                            <button class="btn btn-pdf" onclick='makePDF(${JSON.stringify(d)})'>GET PDF</button>
-                            <button class="btn-del" style="border-radius:8px;" onclick="deleteRow('${d.client}', ${d.total})">X</button>
+                        <b>${d.client}</b><br><small>${d.work}</small><br>
+                        <b style="color:var(--gold);">Rs ${d.total}</b>
+                        <div style="display:flex; gap:5px; margin-top:10px;">
+                            <button class="btn btn-pdf" onclick='makePDF(${JSON.stringify(d)})'>PDF</button>
                         </div>
                     </div>
                 `).join('');
-            } catch(e) { container.innerHTML = "Offline View."; }
+            } catch(e) { container.innerHTML = "Offline."; }
         }
 
         function makePDF(d) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.setFillColor(0,0,0); doc.rect(0,0,210,35,'F');
-            doc.setTextColor(251,191,36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 15, 22);
-            doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text(`Customer Invoice: ${d.client}`, 15, 50);
-            doc.autoTable({ startY: 60, head: [['Work Details', 'Price']], body: [[d.work, `Rs ${d.total}`]], headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
+            doc.text(`DNHQ INVOICE: ${d.client}`, 15, 20);
+            doc.autoTable({ startY: 30, head: [['Work', 'Total']], body: [[d.work, `Rs ${d.total}`]] });
             doc.save(`DNHQ_${d.client}.pdf`);
         }
 
-        async function syncData(btn, client, work, total) {
-            btn.innerText = "...";
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client, work, total}) });
-            btn.innerText = "DONE"; btn.style.background = "#22c55e";
-        }
-
-        function toggleVideo() { const b = document.getElementById('videoBox'); b.style.display = b.style.display==='none'?'block':'none'; }
-        
         function sendOrder() {
-            const name = prompt("Name:"); if(!name) return;
+            const n = prompt("Name:"); if(!n) return;
             const w = cart.map(c => c.name).join(", ");
             const t = cart.reduce((a, b) => a + b.price, 0);
-            window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${name}%0AWork: ${w}%0ATotal: Rs ${t}`;
+            window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${n}%0AWork: ${w}%0ATotal: Rs ${t}`;
         }
     </script>
 </body>
