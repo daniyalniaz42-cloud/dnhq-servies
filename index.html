@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Official</title>
+    <title>DNHQ SERVICES | Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -14,30 +14,32 @@
         .logo-main { height: 75px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #333; }
         .wrapper { padding: 15px; max-width: 550px; margin: 0 auto; }
         
-        /* Nav Buttons */
+        /* Navigation Buttons */
         .nav-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .nav-btn { background: var(--card); border: 1px solid #1f2937; padding: 12px; border-radius: 10px; text-align: center; color: var(--gold); cursor: pointer; font-size: 12px; }
         .hidden-sec { display: none; background: #000; border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; }
 
-        /* Services Grid */
+        /* Services Grid Layout */
+        .section-tag { margin: 25px 0 10px; color: var(--gold); font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-left: 3px solid var(--gold); padding-left: 10px; }
         .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 12px; padding: 12px; cursor: pointer; }
-        .svc-item.selected { border-color: var(--gold); background: #000; }
-        .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; margin-top: 5px; }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.2s; }
+        .svc-item.selected { border-color: var(--gold); background: #000; box-shadow: 0 0 10px rgba(251,191,36,0.2); }
+        .svc-item b { font-size: 13px; display: block; margin-bottom: 4px; color: #fff; }
+        .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; }
 
         /* Admin Dashboard */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .admin-box { background: var(--card); border: 1px solid #333; padding: 15px; border-radius: 15px; margin-bottom: 20px; border-top: 4px solid var(--gold); }
         .m-input { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 8px; box-sizing: border-box; }
-        .btn-gold { background: var(--gold); color: #000; padding: 12px; border-radius: 8px; border: none; font-weight: bold; width: 100%; cursor: pointer; margin-top: 5px; }
+        .btn-gold { background: var(--gold); color: #000; padding: 12px; border-radius: 8px; border: none; font-weight: bold; width: 100%; cursor: pointer; }
         
-        /* Customer Records with Control Buttons */
+        /* Records Action Buttons */
         .cust-card { background: #111827; border-left: 4px solid var(--gold); padding: 15px; border-radius: 10px; margin-bottom: 12px; }
         .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
         .btn-pdf { background: #fff; color: #000; border: none; padding: 8px; border-radius: 5px; font-weight: bold; font-size: 11px; cursor: pointer; }
         .btn-dlt { background: #ff4444; color: #fff; border: none; padding: 8px; border-radius: 5px; font-weight: bold; font-size: 11px; cursor: pointer; }
 
-        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 2px solid var(--gold); padding: 15px; display: none; box-sizing: border-box; }
+        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 2px solid var(--gold); padding: 15px; display: none; box-sizing: border-box; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -60,64 +62,88 @@
         <div id="teamSec" class="hidden-sec">
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:center;">
                 <div><img src="daniyal.jpg" style="width:50px; height:50px; border-radius:50%; border:2px solid var(--gold);"><br><small>Daniyal</small></div>
-                <div><img src="staff.jpg" style="width:50px; height:50px; border-radius:50%; border:2px solid var(--gold);"><br><small>DNHQ Staff</small></div>
+                <div><img src="staff.jpg" style="width:50px; height:50px; border-radius:50%; border:2px solid var(--gold);"><br><small>Staff</small></div>
             </div>
         </div>
         <div id="vidSec" class="hidden-sec"><video style="width:100%; border-radius:8px;" controls><source src="tutorial.mp4"></video></div>
 
-        <div style="margin:20px 0 10px; color:var(--gold); font-weight:bold; font-size:12px;">SERVICES</div>
-        <div class="svc-grid" id="mainSvcList"></div>
+        <div class="section-tag">Air Conditioning</div>
+        <div class="svc-grid" id="acList"></div>
+
+        <div class="section-tag">Electrical Work</div>
+        <div class="svc-grid" id="elecList"></div>
+
+        <div class="section-tag">Fridge & Others</div>
+        <div class="svc-grid" id="fridgeList"></div>
     </div>
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="color:var(--gold);">DNHQ ADMIN</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:#555; color:white; border:none; padding:8px 15px; border-radius:5px;">EXIT</button>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:#444; color:white; border:none; padding:8px 15px; border-radius:5px;">EXIT</button>
         </div>
 
         <div class="admin-box">
-            <h4 style="margin-top:0; color:var(--gold);">NEW BILLING ENTRY</h4>
+            <h4 style="margin:0 0 10px; color:var(--gold);">MANUAL BILLING (MULTI-WORK)</h4>
             <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
             <div id="workItems">
                 <div style="display:flex; gap:5px; margin-bottom:5px;">
-                    <input type="text" class="m-input m-work" style="flex:2;" placeholder="Service">
+                    <input type="text" class="m-input m-work" style="flex:2;" placeholder="Service Name">
                     <input type="number" class="m-input m-price" style="flex:1;" placeholder="Price">
                 </div>
             </div>
-            <button onclick="addNewWorkLine()" style="background:#222; color:var(--gold); border:1px solid var(--gold); padding:10px; width:100%; border-radius:8px; margin-bottom:10px;">+ Add Work Line</button>
-            <button onclick="createManualBill()" class="btn-gold">SAVE & PRINT PDF</button>
+            <button onclick="addWorkLine()" style="background:#222; color:var(--gold); border:1px solid var(--gold); padding:10px; width:100%; border-radius:8px; margin-bottom:10px;">+ Add More Work</button>
+            <button onclick="createBill()" class="btn-gold">SAVE & GENERATE PDF</button>
         </div>
 
-        <h4 style="color:#94a3b8;">DATA MANAGEMENT (CUSTOMER LIST)</h4>
+        <h4 style="color:#94a3b8;">CUSTOMER RECORDS</h4>
         <div id="cloudRecords">Syncing...</div>
     </div>
 
     <div class="checkout-bar" id="cartBar">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div><small>Total Bill</small><div style="font-size:20px; font-weight:bold; color:var(--gold);">Rs <span id="finalTotal">0</span></div></div>
-            <button onclick="sendOrder()" class="btn-gold" style="width:auto; padding:10px 30px;">BOOK NOW</button>
+            <button onclick="sendWA()" class="btn-gold" style="width:auto; padding:10px 30px;">BOOK NOW</button>
         </div>
     </div>
 
-    <footer style="text-align:center; padding:50px; opacity:0.3; font-size:12px; cursor:pointer;" onclick="adminLogin()">Admin Panel Access © DNHQ</footer>
+    <footer style="text-align:center; padding:60px; opacity:0.2; font-size:11px; cursor:pointer;" onclick="adminLogin()">
+        Admin
+    </footer>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
-        const services = [
-            {n:"AC Master Service", p:3500}, {n:"AC Normal Service", p:2500}, {n:"AC Gas 1.5T", p:8500},
-            {n:"AC PCB Repair", p:3500}, {n:"Capacitor Change", p:1200}, {n:"DB Dressing", p:3000},
-            {n:"Short Circuit", p:1000}, {n:"Fan Fitting", p:500}, {n:"Fridge Gas", p:7500}
+        
+        const acServices = [
+            {n:"AC Master Service", p:3500}, {n:"AC Normal Service", p:2500}, 
+            {n:"AC Gas 1.0 Ton", p:6500}, {n:"AC Gas 1.5 Ton", p:8500}, 
+            {n:"AC PCB Repair", p:3500}, {n:"AC Installation", p:4000}, {n:"Capacitor Replace", p:1200}
         ];
+        const elecServices = [
+            {n:"Short Circuit Fix", p:1000}, {n:"DB Dressing", p:3000}, 
+            {n:"UPS Installation", p:2500}, {n:"Breaker Change", p:500}, 
+            {n:"Switch Board Fix", p:800}, {n:"Fan Fitting", p:500}, {n:"Main Line Work", p:2000}
+        ];
+        const fridgeServices = [
+            {n:"Fridge Gas Refill", p:7500}, {n:"Fridge Thermostat", p:1500}, 
+            {n:"Washing Machine", p:2500}, {n:"Water Dispenser", p:2000}
+        ];
+
         let cart = [];
 
         window.onload = () => {
-            const list = document.getElementById('mainSvcList');
-            list.innerHTML = services.map(s => `
+            renderList('acList', acServices);
+            renderList('elecList', elecServices);
+            renderList('fridgeList', fridgeServices);
+        };
+
+        function renderList(id, data) {
+            document.getElementById(id).innerHTML = data.map(s => `
                 <div class="svc-item" onclick="toggleSvc(this,'${s.n}',${s.p})">
                     <b>${s.n}</b><div class="svc-rate">Rs ${s.p}</div>
                 </div>
             `).join('');
-        };
+        }
 
         function toggleSec(id) {
             const s = document.getElementById(id);
@@ -142,14 +168,14 @@
             }
         }
 
-        function addNewWorkLine() {
+        function addWorkLine() {
             const div = document.createElement('div');
             div.style.display = "flex"; div.style.gap = "5px"; div.style.marginBottom = "5px";
             div.innerHTML = `<input type="text" class="m-input m-work" style="flex:2;" placeholder="Service"><input type="number" class="m-input m-price" style="flex:1;" placeholder="Price">`;
             document.getElementById('workItems').appendChild(div);
         }
 
-        async function createManualBill() {
+        async function createBill() {
             const client = document.getElementById('mCust').value;
             const wNodes = document.querySelectorAll('.m-work');
             const pNodes = document.querySelectorAll('.m-price');
@@ -170,12 +196,11 @@
 
             const summary = items.map(x => x[0]).join(", ");
             await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "add", date: new Date().toLocaleDateString(), client, work: summary, total}) });
-            alert("Record Saved!"); fetchList();
+            alert("Saved!"); fetchList();
         }
 
         async function fetchList() {
-            const container = document.getElementById('cloudRecords');
-            container.innerHTML = "Accessing Cloud...";
+            const container = document.getElementById('cloudRecords'); container.innerHTML = "Syncing...";
             try {
                 const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
                 const data = await res.json();
@@ -186,28 +211,28 @@
                         <b style="color:var(--gold);">Rs ${d.total}</b>
                         <div class="action-row">
                             <button class="btn-pdf" onclick='downloadOldPDF(${JSON.stringify(d)})'><i class="fas fa-file-pdf"></i> PDF</button>
-                            <button class="btn-dlt" onclick='deleteRecord("${d.client}", ${data.length - 1 - index})'><i class="fas fa-trash"></i> DELETE</button>
+                            <button class="btn-dlt" onclick='delRec("${d.client}", ${data.length - 1 - index})'><i class="fas fa-trash"></i> DELETE</button>
                         </div>
                     </div>
                 `).join('');
             } catch(e) { container.innerHTML = "Offline."; }
         }
 
-        async function deleteRecord(name, rowIdx) {
-            if(!confirm(`Delete record for ${name}?`)) return;
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "delete", row: rowIdx + 2}) });
-            alert("Record Removed."); fetchList();
+        async function delRec(name, row) {
+            if(!confirm(`Delete ${name}?`)) return;
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "delete", row: row + 2}) });
+            fetchList();
         }
 
         function downloadOldPDF(d) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.text(`DNHQ INVOICE REPRINT`, 15, 20);
-            doc.autoTable({ startY: 30, head: [['Client', 'Work', 'Total']], body: [[d.client, d.work, `Rs ${d.total}`]] });
+            doc.text(`DNHQ REPRINT`, 15, 20);
+            doc.autoTable({ startY: 30, head: [['Client', 'Details', 'Total']], body: [[d.client, d.work, d.total]] });
             doc.save(`DNHQ_${d.client}.pdf`);
         }
 
-        function sendOrder() {
-            const n = prompt("Client Name:"); if(!n) return;
+        function sendWA() {
+            const n = prompt("Name:"); if(!n) return;
             const w = cart.map(c => c.n).join(", ");
             const t = cart.reduce((a, b) => a + b.p, 0);
             window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${n}%0AWork: ${w}%0ATotal: Rs ${t}`;
