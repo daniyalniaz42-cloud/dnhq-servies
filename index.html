@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Admin Portal</title>
+    <title>DNHQ SERVICES | Official Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -14,33 +14,30 @@
         .logo-main { height: 75px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #333; }
         .wrapper { padding: 15px; max-width: 550px; margin: 0 auto; }
         
-        /* Navigation Buttons */
+        /* Navigation */
         .nav-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .nav-btn { background: var(--card); border: 1px solid #1f2937; padding: 12px; border-radius: 10px; text-align: center; color: var(--gold); cursor: pointer; font-size: 12px; }
         .hidden-sec { display: none; background: #000; border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; }
 
-        /* Services Grid */
-        .section-tag { margin: 25px 0 10px; color: var(--gold); font-weight: bold; font-size: 12px; text-transform: uppercase; border-left: 3px solid var(--gold); padding-left: 10px; }
+        /* Services Styling */
+        .section-tag { margin: 25px 0 10px; color: var(--gold); font-weight: bold; font-size: 12px; text-transform: uppercase; border-left: 3px solid var(--gold); padding-left: 10px; letter-spacing: 1px; }
         .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 12px; padding: 12px; cursor: pointer; }
         .svc-item.selected { border-color: var(--gold); background: #000; box-shadow: 0 0 10px rgba(251,191,36,0.2); }
-        .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; margin-top: 5px; }
+        .svc-item b { font-size: 13px; display: block; margin-bottom: 4px; }
+        .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; }
 
-        /* Advanced Admin View */
+        /* Admin & Records */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .admin-box { background: var(--card); border: 1px solid #333; padding: 15px; border-radius: 15px; margin-bottom: 25px; border-top: 4px solid var(--gold); }
         .m-input { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
-        
-        /* Record Cards */
-        .cust-card { background: #111827; border-left: 4px solid var(--gold); padding: 15px; border-radius: 10px; margin-bottom: 12px; border-bottom: 1px solid #333; }
+        .cust-card { background: #111827; border-left: 4px solid var(--gold); padding: 15px; border-radius: 10px; margin-bottom: 12px; }
         .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-        .btn-action { border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
 
-        /* Social Footer */
+        /* Footer */
         .main-footer { background: #000; padding: 30px 20px; border-top: 1px solid #222; text-align: center; margin-top: 40px; }
         .social-icons { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; }
-        .social-icons a { color: var(--text); font-size: 22px; transition: 0.3s; }
-        .social-icons a:hover { color: var(--gold); }
+        .social-icons a { color: var(--text); font-size: 22px; }
 
         .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 2px solid var(--gold); padding: 15px; display: none; box-sizing: border-box; z-index: 1000; }
     </style>
@@ -63,15 +60,18 @@
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><img src="work1.jpg" style="width:100%; border-radius:8px;"><img src="work2.jpg" style="width:100%; border-radius:8px;"></div>
         </div>
         <div id="teamSec" class="hidden-sec">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:center;"><small>Daniyal (Lead)</small><small>DNHQ Staff</small></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:center;"><small>Daniyal (Admin)</small><small>DNHQ Team</small></div>
         </div>
         <div id="vidSec" class="hidden-sec"><video style="width:100%; border-radius:8px;" controls><source src="tutorial.mp4"></video></div>
 
         <div class="section-tag">Air Conditioning</div>
         <div class="svc-grid" id="acList"></div>
 
-        <div class="section-tag">Electrical & Fridge</div>
+        <div class="section-tag">Electrical Work</div>
         <div class="svc-grid" id="elecList"></div>
+
+        <div class="section-tag">Fridge & Others</div>
+        <div class="svc-grid" id="fridgeList"></div>
     </div>
 
     <div id="adminView">
@@ -81,53 +81,67 @@
         </div>
 
         <div class="admin-box">
-            <h3 style="margin-top:0; color:var(--gold); font-size:16px;"><i class="fas fa-plus-circle"></i> CREATE MANUAL BILL (Offline)</h3>
+            <h4 style="margin:0 0 10px; color:var(--gold);">CREATE MANUAL BILL (OFFLINE)</h4>
             <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
             <div id="workItems">
                 <div style="display:flex; gap:5px; margin-bottom:8px;">
-                    <input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Work Name">
+                    <input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Work Description">
                     <input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">
                 </div>
             </div>
             <button onclick="addWorkRow()" style="background:#222; color:var(--gold); border:1px solid #444; padding:10px; width:100%; border-radius:8px; margin-bottom:12px;">+ Add More Work</button>
-            <button onclick="saveAndPrintOffline()" style="background:var(--gold); color:#000; padding:15px; border-radius:10px; border:none; width:100%; font-weight:bold; font-size:14px;">SAVE DATA & GENERATE PDF</button>
+            <button onclick="saveAndPrint()" style="background:var(--gold); color:#000; padding:15px; border-radius:10px; border:none; width:100%; font-weight:bold;">SAVE & PRINT PDF (WITH LOGO)</button>
         </div>
 
-        <h3 style="color:#94a3b8; font-size:14px;">CUSTOMER DATABASE</h3>
-        <div id="cloudRecords">Syncing Records...</div>
+        <h4 style="color:#94a3b8;">RECORDS DATABASE</h4>
+        <div id="cloudRecords">Syncing...</div>
     </div>
 
     <footer class="main-footer">
         <div class="social-icons">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-            <a href="#"><i class="fab fa-tiktok"></i></a>
-            <a href="https://wa.me/923152458657"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://facebook.com/dnhqservices" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://youtube.com/@dnhq" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://tiktok.com/@dnhqservices" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="https://wa.me/923152458657" target="_blank"><i class="fab fa-whatsapp"></i></a>
         </div>
-        <div class="footer-credit" onclick="adminLogin()">© 2026 DNHQ SERVICES | <span style="opacity:0.3;">Admin Panel</span></div>
+        <div class="footer-credit" onclick="adminLogin()">© 2026 DNHQ SERVICES | <span style="opacity:0.2;">Admin Access</span></div>
     </footer>
 
     <div class="checkout-bar" id="cartBar">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div><small>Total Bill</small><div style="font-size:20px; font-weight:bold; color:var(--gold);">Rs <span id="finalTotal">0</span></div></div>
-            <button onclick="sendOrder()" style="background:var(--gold); color:#000; padding:12px 25px; border-radius:8px; border:none; font-weight:bold;">BOOK NOW</button>
+            <button onclick="sendWA()" style="background:var(--gold); color:#000; padding:12px 25px; border-radius:8px; border:none; font-weight:bold;">BOOK NOW</button>
         </div>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
         
-        const acServices = [{n:"Master Service", p:3500}, {n:"Normal Service", p:2500}, {n:"Gas Refill 1.5T", p:8500}, {n:"PCB Repair", p:3500}];
-        const elecServices = [{n:"Short Circuit", p:1000}, {n:"DB Dressing", p:3000}, {n:"Fridge Gas", p:7500}, {n:"Fan Fitting", p:500}];
+        // 📋 RESTORED SERVICES LIST
+        const acData = [
+            {n:"AC Master Service", p:3500}, {n:"AC Normal Service", p:2500}, 
+            {n:"AC Gas 1.5 Ton", p:8500}, {n:"AC PCB Repair", p:3500}, 
+            {n:"AC Installation", p:4000}, {n:"Capacitor Change", p:1200}
+        ];
+        const elecData = [
+            {n:"Short Circuit Fix", p:1000}, {n:"DB Dressing", p:3000}, 
+            {n:"UPS Setup", p:2500}, {n:"Breaker Change", p:500}, 
+            {n:"Fan Fitting", p:500}, {n:"Switch Board Fix", p:800}
+        ];
+        const fridgeData = [
+            {n:"Fridge Gas Refill", p:7500}, {n:"Fridge Thermostat", p:1500}, 
+            {n:"Washing Machine", p:2500}, {n:"Water Dispenser", p:2000}
+        ];
 
         let cart = [];
 
         window.onload = () => {
-            renderList('acList', acServices);
-            renderList('elecList', elecServices);
+            render('acList', acData);
+            render('elecList', elecData);
+            render('fridgeList', fridgeData);
         };
 
-        function renderList(id, data) {
+        function render(id, data) {
             document.getElementById(id).innerHTML = data.map(s => `<div class="svc-item" onclick="toggleSvc(this,'${s.n}',${s.p})"><b>${s.n}</b><div class="svc-rate">Rs ${s.p}</div></div>`).join('');
         }
 
@@ -161,37 +175,33 @@
             document.getElementById('workItems').appendChild(div);
         }
 
-        async function saveAndPrintOffline() {
+        async function saveAndPrint() {
             const client = document.getElementById('mCust').value;
             const wNodes = document.querySelectorAll('.m-work');
             const pNodes = document.querySelectorAll('.m-price');
             let items = []; let total = 0;
 
             wNodes.forEach((n, i) => { if(n.value) { items.push([n.value, `Rs ${pNodes[i].value}`]); total += parseInt(pNodes[i].value || 0); } });
-            if(!client || items.length === 0) return alert("Fill Name and Services!");
+            if(!client || items.length === 0) return alert("Details missing!");
 
-            // 🖨️ PDF Generation with Logo
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
             const logo = document.getElementById('brandLogo');
             doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
             try { doc.addImage(logo, 'JPEG', 15, 5, 25, 25); } catch(e){}
             doc.setTextColor(251,191,36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 22);
-            doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text(`CLIENT: ${client}`, 15, 50);
-            doc.text(`DATE: ${new Date().toLocaleDateString()}`, 150, 50);
-            doc.autoTable({ startY: 60, head: [['Service Description', 'Amount']], body: items, headStyles:{fillColor:[0,0,0], textColor:[251,191,36]} });
-            doc.text(`TOTAL BILL: Rs ${total}`, 15, doc.lastAutoTable.finalY + 15);
-            doc.save(`DNHQ_Bill_${client}.pdf`);
+            doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text(`CLIENT: ${client}`, 15, 55);
+            doc.autoTable({ startY: 65, head: [['Service', 'Amount']], body: items, headStyles:{fillColor:[0,0,0], textColor:[251,191,36]} });
+            doc.text(`TOTAL: Rs ${total}`, 15, doc.lastAutoTable.finalY + 15);
+            doc.save(`DNHQ_${client}.pdf`);
 
-            // ☁️ Save to Cloud
             const summary = items.map(x => x[0]).join(", ");
             await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action:"add", date:new Date().toLocaleDateString(), client, work:summary, total}) });
-            alert("Data Saved & Bill Generated!"); 
-            document.getElementById('mCust').value = ""; fetchList();
+            alert("Data Saved!"); fetchList();
         }
 
         async function fetchList() {
             const container = document.getElementById('cloudRecords');
-            container.innerHTML = "Refreshing Database...";
+            container.innerHTML = "Refreshing Data...";
             try {
                 const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
                 const data = await res.json();
@@ -199,31 +209,31 @@
                     <div class="cust-card">
                         <b>${d.client}</b> <small style="float:right;">${d.date}</small>
                         <p style="font-size:11px; color:#94a3b8; margin:5px 0;">${d.work}</p>
-                        <b style="color:var(--gold);">Total: Rs ${d.total}</b>
+                        <b style="color:var(--gold);">Rs ${d.total}</b>
                         <div class="action-row">
-                            <button class="btn-action" style="background:#fff; color:#000;" onclick='downloadOldPDF(${JSON.stringify(d)})'><i class="fas fa-file-pdf"></i> PDF</button>
-                            <button class="btn-action" style="background:#ff4444; color:#fff;" onclick='delRecord("${d.client}", ${data.length - 1 - index})'><i class="fas fa-trash"></i> DELETE</button>
+                            <button onclick='downloadPDF(${JSON.stringify(d)})' style="background:#fff; border:none; padding:8px; border-radius:5px; font-weight:bold;">PDF</button>
+                            <button onclick='delRecord("${d.client}", ${data.length - 1 - index})' style="background:#ff4444; border:none; color:#fff; padding:8px; border-radius:5px;">DLT</button>
                         </div>
                     </div>
                 `).join('');
-            } catch(e) { container.innerHTML = "Connection Error."; }
+            } catch(e) { container.innerHTML = "Sync Error."; }
         }
 
         async function delRecord(name, row) {
-            if(!confirm(`Delete ${name}'s record?`)) return;
+            if(!confirm(`Delete ${name}?`)) return;
             await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "delete", row: row + 2}) });
             fetchList();
         }
 
-        function downloadOldPDF(d) {
+        function downloadPDF(d) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.text(`DNHQ INVOICE REPRINT`, 15, 20);
-            doc.autoTable({ startY: 30, head: [['Client', 'Work', 'Total']], body: [[d.client, d.work, `Rs ${d.total}`]] });
+            doc.text(`DNHQ INVOICE: ${d.client}`, 15, 20);
+            doc.autoTable({ startY: 30, head: [['Details', 'Total']], body: [[d.work, d.total]] });
             doc.save(`DNHQ_${d.client}.pdf`);
         }
 
-        function sendOrder() {
-            const n = prompt("Your Name:"); if(!n) return;
+        function sendWA() {
+            const n = prompt("Name:"); if(!n) return;
             const w = cart.map(c => c.n).join(", ");
             const t = cart.reduce((a, b) => a + b.p, 0);
             window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${n}%0AWork: ${w}%0ATotal: Rs ${t}`;
