@@ -187,71 +187,89 @@
 
     // --- OLD INVOICE STYLE PDF LOGIC ---
     function generatePDF(order) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        // Header Black Background
-        doc.setFillColor(0,0,0);
-        doc.rect(0, 0, 210, 45, 'F');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Header Black Background
+    doc.setFillColor(0,0,0);
+    doc.rect(0, 0, 210, 45, 'F');
 
-        // Brand Logo
-        const img = document.getElementById('brandLogo');
-        try { doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e) {}
+    // Brand Logo
+    const img = document.getElementById('brandLogo');
+    try { doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e) {}
 
-        // Brand Name
-        doc.setTextColor(251, 191, 36); // Gold color
-        doc.setFontSize(26);
-        doc.setFont("helvetica", "bold");
-        doc.text("DNHQ SERVICES", 55, 25);
-        doc.setFontSize(10);
-        doc.text("Professional Electrical & AC Maintenance", 55, 32);
+    // Brand Name
+    doc.setTextColor(251, 191, 36); // Gold color
+    doc.setFontSize(26);
+    doc.setFont("helvetica", "bold");
+    doc.text("DNHQ SERVICES", 55, 25);
+    doc.setFontSize(10);
+    doc.text("Professional Electrical & AC Maintenance", 55, 32);
 
-        // Body Content
-        doc.setTextColor(0,0,0);
-        doc.setFontSize(12);
-        doc.text("INVOICE TO:", 15, 60);
-        doc.setFont("helvetica", "bold");
-        doc.text(order.client.toUpperCase(), 15, 67);
-        
-        doc.setFont("helvetica", "normal");
-        doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 145, 67);
+    // Body Content (Customer Info)
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text("INVOICE TO:", 15, 60);
+    doc.setFont("helvetica", "bold");
+    doc.text(order.client.toUpperCase(), 15, 67);
+    
+    doc.setFont("helvetica", "normal");
+    doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 145, 67);
 
-        // Service Table
-        let body = order.work.split(", ").map(item => {
-            if (item.includes("(Rs ")) {
-                let parts = item.split(" (Rs ");
-                return [parts[0], "Rs " + parts[1].replace(")", "")];
-            }
-            return [item, "-"];
-        });
+    // Amounts Fix: Data ko sahi format mein convert karna
+    let body = order.work.split(", ").map(item => {
+        if (item.includes("(Rs ")) {
+            let parts = item.split(" (Rs ");
+            let workName = parts[0];
+            let price = "Rs " + parts[1].replace(")", "");
+            return [workName, price];
+        }
+        return [item, "Quote"];
+    });
 
-        doc.autoTable({
-            startY: 75,
-            head: [['SERVICE DESCRIPTION', 'AMOUNT']],
-            body: body,
-            headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36], fontSize: 11, halign: 'center' },
-            bodyStyles: { fontSize: 10, halign: 'left' },
-            columnStyles: { 1: { halign: 'right' } },
-            theme: 'grid'
-        });
+    // Table with fixed alignment
+    doc.autoTable({
+        startY: 75,
+        head: [['SERVICE DESCRIPTION', 'AMOUNT']],
+        body: body,
+        headStyles: { 
+            fillColor: [0, 0, 0], 
+            textColor: [251, 191, 36], 
+            fontSize: 11, 
+            halign: 'left' // Description left pe
+        },
+        columnStyles: {
+            0: { cellWidth: 140 }, // Description box barha kiya
+            1: { cellWidth: 40, halign: 'right' } // Amount box right align aur fixed width
+        },
+        styles: { fontSize: 10, cellPadding: 5 },
+        theme: 'grid'
+    });
 
-        // Total Amount
-        let finalY = doc.lastAutoTable.finalY;
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text("NET TOTAL:", 130, finalY + 15);
-        doc.setTextColor(251, 191, 36);
-        doc.text("Rs " + order.total.toLocaleString(), 170, finalY + 15, { align: 'right' });
+    // Total Amount Placement Fix
+    let finalY = doc.lastAutoTable.finalY + 15;
+    
+    // Line Draw for Total
+    doc.setDrawColor(200, 200, 200);
+    doc.line(120, finalY - 5, 195, finalY - 5);
 
-        // Footer Note
-        doc.setTextColor(100, 100, 100);
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "italic");
-        doc.text("Thank you for choosing DNHQ Services! For queries: +92 315 2458657", 105, 285, { align: "center" });
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("GRAND TOTAL:", 120, finalY);
+    
+    // Total Amount in Gold
+    doc.setTextColor(218, 165, 32); // Deep Gold
+    doc.text("Rs " + Number(order.total).toLocaleString(), 195, finalY, { align: 'right' });
 
-        doc.save("DNHQ_Invoice_" + order.client + ".pdf");
-    }
+    // Footer Note
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "italic");
+    doc.text("Thank you for choosing DNHQ Services!", 105, 285, { align: "center" });
 
+    doc.save("DNHQ_Invoice_" + order.client + ".pdf");
+}
     async function placeOrder() {
         const user = prompt("Customer Name:") || "Client";
         const total = cart.reduce((a, b) => a + b.price, 0);
