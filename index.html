@@ -32,14 +32,15 @@
         .svc-meta b { display: block; font-size: 16px; color: white; }
         .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
         .svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
-        .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
-        .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
         
-        /* Admin View Styles */
+        /* Admin View Upgraded */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
         .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+        .add-row-btn { background: transparent; color: var(--gold); border: 1px dashed var(--gold); padding: 8px; width: 100%; border-radius: 8px; cursor: pointer; margin-bottom: 15px; font-weight: bold; }
         
+        .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
+        .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
         footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
         .social-links { margin: 15px 0; }
         .social-links a { color: var(--gold); text-decoration: none; margin: 0 10px; font-size: 20px; }
@@ -92,18 +93,24 @@
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid gold; padding-bottom:10px; margin-bottom:20px;">
-            <h2 style="color:gold; margin:0;">DNHQ RECORDS & BILLING</h2>
+            <h2 style="color:gold; margin:0;">DNHQ DASHBOARD</h2>
             <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">CLOSE</button>
         </div>
 
         <div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
-            <h4 style="color:var(--gold); margin: 0 0 10px 0; font-size: 14px;">DIRECT CALL / MANUAL ENTRY</h4>
+            <h4 style="color:var(--gold); margin: 0 0 10px 0; font-size: 14px;">MANUAL BILL (DIRECT CALL)</h4>
             <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
-            <textarea id="man_work" class="man-input" placeholder="Work Details (e.g. 1.5 Ton AC Service)" style="height:60px; font-family:sans-serif;"></textarea>
-            <div style="display:flex; gap:10px;">
-                <input type="number" id="man_total" class="man-input" placeholder="Total Rs" style="flex:1;">
-                <button onclick="saveManualEntry()" style="flex:1; background:var(--gold); color:black; font-weight:bold; border:none; border-radius:8px; cursor:pointer; height:40px;">SAVE TO CLOUD</button>
+            
+            <div id="manual_works_container">
+                <div class="manual-row" style="display:flex; gap:10px; margin-bottom:10px;">
+                    <input type="text" class="m-work man-input" placeholder="Work (e.g. AC Service)" style="flex:2; margin-bottom:0;">
+                    <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">
+                </div>
             </div>
+            
+            <button onclick="addNewManualRow()" class="add-row-btn">+ Add More Work</button>
+            
+            <button onclick="saveManualEntry()" style="width:100%; background:var(--gold); color:black; font-weight:bold; border:none; border-radius:8px; cursor:pointer; height:45px; font-size:15px;">SAVE TO CLOUD & REFRESH</button>
         </div>
 
         <div id="logItems">Data loading...</div>
@@ -139,19 +146,6 @@
             v.pause();
             document.getElementById("vidBtn").innerHTML = '<i class="fas fa-play-circle"></i> WATCH TUTORIAL';
         }
-    }
-
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').then(reg => {
-            reg.onupdatefound = () => {
-                const installingWorker = reg.installing;
-                installingWorker.onstatechange = () => {
-                    if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        if(confirm("New Update! Reload?")) window.location.reload();
-                    }
-                };
-            };
-        });
     }
 
     let cart = [];
@@ -194,26 +188,49 @@
         }
     }
 
-    // MANUAL ENTRY SAVE FUNCTION
+    // NEW FUNCTIONS FOR MULTIPLE MANUAL WORK
+    function addNewManualRow() {
+        const container = document.getElementById('manual_works_container');
+        const div = document.createElement('div');
+        div.className = "manual-row";
+        div.style.display = "flex";
+        div.style.gap = "10px";
+        div.style.marginBottom = "10px";
+        div.innerHTML = `<input type="text" class="m-work man-input" placeholder="Next Work" style="flex:2; margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">`;
+        container.appendChild(div);
+    }
+
     async function saveManualEntry() {
         const name = document.getElementById('man_name').value;
-        const work = document.getElementById('man_work').value;
-        const total = document.getElementById('man_total').value;
+        const workInputs = document.querySelectorAll('.m-work');
+        const priceInputs = document.querySelectorAll('.m-price');
+        let allWork = [];
+        let total = 0;
+
+        workInputs.forEach((input, i) => {
+            if(input.value.trim() !== "") {
+                allWork.push(input.value);
+                total += parseInt(priceInputs[i].value || 0);
+            }
+        });
+
+        if(!name || allWork.length === 0) return alert("Please enter Name and at least one Work!");
+
         const date = new Date().toLocaleDateString();
-        if(!name || !work || !total) return alert("Please fill all fields!");
+        const workStr = allWork.join(", ");
+
         try {
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: name, work, total}) });
-            alert("Record Saved Successfully!");
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: name, work: workStr, total}) });
+            alert("Order Saved to Cloud!");
             document.getElementById('man_name').value = "";
-            document.getElementById('man_work').value = "";
-            document.getElementById('man_total').value = "";
+            document.getElementById('manual_works_container').innerHTML = `<div class="manual-row" style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work (e.g. AC Service)" style="flex:2; margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;"></div>`;
             setTimeout(loadLogs, 1000);
-        } catch(e) { alert("Error saving."); }
+        } catch(e) { alert("Error!"); }
     }
 
     async function loadLogs() {
         const container = document.getElementById('logItems');
-        container.innerHTML = "Fetching Fresh Records...";
+        container.innerHTML = "Fetching Records...";
         try {
             const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
             const data = await res.json();
@@ -243,24 +260,17 @@
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        let extraWork = prompt("Extra Work (Optional):", "");
-        let extraCost = prompt("Extra Amount:", "0");
-        
         doc.setFillColor(0,0,0); doc.rect(0,0,210,35,'F');
         const img = document.getElementById('brandLogo');
         try { doc.addImage(img, 'JPEG', 15, 5, 25, 25); } catch(e) {}
-        
         doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 22);
         doc.setTextColor(0,0,0); doc.setFontSize(12);
         doc.text(`Invoice: ${order.client}`, 15, 50);
         doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 57);
-        
-        let body = [[order.work, `Rs ${order.total}`]];
-        if (extraWork && extraWork !== "") body.push([extraWork, `Rs ${extraCost}`]);
-        let final = parseInt(order.total) + (parseInt(extraCost) || 0);
-        
-        doc.autoTable({ startY: 65, head: [['Description', 'Amount']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
-        doc.setFontSize(14); doc.text(`Grand Total: Rs ${final.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
+        let items = order.work.split(", ");
+        let body = items.map(item => [item, "Included"]);
+        doc.autoTable({ startY: 65, head: [['Description', 'Note']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
+        doc.setFontSize(14); doc.text(`Total Bill: Rs ${order.total.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
         doc.save(`DNHQ_${order.client}.pdf`);
     }
     </script>
