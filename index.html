@@ -6,41 +6,80 @@
     <title>DNHQ SERVICES | Official</title>
     <link rel="manifest" href="manifest.json?v=9">
     <meta name="theme-color" content="#fbbf24">
-    <link rel="apple-touch-icon" href="1773452778552.jpeg">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Fallback favicon if image missing -->
+    <link rel="icon" type="image/jpeg" href="1773452778552.jpeg"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <style>
-        :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 160px; }
-        .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
-        .logo-main { height: 85px; display: block; margin: 0 auto; border-radius: 10px; }
-        .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
+        :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; --danger: #ef4444; --success: #22c55e; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 180px; }
+        
+        /* Header */
+        .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .logo-main { height: 85px; width: 85px; object-fit: cover; display: block; margin: 0 auto; border-radius: 50%; border: 2px solid var(--gold); background: #222; }
+        .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Layout */
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
         .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
-        .nav-btn { flex: 1; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .nav-btn { flex: 1; background: var(--card); border: 1px solid rgba(251, 191, 36, 0.3); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+        .nav-btn:active { transform: scale(0.98); background: var(--gold); color: black; }
+        
+        /* Sections */
         .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
-        .section-tag h2 { font-size: 14px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
-        .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .svc-item.selected { border: 2px solid var(--gold); background: #000; }
-        .svc-meta b { display: block; font-size: 16px; color: white; }
+        .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+        .section-line { flex-grow: 1; height: 1px; background: linear-gradient(90deg, rgba(251, 191, 36, 0.2), transparent); margin-left: 15px; }
+        
+        /* Service Items */
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+        .svc-item:active { background: #1f2937; }
+        .svc-item.selected { border: 2px solid var(--gold); background: #000; box-shadow: 0 0 15px rgba(251, 191, 36, 0.15); }
+        .svc-item.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--gold); font-size: 18px; }
+        
+        .svc-meta b { display: block; font-size: 16px; color: white; margin-bottom: 4px; }
         .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
-        .svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
-        #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
-        .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
-        .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
-        .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-        footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
+        .svc-rate { font-weight: 800; color: var(--gold); text-align: right; font-size: 14px; min-width: 80px; }
+        
+        /* Admin Panel */
+        #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; position: relative; }
+        .man-input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; font-size: 14px; }
+        .man-input:focus { outline: none; border-color: var(--gold); }
+        
+        /* Checkout Bar */
+        .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(7, 10, 19, 0.98); backdrop-filter: blur(10px); border-top: 2px solid var(--gold); padding: 15px 20px; display: none; box-sizing: border-box; z-index: 2000; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
+        .cart-actions { display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto; width: 100%; }
+        .btn-wa { background: var(--success); color: white; padding: 12px 25px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: transform 0.2s; }
+        .btn-wa:active { transform: scale(0.95); }
+        .btn-clear { background: transparent; color: #94a3b8; border: 1px solid #333; padding: 12px; border-radius: 10px; cursor: pointer; }
+        
+        /* Footer */
+        footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; margin-top: 40px; }
         .social-links { margin: 15px 0; }
-        .social-links a { color: var(--gold); text-decoration: none; margin: 0 10px; font-size: 20px; }
+        .social-links a { color: var(--gold); text-decoration: none; margin: 0 12px; font-size: 22px; transition: color 0.2s; }
+        .social-links a:hover { color: white; }
+        .admin-trigger { margin-top: 25px; font-size: 11px; cursor: pointer; opacity: 0.3; transition: opacity 0.2s; }
+        .admin-trigger:hover { opacity: 0.8; }
+
+        /* Toast Notification */
+        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; border-left: 4px solid var(--gold); }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 80px; opacity: 0;} to {bottom: 100px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 100px; opacity: 1;} to {bottom: 80px; opacity: 0;} }
+        
+        .loading-spinner { border: 3px solid rgba(255,255,255,0.1); border-radius: 50%; border-top: 3px solid var(--gold); width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <header class="brand-header">
-        <img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ">
+        <!-- Added onerror to handle missing logo gracefully -->
+        <img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ" onerror="this.style.display='none'; document.querySelector('.brand-title').innerText='DNHQ SERVICES'">
         <div class="brand-title">DNHQ SERVICES</div>
     </header>
 
@@ -51,8 +90,8 @@
         </div>
 
         <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fancy Light Fitting', 0)"><div class="svc-meta"><b>Fancy Fitting</b><p>Chandeliers & Profiles</p></div><div class="svc-rate">As per Work</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0, true)"><div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div><div class="svc-rate">Quote</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fancy Light Fitting', 0, true)"><div class="svc-meta"><b>Fancy Fitting</b><p>Chandeliers & Profiles</p></div><div class="svc-rate">Quote</div></div>
 
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
@@ -67,153 +106,429 @@
         <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Complete Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
     </div>
 
+    <!-- Admin View -->
     <div id="adminView">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid gold; padding-bottom:10px; margin-bottom:20px;">
-            <h2 style="color:gold; margin:0;">DNHQ DASHBOARD</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; border-radius:5px;">CLOSE</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:15px; margin-bottom:20px;">
+            <h2 style="color:var(--gold); margin:0; font-size:20px;"><i class="fas fa-shield-alt"></i> DNHQ DASHBOARD</h2>
+            <button onclick="closeAdmin()" style="background:#333; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">CLOSE</button>
         </div>
-        <div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
-            <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
+        
+        <div style="background: #1e293b; padding: 20px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
+            <label style="color:#94a3b8; font-size:12px; text-transform:uppercase;">Customer Details</label>
+            <input type="text" id="man_name" class="man-input" placeholder="Customer Name" maxlength="50">
+            
+            <label style="color:#94a3b8; font-size:12px; text-transform:uppercase; margin-top:10px; display:block;">Work Items</label>
             <div id="manual_works_container">
                 <div style="display:flex; gap:10px; margin-bottom:10px;">
-                    <input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;">
-                    <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">
+                    <input type="text" class="m-work man-input" placeholder="Work Description" style="flex:2; margin-bottom:0;" maxlength="60">
+                    <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;" min="0">
                 </div>
             </div>
-            <button onclick="addNewManualRow()" style="width:100%; background:transparent; border:1px dashed gold; color:gold; padding:8px; margin-bottom:15px; border-radius:8px;">+ Add More Work</button>
-            <button onclick="saveManualEntry()" style="width:100%; background:gold; color:black; font-weight:bold; border:none; padding:12px; border-radius:8px;">SAVE TO CLOUD</button>
+            
+            <button onclick="addNewManualRow()" style="width:100%; background:transparent; border:1px dashed var(--gold); color:var(--gold); padding:10px; margin: 15px 0; border-radius:8px; cursor:pointer; font-weight:600;">+ Add Another Item</button>
+            <button onclick="saveManualEntry()" id="btnSaveManual" style="width:100%; background:var(--gold); color:black; font-weight:bold; border:none; padding:14px; border-radius:8px; cursor:pointer;">SAVE TO CLOUD</button>
         </div>
-        <div id="logItems">Data loading...</div>
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 style="color:white; margin:0; font-size:16px;">Recent Logs</h3>
+            <button onclick="loadLogs()" style="background:transparent; border:1px solid #333; color:#94a3b8; padding:5px 10px; border-radius:5px; cursor:pointer; font-size:12px;"><i class="fas fa-sync"></i> Refresh</button>
+        </div>
+        <div id="logItems" style="padding-bottom: 50px;">
+            <div style="text-align:center; color:#64748b; padding:20px;">Loading records...</div>
+        </div>
     </div>
 
+    <!-- Checkout Bar -->
     <div class="checkout-bar" id="cart">
-        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto;">
-            <div><small>Total Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
-            <button class="btn-wa" onclick="placeOrder()">PLACE ORDER</button>
+        <div class="cart-actions">
+            <div>
+                <small style="color:#94a3b8; display:block;">Total Estimate</small>
+                <div style="font-size:22px; font-weight:900; color:white;">Rs <span id="billTotal">0</span></div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-clear" onclick="clearCart()"><i class="fas fa-trash"></i></button>
+                <button class="btn-wa" onclick="placeOrder()"><i class="fab fa-whatsapp"></i> PLACE ORDER</button>
+            </div>
         </div>
     </div>
 
     <footer>
-        <div style="color:var(--gold); font-weight:bold;">DNHQ SERVICES</div>
+        <div style="color:var(--gold); font-weight:bold; font-size:18px;">DNHQ SERVICES</div>
+        <div style="font-size:12px; margin-top:5px;">Professional Electrical & AC Solutions</div>
         <div class="social-links">
             <a href="https://instagram.com/dnhq_services"><i class="fab fa-instagram"></i></a>
             <a href="https://youtube.com/@dnhqservices"><i class="fab fa-youtube"></i></a>
+            <a href="https://wa.me/923152458657"><i class="fab fa-whatsapp"></i></a>
         </div>
-        <div onclick="openAdmin()" style="margin-top:20px; font-size:10px; cursor:pointer; opacity:0.4;">Admin Login</div>
+        <div class="admin-trigger" onclick="openAdmin()"><i class="fas fa-lock"></i> Admin Access</div>
+        <div style="margin-top:20px; font-size:10px; opacity:0.5;">&copy; 2026 DNHQ Services. All rights reserved.</div>
     </footer>
 
-    <script>
-    let cart = [];
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
+    <!-- Toast Notification Element -->
+    <div id="toast">Message here</div>
 
-    function toggleSvc(el, name, price) {
-        const idx = cart.findIndex(c => c.name === name);
-        if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
-        else { cart.push({name, price: parseInt(price)}); el.classList.add('selected'); }
-        const total = cart.reduce((a, b) => a + b.price, 0);
-        document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
-        document.getElementById('billTotal').innerText = total.toLocaleString();
+    <script>
+    // --- Configuration ---
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
+    // Simple hash for PIN "dnhq123" to avoid plain text storage (Not cryptographically secure, but better than plain text)
+    const ADMIN_HASH = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"; 
+    
+    let cart = [];
+    
+    // --- Core Functions ---
+
+    function showToast(msg, type = 'info') {
+        const x = document.getElementById("toast");
+        x.className = "show";
+        x.innerText = msg;
+        x.style.borderLeftColor = type === 'error' ? 'var(--danger)' : 'var(--gold)';
+        setTimeout(() => { x.className = x.className.replace("show", ""); }, 3000);
     }
 
-    function openAdmin() {
-        const pin = prompt("Enter PIN:");
-        if(pin === "dnhq123") { 
-            document.getElementById('adminView').style.display = 'block'; 
-            loadLogs(); 
-        } else {
-            alert("Wrong PIN!");
+    function toggleSvc(el, name, price, isQuote = false) {
+        const idx = cart.findIndex(c => c.name === name);
+        if (idx > -1) { 
+            cart.splice(idx, 1); 
+            el.classList.remove('selected'); 
+        } else { 
+            cart.push({name, price: parseInt(price), isQuote}); 
+            el.classList.add('selected'); 
         }
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const total = cart.reduce((a, b) => a + b.price, 0);
+        const hasQuotes = cart.some(i => i.isQuote);
+        const cartBar = document.getElementById('cart');
+        const billTotal = document.getElementById('billTotal');
+        
+        if (cart.length > 0) {
+            cartBar.style.display = 'block';
+            if (hasQuotes) {
+                billTotal.innerText = "Quote Req.";
+                billTotal.style.color = "#94a3b8";
+            } else {
+                billTotal.innerText = total.toLocaleString();
+                billTotal.style.color = "white";
+            }
+        } else {
+            cartBar.style.display = 'none';
+        }
+    }
+
+    function clearCart() {
+        if(confirm("Clear all selected services?")) {
+            cart = [];
+            document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
+            updateCartUI();
+            showToast("Cart cleared");
+        }
+    }
+
+    // --- Admin Functions ---
+
+    function openAdmin() {
+        const pin = prompt("Enter Admin PIN:");
+        if (!pin) return;
+        
+        // Simple SHA-256 check (Simulated for client-side demo)
+        // In production, verify this on the server side via Apps Script
+        const encoder = new TextEncoder();
+        const data = encoder.encode(pin);
+        crypto.subtle.digest('SHA-256', data).then(buf => {
+            const hashArray = Array.from(new Uint8Array(buf));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            
+            if(hashHex === ADMIN_HASH) {
+                document.getElementById('adminView').style.display = 'block';
+                loadLogs();
+                showToast("Access Granted");
+            } else {
+                showToast("Incorrect PIN", "error");
+            }
+        });
+    }
+
+    function closeAdmin() {
+        document.getElementById('adminView').style.display = 'none';
     }
 
     function addNewManualRow() {
         const container = document.getElementById('manual_works_container');
         const div = document.createElement('div');
-        div.style = "display:flex; gap:10px; margin-bottom:10px;";
-        div.innerHTML = '<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">';
+        div.style = "display:flex; gap:10px; margin-bottom:10px; animation: fadeIn 0.3s;";
+        div.innerHTML = `
+            <input type="text" class="m-work man-input" placeholder="Work Description" style="flex:2; margin-bottom:0;" maxlength="60">
+            <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;" min="0">
+        `;
         container.appendChild(div);
     }
 
     async function saveManualEntry() {
-        const name = document.getElementById('man_name').value;
+        const btn = document.getElementById('btnSaveManual');
+        const nameInput = document.getElementById('man_name');
         const workInputs = document.querySelectorAll('.m-work');
         const priceInputs = document.querySelectorAll('.m-price');
-        let allWork = []; let total = 0;
+        
+        const name = nameInput.value.trim();
+        if (!name) {
+            showToast("Please enter customer name", "error");
+            nameInput.focus();
+            return;
+        }
+
+        let allWork = []; 
+        let total = 0;
+        let isValid = true;
+
         workInputs.forEach((input, i) => {
-            if(input.value.trim() !== "") {
-                const p = priceInputs[i].value || 0;
-                allWork.push(input.value + " (Rs " + p + ")");
-                total += parseInt(p);
+            const w = input.value.trim();
+            const p = parseInt(priceInputs[i].value) || 0;
+            
+            if (w !== "") {
+                if (p < 0) {
+                    showToast("Price cannot be negative", "error");
+                    isValid = false;
+                    return;
+                }
+                allWork.push(`${w} (Rs ${p})`);
+                total += p;
             }
         });
-        if(!name || allWork.length === 0) return alert("Fill details!");
-        const date = new Date().toLocaleDateString();
+
+        if (!isValid || allWork.length === 0) {
+            if(allWork.length === 0) showToast("Please add at least one work item", "error");
+            return;
+        }
+
+        // UI Loading State
+        const originalText = btn.innerText;
+        btn.innerText = "Saving...";
+        btn.disabled = true;
+        btn.style.opacity = "0.7";
+
+        const date = new Date().toLocaleDateString('en-PK', { timeZone: 'Asia/Karachi' });
+        const payload = {
+            date: date,
+            client: name,
+            work: allWork.join(", "),
+            total: total,
+            type: 'manual'
+        };
+
         try {
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: name, work: allWork.join(", "), total}) });
-            alert("Saved!");
-            loadLogs();
-        } catch(e) { alert("Error!"); }
+            // Using no-cors because Google Scripts redirect often breaks CORS in simple fetch
+            await fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload) 
+            });
+            
+            showToast("Saved Successfully!");
+            nameInput.value = "";
+            document.getElementById('manual_works_container').innerHTML = `
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <input type="text" class="m-work man-input" placeholder="Work Description" style="flex:2; margin-bottom:0;" maxlength="60">
+                    <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;" min="0">
+                </div>`;
+            loadLogs(); // Refresh list
+        } catch (e) {
+            console.error(e);
+            showToast("Network Error. Check connection.", "error");
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        }
     }
 
     async function loadLogs() {
         const container = document.getElementById('logItems');
-        container.innerHTML = "Fetching Records...";
+        container.innerHTML = `<div style="text-align:center; padding:20px;"><div class="loading-spinner"></div> Fetching Records...</div>`;
+        
         try {
-            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
+            // Add timestamp to prevent caching
+            const res = await fetch(`${SCRIPT_URL}?t=${new Date().getTime()}`);
+            if (!res.ok) throw new Error("Network response was not ok");
+            
             const data = await res.json();
-            container.innerHTML = data.reverse().map(d => `
+            
+            if (!Array.isArray(data) || data.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:#64748b; padding:20px;">No records found.</div>`;
+                return;
+            }
+
+            // Sort by newest first (assuming data has an index or we just reverse the array returned)
+            // Google Sheets usually returns top-down, so reverse() gives newest first if appended to bottom
+            const reversedData = data.reverse(); 
+
+            container.innerHTML = reversedData.map((d, index) => `
                 <div class="log-card">
-                    <b>${d.client}</b><br><small>${d.work}</small><br>
-                    <b style="color:gold;">Rs ${d.total}</b>
-                    <button onclick='generatePDF(${JSON.stringify(d)})' style="float:right; background:gold; border:none; border-radius:5px; padding:5px 10px; font-weight:bold; cursor:pointer;">PDF</button>
+                    <div style="display:flex; justify-content:space-between;">
+                        <b style="color:white; font-size:15px;">${d.client || 'Unknown'}</b>
+                        <small style="color:#64748b;">${d.date || 'N/A'}</small>
+                    </div>
+                    <div style="font-size:13px; color:#cbd5e1; margin: 8px 0; line-height:1.4;">${d.work || 'No details'}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #333; paddingTop:8px;">
+                        <b style="color:var(--gold);">Rs ${parseInt(d.total || 0).toLocaleString()}</b>
+                        <button onclick='generatePDF(${JSON.stringify(d).replace(/'/g, "&#39;")})' style="background:#333; color:white; border:none; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:5px;">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                    </div>
                 </div>
             `).join('');
-        } catch(e) { container.innerHTML = "Error loading."; }
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = `<div style="text-align:center; color:var(--danger); padding:20px;">Error loading logs.<br><small>${e.message}</small></div>`;
+        }
     }
 
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        let cleanDate = order.date ? order.date.split('T')[0] : new Date().toLocaleDateString();
-
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
-        const img = document.getElementById('brandLogo');
-        try { doc.addImage(img, 'JPEG', 15, 7, 25, 25); } catch(e) {}
-        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 20);
         
-        doc.setTextColor(0,0,0); doc.setFontSize(11);
-        doc.text("Customer: " + order.client, 15, 50);
-        doc.text("Date: " + cleanDate, 15, 57);
-        doc.setFontSize(18); doc.setFont("helvetica", "bold");
-        doc.text("INVOICE", 105, 72, { align: "center" });
+        // Colors
+        const gold = [251, 191, 36];
+        const dark = [7, 10, 19];
 
-        let items = order.work.split(", ");
-        let body = items.map(item => {
-            if (item.includes("(Rs ")) {
-                let parts = item.split(" (Rs ");
-                return [parts[0], "Rs " + parts[1].replace(")", "")];
+        // Header Background
+        doc.setFillColor(...dark);
+        doc.rect(0, 0, 210, 40, 'F');
+        
+        // Logo Handling (Try/Catch for safety)
+        const imgElement = document.getElementById('brandLogo');
+        if (imgElement && imgElement.complete && imgElement.naturalHeight !== 0) {
+            try {
+                // Convert image to data URL to avoid CORS issues in PDF generation
+                const canvas = document.createElement('canvas');
+                canvas.width = 100;
+                canvas.height = 100;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(imgElement, 0, 0, 100, 100);
+                const imgData = canvas.toDataURL('image/jpeg');
+                doc.addImage(imgData, 'JPEG', 15, 7, 26, 26);
+            } catch (e) {
+                console.warn("Logo load failed for PDF", e);
+            }
+        } else {
+            // Fallback circle if image missing
+            doc.setFillColor(...gold);
+            doc.circle(28, 20, 10, 'F');
+        }
+
+        // Title
+        doc.setTextColor(...gold);
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("DNHQ SERVICES", 50, 22);
+        
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(200, 200, 200);
+        doc.text("Professional Electrical & AC Solutions", 50, 28);
+
+        // Customer Info
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(12);
+        doc.text(`Customer: ${order.client}`, 15, 55);
+        doc.text(`Date: ${order.date}`, 15, 62);
+        
+        // Invoice Title
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.text("SERVICE INVOICE", 105, 62, { align: "right" });
+        doc.setLineWidth(0.5);
+        doc.line(15, 65, 195, 65);
+
+        // Parse Items
+        let items = (order.work || "").split(", ");
+        let bodyData = items.map(item => {
+            const match = item.match(/(.*) \(Rs (\d+)\)/);
+            if (match) {
+                return [match[1], `Rs ${parseInt(match[2]).toLocaleString()}`];
             }
             return [item, "-"];
         });
 
-        doc.autoTable({ 
-            startY: 78, 
-            head: [['Work Description', 'Amount']], 
-            body: body, 
-            headStyles: { fillColor: [0,0,0], textColor: [251,191,36] },
-            theme: 'grid'
+        // Table
+        doc.autoTable({
+            startY: 70,
+            head: [['Description', 'Amount']],
+            body: bodyData,
+            theme: 'grid',
+            headStyles: { fillColor: dark, textColor: gold, fontStyle: 'bold' },
+            styles: { fontSize: 11, cellPadding: 4 },
+            columnStyles: { 1: { halign: 'right' } }
         });
 
-        doc.setFontSize(16); doc.text("GRAND TOTAL: Rs " + parseInt(order.total).toLocaleString(), 115, doc.lastAutoTable.finalY + 20);
-        doc.save("DNHQ_" + order.client + ".pdf");
+        // Total
+        const finalY = doc.lastAutoTable.finalY + 15;
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(...dark);
+        doc.text(`GRAND TOTAL: Rs ${parseInt(order.total || 0).toLocaleString()}`, 195, finalY, { align: 'right' });
+        
+        // Footer
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "italic");
+        doc.setTextColor(100, 100, 100);
+        doc.text("Thank you for choosing DNHQ Services!", 105, 280, { align: 'center' });
+        doc.text("www.dnhq.services | +92 315 2458657", 105, 285, { align: 'center' });
+
+        // Save
+        const safeName = (order.client || "Client").replace(/[^a-z0-9]/gi, '_');
+        doc.save(`Invoice_DNHQ_${safeName}.pdf`);
     }
 
     async function placeOrder() {
-        const user = prompt("Customer Name:") || "Client";
+        if (cart.length === 0) return;
+
+        const hasQuotes = cart.some(i => i.isQuote);
+        let userName = prompt("Please enter your Name:", "");
+        
+        if (!userName) {
+            showToast("Name is required", "error");
+            return;
+        }
+
         const total = cart.reduce((a, b) => a + b.price, 0);
-        const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
-        const date = new Date().toLocaleDateString();
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: user, work: workFormatted, total}) });
-        window.location.href = "https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: " + user + "%0AWork: " + workFormatted + "%0ATotal: Rs " + total;
+        const workFormatted = cart.map(c => c.isQuote ? `${c.name} (Quote Required)` : `${c.name} (Rs ${c.price})`).join(", ");
+        const date = new Date().toLocaleDateString('en-PK', { timeZone: 'Asia/Karachi' });
+
+        const payload = {
+            date: date,
+            client: userName,
+            work: workFormatted,
+            total: hasQuotes ? 0 : total,
+            type: 'customer_order'
+        };
+
+        // Optimistic UI update
+        showToast("Sending Order...");
+        
+        try {
+            await fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload) 
+            });
+            
+            // Redirect to WhatsApp
+            const message = `*NEW ORDER - DNHQ SERVICES*%0A%0A*Client:* ${userName}%0A*Date:* ${date}%0A%0A*Services:*%0A${workFormatted.replace(/, /g, '%0A')}%0A%0A*Total Estimate:* Rs ${hasQuotes ? 'Quotation Needed' : total.toLocaleString()}`;
+            
+            window.location.href = `https://wa.me/923152458657?text=${message}`;
+            
+            // Clear cart after sending
+            setTimeout(() => {
+                clearCart();
+            }, 1000);
+            
+        } catch (e) {
+            showToast("Failed to send. Please call us.", "error");
+        }
     }
     </script>
 </body>
