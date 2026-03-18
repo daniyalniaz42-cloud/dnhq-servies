@@ -296,7 +296,6 @@ function generatePDF(order) {
     
     let cleanDate = order.date ? order.date.split('T')[0] : new Date().toLocaleDateString();
 
-    // Black Header
     doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
     const img = document.getElementById('brandLogo');
     try { doc.addImage(img, 'JPEG', 15, 7, 25, 25); } catch(e) {}
@@ -309,13 +308,19 @@ function generatePDF(order) {
     doc.text(`Customer: ${order.client}`, 15, 55);
     doc.text(`Date: ${cleanDate}`, 15, 62);
 
-    // Kaam aur Amount ko alag alag columns mein dalna
+    // FIX: Naye aur Purane dono records ko handle karne ke liye
     let items = order.work.split(", ");
     let body = items.map(item => {
-        let parts = item.split(" (Rs ");
-        let workName = parts[0];
-        let price = parts[1] ? "Rs " + parts[1].replace(")", "") : "-";
-        return [workName, price];
+        if (item.includes("(Rs ")) {
+            // Naye records ke liye (Manual Entry)
+            let parts = item.split(" (Rs ");
+            let workName = parts[0];
+            let price = "Rs " + parts[1].replace(")", "");
+            return [workName, price];
+        } else {
+            // Purane records ke liye (Status show karega ya empty)
+            return [item, "-"];
+        }
     });
 
     doc.autoTable({ 
@@ -326,6 +331,15 @@ function generatePDF(order) {
         theme: 'striped'
     });
 
+    let finalY = doc.lastAutoTable.finalY;
+    doc.setFontSize(16); doc.setFont("helvetica", "bold");
+    doc.text(`GRAND TOTAL: Rs ${parseInt(order.total).toLocaleString()}`, 115, finalY + 20);
+
+    doc.setFontSize(10); doc.setTextColor(100);
+    doc.text("Thank you for choosing DNHQ Services!", 15, finalY + 35);
+
+    doc.save(`DNHQ_Invoice_${order.client}.pdf`);
+}
     let finalY = doc.lastAutoTable.finalY;
     doc.setFontSize(16); doc.setFont("helvetica", "bold");
     doc.text(`GRAND TOTAL: Rs ${parseInt(order.total).toLocaleString()}`, 115, finalY + 20);
