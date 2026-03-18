@@ -20,7 +20,7 @@
         .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
         .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
         .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .svc-item.selected { border: 2px solid var(--gold); background: #000; }
         .svc-meta b { display: block; font-size: 16px; color: white; }
         .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
@@ -32,7 +32,7 @@
         .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
         footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; border-top: 1px solid #1f2937; }
         .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
-        .social-links a { color: var(--gold); font-size: 24px; }
+        .social-links a { color: var(--gold); font-size: 24px; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -57,21 +57,21 @@
 
         <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Short Circuit</b><p>Fault Finding & Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Breaker & Panel Setup</p></div><div class="svc-rate">Rs 3,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel & Breaker Setup</p></div><div class="svc-rate">Rs 3,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Switch Board Repair', 500)"><div class="svc-meta"><b>Switch Board</b><p>Repair or Install</p></div><div class="svc-rate">Rs 500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fan Installation', 600)"><div class="svc-meta"><b>Fan Install</b><p>Bracket/Ceiling Fan</p></div><div class="svc-rate">Rs 600</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 2500)"><div class="svc-meta"><b>UPS Setup</b><p>Wiring & Installation</p></div><div class="svc-rate">Rs 2,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Motor Repair', 1500)"><div class="svc-meta"><b>Motor/Pump</b><p>Electrical Checkup</p></div><div class="svc-rate">Rs 1,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Switch Board Repair', 500)"><div class="svc-meta"><b>Switch Board</b><p>Replacement / Repair</p></div><div class="svc-rate">Rs 500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fan Installation', 600)"><div class="svc-meta"><b>Fan Install</b><p>Bracket or Ceiling</p></div><div class="svc-rate">Rs 600</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 2500)"><div class="svc-meta"><b>UPS Installation</b><p>Wiring & Setup</p></div><div class="svc-rate">Rs 2,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Motor/Machine Repair', 1500)"><div class="svc-meta"><b>Motor Repair</b><p>Circuit & Motor Work</p></div><div class="svc-rate">Rs 1,500</div></div>
 
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Charging</p></div><div class="svc-rate">Rs 8,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Full Setup</p></div><div class="svc-rate">Rs 4,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
 
         <div class="section-tag"><h2>Others</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Fridge Gas</b><p>Full Refill</p></div><div class="svc-rate">Rs 7,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Full Home Wiring</b><p>Per Sq.Ft Basis</p></div><div class="svc-rate">Quote</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Home Wiring</b><p>Area Based Quote</p></div><div class="svc-rate">Quote</div></div>
     </div>
 
     <div id="adminView">
@@ -92,8 +92,7 @@
             <button onclick="addNewManualRow()" style="width:100%; background:transparent; border:1px dashed gold; color:gold; padding:8px; margin-bottom:15px; border-radius:8px;">+ Add Work</button>
             <button onclick="saveManualEntry()" style="width:100%; background:gold; color:black; font-weight:bold; border:none; padding:12px; border-radius:8px;">SAVE RECORD</button>
         </div>
-
-        <div id="logItems">Loading Records...</div>
+        <div id="logItems">Loading...</div>
     </div>
 
     <div class="checkout-bar" id="cart">
@@ -115,8 +114,7 @@
 
     <script>
     let cart = [];
-    // Yahan Apna Naya Google Script URL Dalein:
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzye6hqOdsrp2VKnh1yRGNOwvXZEMRF3PsXbxdauwlE7R01jPA6AEYFs5MaTcyHgV6kSw/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
     function playVid() {
         const box = document.getElementById('videoBox');
@@ -157,7 +155,7 @@
                 total += parseInt(p);
             }
         });
-        if(!name) return alert("Naam likhein!");
+        if(!name) return alert("Enter Name!");
         fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: name, work: allWork.join(", "), total}) });
         alert("Saved!"); loadLogs();
     }
@@ -168,39 +166,90 @@
         try {
             const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
             const data = await res.json();
-            // Yahan Delete Button ka Logic Update kar diya gaya hai
             container.innerHTML = data.reverse().map((d, index) => {
-                const actualIndex = data.length - 1 - index;
-                return `
-                <div class="log-card">
+                const actualIdx = data.length - 1 - index;
+                return `<div class="log-card">
                     <button style="float:right; background:gold; border:none; padding:5px 10px; border-radius:5px; font-weight:bold;" onclick='generatePDF(${JSON.stringify(d)})'>PDF</button>
                     <b>${d.client}</b><br><small>${d.work}</small><br>
                     <b style="color:gold;">Rs ${d.total}</b><br>
-                    <button style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; margin-top:10px; cursor:pointer;" onclick="deleteEntry(${actualIndex})">DELETE</button>
+                    <button style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; margin-top:10px; cursor:pointer;" onclick="deleteEntry(${actualIdx})">DELETE</button>
                 </div>`;
             }).join('');
         } catch(e) { container.innerHTML = "Error!"; }
     }
 
     async function deleteEntry(rowIdx) {
-        if(confirm("DNHQ: Delete record?")) {
+        if(confirm("Delete record?")) {
             await fetch(SCRIPT_URL + "?deleteRow=" + (rowIdx + 2), { method: 'GET' });
             alert("Deleted!"); loadLogs();
         }
     }
 
+    // --- OLD INVOICE STYLE PDF LOGIC ---
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
+        
+        // Header Black Background
+        doc.setFillColor(0,0,0);
+        doc.rect(0, 0, 210, 45, 'F');
+
+        // Brand Logo
         const img = document.getElementById('brandLogo');
-        try { doc.addImage(img, 'JPEG', 15, 7, 25, 25); } catch(e) {}
-        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 20);
-        doc.setTextColor(0,0,0); doc.text("Customer: " + order.client, 15, 50);
-        let body = order.work.split(", ").map(item => item.includes("(Rs ") ? [item.split(" (Rs ")[0], "Rs " + item.split(" (Rs ")[1].replace(")","")] : [item, "-"]);
-        doc.autoTable({ startY: 78, head: [['Description', 'Amount']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] }, theme: 'grid' });
-        doc.text("TOTAL: Rs " + order.total, 115, doc.lastAutoTable.finalY + 20);
-        doc.save("DNHQ_" + order.client + ".pdf");
+        try { doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e) {}
+
+        // Brand Name
+        doc.setTextColor(251, 191, 36); // Gold color
+        doc.setFontSize(26);
+        doc.setFont("helvetica", "bold");
+        doc.text("DNHQ SERVICES", 55, 25);
+        doc.setFontSize(10);
+        doc.text("Professional Electrical & AC Maintenance", 55, 32);
+
+        // Body Content
+        doc.setTextColor(0,0,0);
+        doc.setFontSize(12);
+        doc.text("INVOICE TO:", 15, 60);
+        doc.setFont("helvetica", "bold");
+        doc.text(order.client.toUpperCase(), 15, 67);
+        
+        doc.setFont("helvetica", "normal");
+        doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 145, 67);
+
+        // Service Table
+        let body = order.work.split(", ").map(item => {
+            if (item.includes("(Rs ")) {
+                let parts = item.split(" (Rs ");
+                return [parts[0], "Rs " + parts[1].replace(")", "")];
+            }
+            return [item, "-"];
+        });
+
+        doc.autoTable({
+            startY: 75,
+            head: [['SERVICE DESCRIPTION', 'AMOUNT']],
+            body: body,
+            headStyles: { fillColor: [0, 0, 0], textColor: [251, 191, 36], fontSize: 11, halign: 'center' },
+            bodyStyles: { fontSize: 10, halign: 'left' },
+            columnStyles: { 1: { halign: 'right' } },
+            theme: 'grid'
+        });
+
+        // Total Amount
+        let finalY = doc.lastAutoTable.finalY;
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("NET TOTAL:", 130, finalY + 15);
+        doc.setTextColor(251, 191, 36);
+        doc.text("Rs " + order.total.toLocaleString(), 170, finalY + 15, { align: 'right' });
+
+        // Footer Note
+        doc.setTextColor(100, 100, 100);
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "italic");
+        doc.text("Thank you for choosing DNHQ Services! For queries: +92 315 2458657", 105, 285, { align: "center" });
+
+        doc.save("DNHQ_Invoice_" + order.client + ".pdf");
     }
 
     async function placeOrder() {
