@@ -257,63 +257,113 @@
         }
     }
 
-    function generatePDF(order) {
+    // 1. Manual Entry Save Function (Prices ke sath save karne ke liye)
+async function saveManualEntry() {
+    const name = document.getElementById('man_name').value;
+    const workInputs = document.querySelectorAll('.m-work');
+    const priceInputs = document.querySelectorAll('.m-price');
+    let allWorkWithPrices = [];
+    let grandTotal = 0;
+
+    workInputs.forEach((input, i) => {
+        if(input.value.trim() !== "") {
+            const p = priceInputs[i].value || 0;
+            // Kaam aur price ko format karke save karenge
+            allWorkWithPrices.push(`${input.value} (Rs ${p})`);
+            grandTotal += parseInt(p);
+        }
+    });
+
+    if(!name || allWorkWithPrices.length === 0) return alert("Bhai, Name aur Kam lazmi likhein!");
+
+    const date = new Date().toLocaleDateString();
+    const workStr = allWorkWithPrices.join(", "); 
+
+    try {
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: name, work: workStr, total: grandTotal}) });
+        alert("Record Saved to Cloud!");
+        // Form saaf karne ke liye
+        document.getElementById('man_name').value = "";
+        document.getElementById('manual_works_container').innerHTML = `<div class="manual-row" style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work (e.g. AC Service)" style="flex:2; margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;"></div>`;
+        setTimeout(loadLogs, 1000);
+    } catch(e) { alert("Error saving data."); }
+}
+
+// 2. Updated PDF Function (Separate Amount Column ke liye)
+function generatePDF(order) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    // Date ko saaf karne ke liye (T19:00... hatane ke liye)
     let cleanDate = order.date ? order.date.split('T')[0] : new Date().toLocaleDateString();
 
-    // Black Header Bar
-    doc.setFillColor(0,0,0); 
-    doc.rect(0,0,210,40,'F'); 
-
-    // Logo (DNHQ)
+    // Black Header
+    doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
     const img = document.getElementById('brandLogo');
     try { doc.addImage(img, 'JPEG', 15, 7, 25, 25); } catch(e) {}
 
-    // Brand Name & "INVOICE" Title
-    doc.setTextColor(251, 191, 36); 
-    doc.setFontSize(22); 
-    doc.setFont("helvetica", "bold");
+    doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.setFont("helvetica", "bold");
     doc.text("DNHQ SERVICES", 45, 20);
-    
-    doc.setFontSize(14);
-    doc.text("INVOICE", 45, 30); // Ab INVOICE saaf likha ayega
+    doc.setFontSize(14); doc.text("OFFICIAL INVOICE", 45, 30);
 
-    // Customer & Date Info
-    doc.setTextColor(0,0,0); 
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
+    doc.setTextColor(0,0,0); doc.setFontSize(12); doc.setFont("helvetica", "normal");
     doc.text(`Customer: ${order.client}`, 15, 55);
-    doc.text(`Date: ${cleanDate}`, 15, 62); // Clean Date yahan use hogi
+    doc.text(`Date: ${cleanDate}`, 15, 62);
 
-    // Table Styling
+    // Kaam aur Amount ko alag alag columns mein dalna
     let items = order.work.split(", ");
-    let body = items.map(item => [item, "Service Rendered"]);
+    let body = items.map(item => {
+        let parts = item.split(" (Rs ");
+        let workName = parts[0];
+        let price = parts[1] ? "Rs " + parts[1].replace(")", "") : "-";
+        return [workName, price];
+    });
 
     doc.autoTable({ 
         startY: 70, 
-        head: [['Work Description', 'Status']], 
+        head: [['Work Description', 'Amount']], 
         body, 
         headStyles: { fillColor: [0,0,0], textColor: [251,191,36] },
-        theme: 'grid'
+        theme: 'striped'
     });
 
-    // Grand Total
     let finalY = doc.lastAutoTable.finalY;
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text(`GRAND TOTAL: Rs ${parseInt(order.total).toLocaleString()}`, 120, finalY + 20);
+    doc.setFontSize(16); doc.setFont("helvetica", "bold");
+    doc.text(`GRAND TOTAL: Rs ${parseInt(order.total).toLocaleString()}`, 115, finalY + 20);
 
-    // Footer Note
-    doc.setFontSize(10);
-    doc.setTextColor(100);
+    doc.setFontSize(10); doc.setTextColor(100);
     doc.text("Thank you for choosing DNHQ Services!", 15, finalY + 35);
 
-    // Save PDF
     doc.save(`DNHQ_Invoice_${order.client}.pdf`);
 }
-    </script>
+
+async function loadLogs() {
+    const container = document.getElementById('logItems');
+    container.innerHTML = "Fetching Records...";
+    try {
+        const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
+        const data = await res.json();
+        container.innerHTML = data.reverse().map(d => `
+            <div class="log-card">
+                <div style="display:flex; justify-content:space-between;"><b>${d.client}</b><small>${d.date || ''}</small></div>
+                <p style="margin:5px 0; font-size:13px; color:#94a3b8;">${d.work}</p>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <b style="color:gold;">Rs ${d.total}</b>
+                    <div style="display:flex; gap:5px;">
+                        <button onclick='generatePDF(${JSON.stringify(d)})' style="background:gold; color:black; border:none; padding:5px 10px; border-radius:5px; font-weight:bold; cursor:pointer;">PDF</button>
+                        <button onclick="deleteRec('${d.client}', ${d.total})" style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">DEL</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    } catch(e) { container.innerHTML = "Error loading."; }
+}
+
+async function deleteRec(client, total) {
+    if(confirm("Delete this record?")) {
+        await fetch(SCRIPT_URL + `?del=true&client=${encodeURIComponent(client)}&total=${total}`, {mode: 'no-cors'});
+        setTimeout(() => loadLogs(), 1500);
+    }
+}
+</script>
 </body>
 </html>
