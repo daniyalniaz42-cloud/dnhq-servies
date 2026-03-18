@@ -3,90 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Official</title>
+    <title>DNHQ SERVICES | Professional Tech</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root { --gold: #fbbf24; --card: #111827; --dark: #070a13; --text: #f1f5f9; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 120px; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 120px; overflow-x: hidden; }
         .brand-header { background: #000; padding: 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 25px 25px; }
         .logo-main { height: 75px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #333; }
         .wrapper { padding: 15px; max-width: 550px; margin: 0 auto; }
         
+        /* Typography & Tags */
         .section-tag { display: flex; align-items: center; margin: 25px 0 12px; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; }
         .section-line { flex: 1; height: 1px; background: rgba(251,191,36,0.3); margin-left: 12px; }
         
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        /* Service Cards */
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
         .svc-item.selected { border-color: var(--gold); background: #000; box-shadow: 0 0 15px rgba(251,191,36,0.15); }
         .svc-meta b { font-size: 15px; display: block; color: #fff; }
         .svc-meta p { font-size: 10px; color: #94a3b8; margin: 3px 0 0; }
         .svc-rate { color: var(--gold); font-weight: 800; font-size: 13px; text-align: right; }
 
+        /* PORTFOLIO & TEAM GRID */
+        .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .port-img { width: 100%; border-radius: 10px; border: 1px solid #333; height: 110px; object-fit: cover; background: #222; }
+        .team-card { background: var(--card); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #333; }
+        .team-img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 8px; object-fit: cover; }
+
+        /* ADMIN PANEL (FIXED) */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark); z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .cust-card { background: #1f2937; border-left: 5px solid var(--gold); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .m-input { width: 100%; background: #000; border: 1px solid #374151; color: white; padding: 14px; border-radius: 10px; margin-bottom: 10px; box-sizing: border-box; }
-        .btn { padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; width: 100%; }
+        .btn { padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s; }
         .btn-gold { background: var(--gold); color: #000; }
-        .btn-pdf { background: #fff; color: #000; flex: 1; font-size: 11px; }
+        .btn-pdf { background: #fff; color: #000; padding: 8px; font-size: 11px; margin-top: 10px; border-radius: 5px; }
 
-        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 1000; }
+        /* BOTTOM BAR */
+        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 1000; box-shadow: 0 -10px 30px rgba(0,0,0,0.8); }
     </style>
 </head>
 <body>
 
     <header class="brand-header">
-        <img src="1773452778552.jpeg" class="logo-main">
-        <div style="color:var(--gold); font-weight:900; font-size:24px;">DNHQ SERVICES</div>
+        <img src="1773452778552.jpeg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=DNHQ'">
+        <div style="color:var(--gold); font-weight:900; font-size:24px; letter-spacing:1px;">DNHQ SERVICES</div>
     </header>
 
     <div class="wrapper">
+        
+        <div class="section-tag"><span>Our Portfolio</span><div class="section-line"></div></div>
+        <div class="grid-box">
+            <div><img src="work1.jpg" class="port-img" onerror="this.src='https://via.placeholder.com/150?text=Work+1'"><p style="font-size:10px; text-align:center; margin-top:5px;">AC Maintenance</p></div>
+            <div><img src="work2.jpg" class="port-img" onerror="this.src='https://via.placeholder.com/150?text=Work+2'"><p style="font-size:10px; text-align:center; margin-top:5px;">Electrical Wiring</p></div>
+        </div>
+
+        <div class="section-tag"><span>Expert Team</span><div class="section-line"></div></div>
+        <div class="grid-box">
+            <div class="team-card">
+                <img src="daniyal.jpg" class="team-img" onerror="this.src='https://via.placeholder.com/100?text=Daniyal'">
+                <b style="font-size:13px; display:block; color:#fff;">Daniyal</b>
+                <small style="font-size:9px; color:var(--gold);">Chief Electrician / AC Tech</small>
+            </div>
+            <div class="team-card">
+                <img src="assistant.jpg" class="team-img" onerror="this.src='https://via.placeholder.com/100?text=Staff'">
+                <b style="font-size:13px; display:block; color:#fff;">DNHQ Staff</b>
+                <small style="font-size:9px; color:var(--gold);">Junior Technician</small>
+            </div>
+        </div>
+
         <div class="section-tag"><span>Air Conditioning</span><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Master Service',3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash (Indoor/Outdoor)</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Normal Service',2500)"><div class="svc-meta"><b>Normal Service</b><p>General Wash & Filter Clean</p></div><div class="svc-rate">Rs 2,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Master Service',3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash (Indoor + Outdoor)</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Normal Service',2500)"><div class="svc-meta"><b>Normal Service</b><p>General Service & Filter Clean</p></div><div class="svc-rate">Rs 2,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'AC Gas 1.0 Ton',6500)"><div class="svc-meta"><b>Gas Refill (1.0 Ton)</b><p>Full Gas Charging</p></div><div class="svc-rate">Rs 6,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'AC Gas 1.5 Ton',8500)"><div class="svc-meta"><b>Gas Refill (1.5 Ton)</b><p>Full Gas Charging</p></div><div class="svc-rate">Rs 8,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'AC Gas 2.0 Ton',10500)"><div class="svc-meta"><b>Gas Refill (2.0 Ton)</b><p>Full Gas Charging</p></div><div class="svc-rate">Rs 10,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Installation',4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor Setup</p></div><div class="svc-rate">Rs 4,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Installation',4000)"><div class="svc-meta"><b>Installation</b><p>Standard Wall Mount</p></div><div class="svc-rate">Rs 4,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'AC Dismantle',2000)"><div class="svc-meta"><b>Dismantle</b><p>Safe Unit Removal</p></div><div class="svc-rate">Rs 2,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Leak Repair',3500)"><div class="svc-meta"><b>Leakage Repair</b><p>Tracing + Copper Welding</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Capacitor Change',1200)"><div class="svc-meta"><b>Capacitor Replace</b><p>Fan/Compressor Part</p></div><div class="svc-rate">Rs 1,200</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC PCB Repair',3500)"><div class="svc-meta"><b>PCB Repairing</b><p>Circuit Board Fix</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Magnetic Contactor',1800)"><div class="svc-meta"><b>Magnetic Contactor</b><p>High Quality Replacement</p></div><div class="svc-rate">Rs 1,800</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC PCB Repair',3500)"><div class="svc-meta"><b>PCB Repairing</b><p>Indoor/Outdoor Circuit Fix</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Capacitor Change',1200)"><div class="svc-meta"><b>Capacitor Replace</b><p>High Quality Part Change</p></div><div class="svc-rate">Rs 1,200</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Magnetic Contactor',1800)"><div class="svc-meta"><b>Magnetic Contactor</b><p>Replacement</p></div><div class="svc-rate">Rs 1,800</div></div>
 
-        <div class="section-tag"><span>Electrical Work</span><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Short Circuit',1000)"><div class="svc-meta"><b>Short Circuit</b><p>Tracing & Fault Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'DB Dressing',3000)"><div class="svc-meta"><b>DB Dressing</b><p>Main Panel Management</p></div><div class="svc-rate">Rs 3,000</div></div>
+        <div class="section-tag"><span>Electrical Services</span><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Short Circuit Tracing',1000)"><div class="svc-meta"><b>Short Circuit</b><p>Fault Finding & Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'DB Dressing',3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing & Fixing</p></div><div class="svc-rate">Rs 3,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'UPS Installation',2500)"><div class="svc-meta"><b>UPS Installation</b><p>Inverter & Battery Wiring</p></div><div class="svc-rate">Rs 2,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'1 Room Wiring',1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Open/Underground Wiring</p></div><div class="svc-rate">Rs 1,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Fan Fitting',500)"><div class="svc-meta"><b>Fan Installation</b><p>Ceiling/Bracket/Exhaust</p></div><div class="svc-rate">Rs 500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Switch Board Fix',800)"><div class="svc-meta"><b>Board Repair</b><p>Button/Socket Replace</p></div><div class="svc-rate">Rs 800</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Breaker Change',500)"><div class="svc-meta"><b>Breaker Change</b><p>DP or SP Breaker</p></div><div class="svc-rate">Rs 500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Dimmer/Holder',300)"><div class="svc-meta"><b>Dimmer/Holder</b><p>Replacement</p></div><div class="svc-rate">Rs 300</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Main Line Work',2000)"><div class="svc-meta"><b>Main Line Work</b><p>Meter to Distribution Box</p></div><div class="svc-rate">Rs 2,000</div></div>
-
-        <div class="section-tag"><span>Refrigerator</span><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Fridge Gas Refill',7500)"><div class="svc-meta"><b>Fridge Gas</b><p>Leak Fix + Refill</p></div><div class="svc-rate">Rs 7,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Full House Wiring',0)"><div class="svc-meta"><b>House Wiring</b><p>New Building Sq.Ft Basis</p></div><div class="svc-rate">Quote</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Breaker Replacement',500)"><div class="svc-meta"><b>Breaker Change</b><p>DP / SP Breaker Fitting</p></div><div class="svc-rate">Rs 500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Switch Board Fix',800)"><div class="svc-meta"><b>Board Repair</b><p>Switch/Socket/Dimmer Change</p></div><div class="svc-rate">Rs 800</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Fan Fitting',500)"><div class="svc-meta"><b>Fan Installation</b><p>Per Fan Point</p></div><div class="svc-rate">Rs 500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Main Line Work',2000)"><div class="svc-meta"><b>Main Line</b><p>Meter to DB Box</p></div><div class="svc-rate">Rs 2,000</div></div>
+        
+        <div class="section-tag"><span>Projects & Fridge</span><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Fridge Gas Refill',7500)"><div class="svc-meta"><b>Fridge Gas Charging</b><p>Leak Fix + Gas</p></div><div class="svc-rate">Rs 7,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Full House Wiring',0)"><div class="svc-meta"><b>New House Wiring</b><p>Rate per Square Foot</p></div><div class="svc-rate">Quote</div></div>
     </div>
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="color:var(--gold);">DNHQ ADMIN</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:8px 15px; border-radius:8px;">EXIT</button>
+            <h2 style="color:var(--gold); margin:0;">DNHQ ADMIN</h2>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:#ef4444; color:#fff; border:none; padding:8px 15px; border-radius:8px; font-weight:bold;">EXIT</button>
         </div>
-        <div id="customerRecords"></div>
+        <div id="customerRecords">
+            <p style="text-align:center; color:#64748b;">Loading Cloud Records...</p>
+        </div>
     </div>
 
     <div class="checkout-bar" id="cartBar">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div><small>Estimated Bill</small><div style="font-size:18px; font-weight:bold; color:var(--gold);">Rs <span id="cartTotal">0</span></div></div>
-            <button onclick="sendOrder()" class="btn btn-gold" style="width:auto; padding:10px 30px;">BOOK NOW</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; max-width:550px; margin:0 auto;">
+            <div><small style="color:#94a3b8;">Total Bill</small><div style="font-size:20px; font-weight:bold; color:var(--gold);">Rs <span id="cartTotal">0</span></div></div>
+            <button onclick="whatsappOrder()" class="btn btn-gold" style="width:auto; padding:12px 30px;">BOOK NOW</button>
         </div>
     </div>
 
-    <footer style="text-align:center; padding:40px; opacity:0.3; font-size:12px; cursor:pointer;" onclick="adminLogin()">
-        Admin Panel Login © DNHQ Services
+    <footer style="text-align:center; padding:50px; opacity:0.4; font-size:12px; cursor:pointer;" onclick="adminLogin()">
+        <p>Admin Panel Login © DNHQ Services 2026</p>
     </footer>
 
     <script>
@@ -102,40 +131,52 @@
             document.getElementById('cartTotal').innerText = total.toLocaleString();
         }
 
+        // FIXED ADMIN FUNCTION
         function adminLogin() {
-            if(prompt("PIN:") === "dnhq123") { document.getElementById('adminView').style.display='block'; fetchList(); }
+            const pin = prompt("Enter DNHQ Admin PIN:");
+            if(pin === "dnhq123") {
+                document.getElementById('adminView').style.display = 'block';
+                fetchCloudRecords();
+            } else if (pin !== null) {
+                alert("Incorrect PIN!");
+            }
         }
 
-        async function fetchList() {
+        async function fetchCloudRecords() {
             const container = document.getElementById('customerRecords');
-            container.innerHTML = "Fetching Records...";
             try {
                 const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
                 const data = await res.json();
                 container.innerHTML = data.reverse().map(d => `
                     <div class="cust-card">
-                        <b>${d.client}</b><br><small>${d.work}</small><br>
-                        <b style="color:var(--gold);">Rs ${d.total}</b>
-                        <div style="display:flex; gap:5px; margin-top:10px;">
-                            <button class="btn btn-pdf" onclick='makePDF(${JSON.stringify(d)})'>PDF</button>
-                        </div>
+                        <div style="display:flex; justify-content:space-between;"><b>${d.client}</b><small>${d.date || ''}</small></div>
+                        <p style="font-size:11px; color:#94a3b8; margin:8px 0;">${d.work}</p>
+                        <b style="color:var(--gold); font-size:16px;">Rs ${d.total}</b><br>
+                        <button class="btn-pdf" onclick='generatePDF(${JSON.stringify(d)})'>DOWNLOAD INVOICE (PDF)</button>
                     </div>
                 `).join('');
-            } catch(e) { container.innerHTML = "Offline."; }
+            } catch(e) {
+                container.innerHTML = "<p style='text-align:center;'>Sheet Sync Error. Check Internet.</p>";
+            }
         }
 
-        function makePDF(d) {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.text(`DNHQ INVOICE: ${d.client}`, 15, 20);
-            doc.autoTable({ startY: 30, head: [['Work', 'Total']], body: [[d.work, `Rs ${d.total}`]] });
+        function generatePDF(d) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
+            doc.setTextColor(251,191,36); doc.setFontSize(24); doc.text("DNHQ SERVICES", 15, 25);
+            doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text(`Bill To: ${d.client}`, 15, 55);
+            doc.autoTable({ startY: 65, head: [['Service Details', 'Price']], body: [[d.work, `Rs ${d.total}`]], headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
             doc.save(`DNHQ_${d.client}.pdf`);
         }
 
-        function sendOrder() {
-            const n = prompt("Name:"); if(!n) return;
-            const w = cart.map(c => c.name).join(", ");
-            const t = cart.reduce((a, b) => a + b.price, 0);
-            window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${n}%0AWork: ${w}%0ATotal: Rs ${t}`;
+        function whatsappOrder() {
+            const name = prompt("Enter Customer Name:");
+            if(!name) return;
+            const work = cart.map(c => c.name).join(", ");
+            const total = cart.reduce((a, b) => a + b.price, 0);
+            const msg = `*DNHQ NEW ORDER*%0AClient: ${name}%0AServices: ${work}%0ATotal: Rs ${total}`;
+            window.location.href = `https://wa.me/923152458657?text=${msg}`;
         }
     </script>
 </body>
