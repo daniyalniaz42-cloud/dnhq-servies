@@ -214,28 +214,56 @@ function playVid() {
         }
     }
 
-    function generatePDF(order) {
+  function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        let extraWork = prompt("Extra Work (e.g. 1 Board):", "");
-        let extraCost = prompt("Extra Amount:", "0");
-        
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,35,'F');
+        let cleanDate = order.date ? order.date.split('T')[0] : new Date().toLocaleDateString();
+
+        // Header Black Box
+        doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
         const img = document.getElementById('brandLogo');
-        try { doc.addImage(img, 'JPEG', 15, 5, 25, 25); } catch(e) {}
+        try { doc.addImage(img, 'JPEG', 15, 7, 25, 25); } catch(e) {}
+        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 20);
         
-        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 22);
-        doc.setTextColor(0,0,0); doc.setFontSize(12);
-        doc.text(`Invoice: ${order.client}`, 15, 50);
-        doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 57);
-        
-        let body = [[order.work, `Rs ${order.total}`]];
-        if (extraWork) body.push([extraWork, `Rs ${extraCost}`]);
-        let final = parseInt(order.total) + (parseInt(extraCost) || 0);
-        
-        doc.autoTable({ startY: 65, head: [['Description', 'Amount']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
-        doc.setFontSize(14); doc.text(`Grand Total: Rs ${final.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
-        doc.save(`DNHQ_${order.client}.pdf`);
+        // Client Info
+        doc.setTextColor(0,0,0); doc.setFontSize(11);
+        doc.text(Customer: ${order.client}, 15, 50);
+        doc.text(Date: ${cleanDate}, 15, 57);
+
+        // Center Heading: INVOICE
+        doc.setFontSize(18); doc.setFont("helvetica", "bold");
+        doc.text("INVOICE", 105, 72, { align: "center" });
+
+        // Table Logic for Separate Amounts
+        let items = order.work.split(", ");
+        let body = items.map(item => {
+            if (item.includes("(Rs ")) {
+                let parts = item.split(" (Rs ");
+                return [parts[0], "Rs " + parts[1].replace(")", "")];
+            }
+            // Agar purana order hai jisme brackets nahi thay:
+            return [item, "-"];
+        });
+
+        doc.autoTable({ 
+            startY: 78, 
+            head: [['Work Description', 'Amount']], 
+            body, 
+            headStyles: { fillColor: [0,0,0], textColor: [251,191,36] },
+            theme: 'grid'
+        });
+
+        doc.setFontSize(16); doc.text(GRAND TOTAL: Rs ${parseInt(order.total).toLocaleString()}, 115, doc.lastAutoTable.finalY + 20);
+        doc.save(DNHQ_${order.client}.pdf);
+    }
+
+    async function placeOrder() {
+        const user = prompt("Customer Name:") || "Client";
+        const total = cart.reduce((a, b) => a + b.price, 0);
+        const workFormatted = cart.map(c => ${c.name} (Rs ${c.price})).join(", ");
+        const date = new Date().toLocaleDateString();
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: user, work: workFormatted, total}) });
+        window.location.href = https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${user}%0AWork: ${workFormatted}%0ATotal: Rs ${total};
     }
     </script>
 </body>
