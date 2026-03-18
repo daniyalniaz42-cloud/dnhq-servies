@@ -11,97 +11,99 @@
         :root { --gold: #fbbf24; --card: #111827; --dark: #070a13; --text: #f1f5f9; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 120px; }
         .brand-header { background: #000; padding: 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 25px 25px; }
-        .logo-main { height: 70px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #333; }
-        .wrapper { padding: 15px; max-width: 500px; margin: 0 auto; }
+        .logo-main { height: 75px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #333; }
+        .wrapper { padding: 15px; max-width: 550px; margin: 0 auto; }
         
         /* Portfolio & Team Grid */
-        .section-tag { display: flex; align-items: center; margin: 25px 0 12px; color: #94a3b8; font-size: 11px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        .section-tag { display: flex; align-items: center; margin: 25px 0 12px; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; }
         .section-line { flex: 1; height: 1px; background: rgba(251,191,36,0.3); margin-left: 12px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .port-card img { width: 100%; border-radius: 10px; height: 100px; object-fit: cover; border: 1px solid #333; }
-        .team-card { background: var(--card); padding: 10px; border-radius: 12px; text-align: center; border: 1px solid #1f2937; }
-        .team-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 5px; }
+        .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .port-img { width: 100%; border-radius: 10px; border: 1px solid #333; height: 120px; object-fit: cover; background: #222; }
+        .team-card { background: var(--card); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #333; }
+        .team-img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 8px; object-fit: cover; }
 
-        /* Service Items */
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        /* Services */
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .svc-item.selected { border-color: var(--gold); background: #000; box-shadow: 0 0 15px rgba(251,191,36,0.15); }
-        .svc-meta b { font-size: 14px; display: block; color: #fff; }
-        .svc-meta p { font-size: 10px; color: #94a3b8; margin: 2px 0 0; }
-        .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; }
+        .svc-meta b { font-size: 15px; display: block; color: #fff; }
+        .svc-meta p { font-size: 10px; color: #94a3b8; margin: 3px 0 0; }
+        .svc-rate { color: var(--gold); font-weight: 800; font-size: 13px; text-align: right; }
 
         /* Admin Dashboard */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark); z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .admin-box { background: var(--card); border: 1px solid #374151; border-radius: 15px; padding: 15px; margin-bottom: 20px; }
-        .m-input { width: 100%; background: #000; border: 1px solid #374151; color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
-        .btn { padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; width: 100%; }
+        .admin-box { background: var(--card); border: 1px solid #374151; border-radius: 15px; padding: 18px; margin-bottom: 20px; }
+        .m-input { width: 100%; background: #000; border: 1px solid #374151; color: white; padding: 14px; border-radius: 10px; margin-bottom: 10px; box-sizing: border-box; }
+        .btn { padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; width: 100%; }
         .btn-gold { background: var(--gold); color: #000; }
-        .cust-card { background: #1f2937; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--gold); }
+        .cust-card { background: #1f2937; border-left: 5px solid var(--gold); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
 
-        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 2px solid var(--gold); padding: 15px; display: none; box-sizing: border-box; z-index: 1000; }
+        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 1000; }
     </style>
 </head>
 <body>
 
     <header class="brand-header">
         <img src="1773452778552.jpeg" class="logo-main">
-        <div style="color:var(--gold); font-weight:900; font-size:22px;">DNHQ SERVICES</div>
+        <div style="color:var(--gold); font-weight:900; font-size:24px;">DNHQ SERVICES</div>
     </header>
 
     <div class="wrapper">
-        <button onclick="toggleVideo()" class="btn btn-gold" style="margin-bottom:15px;"><i class="fas fa-play-circle"></i> WATCH SYSTEM TUTORIAL</button>
-        <div id="videoBox" style="display:none; margin-bottom:20px; border-radius:15px; overflow:hidden; border:2px solid var(--gold);">
+        <button onclick="toggleVideo()" class="btn btn-gold" style="margin-bottom:20px;"><i class="fas fa-play"></i> SYSTEM TUTORIAL</button>
+        <div id="videoBox" style="display:none; margin-bottom:20px; border:2px solid var(--gold); border-radius:15px; overflow:hidden;">
             <video style="width:100%;" controls><source src="tutorial.mp4"></video>
         </div>
 
-        <div class="section-tag"><span>Our Work Portfolio</span><div class="section-line"></div></div>
-        <div class="grid-2">
-            <div class="port-card"><img src="work1.jpg"><p style="font-size:9px; text-align:center;">AC Repair</p></div>
-            <div class="port-card"><img src="work2.jpg"><p style="font-size:9px; text-align:center;">DB Dressing</p></div>
+        <div class="section-tag"><span>Our Portfolio</span><div class="section-line"></div></div>
+        <div class="grid-box">
+            <div><img src="work1.jpg" class="port-img"><p style="font-size:10px; text-align:center; margin-top:5px;">AC Repair</p></div>
+            <div><img src="work2.jpg" class="port-img"><p style="font-size:10px; text-align:center; margin-top:5px;">Wiring Job</p></div>
         </div>
 
-        <div class="section-tag"><span>Expert Team</span><div class="section-line"></div></div>
-        <div class="grid-2">
-            <div class="team-card"><img src="daniyal.jpg" class="team-img"><b>Daniyal</b><p style="font-size:9px; color:var(--gold);">Lead Technician</p></div>
-            <div class="team-card"><img src="staff.jpg" class="team-img"><b>Staff</b><p style="font-size:9px; color:var(--gold);">Assistant</p></div>
+        <div class="section-tag"><span>Our Team</span><div class="section-line"></div></div>
+        <div class="grid-box">
+            <div class="team-card"><img src="daniyal.jpg" class="team-img"><b style="font-size:13px; display:block; color:#fff;">Daniyal</b><small style="font-size:9px; color:var(--gold);">Lead Technician</small></div>
+            <div class="team-card"><img src="staff.jpg" class="team-img"><b style="font-size:13px; display:block; color:#fff;">Staff</b><small style="font-size:9px; color:var(--gold);">Assistant</small></div>
         </div>
 
-        <div class="section-tag"><span>Main Services</span><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Master Service',3500)"><div class="svc-meta"><b>AC Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC Gas 1.5 Ton',8500)"><div class="svc-meta"><b>AC Gas 1.5 Ton</b><p>Full Gas Charging</p></div><div class="svc-rate">Rs 8,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'AC PCB Repair',3500)"><div class="svc-meta"><b>AC PCB Repairing</b><p>Circuit Board Fix</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Capacitor Change',1200)"><div class="svc-meta"><b>Capacitor Replace</b><p>Part Replacement</p></div><div class="svc-rate">Rs 1,200</div></div>
+        <div class="section-tag"><span>Air Conditioning</span><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Master Service',3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC Gas 1.5 Ton',8500)"><div class="svc-meta"><b>Gas Refill (1.5 Ton)</b><p>Full Gas Charging</p></div><div class="svc-rate">Rs 8,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'AC PCB Repair',3500)"><div class="svc-meta"><b>PCB Repairing</b><p>Circuit Board Fix</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Capacitor Replacement',1200)"><div class="svc-meta"><b>Capacitor Replace</b><p>Part Replacement</p></div><div class="svc-rate">Rs 1,200</div></div>
+
+        <div class="section-tag"><span>Electrical Work</span><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this,'Short Circuit Tracing',1000)"><div class="svc-meta"><b>Short Circuit</b><p>Fault Finding</p></div><div class="svc-rate">Rs 1,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this,'DB Dressing',3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this,'Breaker Change',500)"><div class="svc-meta"><b>Breaker Change</b><p>DP/SP Breaker</p></div><div class="svc-rate">Rs 500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this,'Breaker Replacement',500)"><div class="svc-meta"><b>Breaker Change</b><p>DP/SP Breaker</p></div><div class="svc-rate">Rs 500</div></div>
     </div>
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="color:var(--gold); margin:0;">DNHQ DASHBOARD</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:8px 12px; border-radius:5px;">EXIT</button>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:8px 15px; border-radius:8px;">EXIT</button>
         </div>
 
         <div class="admin-box">
             <h3 style="margin-top:0; font-size:14px; color:var(--gold);">MANUAL BILL GENERATOR</h3>
             <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
-            <input type="text" id="mWork" class="m-input" placeholder="Work (e.g. AC Gas + Capacitor)">
-            <input type="number" id="mTotal" class="m-input" placeholder="Total Amount (Rs)">
-            <button onclick="createManualBill()" class="btn btn-gold">GENERATE & SAVE PDF</button>
+            <input type="text" id="mWork" class="m-input" placeholder="Work (e.g. AC Service + Gas)">
+            <input type="number" id="mTotal" class="m-input" placeholder="Total Price (Rs)">
+            <button onclick="generateManualBill()" class="btn btn-gold">GENERATE & SAVE PDF</button>
         </div>
 
-        <h3 style="font-size:14px; color:#94a3b8;">CUSTOMER LIST (CLOUD SYNC)</h3>
+        <h3 style="font-size:14px; color:#94a3b8;">CLOUD RECORDS (CUSTOMER LIST)</h3>
         <div id="customerRecords"></div>
     </div>
 
     <div class="checkout-bar" id="cartBar">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div><small>Total Bill</small><div style="font-size:18px; font-weight:bold; color:var(--gold);">Rs <span id="cartTotal">0</span></div></div>
-            <button onclick="whatsappOrder()" class="btn btn-gold" style="width:auto; padding:10px 25px;">BOOK NOW</button>
+            <div><small>Total Bill</small><div style="font-size:20px; font-weight:bold; color:var(--gold);">Rs <span id="finalPrice">0</span></div></div>
+            <button onclick="whatsappOrder()" class="btn btn-gold" style="width:auto; padding:10px 30px;">BOOK NOW</button>
         </div>
     </div>
 
     <footer style="text-align:center; padding:50px; opacity:0.3; font-size:12px; cursor:pointer;" onclick="adminLogin()">
-        Admin Panel Access © DNHQ Services
+        Admin Panel Login © DNHQ Services
     </footer>
 
     <script>
@@ -114,7 +116,7 @@
             else { cart.push({name, price}); el.classList.add('selected'); }
             const total = cart.reduce((a, b) => a + b.price, 0);
             document.getElementById('cartBar').style.display = cart.length > 0 ? 'block' : 'none';
-            document.getElementById('cartTotal').innerText = total.toLocaleString();
+            document.getElementById('finalPrice').innerText = total.toLocaleString();
         }
 
         function toggleVideo() { const v = document.getElementById('videoBox'); v.style.display = v.style.display==='none'?'block':'none'; }
@@ -122,57 +124,53 @@
         function adminLogin() {
             if(prompt("PIN:") === "dnhq123") {
                 document.getElementById('adminView').style.display = 'block';
-                fetchRecords();
+                fetchList();
             }
         }
 
-        async function createManualBill() {
+        async function generateManualBill() {
             const client = document.getElementById('mCust').value;
             const work = document.getElementById('mWork').value;
             const total = document.getElementById('mTotal').value;
-            if(!client || !work || !total) return alert("Please fill all fields");
-            
-            // Generate PDF
+            if(!client || !work || !total) return alert("Fill all fields");
+
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
-            doc.setTextColor(251,191,36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 15, 25);
-            doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text(`Customer: ${client}`, 15, 55);
-            doc.autoTable({ startY: 65, head: [['Work Details', 'Amount']], body: [[work, `Rs ${total}`]] });
-            doc.save(`DNHQ_Bill_${client}.pdf`);
+            doc.text(`DNHQ INVOICE: ${client}`, 15, 20);
+            doc.autoTable({ startY: 30, head: [['Work Details', 'Price']], body: [[work, `Rs ${total}`]] });
+            doc.save(`DNHQ_${client}.pdf`);
 
-            // Sync with Cloud
+            // Sync with Google Sheet
             await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client, work, total}) });
-            alert("Record Saved & PDF Downloaded!");
-            fetchRecords();
+            alert("Bill Saved to Cloud!");
+            fetchList();
         }
 
-        async function fetchRecords() {
+        async function fetchList() {
             const container = document.getElementById('customerRecords');
-            container.innerHTML = "Syncing...";
+            container.innerHTML = "Fetching...";
             try {
                 const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
                 const data = await res.json();
                 container.innerHTML = data.reverse().map(d => `
                     <div class="cust-card">
-                        <b>${d.client}</b> <small style="float:right;">${d.date || ''}</small><br>
-                        <p style="font-size:11px; margin:5px 0;">${d.work}</p>
+                        <b>${d.client}</b><br><small>${d.work}</small><br>
                         <b style="color:var(--gold);">Rs ${d.total}</b>
-                        <button onclick='downloadExistingPDF(${JSON.stringify(d)})' style="margin-top:8px; width:100%; font-size:10px; padding:5px; border-radius:5px; background:#fff; border:none; font-weight:bold;">DOWNLOAD PDF</button>
+                        <button onclick='downloadPDF(${JSON.stringify(d)})' style="margin-top:10px; width:100%; padding:5px; border-radius:5px; border:none; background:#fff; font-weight:bold;">DOWNLOAD PDF</button>
                     </div>
                 `).join('');
-            } catch(e) { container.innerHTML = "Records Offline."; }
+            } catch(e) { container.innerHTML = "Error syncing records."; }
         }
 
-        function downloadExistingPDF(d) {
+        function downloadPDF(d) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
             doc.text(`DNHQ INVOICE: ${d.client}`, 15, 20);
             doc.autoTable({ startY: 30, head: [['Work', 'Price']], body: [[d.work, d.total]] });
-            doc.save(`DNHQ_${d.client}.pdf`);
+            doc.save(`DNHQ_Record_${d.client}.pdf`);
         }
 
         function whatsappOrder() {
-            const n = prompt("Client Name:"); if(!n) return;
+            const n = prompt("Name:"); if(!n) return;
             const w = cart.map(c => c.name).join(", ");
             const t = cart.reduce((a, b) => a + b.price, 0);
             window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${n}%0AWork: ${w}%0ATotal: Rs ${t}`;
