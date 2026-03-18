@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DNHQ SERVICES | Official</title>
-    <link rel="manifest" href="manifest.json?v=9">
+    <link rel="manifest" href="manifest.json?v=10">
     <meta name="theme-color" content="#fbbf24">
     <link rel="apple-touch-icon" href="1773452778552.jpeg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -30,12 +30,12 @@
         .svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
-        .del-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-        .pdf-btn { background: var(--gold); color: black; border: none; border-radius: 5px; padding: 5px 15px; font-weight: bold; cursor: pointer; float: right; }
         .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
         .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-        footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
+        footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; border-top: 1px solid #1f2937; }
+        .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
+        .social-links a { color: var(--gold); font-size: 24px; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -66,21 +66,21 @@
         <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
 
         <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Short Circuit Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Wiring Check</p></div><div class="svc-rate">Rs 1,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div>
 
         <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Full Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Fridge Gas</b><p>Full Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
 
-        <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
+        <div class="section-tag"><h2>Large Projects</h2><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Home Wiring</b><p>Per Sq.Ft Basis</p></div><div class="svc-rate">Quote</div></div>
     </div>
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="color:gold; margin:0;">DNHQ DASHBOARD</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">CLOSE</button>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; border-radius:5px;">CLOSE</button>
         </div>
 
         <div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
@@ -106,7 +106,15 @@
         </div>
     </div>
 
-    <footer><div onclick="openAdmin()" style="cursor:pointer; font-size:11px; opacity:0.5;">Admin Access</div></footer>
+    <footer>
+        <div style="color:var(--gold); font-weight:bold; margin-bottom:15px;">DNHQ SERVICES</div>
+        <div class="social-links">
+            <a href="https://instagram.com/dnhq_services"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/@dnhqservices"><i class="fab fa-youtube"></i></a>
+            <a href="https://twitter.com/dnhqservices"><i class="fab fa-twitter"></i></a>
+        </div>
+        <div onclick="openAdmin()" style="margin-top:25px; cursor:pointer; font-size:10px; opacity:0.4;">Admin Access</div>
+    </footer>
 
     <script>
     let cart = [];
@@ -151,30 +159,30 @@
                 total += parseInt(p);
             }
         });
-        if(!name || allWork.length === 0) return alert("Fill details!");
+        if(!name || allWork.length === 0) return alert("Details bharein!");
         fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: name, work: allWork.join(", "), total}) });
         alert("Saved!"); loadLogs();
     }
 
     async function loadLogs() {
         const container = document.getElementById('logItems');
-        container.innerHTML = "Fetching Records...";
+        container.innerHTML = "Loading...";
         try {
             const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
             const data = await res.json();
             container.innerHTML = data.reverse().map((d, index) => `
                 <div class="log-card">
-                    <button class="pdf-btn" onclick='generatePDF(${JSON.stringify(d)})'>PDF</button>
+                    <button style="float:right; background:gold; border:none; padding:5px 10px; border-radius:5px; font-weight:bold;" onclick='generatePDF(${JSON.stringify(d)})'>PDF</button>
                     <b>${d.client}</b><br><small>${d.work}</small><br>
                     <b style="color:gold;">Rs ${d.total}</b><br>
-                    <button class="del-btn" onclick="deleteEntry(${data.length - 1 - index})">DELETE</button>
+                    <button style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; margin-top:10px; cursor:pointer;" onclick="deleteEntry(${data.length - 1 - index})">DELETE</button>
                 </div>
             `).join('');
-        } catch(e) { container.innerHTML = "Error loading."; }
+        } catch(e) { container.innerHTML = "Error!"; }
     }
 
     async function deleteEntry(rowIdx) {
-        if(confirm("Delete this?")) {
+        if(confirm("Delete karein?")) {
             fetch(SCRIPT_URL + "?deleteRow=" + (rowIdx + 2), { method: 'GET' });
             alert("Deleted!"); loadLogs();
         }
@@ -192,8 +200,7 @@
         doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 15, 57);
         doc.setFontSize(18); doc.text("INVOICE", 105, 72, { align: "center" });
 
-        let items = order.work.split(", ");
-        let body = items.map(item => {
+        let body = order.work.split(", ").map(item => {
             if (item.includes("(Rs ")) {
                 let parts = item.split(" (Rs ");
                 return [parts[0], "Rs " + parts[1].replace(")", "")];
