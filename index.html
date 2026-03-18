@@ -3,194 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Portal</title>
+    <title>DNHQ SERVICES | Official</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root { --gold: #fbbf24; --dark: #070a13; --card: #111827; --text: #f1f5f9; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--dark); color: var(--text); padding-bottom: 120px; }
-        
-        /* Premium Header */
-        .brand-header { background: #000; padding: 30px; text-align: center; border-bottom: 3px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .logo-main { height: 85px; border-radius: 20px; border: 2px solid #222; margin-bottom: 10px; }
-        .brand-name { color: var(--gold); font-weight: 900; font-size: 28px; letter-spacing: 2px; }
-
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--dark); color: var(--text); padding-bottom: 100px; }
+        .brand-header { background: #000; padding: 25px; text-align: center; border-bottom: 3px solid var(--gold); }
+        .logo-main { height: 75px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #333; }
         .wrapper { padding: 15px; max-width: 550px; margin: 0 auto; }
-
-        /* FEATURE BUTTONS (THE ONES YOU WANTED) */
-        .nav-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .nav-btn { background: var(--card); border: 1px solid #1f2937; padding: 15px 5px; border-radius: 12px; text-align: center; color: var(--gold); cursor: pointer; transition: 0.3s; }
-        .nav-btn i { display: block; font-size: 20px; margin-bottom: 8px; }
-        .nav-btn:active { transform: scale(0.95); background: #000; }
-
-        /* HIDDEN SECTIONS */
-        .hidden-sec { display: none; background: #000; border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* SERVICE GRID (KAL WALI FULL LIST) */
-        .section-tag { display: flex; align-items: center; margin: 30px 0 15px; color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
-        .section-line { flex: 1; height: 1px; background: rgba(251,191,36,0.3); margin-left: 15px; }
         
+        /* Nav Buttons */
+        .nav-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .nav-btn { background: var(--card); border: 1px solid #1f2937; padding: 12px; border-radius: 10px; text-align: center; color: var(--gold); cursor: pointer; font-size: 12px; }
+        .hidden-sec { display: none; background: #000; border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; }
+
+        /* Services Grid */
         .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; padding: 15px; cursor: pointer; position: relative; }
-        .svc-item.selected { border-color: var(--gold); background: #000; box-shadow: 0 0 15px rgba(251,191,36,0.2); }
-        .svc-item b { font-size: 14px; display: block; margin-bottom: 5px; color: #fff; }
-        .svc-item p { font-size: 9px; color: #94a3b8; margin: 0; line-height: 1.3; }
-        .svc-rate { margin-top: 10px; color: var(--gold); font-weight: 800; font-size: 12px; }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 12px; padding: 12px; cursor: pointer; }
+        .svc-item.selected { border-color: var(--gold); background: #000; }
+        .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; margin-top: 5px; }
 
-        /* ADMIN & RECORDS */
-        #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; overflow-y: auto; padding: 25px; box-sizing: border-box; }
-        .m-input { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
-        .btn-gold { background: var(--gold); color: #000; padding: 15px; border-radius: 10px; border: none; font-weight: bold; width: 100%; cursor: pointer; }
+        /* Admin Dashboard */
+        #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .admin-box { background: var(--card); border: 1px solid #333; padding: 15px; border-radius: 15px; margin-bottom: 20px; border-top: 4px solid var(--gold); }
+        .m-input { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 8px; box-sizing: border-box; }
+        .btn-gold { background: var(--gold); color: #000; padding: 12px; border-radius: 8px; border: none; font-weight: bold; width: 100%; cursor: pointer; margin-top: 5px; }
         
-        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; z-index: 1000; box-sizing: border-box; }
+        /* Customer Records with Control Buttons */
+        .cust-card { background: #111827; border-left: 4px solid var(--gold); padding: 15px; border-radius: 10px; margin-bottom: 12px; }
+        .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+        .btn-pdf { background: #fff; color: #000; border: none; padding: 8px; border-radius: 5px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .btn-dlt { background: #ff4444; color: #fff; border: none; padding: 8px; border-radius: 5px; font-weight: bold; font-size: 11px; cursor: pointer; }
+
+        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 2px solid var(--gold); padding: 15px; display: none; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
     <header class="brand-header">
-        <img src="1773452778552.jpeg" class="logo-main" onerror="this.src='https://via.placeholder.com/80?text=DNHQ'">
-        <div class="brand-name">DNHQ SERVICES</div>
+        <img src="1773452778552.jpeg" id="brandLogo" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=DNHQ'">
+        <div style="color:var(--gold); font-weight:900; font-size:24px;">DNHQ SERVICES</div>
     </header>
 
     <div class="wrapper">
         <div class="nav-grid">
-            <div class="nav-btn" onclick="toggleSec('portSec')"><i class="fas fa-images"></i>Portfolio</div>
-            <div class="nav-btn" onclick="toggleSec('teamSec')"><i class="fas fa-users-cog"></i>Our Team</div>
-            <div class="nav-btn" onclick="toggleSec('vidSec')"><i class="fas fa-play-circle"></i>Tutorial</div>
+            <div class="nav-btn" onclick="toggleSec('portSec')"><i class="fas fa-images"></i><br>Portfolio</div>
+            <div class="nav-btn" onclick="toggleSec('teamSec')"><i class="fas fa-users-cog"></i><br>Our Team</div>
+            <div class="nav-btn" onclick="toggleSec('vidSec')"><i class="fas fa-play"></i><br>Tutorial</div>
         </div>
 
         <div id="portSec" class="hidden-sec">
-            <h3 style="color:var(--gold); font-size:14px; margin-top:0;">Recent Projects</h3>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <img src="work1.jpg" style="width:100%; border-radius:8px;" onerror="this.src='https://via.placeholder.com/150?text=AC+Repair'">
-                <img src="work2.jpg" style="width:100%; border-radius:8px;" onerror="this.src='https://via.placeholder.com/150?text=Wiring'">
-            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><img src="work1.jpg" style="width:100%; border-radius:8px;"><img src="work2.jpg" style="width:100%; border-radius:8px;"></div>
         </div>
-
         <div id="teamSec" class="hidden-sec">
-            <h3 style="color:var(--gold); font-size:14px; margin-top:0;">Expert Technicians</h3>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <div style="text-align:center;"><img src="daniyal.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--gold);"><br><small>Daniyal (Lead)</small></div>
-                <div style="text-align:center;"><img src="staff.jpg" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--gold);"><br><small>Assistant</small></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:center;">
+                <div><img src="daniyal.jpg" style="width:50px; height:50px; border-radius:50%; border:2px solid var(--gold);"><br><small>Daniyal</small></div>
+                <div><img src="staff.jpg" style="width:50px; height:50px; border-radius:50%; border:2px solid var(--gold);"><br><small>DNHQ Staff</small></div>
             </div>
         </div>
+        <div id="vidSec" class="hidden-sec"><video style="width:100%; border-radius:8px;" controls><source src="tutorial.mp4"></video></div>
 
-        <div id="vidSec" class="hidden-sec">
-            <video style="width:100%; border-radius:10px;" controls><source src="tutorial.mp4" type="video/mp4"></video>
-        </div>
-
-        <div class="section-tag"><span>Air Conditioning</span><div class="section-line"></div></div>
-        <div class="svc-grid">
-            <div class="svc-item" onclick="toggleSvc(this,'AC Master Service',3500)"><b>Master Service</b><p>Chemical Wash In/Out</p><div class="svc-rate">Rs 3,500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'AC Normal Service',2500)"><b>Normal Service</b><p>General Cleaning</p><div class="svc-rate">Rs 2,500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'AC Gas 1.0 Ton',6500)"><b>Gas Refill 1.0T</b><p>Full Gas Charge</p><div class="svc-rate">Rs 6,500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'AC Gas 1.5 Ton',8500)"><b>Gas Refill 1.5T</b><p>Full Gas Charge</p><div class="svc-rate">Rs 8,500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'AC Gas 2.0 Ton',10500)"><b>Gas Refill 2.0T</b><p>Full Gas Charge</p><div class="svc-rate">Rs 10,500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'AC PCB Repair',3500)"><b>PCB Repairing</b><p>Circuit Board Fix</p><div class="svc-rate">Rs 3,500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'AC Installation',4000)"><b>Installation</b><p>Wall Mount Setup</p><div class="svc-rate">Rs 4,000</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'AC Capacitor',1200)"><b>Capacitor</b><p>Replacement</p><div class="svc-rate">Rs 1,200</div></div>
-        </div>
-
-        <div class="section-tag"><span>Electrical Work</span><div class="section-line"></div></div>
-        <div class="svc-grid">
-            <div class="svc-item" onclick="toggleSvc(this,'Short Circuit',1000)"><b>Short Circuit</b><p>Fault Finding</p><div class="svc-rate">Rs 1,000</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'DB Dressing',3000)"><b>DB Dressing</b><p>Panel Organizing</p><div class="svc-rate">Rs 3,000</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'UPS Installation',2500)"><b>UPS Install</b><p>Wiring & Setup</p><div class="svc-rate">Rs 2,500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'Breaker Change',500)"><b>Breaker</b><p>DP/SP Change</p><div class="svc-rate">Rs 500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'Switch Board',800)"><b>Board Repair</b><p>Button/Socket</p><div class="svc-rate">Rs 800</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'Fan Fitting',500)"><b>Fan Fitting</b><p>Per Unit</p><div class="svc-rate">Rs 500</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'Main Line Work',2000)"><b>Main Line</b><p>Meter to DB</p><div class="svc-rate">Rs 2,000</div></div>
-            <div class="svc-item" onclick="toggleSvc(this,'Fridge Gas',7500)"><b>Fridge Gas</b><p>Leak + Refill</p><div class="svc-rate">Rs 7,500</div></div>
-        </div>
+        <div style="margin:20px 0 10px; color:var(--gold); font-weight:bold; font-size:12px;">SERVICES</div>
+        <div class="svc-grid" id="mainSvcList"></div>
     </div>
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="color:var(--gold);">DNHQ ADMIN</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:10px; border-radius:8px;">EXIT</button>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:#555; color:white; border:none; padding:8px 15px; border-radius:5px;">EXIT</button>
         </div>
-        <div style="background:var(--card); padding:15px; border-radius:15px; border:1px solid #333; margin-bottom:20px;">
-            <h4 style="margin-top:0;">Manual Bill (PDF Generator)</h4>
+
+        <div class="admin-box">
+            <h4 style="margin-top:0; color:var(--gold);">NEW BILLING ENTRY</h4>
             <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
-            <input type="text" id="mWork" class="m-input" placeholder="Work Done">
-            <input type="number" id="mTotal" class="m-input" placeholder="Total Price">
-            <button onclick="createBill()" class="btn-gold">SAVE & DOWNLOAD PDF</button>
+            <div id="workItems">
+                <div style="display:flex; gap:5px; margin-bottom:5px;">
+                    <input type="text" class="m-input m-work" style="flex:2;" placeholder="Service">
+                    <input type="number" class="m-input m-price" style="flex:1;" placeholder="Price">
+                </div>
+            </div>
+            <button onclick="addNewWorkLine()" style="background:#222; color:var(--gold); border:1px solid var(--gold); padding:10px; width:100%; border-radius:8px; margin-bottom:10px;">+ Add Work Line</button>
+            <button onclick="createManualBill()" class="btn-gold">SAVE & PRINT PDF</button>
         </div>
-        <div id="cloudRecords"></div>
+
+        <h4 style="color:#94a3b8;">DATA MANAGEMENT (CUSTOMER LIST)</h4>
+        <div id="cloudRecords">Syncing...</div>
     </div>
 
     <div class="checkout-bar" id="cartBar">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div><small>Estimated Bill</small><div style="font-size:22px; font-weight:900; color:var(--gold);">Rs <span id="finalTotal">0</span></div></div>
+            <div><small>Total Bill</small><div style="font-size:20px; font-weight:bold; color:var(--gold);">Rs <span id="finalTotal">0</span></div></div>
             <button onclick="sendOrder()" class="btn-gold" style="width:auto; padding:10px 30px;">BOOK NOW</button>
         </div>
     </div>
 
-    <footer style="text-align:center; padding:60px; opacity:0.3; font-size:12px; cursor:pointer;" onclick="adminLogin()">
-        Admin Access Login © DNHQ Services
-    </footer>
+    <footer style="text-align:center; padding:50px; opacity:0.3; font-size:12px; cursor:pointer;" onclick="adminLogin()">Admin Panel Access © DNHQ</footer>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
+        const services = [
+            {n:"AC Master Service", p:3500}, {n:"AC Normal Service", p:2500}, {n:"AC Gas 1.5T", p:8500},
+            {n:"AC PCB Repair", p:3500}, {n:"Capacitor Change", p:1200}, {n:"DB Dressing", p:3000},
+            {n:"Short Circuit", p:1000}, {n:"Fan Fitting", p:500}, {n:"Fridge Gas", p:7500}
+        ];
         let cart = [];
 
+        window.onload = () => {
+            const list = document.getElementById('mainSvcList');
+            list.innerHTML = services.map(s => `
+                <div class="svc-item" onclick="toggleSvc(this,'${s.n}',${s.p})">
+                    <b>${s.n}</b><div class="svc-rate">Rs ${s.p}</div>
+                </div>
+            `).join('');
+        };
+
         function toggleSec(id) {
-            const sec = document.getElementById(id);
-            const isVisible = sec.style.display === 'block';
-            document.querySelectorAll('.hidden-sec').forEach(s => s.style.display = 'none');
-            sec.style.display = isVisible ? 'none' : 'block';
+            const s = document.getElementById(id);
+            const v = s.style.display === 'block';
+            document.querySelectorAll('.hidden-sec').forEach(x => x.style.display='none');
+            s.style.display = v ? 'none' : 'block';
         }
 
-        function toggleSvc(el, name, price) {
-            const idx = cart.findIndex(c => c.name === name);
-            if(idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); }
-            else { cart.push({name, price}); el.classList.add('selected'); }
-            const total = cart.reduce((a, b) => a + b.price, 0);
+        function toggleSvc(el, n, p) {
+            const i = cart.findIndex(c => c.n === n);
+            if(i > -1) { cart.splice(i, 1); el.classList.remove('selected'); }
+            else { cart.push({n, p}); el.classList.add('selected'); }
+            const total = cart.reduce((a, b) => a + b.p, 0);
             document.getElementById('cartBar').style.display = cart.length > 0 ? 'block' : 'none';
             document.getElementById('finalTotal').innerText = total.toLocaleString();
         }
 
         function adminLogin() {
-            if(prompt("Admin PIN:") === "dnhq123") {
+            if(prompt("PIN:") === "dnhq123") {
                 document.getElementById('adminView').style.display = 'block';
                 fetchList();
             }
         }
 
-        async function createBill() {
+        function addNewWorkLine() {
+            const div = document.createElement('div');
+            div.style.display = "flex"; div.style.gap = "5px"; div.style.marginBottom = "5px";
+            div.innerHTML = `<input type="text" class="m-input m-work" style="flex:2;" placeholder="Service"><input type="number" class="m-input m-price" style="flex:1;" placeholder="Price">`;
+            document.getElementById('workItems').appendChild(div);
+        }
+
+        async function createManualBill() {
             const client = document.getElementById('mCust').value;
-            const work = document.getElementById('mWork').value;
-            const total = document.getElementById('mTotal').value;
-            if(!client || !total) return alert("Fill Name/Price");
-            
+            const wNodes = document.querySelectorAll('.m-work');
+            const pNodes = document.querySelectorAll('.m-price');
+            let items = []; let total = 0;
+            wNodes.forEach((n, i) => { if(n.value) { items.push([n.value, `Rs ${pNodes[i].value}`]); total += parseInt(pNodes[i].value || 0); } });
+
+            if(!client || items.length === 0) return alert("Fill Name/Work!");
+
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.text(`DNHQ INVOICE: ${client}`, 15, 20);
-            doc.autoTable({ startY: 30, head: [['Work', 'Price']], body: [[work, `Rs ${total}`]] });
+            const logo = document.getElementById('brandLogo');
+            doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
+            try { doc.addImage(logo, 'JPEG', 15, 5, 25, 25); } catch(e){}
+            doc.setTextColor(251,191,36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 22);
+            doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text(`CLIENT: ${client}`, 15, 55);
+            doc.autoTable({ startY: 65, head: [['Service', 'Amount']], body: items, headStyles:{fillColor:[0,0,0], textColor:[251,191,36]} });
+            doc.text(`GRAND TOTAL: Rs ${total}`, 15, doc.lastAutoTable.finalY + 15);
             doc.save(`DNHQ_${client}.pdf`);
 
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client, work, total}) });
+            const summary = items.map(x => x[0]).join(", ");
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "add", date: new Date().toLocaleDateString(), client, work: summary, total}) });
             alert("Record Saved!"); fetchList();
         }
 
         async function fetchList() {
-            const container = document.getElementById('cloudRecords'); container.innerHTML = "Syncing Cloud...";
+            const container = document.getElementById('cloudRecords');
+            container.innerHTML = "Accessing Cloud...";
             try {
                 const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
                 const data = await res.json();
-                container.innerHTML = data.reverse().map(d => `
-                    <div style="background:#1f2937; padding:15px; border-radius:10px; margin-bottom:10px; border-left:4px solid var(--gold);">
-                        <b>${d.client}</b><br><small>${d.work}</small><br><b style="color:var(--gold);">Rs ${d.total}</b>
+                container.innerHTML = data.reverse().map((d, index) => `
+                    <div class="cust-card">
+                        <b>${d.client}</b> <small style="float:right;">${d.date}</small>
+                        <p style="font-size:11px; color:#94a3b8; margin:5px 0;">${d.work}</p>
+                        <b style="color:var(--gold);">Rs ${d.total}</b>
+                        <div class="action-row">
+                            <button class="btn-pdf" onclick='downloadOldPDF(${JSON.stringify(d)})'><i class="fas fa-file-pdf"></i> PDF</button>
+                            <button class="btn-dlt" onclick='deleteRecord("${d.client}", ${data.length - 1 - index})'><i class="fas fa-trash"></i> DELETE</button>
+                        </div>
                     </div>
                 `).join('');
             } catch(e) { container.innerHTML = "Offline."; }
         }
 
+        async function deleteRecord(name, rowIdx) {
+            if(!confirm(`Delete record for ${name}?`)) return;
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "delete", row: rowIdx + 2}) });
+            alert("Record Removed."); fetchList();
+        }
+
+        function downloadOldPDF(d) {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            doc.text(`DNHQ INVOICE REPRINT`, 15, 20);
+            doc.autoTable({ startY: 30, head: [['Client', 'Work', 'Total']], body: [[d.client, d.work, `Rs ${d.total}`]] });
+            doc.save(`DNHQ_${d.client}.pdf`);
+        }
+
         function sendOrder() {
-            const n = prompt("Your Name:"); if(!n) return;
-            const w = cart.map(c => c.name).join(", ");
-            const t = cart.reduce((a, b) => a + b.price, 0);
+            const n = prompt("Client Name:"); if(!n) return;
+            const w = cart.map(c => c.n).join(", ");
+            const t = cart.reduce((a, b) => a + b.p, 0);
             window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${n}%0AWork: ${w}%0ATotal: Rs ${t}`;
         }
     </script>
