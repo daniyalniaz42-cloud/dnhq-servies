@@ -20,7 +20,6 @@
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
         
-        /* New Navigation Buttons Style */
         .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
         .nav-btn { flex: 1; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; }
         .nav-btn:active { background: var(--gold); color: black; }
@@ -35,8 +34,12 @@
         .svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
         .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        
+        /* Admin View Styles */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
+        .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+        
         footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
         .social-links { margin: 15px 0; }
         .social-links a { color: var(--gold); text-decoration: none; margin: 0 10px; font-size: 20px; }
@@ -57,34 +60,15 @@
         </div>
 
         <div style="text-align: center; margin-bottom: 25px;">
-    <button onclick="playVid()" id="vidBtn" class="nav-btn" style="background: #fbbf24; color: black; font-weight: bold; width: 80%; display: inline-block; cursor: pointer; border: none; padding: 12px 0; border-radius: 10px;">
-        <i class="fas fa-play-circle"></i> WATCH TUTORIAL
-    </button>
-
-    <div id="videoBox" style="display: none; margin-top: 15px;">
-        <video id="myVideo" controls style="width: 90%; border-radius: 12px; border: 2px solid #fbbf24; background: #000;">
-            <source src="tutorial.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-</div>
-
-<script>
-function playVid() {
-    var x = document.getElementById("videoBox");
-    var v = document.getElementById("myVideo");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-        v.play(); // Click karte hi video start ho jayegi
-        document.getElementById("vidBtn").innerHTML = '<i class="fas fa-times-circle"></i> CLOSE VIDEO';
-    } else {
-        x.style.display = "none";
-        v.pause(); // Band karne par video ruk jayegi
-        document.getElementById("vidBtn").innerHTML = '<i class="fas fa-play-circle"></i> WATCH TUTORIAL';
-    }
-}
-</script>
-
+            <button onclick="playVid()" id="vidBtn" class="nav-btn" style="background: #fbbf24; color: black; font-weight: bold; width: 80%; display: inline-block; cursor: pointer; border: none; padding: 12px 0; border-radius: 10px;">
+                <i class="fas fa-play-circle"></i> WATCH TUTORIAL
+            </button>
+            <div id="videoBox" style="display: none; margin-top: 15px;">
+                <video id="myVideo" controls style="width: 90%; border-radius: 12px; border: 2px solid #fbbf24; background: #000;">
+                    <source src="tutorial.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
 
         <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Covered Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
@@ -108,9 +92,20 @@ function playVid() {
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid gold; padding-bottom:10px; margin-bottom:20px;">
-            <h2 style="color:gold; margin:0;">DNHQ RECORDS</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; border-radius:5px;">CLOSE</button>
+            <h2 style="color:gold; margin:0;">DNHQ RECORDS & BILLING</h2>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">CLOSE</button>
         </div>
+
+        <div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
+            <h4 style="color:var(--gold); margin: 0 0 10px 0; font-size: 14px;">DIRECT CALL / MANUAL ENTRY</h4>
+            <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
+            <textarea id="man_work" class="man-input" placeholder="Work Details (e.g. 1.5 Ton AC Service)" style="height:60px; font-family:sans-serif;"></textarea>
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="man_total" class="man-input" placeholder="Total Rs" style="flex:1;">
+                <button onclick="saveManualEntry()" style="flex:1; background:var(--gold); color:black; font-weight:bold; border:none; border-radius:8px; cursor:pointer; height:40px;">SAVE TO CLOUD</button>
+            </div>
+        </div>
+
         <div id="logItems">Data loading...</div>
     </div>
 
@@ -132,6 +127,20 @@ function playVid() {
     </footer>
    
     <script>
+    function playVid() {
+        var x = document.getElementById("videoBox");
+        var v = document.getElementById("myVideo");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            v.play();
+            document.getElementById("vidBtn").innerHTML = '<i class="fas fa-times-circle"></i> CLOSE VIDEO';
+        } else {
+            x.style.display = "none";
+            v.pause();
+            document.getElementById("vidBtn").innerHTML = '<i class="fas fa-play-circle"></i> WATCH TUTORIAL';
+        }
+    }
+
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').then(reg => {
             reg.onupdatefound = () => {
@@ -185,6 +194,23 @@ function playVid() {
         }
     }
 
+    // MANUAL ENTRY SAVE FUNCTION
+    async function saveManualEntry() {
+        const name = document.getElementById('man_name').value;
+        const work = document.getElementById('man_work').value;
+        const total = document.getElementById('man_total').value;
+        const date = new Date().toLocaleDateString();
+        if(!name || !work || !total) return alert("Please fill all fields!");
+        try {
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date, client: name, work, total}) });
+            alert("Record Saved Successfully!");
+            document.getElementById('man_name').value = "";
+            document.getElementById('man_work').value = "";
+            document.getElementById('man_total').value = "";
+            setTimeout(loadLogs, 1000);
+        } catch(e) { alert("Error saving."); }
+    }
+
     async function loadLogs() {
         const container = document.getElementById('logItems');
         container.innerHTML = "Fetching Fresh Records...";
@@ -217,7 +243,7 @@ function playVid() {
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        let extraWork = prompt("Extra Work (e.g. 1 Board):", "");
+        let extraWork = prompt("Extra Work (Optional):", "");
         let extraCost = prompt("Extra Amount:", "0");
         
         doc.setFillColor(0,0,0); doc.rect(0,0,210,35,'F');
@@ -230,7 +256,7 @@ function playVid() {
         doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 57);
         
         let body = [[order.work, `Rs ${order.total}`]];
-        if (extraWork) body.push([extraWork, `Rs ${extraCost}`]);
+        if (extraWork && extraWork !== "") body.push([extraWork, `Rs ${extraCost}`]);
         let final = parseInt(order.total) + (parseInt(extraCost) || 0);
         
         doc.autoTable({ startY: 65, head: [['Description', 'Amount']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
