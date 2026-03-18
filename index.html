@@ -3,48 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Official Portal</title>
+    <title>DNHQ SERVICES | Karachi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root { --gold: #fbbf24; --dark: #06090f; --card: #111827; --text: #f1f5f9; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--dark); color: var(--text); padding-bottom: 140px; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--dark); color: var(--text); padding-bottom: 140px; overflow-x: hidden; }
         
         /* Header */
-        .brand-header { background: #000; padding: 40px 20px; text-align: center; border-bottom: 3px solid var(--gold); }
-        .logo-main { height: 90px; border-radius: 15px; margin-bottom: 12px; border: 2px solid #222; }
-        .brand-title { color: var(--gold); font-weight: 900; font-size: 28px; margin: 0; letter-spacing: 1px; }
+        .brand-header { background: #000; padding: 35px 20px; text-align: center; border-bottom: 3px solid var(--gold); box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        .logo-main { height: 85px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #333; }
+        .brand-title { color: var(--gold); font-weight: 900; font-size: 26px; margin: 0; letter-spacing: 1px; }
         
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
 
-        /* Services Grid */
-        .section-tag { margin: 35px 0 15px; color: var(--gold); font-weight: 700; font-size: 13px; text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 12px; display: flex; align-items: center; gap: 8px; }
-        .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 16px; padding: 18px; cursor: pointer; transition: 0.3s; }
-        .svc-item.selected { border-color: var(--gold); background: #1c2533; box-shadow: 0 0 15px rgba(251,191,36,0.1); }
-        .svc-item b { font-size: 13px; display: block; color: #fff; margin-bottom: 8px; line-height: 1.3; }
-        .svc-rate { color: var(--gold); font-weight: 800; font-size: 13px; }
+        /* 🌟 TOP NAVIGATION (Above Services) */
+        .top-nav { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
+        .nav-btn { background: var(--card); color: #fff; border: 1px solid #1f2937; padding: 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; transition: 0.2s; text-transform: uppercase; }
+        .nav-btn i { color: var(--gold); }
+        .nav-btn:active { transform: scale(0.95); background: #1c2533; border-color: var(--gold); }
 
-        /* Admin & Records */
+        /* Services Grid */
+        .section-tag { margin: 30px 0 12px; color: var(--gold); font-weight: 800; font-size: 12px; text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 10px; display: flex; align-items: center; gap: 8px; }
+        .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 15px; cursor: pointer; transition: 0.3s; position: relative; }
+        .svc-item.selected { border-color: var(--gold); background: #1c2533; box-shadow: 0 0 15px rgba(251,191,36,0.1); }
+        .svc-item b { font-size: 12px; display: block; color: #fff; margin-bottom: 6px; line-height: 1.2; }
+        .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; }
+
+        /* Admin & Records Panel */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .admin-box { background: var(--card); border: 1px solid #333; padding: 20px; border-radius: 20px; margin-bottom: 30px; border-top: 5px solid var(--gold); }
-        .m-input { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 12px; margin-bottom: 12px; box-sizing: border-box; }
-        .cust-card { background: #0f172a; border-left: 4px solid var(--gold); padding: 18px; border-radius: 12px; margin-bottom: 15px; }
+        .m-input { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 14px; border-radius: 10px; margin-bottom: 10px; box-sizing: border-box; font-size: 14px; }
+        .cust-card { background: #0f172a; border-left: 4px solid var(--gold); padding: 15px; border-radius: 12px; margin-bottom: 12px; }
 
-        /* Modern Footer with Buttons */
+        /* Professional Footer */
         .footer-premium { background: #000; padding: 40px 20px; text-align: center; border-top: 1px solid #1f2937; margin-top: 50px; }
-        .footer-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 25px; }
-        .nav-btn { background: #111827; color: var(--text); border: 1px solid #333; padding: 10px 15px; border-radius: 10px; font-size: 12px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .nav-btn i { color: var(--gold); }
-        .nav-btn:hover { border-color: var(--gold); background: #1c2533; }
-        
-        .footer-logo { height: 45px; opacity: 0.8; margin-bottom: 15px; }
-        .footer-text { color: #64748b; font-size: 12px; margin-bottom: 20px; }
-        .admin-trigger { display: inline-block; color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; cursor: pointer; padding: 10px 20px; border: 1px solid #222; border-radius: 50px; }
+        .footer-logo { height: 40px; opacity: 0.6; margin-bottom: 15px; }
+        .footer-text { color: #64748b; font-size: 11px; line-height: 1.6; }
+        .admin-trigger { display: inline-block; margin-top: 20px; color: var(--gold); font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; cursor: pointer; padding: 8px 18px; border: 1px solid #222; border-radius: 50px; }
 
         /* Checkout Bar */
-        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 1000; }
+        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.96); backdrop-filter: blur(12px); border-top: 2px solid var(--gold); padding: 18px; display: none; box-sizing: border-box; z-index: 1000; }
+        .btn-main { background: var(--gold); color: #000; border: none; padding: 14px; border-radius: 12px; font-weight: 900; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -52,69 +54,70 @@
     <header class="brand-header">
         <img src="1773452778552.jpeg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=DNHQ'">
         <h1 class="brand-title">DNHQ SERVICES</h1>
-        <p style="color:#64748b; font-size:12px; margin-top:5px;">Expert Technical Solutions in Karachi</p>
+        <p style="color:#64748b; font-size:11px; margin-top:5px; font-weight:600;">AC & ELECTRICAL EXPERTS</p>
     </header>
 
     <div class="wrapper">
-        <div class="section-tag"><i class="fas fa-snowflake"></i> Air Conditioning</div>
-        <div class="svc-grid" id="acList"></div>
-
-        <div class="section-tag"><i class="fas fa-bolt"></i> Electrical Work</div>
-        <div class="svc-grid" id="elecList"></div>
-
-        <div class="section-tag"><i class="fas fa-tools"></i> Appliances & Maintenance</div>
-        <div class="svc-grid" id="appList"></div>
-    </div>
-
-    <div id="adminView">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
-            <h2 style="color:var(--gold); margin:0;">ADMIN DASHBOARD</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:#334155; color:#fff; border:none; padding:12px 20px; border-radius:12px; font-weight:bold;">EXIT</button>
-        </div>
-        <div class="admin-box">
-            <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
-            <div id="workItems">
-                <div style="display:flex; gap:10px; margin-bottom:12px;">
-                    <input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service">
-                    <input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">
-                </div>
-            </div>
-            <button onclick="addWorkRow()" style="background:#1e293b; color:var(--gold); border:1px solid #333; padding:14px; width:100%; border-radius:12px; margin-bottom:15px; font-weight:bold;">+ ADD ITEM</button>
-            <button onclick="saveAndPrint()" style="background:var(--gold); color:#000; padding:18px; border-radius:12px; border:none; width:100%; font-weight:900; font-size:16px;">SAVE & DOWNLOAD PDF</button>
-        </div>
-        <h4 style="color:#64748b; margin-bottom:15px;">RECENT LOGS</h4>
-        <div id="cloudRecords">Syncing...</div>
-    </div>
-
-    <footer class="footer-premium">
-        <div class="footer-nav">
+        
+        <div class="top-nav">
             <a href="#" class="nav-btn"><i class="fas fa-users"></i> Our Team</a>
             <a href="#" class="nav-btn"><i class="fas fa-briefcase"></i> Portfolio</a>
             <a href="#" class="nav-btn"><i class="fas fa-play-circle"></i> Tutorials</a>
         </div>
-        
+
+        <div class="section-tag"><i class="fas fa-snowflake"></i> Air Conditioning</div>
+        <div id="acList" class="svc-grid"></div>
+
+        <div class="section-tag"><i class="fas fa-bolt"></i> Electrical Work</div>
+        <div id="elecList" class="svc-grid"></div>
+
+        <div class="section-tag"><i class="fas fa-tools"></i> Appliances & Maintenance</div>
+        <div id="appList" class="svc-grid"></div>
+    </div>
+
+    <div id="adminView">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="color:var(--gold); margin:0; font-size:20px;">ADMIN CONTROL</h2>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:#334155; color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:bold;">EXIT</button>
+        </div>
+        <div class="admin-box">
+            <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
+            <div id="workItems">
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service Name">
+                    <input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">
+                </div>
+            </div>
+            <button onclick="addWorkRow()" style="background:#1e293b; color:var(--gold); border:1px solid #333; padding:12px; width:100%; border-radius:10px; margin-bottom:12px; font-weight:bold; font-size:12px;">+ ADD MORE ITEMS</button>
+            <button onclick="saveAndPrint()" class="btn-main" style="width:100%; font-size:15px;">SAVE & GENERATE PDF</button>
+        </div>
+        <h4 style="color:#64748b; margin-bottom:12px; font-size:13px;">DATABASE RECORDS</h4>
+        <div id="cloudRecords">Syncing with Google Sheets...</div>
+    </div>
+
+    <footer class="footer-premium">
         <img src="1773452778552.jpeg" class="footer-logo" onerror="this.style.display='none'">
         <div class="footer-text">
-            <b>DNHQ SERVICES</b><br>
-            Quality AC & Electrical Maintenance Karachi.<br>
-            Helpline: 0315-2458657
+            <b>DNHQ SERVICES KARACHI</b><br>
+            Professional Home Maintenance Solutions<br>
+            Contact: 0315-2458657
         </div>
-
         <div class="admin-trigger" onclick="adminLogin()">
-            <i class="fas fa-shield-alt"></i> Admin Login
+            <i class="fas fa-lock"></i> Secure Admin Access
         </div>
     </footer>
 
     <div class="checkout-bar" id="cartBar">
         <div style="display:flex; justify-content:space-between; align-items:center; max-width:550px; margin:0 auto;">
-            <div><small style="color:#94a3b8;">Estimated Total</small><div style="font-size:24px; font-weight:900; color:var(--gold);">Rs <span id="finalTotal">0</span></div></div>
-            <button onclick="sendWA()" style="background:var(--gold); color:#000; padding:15px 35px; border-radius:12px; border:none; font-weight:900;">BOOK NOW</button>
+            <div><small style="color:#94a3b8; font-weight:700;">TOTAL ESTIMATE</small><div style="font-size:22px; font-weight:900; color:var(--gold);">Rs <span id="finalTotal">0</span></div></div>
+            <button onclick="sendWA()" class="btn-main" style="padding:12px 30px;">BOOK NOW</button>
         </div>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
+        // 📋 36 FULL SERVICES (Verified: None Missing)
         const masterServices = {
             ac: [
                 {n:"Split AC Master Service", p:3500}, {n:"Split AC Normal Service", p:2500},
@@ -154,7 +157,7 @@
             document.getElementById(id).innerHTML = data.map(s => `
                 <div class="svc-item" onclick="toggleSvc(this,'${s.n}',${s.p})">
                     <b>${s.n}</b>
-                    <div class="svc-rate">Rs ${s.p}</div>
+                    <div class="svc-rate">Rs ${s.p.toLocaleString()}</div>
                 </div>`).join('');
         }
 
@@ -176,7 +179,7 @@
 
         function addWorkRow() {
             const div = document.createElement('div');
-            div.style.display = "flex"; div.style.gap = "10px"; div.style.marginBottom = "12px";
+            div.style.display = "flex"; div.style.gap = "8px"; div.style.marginBottom = "10px";
             div.innerHTML = `<input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service"><input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">`;
             document.getElementById('workItems').appendChild(div);
         }
@@ -187,24 +190,25 @@
             const pInps = document.querySelectorAll('.m-price');
             let rows = []; let total = 0;
             wInps.forEach((n, i) => { if(n.value) { rows.push([n.value, `Rs ${pInps[i].value}`]); total += parseInt(pInps[i].value || 0); } });
-            if(!client || rows.length === 0) return alert("Fill data!");
+            if(!client || rows.length === 0) return alert("Please fill at least one service!");
+            
             generatePDF(client, rows, total);
             await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action:"add", date:new Date().toLocaleDateString(), client, work:rows.map(r=>r[0]).join(", "), total}) });
-            alert("Saved!"); fetchCloudData();
+            alert("Record Saved & Synced!"); fetchCloudData();
         }
 
         function generatePDF(client, rows, total) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
             doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
             doc.setTextColor(251,191,36); doc.setFontSize(26); doc.text("DNHQ SERVICES", 15, 28);
-            doc.autoTable({ startY: 65, head: [['Description', 'Amount']], body: rows, headStyles: {fillColor:[0,0,0], textColor:[251,191,36]} });
-            doc.text(`Total: Rs ${total}`, 145, doc.lastAutoTable.finalY + 15);
+            doc.autoTable({ startY: 60, head: [['Description', 'Amount']], body: rows, headStyles: {fillColor:[0,0,0], textColor:[251,191,36]} });
+            doc.setFontSize(14); doc.text(`Total Payable: Rs ${total.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
             doc.save(`DNHQ_${client}.pdf`);
         }
 
         async function fetchCloudData() {
             const container = document.getElementById('cloudRecords');
-            container.innerHTML = "Syncing...";
+            container.innerHTML = "Fetching Cloud Data...";
             try {
                 const res = await fetch(SCRIPT_URL + "?v=" + new Date().getTime());
                 const data = await res.json();
@@ -213,25 +217,25 @@
                     const actualRowInSheet = rawData.length - index + 1;
                     return `
                     <div class="cust-card">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                             <b style="color:var(--gold);">${d.client}</b>
                             <small>${d.date}</small>
                         </div>
-                        <p style="font-size:12px; color:#cbd5e1;">${d.work}</p>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <b>Rs ${d.total}</b>
-                            <div style="display:flex; gap:10px;">
-                                <button onclick='reprintPDF(${JSON.stringify(d)})' style="background:#fff; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; font-size:11px;">PDF</button>
-                                <button onclick='deleteRecord(${actualRowInSheet}, "${d.client}")' style="background:#ef4444; color:#fff; border:none; padding:8px 15px; border-radius:8px; font-size:11px;">DEL</button>
+                        <p style="font-size:11px; color:#cbd5e1; margin:0;">${d.work}</p>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+                            <b style="font-size:14px;">Rs ${parseInt(d.total).toLocaleString()}</b>
+                            <div style="display:flex; gap:8px;">
+                                <button onclick='reprintPDF(${JSON.stringify(d)})' style="background:#fff; color:#000; border:none; padding:6px 12px; border-radius:6px; font-weight:bold; font-size:10px;">PDF</button>
+                                <button onclick='deleteRecord(${actualRowInSheet}, "${d.client}")' style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:10px;">DEL</button>
                             </div>
                         </div>
                     </div>`;
                 }).join('');
-            } catch(e) { container.innerHTML = "Error."; }
+            } catch(e) { container.innerHTML = "Error loading database."; }
         }
 
         async function deleteRecord(row, name) {
-            if(!confirm(`Delete ${name}?`)) return;
+            if(!confirm(`Delete record for ${name}?`)) return;
             document.getElementById('cloudRecords').innerHTML = "Deleting...";
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "delete", row: row}) });
@@ -242,10 +246,10 @@
         function reprintPDF(d) { generatePDF(d.client, [[d.work, `Rs ${d.total}`]], d.total); }
 
         function sendWA() {
-            const n = prompt("Name:"); if(!n) return;
+            const n = prompt("Enter Customer Name:"); if(!n) return;
             const w = cart.map(c => c.n).join(", ");
             const t = cart.reduce((a, b) => a + b.p, 0);
-            window.location.href = `https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: ${n}%0AWork: ${w}%0ATotal: Rs ${t}`;
+            window.location.href = `https://wa.me/923152458657?text=*DNHQ SERVICES ORDER*%0A*Client:* ${n}%0A*Work:* ${w}%0A*Total:* Rs ${t}`;
         }
     </script>
 </body>
