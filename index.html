@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Official</title>
+    <title>DNHQ SERVICES | Professional Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -11,40 +11,38 @@
         :root { --gold: #fbbf24; --dark: #06090f; --card: #111827; --text: #f1f5f9; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--dark); color: var(--text); padding-bottom: 140px; }
         
-        /* Header */
         .brand-header { background: #000; padding: 35px 20px; text-align: center; border-bottom: 3px solid var(--gold); }
-        .logo-main { height: 85px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #333; }
-        .brand-title { color: var(--gold); font-weight: 900; font-size: 26px; margin: 0; letter-spacing: 1px; }
+        .logo-main { height: 80px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #333; }
+        .brand-title { color: var(--gold); font-weight: 900; font-size: 26px; margin: 0; }
         
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
 
-        /* 🌟 TOP NAVIGATION (ABOVE SERVICES) */
+        /* 🌟 TOP NAVIGATION (FULLY ACTIVE) */
         .top-nav { display: flex; gap: 10px; margin: 20px 0; }
-        .nav-btn { background: var(--card); color: #fff; border: 1px solid #333; padding: 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .nav-btn { background: var(--card); color: #fff; border: 1px solid #333; padding: 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; cursor: pointer; }
         .nav-btn i { color: var(--gold); }
-        .nav-btn:active { transform: scale(0.95); background: #1c2533; border-color: var(--gold); }
+        .nav-btn:active { background: #1c2533; border-color: var(--gold); transform: scale(0.95); }
 
-        /* Services Grid */
         .section-tag { margin: 30px 0 12px; color: var(--gold); font-weight: 800; font-size: 12px; text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 10px; display: flex; align-items: center; gap: 8px; }
         .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 15px; cursor: pointer; transition: 0.3s; }
-        .svc-item.selected { border-color: var(--gold); background: #1c2533; box-shadow: 0 0 10px rgba(251,191,36,0.1); }
-        .svc-item b { font-size: 12px; display: block; color: #fff; margin-bottom: 6px; line-height: 1.2; }
+        .svc-item.selected { border-color: var(--gold); background: #1c2533; }
+        .svc-item b { font-size: 11px; display: block; color: #fff; margin-bottom: 6px; }
         .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; }
 
-        /* Admin & Records */
+        /* Modal Styles for Team/Portfolio */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; padding: 20px; box-sizing: border-box; }
+        .modal-content { background: var(--card); border-top: 4px solid var(--gold); padding: 25px; border-radius: 20px; max-width: 500px; margin: 50px auto; }
+
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .admin-box { background: var(--card); border: 1px solid #333; padding: 20px; border-radius: 20px; margin-bottom: 30px; border-top: 5px solid var(--gold); }
+        .admin-box { background: var(--card); border: 1px solid #333; padding: 20px; border-radius: 20px; margin-bottom: 30px; }
         .m-input { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 14px; border-radius: 10px; margin-bottom: 10px; box-sizing: border-box; }
         .cust-card { background: #0f172a; border-left: 4px solid var(--gold); padding: 15px; border-radius: 12px; margin-bottom: 12px; }
 
-        /* Footer */
         .footer-premium { background: #000; padding: 40px 20px; text-align: center; border-top: 1px solid #1f2937; margin-top: 50px; }
-        .footer-logo { height: 40px; opacity: 0.6; margin-bottom: 15px; }
         .footer-text { color: #64748b; font-size: 11px; }
         .admin-trigger { display: inline-block; margin-top: 20px; color: var(--gold); font-size: 10px; text-transform: uppercase; font-weight: 700; cursor: pointer; padding: 8px 18px; border: 1px solid #222; border-radius: 50px; }
 
-        /* Checkout Bar */
         .checkout-bar { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.96); backdrop-filter: blur(12px); border-top: 2px solid var(--gold); padding: 18px; display: none; box-sizing: border-box; z-index: 1000; }
         .btn-main { background: var(--gold); color: #000; border: none; padding: 14px; border-radius: 12px; font-weight: 900; width: 100%; cursor: pointer; }
     </style>
@@ -54,15 +52,13 @@
     <header class="brand-header">
         <img src="1773452778552.jpeg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=DNHQ'">
         <h1 class="brand-title">DNHQ SERVICES</h1>
-        <p style="color:#64748b; font-size:11px; margin-top:5px;">Professional Maintenance Specialists</p>
     </header>
 
     <div class="wrapper">
-        
         <div class="top-nav">
-            <div class="nav-btn" onclick="alert('Our Team: Comming Soon!')"><i class="fas fa-users"></i> Team</div>
-            <div class="nav-btn" onclick="alert('Portfolio: Comming Soon!')"><i class="fas fa-briefcase"></i> Portfolio</div>
-            <div class="nav-btn" onclick="alert('Check our YouTube for Tutorials!')"><i class="fas fa-play-circle"></i> Tutorials</div>
+            <div class="nav-btn" onclick="showTeam()"><i class="fas fa-users"></i> Our Team</div>
+            <div class="nav-btn" onclick="showPortfolio()"><i class="fas fa-briefcase"></i> Portfolio</div>
+            <div class="nav-btn" onclick="openTutorials()"><i class="fas fa-play-circle"></i> Tutorials</div>
         </div>
 
         <div class="section-tag"><i class="fas fa-snowflake"></i> Air Conditioning</div>
@@ -75,6 +71,13 @@
         <div id="appList" class="svc-grid"></div>
     </div>
 
+    <div id="infoModal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div id="modalData"></div>
+            <button onclick="closeModal()" class="btn-main" style="margin-top:20px; background:#334155; color:#fff;">CLOSE</button>
+        </div>
+    </div>
+
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="color:var(--gold); margin:0; font-size:20px;">ADMIN CONTROL</h2>
@@ -84,18 +87,17 @@
             <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
             <div id="workItems">
                 <div style="display:flex; gap:8px; margin-bottom:10px;">
-                    <input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service Name">
+                    <input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service">
                     <input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">
                 </div>
             </div>
             <button onclick="addWorkRow()" style="background:#1e293b; color:var(--gold); border:1px solid #333; padding:12px; width:100%; border-radius:10px; margin-bottom:12px; font-weight:bold;">+ ADD ITEM</button>
             <button onclick="saveAndPrint()" class="btn-main">SAVE & GENERATE PDF</button>
         </div>
-        <div id="cloudRecords">Syncing Records...</div>
+        <div id="cloudRecords">Syncing Database...</div>
     </div>
 
     <footer class="footer-premium">
-        <img src="1773452778552.jpeg" class="footer-logo" onerror="this.style.display='none'">
         <div class="footer-text">
             <b>DNHQ SERVICES KARACHI</b><br>
             AC & Electrical Experts | 0315-2458657
@@ -107,8 +109,8 @@
 
     <div class="checkout-bar" id="cartBar">
         <div style="display:flex; justify-content:space-between; align-items:center; max-width:550px; margin:0 auto;">
-            <div style="flex:1;"><small style="color:#94a3b8; font-weight:bold;">TOTAL</small><div style="font-size:22px; font-weight:900; color:var(--gold);">Rs <span id="finalTotal">0</span></div></div>
-            <button onclick="sendWA()" class="btn-main" style="width:auto; padding:12px 30px;">BOOK NOW</button>
+            <div style="flex:1;"><small>TOTAL</small><div style="font-size:20px; font-weight:900; color:var(--gold);">Rs <span id="finalTotal">0</span></div></div>
+            <button onclick="sendWA()" class="btn-main" style="width:auto; padding:12px 25px;">BOOK NOW</button>
         </div>
     </div>
 
@@ -116,31 +118,9 @@
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
         const masterServices = {
-            ac: [
-                {n:"Split AC Master Service", p:3500}, {n:"Split AC Normal Service", p:2500},
-                {n:"Window AC Service", p:2000}, {n:"AC Gas Refill 1.5T", p:8500},
-                {n:"AC Gas Refill 1.0T", p:7500}, {n:"Inverter AC Gas Refill", p:9500},
-                {n:"AC Installation", p:4000}, {n:"AC Removal / Dismantle", p:2000},
-                {n:"AC PCB Repairing", p:3500}, {n:"AC Leakage Repairing", p:3000},
-                {n:"Capacitor / Relay Change", p:1200}, {n:"AC Fan Motor Repair", p:2800},
-                {n:"Copper Pipe (per foot)", p:1200}, {n:"AC Bracket Fitting", p:1500},
-                {n:"Outer Unit Washing", p:1000}, {n:"Drain Pipe Fix", p:800}
-            ],
-            elec: [
-                {n:"Short Circuit Diagnosis", p:1000}, {n:"DB Box Dressing", p:3500},
-                {n:"UPS / Inverter Setup", p:2500}, {n:"New Wiring Point", p:1500},
-                {n:"Main Breaker Replacement", p:800}, {n:"Ceiling Fan Fitting", p:700},
-                {n:"Switch Board Repair", p:1000}, {n:"Light / Fancy Fitting", p:500},
-                {n:"Main Line Repairing", p:2500}, {n:"Exhaust Fan Fitting", p:800},
-                {n:"Bracket Fan Fitting", p:600}, {n:"Bell Installation", p:500},
-                {n:"Dimmer / Switch Change", p:300}, {n:"Washing Machine Wiring", p:1500}
-            ],
-            app: [
-                {n:"Fridge Gas Refill", p:7500}, {n:"Fridge Thermostat Fix", p:1800},
-                {n:"Washing Machine Repair", p:2500}, {n:"Water Dispenser Service", p:2000},
-                {n:"Microwave Oven Repair", p:2500}, {n:"Fridge PCB Repair", p:4000},
-                {n:"Automatic Machine Repair", p:4500}, {n:"Electric Iron Repair", p:600}
-            ]
+            ac: [{n:"Split AC Master Service", p:3500}, {n:"Split AC Normal Service", p:2500}, {n:"AC Gas Refill 1.5T", p:8500}, {n:"AC Installation", p:4000}, {n:"AC PCB Repairing", p:3500}, {n:"AC Leakage Repairing", p:3000}],
+            elec: [{n:"Short Circuit Diagnosis", p:1000}, {n:"UPS / Inverter Setup", p:2500}, {n:"Ceiling Fan Fitting", p:700}, {n:"DB Box Dressing", p:3500}, {n:"New Wiring Point", p:1500}],
+            app: [{n:"Fridge Gas Refill", p:7500}, {n:"Washing Machine Repair", p:2500}, {n:"Water Dispenser Service", p:2000}, {n:"Microwave Oven Repair", p:2500}]
         };
 
         let cart = [];
@@ -163,19 +143,74 @@
             document.getElementById('finalTotal').innerText = total.toLocaleString();
         }
 
+        // --- ACTIVE TOP BUTTON FUNCTIONS ---
+        function showTeam() {
+            document.getElementById('infoModal').style.display = 'block';
+            document.getElementById('modalData').innerHTML = `
+                <h2 style="color:var(--gold);">DNHQ TEAM</h2>
+                <div style="margin-bottom:15px;"><b>Muhammad Daniyal Niaz</b><br>Expert Electrician & AC Technician</div>
+                <div><b>Hassan Qureshi</b><br>Technical Partner & Admin</div>
+                <hr style="border:0.5px solid #333; margin:15px 0;">
+                <p>Location: Korangi, Karachi</p>`;
+        }
+
+        function showPortfolio() {
+            document.getElementById('infoModal').style.display = 'block';
+            document.getElementById('modalData').innerHTML = `
+                <h2 style="color:var(--gold);">OUR PROJECTS</h2>
+                <ul style="padding-left:20px; color:#cbd5e1; line-height:1.8;">
+                    <li>Textile Machinery Maintenance (Toyota, Toyota Looms)</li>
+                    <li>Industrial AC Plant Servicing</li>
+                    <li>Complete Home Electrical Wiring</li>
+                    <li>PC Hardware Reselling & Customization</li>
+                </ul>`;
+        }
+
+        function openTutorials() {
+            // Replace with your actual YouTube URL
+            window.open('https://www.youtube.com/@YourChannel', '_blank');
+        }
+
+        function closeModal() { document.getElementById('infoModal').style.display = 'none'; }
+
+        // --- ADMIN & DELETE LOGIC ---
         function adminLogin() { if(prompt("PIN:") === "dnhq123") { document.getElementById('adminView').style.display = 'block'; fetchCloudData(); } }
 
+        async function fetchCloudData() {
+            const container = document.getElementById('cloudRecords'); container.innerHTML = "Syncing...";
+            try {
+                const res = await fetch(SCRIPT_URL + "?v=" + new Date().getTime());
+                const data = await res.json();
+                const rawData = [...data];
+                container.innerHTML = data.reverse().map((d, index) => {
+                    const rowId = rawData.length - index + 1;
+                    return `<div class="cust-card">
+                        <b>${d.client}</b> | Rs ${d.total}<br><small>${d.work}</small>
+                        <div style="margin-top:10px; display:flex; gap:10px;">
+                            <button onclick='deleteRecord(${rowId}, "${d.client}")' style="background:#ef4444; color:#fff; border:none; padding:5px 10px; border-radius:5px; font-size:10px; cursor:pointer;">DELETE RECORD</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch(e) { container.innerHTML = "Error."; }
+        }
+
+        async function deleteRecord(row, name) {
+            if(!confirm(`Permanent Delete ${name}?`)) return;
+            document.getElementById('cloudRecords').innerHTML = "Deleting...";
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "delete", row: row}) });
+                setTimeout(fetchCloudData, 1500);
+            } catch(e) { fetchCloudData(); }
+        }
+
         function addWorkRow() {
-            const div = document.createElement('div');
-            div.style.display = "flex"; div.style.gap = "8px"; div.style.marginBottom = "10px";
+            const div = document.createElement('div'); div.style.display = "flex"; div.style.gap = "8px"; div.style.marginBottom = "10px";
             div.innerHTML = `<input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service"><input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">`;
             document.getElementById('workItems').appendChild(div);
         }
 
         async function saveAndPrint() {
-            const client = document.getElementById('mCust').value;
-            const wInps = document.querySelectorAll('.m-work');
-            const pInps = document.querySelectorAll('.m-price');
+            const client = document.getElementById('mCust').value; const wInps = document.querySelectorAll('.m-work'); const pInps = document.querySelectorAll('.m-price');
             let rows = []; let total = 0;
             wInps.forEach((n, i) => { if(n.value) { rows.push([n.value, `Rs ${pInps[i].value}`]); total += parseInt(pInps[i].value || 0); } });
             if(!client || rows.length === 0) return alert("Fill data!");
@@ -193,42 +228,9 @@
             doc.save(`DNHQ_${client}.pdf`);
         }
 
-        async function fetchCloudData() {
-            const container = document.getElementById('cloudRecords');
-            container.innerHTML = "Syncing Database...";
-            try {
-                const res = await fetch(SCRIPT_URL + "?v=" + new Date().getTime());
-                const data = await res.json();
-                const rawData = [...data];
-                const displayData = data.reverse();
-                container.innerHTML = displayData.map((d, index) => {
-                    const rowId = rawData.length - index + 1; // 🌟 FIXED ROW LOGIC
-                    return `
-                    <div class="cust-card">
-                        <b>${d.client}</b> | Rs ${parseInt(d.total).toLocaleString()}<br><small>${d.work}</small>
-                        <div style="margin-top:10px; display:flex; gap:10px;">
-                            <button onclick='reprintPDF(${JSON.stringify(d)})' style="background:#fff; border:none; padding:5px 12px; border-radius:6px; font-weight:bold; font-size:10px;">REPRINT</button>
-                            <button onclick='deleteRecord(${rowId}, "${d.client}")' style="background:#ef4444; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:10px;">DELETE</button>
-                        </div>
-                    </div>`;
-                }).join('');
-            } catch(e) { container.innerHTML = "Database Error."; }
-        }
-
-        async function deleteRecord(row, name) {
-            if(!confirm(`Delete ${name}?`)) return;
-            document.getElementById('cloudRecords').innerHTML = "Deleting Record...";
-            try {
-                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "delete", row: row}) });
-                setTimeout(fetchCloudData, 1500); 
-            } catch(e) { fetchCloudData(); }
-        }
-
-        function reprintPDF(d) { generatePDF(d.client, [[d.work, `Rs ${d.total}`]], d.total); }
         function sendWA() { 
-            const n = prompt("Customer Name:"); if(!n) return;
-            const msg = `*DNHQ SERVICES*%0A*Client:* ${n}%0A*Services:* ${cart.map(c=>c.n).join(", ")}%0A*Total:* Rs ${document.getElementById('finalTotal').innerText}`;
-            window.location.href = `https://wa.me/923152458657?text=${msg}`; 
+            const n = prompt("Name:"); if(!n) return;
+            window.location.href = `https://wa.me/923152458657?text=DNHQ ORDER%0AClient: ${n}%0AWork: ${cart.map(c=>c.n).join(", ")}`; 
         }
     </script>
 </body>
