@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Professional Portal</title>
+    <title>DNHQ SERVICES | Karachi's Professional Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -12,41 +12,45 @@
         body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background: var(--dark); color: var(--text); padding-bottom: 120px; overflow-x: hidden; }
         
         /* Premium Header */
-        .brand-header { background: #000; padding: 30px 20px; text-align: center; border-bottom: 3px solid var(--gold); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-        .logo-main { height: 85px; border-radius: 15px; margin-bottom: 10px; border: 2px solid #222; }
-        .brand-title { color: var(--gold); font-weight: 900; font-size: 26px; letter-spacing: 1px; margin: 0; }
+        .brand-header { background: #000; padding: 35px 20px; text-align: center; border-bottom: 3px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .logo-main { height: 90px; border-radius: 18px; margin-bottom: 12px; border: 2px solid #222; transition: 0.3s; }
+        .logo-main:hover { border-color: var(--gold); transform: scale(1.05); }
+        .brand-title { color: var(--gold); font-weight: 900; font-size: 28px; margin: 0; letter-spacing: 1.5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
 
-        /* Modern Grid for Services */
-        .section-tag { margin: 30px 0 15px; color: var(--gold); font-weight: 700; font-size: 14px; text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 12px; display: flex; align-items: center; gap: 8px; }
+        /* Categorized Service Grid */
+        .section-tag { margin: 35px 0 15px; color: var(--gold); font-weight: 800; font-size: 13px; text-transform: uppercase; border-left: 5px solid var(--gold); padding-left: 15px; display: flex; align-items: center; gap: 10px; }
         .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 15px; cursor: pointer; transition: all 0.3s ease; position: relative; }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 16px; padding: 18px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
         .svc-item:active { transform: scale(0.95); }
-        .svc-item.selected { border-color: var(--gold); background: #1c2533; box-shadow: 0 0 15px rgba(251,191,36,0.15); }
-        .svc-item b { font-size: 13px; display: block; color: #fff; margin-bottom: 6px; line-height: 1.3; }
-        .svc-rate { color: var(--gold); font-weight: 800; font-size: 12px; display: flex; align-items: center; gap: 4px; }
+        .svc-item.selected { border-color: var(--gold); background: #1c2533; box-shadow: 0 0 20px rgba(251,191,36,0.15); }
+        .svc-item.selected::after { content: '\f058'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: 10px; right: 10px; color: var(--gold); font-size: 14px; }
+        .svc-item b { font-size: 13px; display: block; color: #fff; margin-bottom: 8px; line-height: 1.3; font-weight: 600; }
+        .svc-rate { color: var(--gold); font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 5px; }
 
-        /* Admin Dashboard */
+        /* Admin & Records Section */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .admin-box { background: var(--card); border: 1px solid #333; padding: 20px; border-radius: 20px; margin-bottom: 30px; border-top: 5px solid var(--gold); }
-        .m-input { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 14px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; font-size: 14px; }
-        .cust-card { background: #0f172a; border-left: 5px solid var(--gold); padding: 18px; border-radius: 12px; margin-bottom: 15px; position: relative; }
-        .btn-del { background: #ef4444; color: #fff; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: bold; margin-top: 10px; }
+        .admin-box { background: var(--card); border: 1px solid #333; padding: 22px; border-radius: 22px; margin-bottom: 30px; border-top: 6px solid var(--gold); }
+        .m-input { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 12px; margin-bottom: 12px; box-sizing: border-box; font-size: 14px; transition: 0.3s; }
+        .m-input:focus { border-color: var(--gold); outline: none; }
+        .cust-card { background: #0f172a; border-left: 5px solid var(--gold); padding: 20px; border-radius: 16px; margin-bottom: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 
-        /* Floating Checkout */
-        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 1000; animation: slideUp 0.4s ease; }
+        /* Floating Checkout Bar */
+        .checkout-bar { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.96); backdrop-filter: blur(15px); border-top: 2px solid var(--gold); padding: 22px; display: none; box-sizing: border-box; z-index: 1000; animation: slideUp 0.4s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        .footer-info { text-align: center; padding: 40px 20px; opacity: 0.4; font-size: 11px; color: #94a3b8; }
+        .footer-tag { text-align: center; padding: 50px 20px; opacity: 0.3; font-size: 11px; letter-spacing: 2px; color: #94a3b8; }
+        .btn-main { background: var(--gold); color: #000; border: none; padding: 16px; border-radius: 14px; font-weight: 900; cursor: pointer; transition: 0.2s; }
+        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(251,191,36,0.4); }
     </style>
 </head>
 <body>
 
     <header class="brand-header">
-        <img src="1773452778552.jpeg" id="brandLogo" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=DNHQ'">
+        <img src="1773452778552.jpeg" class="logo-main" onerror="this.src='https://via.placeholder.com/150?text=DNHQ'">
         <h1 class="brand-title">DNHQ SERVICES</h1>
-        <p style="color:#94a3b8; font-size:12px; margin:5px 0 0;">Electrician & AC Maintenance Expert</p>
+        <p style="color:#64748b; font-size:12px; margin-top:8px; font-weight:600;">AC & ELECTRICAL EXPERTS | KARACHI</p>
     </header>
 
     <div class="wrapper">
@@ -56,80 +60,85 @@
         <div class="section-tag"><i class="fas fa-bolt"></i> Electrical Work</div>
         <div class="svc-grid" id="elecList"></div>
 
-        <div class="section-tag"><i class="fas fa-tools"></i> Appliances & Repair</div>
+        <div class="section-tag"><i class="fas fa-tools"></i> Appliances & Maintenance</div>
         <div class="svc-grid" id="appList"></div>
     </div>
 
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
-            <h2 style="color:var(--gold); margin:0;">ADMIN PANEL</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:#334155; color:#fff; border:none; padding:10px 20px; border-radius:10px;">EXIT</button>
+            <h2 style="color:var(--gold); margin:0;">MASTER CONTROL</h2>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:#334155; color:#fff; border:none; padding:12px 22px; border-radius:12px; font-weight:bold;">EXIT</button>
         </div>
 
         <div class="admin-box">
-            <h4 style="margin-top:0; color:var(--gold);">CREATE MANUAL INVOICE</h4>
+            <h4 style="margin:0 0 15px; color:var(--gold); letter-spacing:1px;">CREATE MANUAL INVOICE</h4>
             <input type="text" id="mCust" class="m-input" placeholder="Customer Name">
             <div id="workItems">
-                <div style="display:flex; gap:8px; margin-bottom:10px;">
-                    <input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service">
+                <div style="display:flex; gap:10px; margin-bottom:12px;">
+                    <input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service Description">
                     <input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">
                 </div>
             </div>
-            <button onclick="addWorkRow()" style="background:#1e293b; color:var(--gold); border:1px solid #333; padding:12px; width:100%; border-radius:10px; margin-bottom:15px; font-weight:bold;">+ ADD NEW ITEM</button>
-            <button onclick="saveAndPrint()" style="background:var(--gold); color:#000; padding:18px; border-radius:12px; border:none; width:100%; font-weight:900; font-size:16px; cursor:pointer;">SAVE & DOWNLOAD PDF</button>
+            <button onclick="addWorkRow()" style="background:#1e293b; color:var(--gold); border:1px solid #333; padding:14px; width:100%; border-radius:12px; margin-bottom:18px; font-weight:bold;">+ ADD SERVICE LINE</button>
+            <button onclick="saveAndPrint()" class="btn-main" style="width:100%; font-size:16px;">SAVE & DOWNLOAD PDF</button>
         </div>
 
-        <h4 style="color:#64748b; margin-bottom:15px;">RECENT CUSTOMERS</h4>
-        <div id="cloudRecords">Syncing with Google Sheets...</div>
+        <h4 style="color:#64748b; margin-bottom:15px; border-bottom:1px solid #222; padding-bottom:10px;">RECENT CUSTOMER LOGS</h4>
+        <div id="cloudRecords">Connecting to Database...</div>
     </div>
 
-    <div class="footer-info" onclick="adminLogin()">
-        © 2026 DNHQ SERVICES KARACHI | REGISTERED BRAND<br>TAP TO ACCESS ADMIN LOGIN
+    <div class="footer-tag" onclick="adminLogin()">
+        © 2026 DNHQ SERVICES • ALL RIGHTS RESERVED<br>TAP FOR ADMIN LOGIN
     </div>
 
     <div class="checkout-bar" id="cartBar">
         <div style="display:flex; justify-content:space-between; align-items:center; max-width:550px; margin:0 auto;">
             <div>
-                <small style="color:#94a3b8;">Total Bill</small>
-                <div style="font-size:22px; font-weight:900; color:var(--gold);">Rs <span id="finalTotal">0</span></div>
+                <small style="color:#94a3b8; font-weight:600;">ESTIMATED TOTAL</small>
+                <div style="font-size:24px; font-weight:900; color:var(--gold);">Rs <span id="finalTotal">0</span></div>
             </div>
-            <button onclick="sendWA()" style="background:var(--gold); color:#000; padding:15px 30px; border-radius:12px; border:none; font-weight:900; font-size:14px; box-shadow: 0 4px 15px rgba(251,191,36,0.3);">BOOK SERVICE</button>
+            <button onclick="sendWA()" class="btn-main" style="padding:15px 35px; font-size:15px;">BOOK NOW</button>
         </div>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
-        // 📋 COMPLETE 25+ SERVICES MASTER LIST
-        const services = {
+        // 📋 FULL 36-ITEM PROFESSIONAL SERVICE REPOSITORY
+        const masterServices = {
             ac: [
                 {n:"Split AC Master Service", p:3500}, {n:"Split AC Normal Service", p:2500},
                 {n:"Window AC Service", p:2000}, {n:"AC Gas Refill 1.5T", p:8500},
                 {n:"AC Gas Refill 1.0T", p:7500}, {n:"Inverter AC Gas Refill", p:9500},
-                {n:"AC Installation", p:4000}, {n:"AC Removal (Dismantle)", p:2000},
-                {n:"PCB Repairing", p:3500}, {n:"Leakage Repairing", p:3000},
-                {n:"Capacitor/Relay", p:1200}, {n:"Copper Pipe (per ft)", p:1200}
+                {n:"AC Installation (Complete)", p:4000}, {n:"AC Removal / Dismantle", p:2000},
+                {n:"AC PCB Repairing", p:3500}, {n:"AC Leakage Repairing", p:3000},
+                {n:"Capacitor / Relay Change", p:1200}, {n:"AC Fan Motor Repair", p:2800},
+                {n:"Copper Pipe (per foot)", p:1200}, {n:"AC Bracket Fitting", p:1500},
+                {n:"Outer Unit Washing", p:1000}, {n:"Drain Pipe Fix", p:800}
             ],
             elec: [
-                {n:"Short Circuit Diagnosis", p:1000}, {n:"DB Box Fitting/Dressing", p:3500},
-                {n:"UPS Installation", p:2500}, {n:"New Wiring Point", p:1500},
-                {n:"Breaker Replacement", p:800}, {n:"Ceiling Fan Fitting", p:700},
-                {n:"Switch Board Repair", p:1000}, {n:"Main Line Repair", p:2500},
-                {n:"Bracket Fan Fitting", p:600}, {n:"Exhaust Fan Fitting", p:800}
+                {n:"Short Circuit Diagnosis", p:1000}, {n:"DB Box Dressing/Fitting", p:3500},
+                {n:"UPS / Inverter Setup", p:2500}, {n:"New Wiring Point", p:1500},
+                {n:"Main Breaker Replacement", p:800}, {n:"Ceiling Fan Fitting", p:700},
+                {n:"Switch Board Repair", p:1000}, {n:"Light / Fancy Fitting", p:500},
+                {n:"Main Line Repairing", p:2500}, {n:"Exhaust Fan Fitting", p:800},
+                {n:"Bracket Fan Fitting", p:600}, {n:"Bell Installation", p:500},
+                {n:"Dimmer / Switch Change", p:300}, {n:"Washing Machine Wiring", p:1500}
             ],
             app: [
-                {n:"Fridge Gas Refill", p:7500}, {n:"Fridge Thermostat Fix", p:1800},
-                {n:"Washing Machine Repair", p:2500}, {n:"Water Dispenser Fix", p:2000},
-                {n:"Microwave Oven Repair", p:2000}
+                {n:"Fridge Gas Refill (R134a)", p:7500}, {n:"Fridge Thermostat Fix", p:1800},
+                {n:"Washing Machine Repair", p:2500}, {n:"Water Dispenser Service", p:2000},
+                {n:"Microwave Oven Repair", p:2500}, {n:"Fridge PCB Repair", p:4000},
+                {n:"Automatic Machine Repair", p:4500}, {n:"Electric Iron Repair", p:600}
             ]
         };
 
         let cart = [];
 
         window.onload = () => {
-            renderList('acList', services.ac);
-            renderList('elecList', services.elec);
-            renderList('appList', services.app);
+            renderList('acList', masterServices.ac);
+            renderList('elecList', masterServices.elec);
+            renderList('appList', masterServices.app);
         };
 
         function renderList(id, data) {
@@ -144,14 +153,13 @@
             const i = cart.findIndex(c => c.n === n);
             if(i > -1) { cart.splice(i, 1); el.classList.remove('selected'); }
             else { cart.push({n, p}); el.classList.add('selected'); }
-            
             const total = cart.reduce((a, b) => a + b.p, 0);
             document.getElementById('cartBar').style.display = cart.length > 0 ? 'block' : 'none';
             document.getElementById('finalTotal').innerText = total.toLocaleString();
         }
 
         function adminLogin() {
-            if(prompt("ADMIN PIN:") === "dnhq123") {
+            if(prompt("SECURE ADMIN PIN:") === "dnhq123") {
                 document.getElementById('adminView').style.display = 'block';
                 fetchCloudData();
             }
@@ -159,103 +167,98 @@
 
         function addWorkRow() {
             const div = document.createElement('div');
-            div.style.display = "flex"; div.style.gap = "8px"; div.style.marginBottom = "10px";
-            div.innerHTML = `<input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service"><input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">`;
+            div.style.display = "flex"; div.style.gap = "10px"; div.style.marginBottom = "12px";
+            div.innerHTML = `<input type="text" class="m-work m-input" style="flex:2; margin:0;" placeholder="Service Description"><input type="number" class="m-price m-input" style="flex:1; margin:0;" placeholder="Price">`;
             document.getElementById('workItems').appendChild(div);
         }
 
         async function saveAndPrint() {
             const client = document.getElementById('mCust').value;
-            const wItems = document.querySelectorAll('.m-work');
-            const pItems = document.querySelectorAll('.m-price');
+            const wInps = document.querySelectorAll('.m-work');
+            const pInps = document.querySelectorAll('.m-price');
             let rows = []; let total = 0;
+            wInps.forEach((n, i) => { if(n.value) { rows.push([n.value, `Rs ${pInps[i].value}`]); total += parseInt(pInps[i].value || 0); } });
+            
+            if(!client || rows.length === 0) return alert("Customer name and services are required!");
 
-            wItems.forEach((n, i) => { 
-                if(n.value) { 
-                    rows.push([n.value, `Rs ${pItems[i].value}`]); 
-                    total += parseInt(pItems[i].value || 0);
-                } 
+            generateInvoicePDF(client, rows, total);
+            
+            // Cloud Sync
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action:"add", date:new Date().toLocaleDateString(), client, work:rows.map(r=>r[0]).join(", "), total}) });
+            alert("Record synchronized with cloud!"); fetchCloudData();
+        }
+
+        function generateInvoicePDF(client, rows, total) {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            doc.setFillColor(0,0,0); doc.rect(0,0,210,50,'F');
+            doc.setTextColor(251,191,36); doc.setFontSize(28); doc.text("DNHQ SERVICES", 15, 30);
+            doc.setFontSize(10); doc.setTextColor(150,150,150); doc.text("Quality Maintenance & Technical Solutions | Karachi", 15, 42);
+            
+            doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text(`Invoiced To: ${client}`, 15, 65);
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, 155, 65);
+
+            doc.autoTable({ 
+                startY: 75, 
+                head: [['Service Description', 'Amount (PKR)']], 
+                body: rows, 
+                headStyles: {fillColor:[0,0,0], textColor:[251,191,36], fontSize:12},
+                theme: 'striped'
             });
 
-            if(!client || rows.length === 0) return alert("Fill customer name & services!");
-
-            // PDF
-            const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
-            doc.setTextColor(251,191,36); doc.setFontSize(26); doc.text("DNHQ SERVICES", 15, 28);
-            doc.setFontSize(10); doc.text("Quality Maintenance | Karachi", 15, 38);
-            
-            doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text(`Bill To: ${client}`, 15, 60);
-            doc.text(`Date: ${new Date().toLocaleDateString()}`, 150, 60);
-
-            doc.autoTable({ startY: 70, head: [['Description', 'Amount']], body: rows, headStyles: {fillColor: [0,0,0], textColor: [251,191,36]} });
-            doc.setFontSize(14); doc.text(`Total Amount: Rs ${total}`, 150, doc.lastAutoTable.finalY + 15);
-            doc.save(`DNHQ_${client}.pdf`);
-
-            // Cloud Save
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action:"add", date:new Date().toLocaleDateString(), client, work:rows.map(r=>r[0]).join(", "), total}) });
-            alert("Record Saved to Sheet!"); fetchCloudData();
+            doc.setFontSize(14); doc.setFont(undefined, 'bold');
+            doc.text(`Total Payable: Rs ${total.toLocaleString()}`, 145, doc.lastAutoTable.finalY + 15);
+            doc.save(`DNHQ_Invoice_${client}.pdf`);
         }
 
         async function fetchCloudData() {
             const container = document.getElementById('cloudRecords');
-            container.innerHTML = "<div style='text-align:center; padding:20px;'><i class='fas fa-spinner fa-spin'></i> Syncing...</div>";
+            container.innerHTML = "<div style='text-align:center; padding:30px;'><i class='fas fa-circle-notch fa-spin'></i> Syncing Cloud Database...</div>";
             try {
                 const res = await fetch(SCRIPT_URL + "?v=" + new Date().getTime());
                 const data = await res.json();
-                
-                // Hum data ko reverse kar rahay hain taake naye bills upar aayen
                 const rawData = data.slice(); 
                 const displayData = data.slice().reverse();
 
                 container.innerHTML = displayData.map((d, index) => {
-                    // Sahi Row Index nikalne ke liye (Header=1 + Original Position)
-                    const originalIndex = rawData.length - index; 
+                    const actualRowInSheet = rawData.length - index + 1; // Correct 1-based Row Index
                     return `
                     <div class="cust-card">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                            <b style="color:var(--gold); font-size:16px;">${d.client}</b>
-                            <small style="color:#64748b;">${d.date}</small>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                            <b style="color:var(--gold); font-size:17px;">${d.client}</b>
+                            <small style="color:#64748b; font-weight:bold;">${d.date}</small>
                         </div>
-                        <p style="font-size:12px; color:#cbd5e1; margin:0 0 10px;">${d.work}</p>
+                        <p style="font-size:12px; color:#cbd5e1; margin-bottom:15px; line-height:1.4;">${d.work}</p>
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <b style="font-size:15px;">Rs ${d.total}</b>
-                            <button onclick='deleteRecord(${originalIndex}, "${d.client}")' style="background:none; color:#ef4444; border:1px solid #ef4444; padding:5px 12px; border-radius:6px; font-size:11px; cursor:pointer;">DELETE</button>
+                            <b style="font-size:18px;">Rs ${parseInt(d.total).toLocaleString()}</b>
+                            <div style="display:flex; gap:10px;">
+                                <button onclick='reprintPDF(${JSON.stringify(d)})' style="background:#fff; color:#000; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; font-size:11px; cursor:pointer;"><i class="fas fa-file-download"></i> PDF</button>
+                                <button onclick='deleteRecord(${actualRowInSheet}, "${d.client}")' style="background:rgba(239,68,68,0.1); color:#ef4444; border:1px solid #ef4444; padding:8px 15px; border-radius:8px; font-size:11px; cursor:pointer;"><i class="fas fa-trash-alt"></i></button>
+                            </div>
                         </div>
                     </div>`;
                 }).join('');
-            } catch(e) { container.innerHTML = "Sync Error. Check Internet."; }
+            } catch(e) { container.innerHTML = "<div style='color:#ef4444; text-align:center;'>Database Connection Failed.</div>"; }
         }
 
-        async function deleteRecord(rowIdx, name) {
-            if(!confirm(`Are you sure to delete ${name}'s record?`)) return;
-            
-            // Visual feedback
-            document.getElementById('cloudRecords').innerHTML = "Deleting from Google Sheets...";
-            
-            // Header row 1 hoti hai, aur records niche se shuru hote hain
-            const sheetRow = rowIdx + 1; 
-
+        async function deleteRecord(rowNum, name) {
+            if(!confirm(`Are you sure you want to permanently delete ${name}'s record?`)) return;
+            document.getElementById('cloudRecords').innerHTML = "Updating Cloud Database...";
             try {
-                await fetch(SCRIPT_URL, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    body: JSON.stringify({action: "delete", row: sheetRow}) 
-                });
-                
-                // Delay to allow Google Sheets to process
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({action: "delete", row: rowNum}) });
                 setTimeout(fetchCloudData, 1500);
-            } catch(e) {
-                alert("Failed to delete.");
-                fetchCloudData();
-            }
+            } catch(e) { fetchCloudData(); }
+        }
+
+        function reprintPDF(d) {
+            generateInvoicePDF(d.client, [[d.work, `Rs ${d.total}`]], parseInt(d.total));
         }
 
         function sendWA() {
-            const n = prompt("Customer Name:"); if(!n) return;
+            const n = prompt("Please Enter Customer Name:"); if(!n) return;
             const w = cart.map(c => c.n).join(", ");
             const t = cart.reduce((a, b) => a + b.p, 0);
-            window.location.href = `https://wa.me/923152458657?text=*NEW ORDER FROM DNHQ PORTAL*%0A%0A*Client:* ${n}%0A*Services:* ${w}%0A*Total Bill:* Rs ${t}`;
+            const msg = `*NEW ORDER: DNHQ SERVICES*%0A---------------------------%0A*Customer:* ${n}%0A*Services:* ${w}%0A*Total Bill:* Rs ${t}%0A---------------------------%0APlease confirm the appointment.`;
+            window.location.href = `https://wa.me/923152458657?text=${msg}`;
         }
     </script>
 </body>
