@@ -266,7 +266,9 @@
         doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 22);
         doc.setTextColor(0,0,0); doc.setFontSize(12);
         doc.text(`Invoice: ${order.client}`, 15, 50);
-        doc.text(`Date: ${order.date || new Date().toLocaleDateString()}`, 15, 57);
+        // Sirf pehle 10 characters uthayega (e.g. 2026-03-17)
+let cleanDate = order.date ? order.date.split('T')[0] : new Date().toLocaleDateString();
+doc.text(`Date: ${cleanDate}`, 15, 57);
         let items = order.work.split(", ");
         let body = items.map(item => [item, "Included"]);
         doc.autoTable({ startY: 65, head: [['Description', 'Note']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
