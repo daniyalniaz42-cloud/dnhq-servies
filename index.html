@@ -115,7 +115,7 @@ let currentCustData = null;
 let deferredPrompt = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2fj7aV6RDA6RNRyFfgz40-OT36djVF3KFFW-6z3IZ5LsvA12xygVxbspOTcv7jpmmSA/exec";
 
-// ✅ FIX 1: Image to Base64 (ADDED)
+// ✅ FIX 1: Image to Base64 (ADDED - Missing Function)
 function getImageBase64(imgElement) {
     return new Promise((resolve) => {
         try {
@@ -226,7 +226,7 @@ async function deleteEntry(rowIdx) {
     }
 }
 
-// ✅ FIX 3: Helper Function (ADDED)
+// ✅ FIX 3: Helper Function (ADDED - Missing)
 window.generatePDFAsync = async function(order) {
     await generatePDF(order);
 };
