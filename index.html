@@ -113,10 +113,9 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 let cart = [];
 let currentCustData = null;
 let deferredPrompt = null;
-// ✅ FIXED: Removed trailing spaces from URL
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwpxQ3acytg5IQy_OyY3RWxV7SP3CsMrWtekcdaFBXr_Y_n4wJUncp_zuXtwJ1DZxAPiA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHAoFJulwbje1-MDozfMHk708f5j6wNP84wiTy-oYMGn9gEEILCqg75qAWqwl3cOYLfw/exec";
 
-// ✅ ADDED: Image to Base64 Converter
+// ✅ FIX 1: Image to Base64 (ADDED)
 function getImageBase64(imgElement) {
     return new Promise((resolve) => {
         try {
@@ -216,6 +215,7 @@ async function loadLogs() {
     } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
+// ✅ FIX 2: Delete Entry (Properly Closed)
 async function deleteEntry(rowIdx) {
     if(confirm("Delete this entry?")) {
         try {
@@ -226,23 +226,19 @@ async function deleteEntry(rowIdx) {
     }
 }
 
-// ✅ ADDED: Helper function for onclick
+// ✅ FIX 3: Helper Function (ADDED)
 window.generatePDFAsync = async function(order) {
     await generatePDF(order);
 };
 
-// ✅ CLEANED: Generate PDF Function
+// ✅ FIX 4: Generate PDF (Cleaned)
 async function generatePDF(order) {
     try {
         if (!window.jspdf) { alert('jsPDF not loaded'); return; }
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
-        // Header
         doc.setFillColor(0,0,0);
         doc.rect(0,0,210,45,'F');
-        
-        // Logo
         try {
             const imgElement = document.getElementById('brandLogo');
             if (imgElement && imgElement.complete) {
@@ -254,8 +250,6 @@ async function generatePDF(order) {
                 doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 15, 8, 30, 30);
             }
         } catch (e) { console.log('Logo skip:', e); }
-        
-        // Company Name
         doc.setTextColor(251, 191, 36);
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
@@ -264,19 +258,14 @@ async function generatePDF(order) {
         doc.setFont("helvetica", "normal");
         doc.setTextColor(255, 255, 255);
         doc.text("Professional Electrical & AC Maintenance", 55, 31);
-        
-        // Customer Info
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(11);
         doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
         doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
         doc.text("DATE: " + (order.date ? new Date(order.date).toLocaleDateString() : "N/A"), 145, 55);
-        
         doc.setFontSize(16);
         doc.setFont("helvetica", "bold");
         doc.text("INVOICE", 105, 72, { align: "center" });
-        
-        // Parse items
         let items = (order.work || "").split(", ");
         let body = items.map(item => {
             if (item.includes("(Rs ")) {
@@ -285,19 +274,7 @@ async function generatePDF(order) {
             }
             return [item.trim(), "-"];
         });
-        
-        // Table
-        doc.autoTable({
-            startY: 78,
-            head: [['SERVICE', 'AMOUNT']],
-            body: body,
-            theme: 'grid',
-            headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 },
-            styles: { fontSize: 9, cellPadding: 4 },
-            columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }
-        });
-        
-        // Total
+        doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
         let finalY = doc.lastAutoTable.finalY + 15;
         doc.setDrawColor(251, 191, 36);
         doc.setLineWidth(1);
@@ -307,13 +284,9 @@ async function generatePDF(order) {
         doc.text("TOTAL:", 115, finalY);
         doc.setTextColor(184, 134, 11);
         doc.text("Rs " + Number(order.total || 0).toLocaleString(), 195, finalY, { align: 'right' });
-        
-        // Footer
         doc.setTextColor(150, 150, 150);
         doc.setFontSize(9);
         doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
-        
-        // Save
         const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
         const dateStr = order.date ? new Date(order.date).toISOString().split('T')[0] : 'invoice';
         doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
@@ -361,47 +334,20 @@ async function fetchCustomerHistory() {
     const name = document.getElementById('histName').value.trim().toUpperCase();
     const phone = document.getElementById('histPhone').value.trim();
     const err = document.getElementById('histError');
-    
-    if (!name || !phone) { 
-        err.textContent = "⚠️ Enter both Name and Phone"; 
-        err.style.display = 'block'; 
-        return; 
-    }
-    
+    if (!name || !phone) { err.textContent = "Enter both Name and Phone"; err.style.display = 'block'; return; }
     err.style.display = 'none';
     document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
-    
     try {
-        // ✅ Auto-add leading 0 if missing (for search)
-        let searchPhone = phone;
-        if (!searchPhone.startsWith('0') && searchPhone.startsWith('3')) {
-            searchPhone = '0' + searchPhone;
-        }
-        
-        const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(searchPhone)}`;
+        const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
         const res = await fetch(url);
         const data = await res.json();
-        
         if (data.error) throw new Error(data.error);
-        
-        if (!data || data.length === 0) { 
-            err.textContent = "❌ No records found. Please check Name & Phone."; 
-            err.style.display = 'block'; 
-            return; 
-        }
-        
+        if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
         currentCustData = data;
         document.getElementById('verifyStep').style.display = 'none';
         document.getElementById('showStep').style.display = 'block';
-        
         const totalSpent = data.reduce((sum, o) => sum + (Number(o.total)||0), 0);
-        document.getElementById('custInfo').innerHTML = `
-            <b>👤 ${name}</b><br>
-            <b class="phone">📱 ${phone}</b><br>
-            <b>Orders:</b> ${data.length} | 
-            <b>Total:</b> Rs ${totalSpent.toLocaleString()}
-        `;
-        
+        document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
         document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `
             <div class="history-item">
                 <b>#${data.length - i} • ${o.date ? new Date(o.date).toLocaleDateString() : 'N/A'}</b>
@@ -409,15 +355,10 @@ async function fetchCustomerHistory() {
                 <small>🔧 ${(o.work || "").substring(0, 60)}</small>
                 <span class="amt">Rs ${Number(o.total||0).toLocaleString()}</span>
                 <button class="pdf-sm" onclick='downloadSingleHistPDF(${JSON.stringify(o).replace(/'/g,"\\'")})'>📄 Download</button>
-            </div>
-        `).join('');
-        
-    } catch (e) { 
-        err.textContent = "⚠️ Error loading data: " + e.message; 
-        err.style.display = 'block'; 
-        console.error("History error:", e);
-    }
+            </div>`).join('');
+    } catch (e) { err.textContent = "Error loading data"; err.style.display = 'block'; }
 }
+
 function downloadSingleHistPDF(order) { generatePDF(order); }
 
 function downloadCustomerHistoryPDF() {
@@ -452,7 +393,7 @@ function downloadCustomerHistoryPDF() {
 
 window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); }
 
-// ✅ Make all functions global
+// ✅ FIX 5: Make Functions Global
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
