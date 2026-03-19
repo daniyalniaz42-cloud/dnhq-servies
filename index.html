@@ -3,276 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ SERVICES | Official</title>
+    <title>DNHQ MASTER APP | Karachi No.1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
     <style>
-        :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 160px; }
-        .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
-        .logo-main { height: 85px; display: block; margin: 0 auto; border-radius: 10px; }
-        .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
-        .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
-        .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
-        .nav-btn { flex: 1; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin-bottom: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
-        .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
-        .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .svc-item.selected { border: 2px solid var(--gold); background: #000; }
-        .svc-meta b { display: block; font-size: 16px; color: white; }
-        .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
-        .svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
-        #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
-        .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
-        .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
-        .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-        footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; border-top: 1px solid #1f2937; }
-        .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
-        .social-links a { color: var(--gold); font-size: 24px; text-decoration: none; }
+        :root { --gold: #fbbf24; --dark: #070a13; --card: #111827; --success: #22c55e; }
+        body { font-family: 'Poppins', sans-serif; background: var(--dark); color: #e2e8f0; margin: 0; padding-bottom: 180px; }
+        
+        /* Premium Header */
+        .app-header { background: linear-gradient(180deg, #000 0%, #111 100%); padding: 50px 20px; text-align: center; border-bottom: 5px solid var(--gold); border-radius: 0 0 60px 60px; box-shadow: 0 15px 50px rgba(0,0,0,0.8); }
+        .main-logo { height: 120px; border-radius: 25px; border: 3px solid var(--gold); margin-bottom: 20px; box-shadow: 0 0 20px rgba(251,191,36,0.3); }
+        .brand-name { font-size: 36px; font-weight: 900; color: var(--gold); margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .container { max-width: 700px; margin: 0 auto; padding: 25px; }
+
+        /* Welcome Section */
+        .welcome-card { background: var(--card); padding: 25px; border-radius: 30px; border: 1px solid #1f2937; margin-top: -40px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        /* App Download Banner */
+        .download-banner { background: linear-gradient(90deg, #fbbf24, #d97706); padding: 25px; border-radius: 30px; margin: 40px 0; color: #000; text-align: center; position: relative; }
+        .btn-apk { background: #000; color: #fff; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; margin-top: 15px; }
+
+        /* History Panel */
+        .search-box { background: #1a2234; padding: 30px; border-radius: 30px; border: 1px solid #334155; margin-bottom: 50px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; font-weight: bold; }
+        .form-control { width: 100%; padding: 18px; border-radius: 15px; border: 1px solid #334155; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; }
+
+        /* Modern Grid for Services */
+        .category-title { display: flex; align-items: center; margin: 50px 0 25px; }
+        .category-title h2 { color: var(--gold); font-size: 18px; text-transform: uppercase; letter-spacing: 3px; margin: 0; }
+        .hr-line { flex-grow: 1; height: 2px; background: rgba(251,191,36,0.2); margin-left: 20px; }
+
+        .service-list { display: grid; gap: 15px; }
+        .svc-card { background: var(--card); padding: 25px; border-radius: 25px; border: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+        .svc-card.selected { border: 2px solid var(--gold); background: #000; }
+        .svc-card.selected::before { content: '✓'; position: absolute; left: 0; top: 0; background: var(--gold); color: #000; padding: 5px 12px; font-weight: 900; border-radius: 0 0 15px 0; }
+        .svc-info b { font-size: 18px; display: block; color: #fff; }
+        .svc-info p { font-size: 13px; color: #94a3b8; margin: 5px 0 0; }
+        .svc-price { font-size: 18px; font-weight: 900; color: var(--gold); }
+
+        /* Real-time Floating Checkout */
+        .floating-cart { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 5px solid var(--gold); padding: 35px 25px; display: none; z-index: 999; box-shadow: 0 -20px 50px rgba(0,0,0,0.9); border-radius: 40px 40px 0 0; }
+        .cart-content { max-width: 700px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .btn-checkout { background: var(--success); color: #fff; padding: 20px 45px; border-radius: 20px; font-weight: 900; font-size: 18px; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+
+        /* Admin Experience */
+        #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 10000; padding: 40px 25px; overflow-y: auto; }
+        .admin-log { background: #111; border: 1px solid #333; padding: 25px; border-radius: 25px; margin-bottom: 20px; position: relative; }
+
+        footer { text-align: center; padding: 100px 20px; opacity: 0.5; border-top: 1px solid #1f2937; }
     </style>
 </head>
 <body>
 
-    <header class="brand-header">
-        <img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ">
-        <div class="brand-title">DNHQ SERVICES</div>
+    <header class="app-header">
+        <img src="1773452778552.jpeg" class="main-logo" id="brandLogo">
+        <h1 class="brand-name">DNHQ SERVICES</h1>
+        <div style="color:var(--gold); font-size:12px; letter-spacing:5px;">KARACHI'S ELITE SOLUTIONS</div>
     </header>
 
-    <div class="wrapper">
-        <div class="nav-container">
-            <a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
-            <a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
+    <div class="container">
+        <div class="welcome-card">
+            <h3>Assalam-o-Alaikum!</h3>
+            <p style="color:#94a3b8;">Choose a service below to book an expert technician.</p>
         </div>
 
-        <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
-        <div id="videoBox" style="display:none; margin-bottom:20px; text-align:center;">
-            <video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);">
-                <source src="tutorial.mp4" type="video/mp4">
-            </video>
+        <div class="download-banner">
+            <h2 style="margin:0;">Official Mobile App</h2>
+            <p>Install our app for 10% discount on every service!</p>
+            <a href="DNHQ_Services.apk" class="btn-apk" download><i class="fab fa-android"></i> DOWNLOAD APK V2.0</a>
         </div>
 
-        <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Short Circuit</b><p>Fault Finding & Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel & Breaker Setup</p></div><div class="svc-rate">Rs 3,000</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Switch Board Repair', 500)"><div class="svc-meta"><b>Switch Board</b><p>Replacement / Repair</p></div><div class="svc-rate">Rs 500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fan Installation', 600)"><div class="svc-meta"><b>Fan Install</b><p>Bracket or Ceiling</p></div><div class="svc-rate">Rs 600</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 2500)"><div class="svc-meta"><b>UPS Installation</b><p>Wiring & Setup</p></div><div class="svc-rate">Rs 2,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Motor/Machine Repair', 1500)"><div class="svc-meta"><b>Motor Repair</b><p>Circuit & Motor Work</p></div><div class="svc-rate">Rs 1,500</div></div>
+        <div class="category-title"><h2>Customer History</h2><div class="hr-line"></div></div>
+        <div class="search-box">
+            <div class="input-group">
+                <label>Registered Name</label>
+                <input type="text" id="cust_name" class="form-control" placeholder="e.g. Daniyal Khan">
+            </div>
+            <div class="input-group">
+                <label>Registered Phone</label>
+                <input type="number" id="cust_phone" class="form-control" placeholder="03XXXXXXXXX">
+            </div>
+            <button class="btn-apk" style="width:100%; justify-content:center; background:var(--gold); color:#000;" onclick="checkSecureHistory()">FETCH MY RECORDS</button>
+            <div id="secureResult" style="margin-top:20px; display:none;"></div>
+        </div>
 
-        <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
+        <div class="category-title"><h2>AC & Cooling Experts</h2><div class="hr-line"></div></div>
+        <div class="service-list">
+            <div class="svc-card" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-info"><b>Master Service (Chemical)</b><p>Deep cleaning of Indoor/Outdoor with chemicals</p></div><div class="svc-price">Rs 3,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'AC General Service', 1500)"><div class="svc-info"><b>General Service</b><p>Basic jet wash and filter cleaning</p></div><div class="svc-price">Rs 1,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'AC Gas Refill (R22)', 8500)"><div class="svc-info"><b>Full Gas Charging (R22)</b><p>1.5 Ton Full Gas Refilling</p></div><div class="svc-price">Rs 8,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'AC Gas Refill (Inverter)', 9500)"><div class="svc-info"><b>Inverter Gas (R410)</b><p>Pure R410 Inverter Gas Refill</p></div><div class="svc-price">Rs 9,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'AC Installation', 4500)"><div class="svc-info"><b>Professional Installation</b><p>Wall mount setup with bracket fix</p></div><div class="svc-price">Rs 4,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'AC Dismantle', 1500)"><div class="svc-info"><b>AC Dismantling</b><p>Gas locking and safe removal</p></div><div class="svc-price">Rs 1,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'AC Leakage Solution', 3000)"><div class="svc-info"><b>Leakage & Welding</b><p>Nitrogen test and silver welding</p></div><div class="svc-price">Rs 3,000</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'AC PCB Repair', 3500)"><div class="svc-info"><b>PCB Board Repairing</b><p>Inverter/Non-Inverter card repair</p></div><div class="svc-price">Rs 3,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'AC Capacitor Replacement', 1500)"><div class="svc-info"><b>New Capacitor</b><p>Original 45uf-55uf Replacement</p></div><div class="svc-price">Rs 1,500</div></div>
+        </div>
 
-        <div class="section-tag"><h2>Others</h2><div class="section-line"></div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Fridge Gas</b><p>Full Refill</p></div><div class="svc-rate">Rs 7,500</div></div>
-        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Home Wiring</b><p>Area Based Quote</p></div><div class="svc-rate">Quote</div></div>
+        <div class="category-title"><h2>Electrical Solutions</h2><div class="hr-line"></div></div>
+        <div class="service-list">
+            <div class="svc-card" onclick="toggleSvc(this, 'Short Circuit Fix', 1500)"><div class="svc-info"><b>Short Circuit Repair</b><p>Main line fault finding and repair</p></div><div class="svc-price">Rs 1,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'UPS Installation', 2500)"><div class="svc-info"><b>UPS & Battery Setup</b><p>Professional backup wiring</p></div><div class="svc-price">Rs 2,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'DB Dressing', 4500)"><div class="svc-info"><b>Full DB Dressing</b><p>Breaker alignment and load management</p></div><div class="svc-price">Rs 4,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'Ceiling Fan Install', 800)"><div class="svc-info"><b>Fan Installation</b><p>Ceiling, Bracket or Exhaust Fan</p></div><div class="svc-price">Rs 800</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'Switch Board Repair', 1200)"><div class="svc-info"><b>Switch Board Service</b><p>Complete button/socket replacement</p></div><div class="svc-price">Rs 1,200</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'Electric Geyser Fix', 2000)"><div class="svc-info"><b>Electric Geyser</b><p>Thermostat/Element change</p></div><div class="svc-price">Rs 2,000</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'Complete House Wiring', 15000)"><div class="svc-info"><b>New House Wiring</b><p>Starting from 1-Unit complete wiring</p></div><div class="svc-price">Rs 15,000</div></div>
+        </div>
+
+        <div class="category-title"><h2>Home Appliances</h2><div class="hr-line"></div></div>
+        <div class="service-list">
+            <div class="svc-card" onclick="toggleSvc(this, 'Refrigerator Gas', 6500)"><div class="svc-info"><b>Fridge Gas Refill</b><p>Gas Charging with filter change</p></div><div class="svc-price">Rs 6,500</div></div>
+            <div class="svc-card" onclick="toggleSvc(this, 'Washing Machine Repair', 2500)"><div class="svc-info"><b>Washing Machine</b><p>Motor winding or gear box fix</p></div><div class="svc-price">Rs 2,500</div></div>
+        </div>
     </div>
 
     <div id="adminView">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="color:gold; margin:0;">DNHQ DASHBOARD</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:8px 15px; border-radius:8px;">CLOSE</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+            <h1 style="color:var(--gold);">ADMIN CONSOLE</h1>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:#fff; border:none; padding:15px 25px; border-radius:15px; font-weight:900;">EXIT</button>
         </div>
-
-        <div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
-            <h4 style="color:var(--gold); margin:0 0 10px 0;">CREATE MANUAL BILL</h4>
-            <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
-            <div id="manual_works_container">
-                <div style="display:flex; gap:10px; margin-bottom:10px;">
-                    <input type="text" class="m-work man-input" placeholder="Work" style="flex:2; margin-bottom:0;">
-                    <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">
-                </div>
-            </div>
-            <button onclick="addNewManualRow()" style="width:100%; background:transparent; border:1px dashed gold; color:gold; padding:8px; margin-bottom:15px; border-radius:8px;">+ Add Work</button>
-            <button onclick="saveManualEntry()" style="width:100%; background:gold; color:black; font-weight:bold; border:none; padding:12px; border-radius:8px;">SAVE RECORD</button>
-        </div>
-        <div id="logItems">Loading...</div>
+        <div id="logItems">Fetching Secure Logs...</div>
     </div>
 
-    <div class="checkout-bar" id="cart">
-        <div style="display:flex; justify-content:space-between; align-items:center; max-width:600px; margin:0 auto;">
-            <div><small>Total Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
-            <button class="btn-wa" onclick="placeOrder()">PLACE ORDER</button>
+    <div class="floating-cart" id="cart">
+        <div class="cart-content">
+            <div>
+                <span style="color:#94a3b8; font-size:14px;">Selected Services</span>
+                <div style="font-size:28px; font-weight:900;">Rs <span id="billTotal">0</span></div>
+            </div>
+            <button class="btn-checkout" onclick="placeOrder()">
+                <i class="fab fa-whatsapp"></i> BOOK NOW
+            </button>
         </div>
     </div>
 
     <footer>
-        <div style="color:var(--gold); font-weight:bold; margin-bottom:15px;">DNHQ SERVICES</div>
-        <div class="social-links">
-            <a href="https://instagram.com/dnhq_services"><i class="fab fa-instagram"></i></a>
-            <a href="https://youtube.com/@dnhqservices"><i class="fab fa-youtube"></i></a>
-            <a href="https://wa.me/923152458657"><i class="fab fa-whatsapp"></i></a>
-        </div>
-        <div onclick="openAdmin()" style="margin-top:25px; cursor:pointer; font-size:10px; opacity:0.3;">Admin Access</div>
+        <h3 style="color:var(--gold);">DNHQ SERVICES</h3>
+        <p>Expert Electricians & AC Technicians • Quality Guaranteed</p>
+        <div onclick="openAdmin()" style="margin-top:50px; opacity:0.1; font-size:10px;">Cloud Login</div>
     </footer>
 
     <script>
     let cart = [];
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
-    function playVid() {
-        const box = document.getElementById('videoBox');
-        const vid = document.getElementById('myVideo');
-        box.style.display = box.style.display === "none" ? "block" : "none";
-        box.style.display === "block" ? vid.play() : vid.pause();
-    }
-
     function toggleSvc(el, name, price) {
         const idx = cart.findIndex(c => c.name === name);
         if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
         else { cart.push({name, price: parseInt(price)}); el.classList.add('selected'); }
-        const total = cart.reduce((a, b) => a + b.price, 0);
         document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
-        document.getElementById('billTotal').innerText = total.toLocaleString();
+        document.getElementById('billTotal').innerText = cart.reduce((a, b) => a + b.price, 0).toLocaleString();
     }
 
-    function openAdmin() {
-        if(prompt("PIN:") === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); }
+    async function checkSecureHistory() {
+        const n = document.getElementById('cust_name').value.trim().toLowerCase();
+        const p = document.getElementById('cust_phone').value.trim();
+        const resDiv = document.getElementById('secureResult');
+        if(!n || !p) return alert("Pehle details mukammal karein!");
+        resDiv.innerHTML = "<p style='text-align:center;'>Searching Records...</p>"; resDiv.style.display = "block";
+        const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
+        const data = await res.json();
+        const records = data.filter(d => d.client.toLowerCase().includes(n) && (d.work.includes(p) || d.client.includes(p)));
+        resDiv.innerHTML = records.length > 0 ? records.map(d => `
+            <div style="background:#000; padding:25px; border-radius:25px; margin-bottom:15px; border-left:8px solid var(--gold);">
+                <div style="display:flex; justify-content:space-between; font-weight:900;"><span>${d.date.split('T')[0]}</span><span style="color:var(--gold);">Rs ${d.total}</span></div>
+                <div style="font-size:14px; color:#94a3b8; margin-top:10px; line-height:1.6;">${d.work}</div>
+            </div>`).join('') : "<p style='color:red;text-align:center;'>Koi record nahi mila.</p>";
     }
 
-    function addNewManualRow() {
-        const div = document.createElement('div');
-        div.style = "display:flex; gap:10px; margin-bottom:10px;";
-        div.innerHTML = '<input type="text" class="m-work man-input" placeholder="Work" style="flex:2; margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">';
-        document.getElementById('manual_works_container').appendChild(div);
-    }
-
-    async function saveManualEntry() {
-        const name = document.getElementById('man_name').value;
-        const workInputs = document.querySelectorAll('.m-work');
-        const priceInputs = document.querySelectorAll('.m-price');
-        let allWork = []; let total = 0;
-        workInputs.forEach((input, i) => {
-            if(input.value.trim() !== "") {
-                const p = priceInputs[i].value || 0;
-                allWork.push(input.value + " (Rs " + p + ")");
-                total += parseInt(p);
-            }
-        });
-        if(!name) return alert("Enter Name!");
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: name, work: allWork.join(", "), total}) });
-        alert("Saved!"); loadLogs();
-    }
+    function openAdmin() { if(prompt("ACCESS PIN:") === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); } }
 
     async function loadLogs() {
-        const container = document.getElementById('logItems');
-        container.innerHTML = "Refreshing...";
-        try {
-            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
-            const data = await res.json();
-            container.innerHTML = data.reverse().map((d, index) => {
-                const actualIdx = data.length - 1 - index;
-                return `<div class="log-card">
-                    <button style="float:right; background:gold; border:none; padding:5px 10px; border-radius:5px; font-weight:bold;" onclick='generatePDF(${JSON.stringify(d)})'>PDF</button>
-                    <b>${d.client}</b><br><small>${d.work}</small><br>
-                    <b style="color:gold;">Rs ${d.total}</b><br>
-                    <button style="background:red; color:white; border:none; padding:5px 10px; border-radius:5px; margin-top:10px; cursor:pointer;" onclick="deleteEntry(${actualIdx})">DELETE</button>
-                </div>`;
-            }).join('');
-        } catch(e) { container.innerHTML = "Error!"; }
+        const container = document.getElementById('logItems'); container.innerHTML = "Accessing Database...";
+        const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
+        const data = await res.json();
+        container.innerHTML = data.reverse().map((d, i) => {
+            const rowIdx = data.length - 1 - i;
+            return `<div class="admin-log">
+                <b style="font-size:20px;">${d.client}</b><br><small style="color:gray;">${d.work}</small><br><b style="color:var(--gold); font-size:20px;">Rs ${d.total}</b><br>
+                <div style="margin-top:20px;">
+                    <button style="background:var(--gold); border:none; padding:12px 25px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick='generatePDF(${JSON.stringify(d)})'>PRINT BILL</button>
+                    <button style="background:red; color:white; border:none; padding:12px 25px; border-radius:10px; margin-left:15px; cursor:pointer;" onclick="deleteEntry(${rowIdx})">DELETE</button>
+                </div>
+            </div>`;
+        }).join('');
     }
 
-    async function deleteEntry(rowIdx) {
-        if(confirm("Delete record?")) {
-            await fetch(SCRIPT_URL + "?deleteRow=" + (rowIdx + 2), { method: 'GET' });
-            alert("Deleted!"); loadLogs();
-        }
+    async function deleteEntry(row) { if(confirm("Confirm Delete?")) { await fetch(SCRIPT_URL + "?deleteRow=" + (row + 2)); loadLogs(); } }
+
+    function generatePDF(order) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFillColor(0,0,0); doc.rect(0,0,210,50,'F');
+        const img = document.getElementById('brandLogo');
+        try { doc.addImage(img, 'JPEG', 15, 10, 30, 30); } catch(e) {}
+        doc.setTextColor(251, 191, 36); doc.setFontSize(32); doc.text("DNHQ SERVICES", 55, 32);
+        doc.setTextColor(0,0,0); doc.setFontSize(14); doc.text("BILL TO: " + order.client.toUpperCase(), 15, 65);
+        let items = order.work.split(", ").map(it => it.includes("(Rs ") ? [it.split("(Rs ")[0], "Rs " + it.split("(Rs ")[1].replace(")","")] : [it, "-"]);
+        doc.autoTable({ startY: 75, head: [['SERVICE', 'PRICE']], body: items, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
+        doc.setFontSize(20); doc.text("NET TOTAL: Rs " + Number(order.total).toLocaleString(), 115, doc.lastAutoTable.finalY + 20);
+        doc.save("DNHQ_BILL_" + order.client + ".pdf");
     }
 
-function generatePDF(order) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // 1. Header Design
-    doc.setFillColor(0, 0, 0);
-    doc.rect(0, 0, 210, 45, 'F');
-    const img = document.getElementById('brandLogo');
-    try { doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e) {}
-
-    doc.setTextColor(251, 191, 36); 
-    doc.setFontSize(26);
-    doc.setFont("helvetica", "bold");
-    doc.text("DNHQ SERVICES", 55, 25);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text("Professional Electrical & AC Maintenance", 55, 32);
-
-    // 2. Customer Info
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(11);
-    doc.text("INVOICE TO: " + order.client.toUpperCase(), 15, 55);
-    doc.text("DATE: " + (order.date ? order.date.split('T')[0] : "N/A"), 145, 55);
-
-    // 3. Data Processing - IMPROVED
-    let workItems = order.work.split(", ");
-    let finalTableData = [];
-    
-    // Check if order has prices array
-    if (order.prices && Array.isArray(order.prices)) {
-        // Use prices array if available
-        workItems.forEach((item, index) => {
-            let price = order.prices[index] ? "Rs " + Number(order.prices[index]).toLocaleString() : "-";
-            finalTableData.push([item.trim(), price]);
-        });
-    } else if (workItems.length === 1) {
-        // If only one item, use total amount
-        finalTableData.push([workItems[0].trim(), "Rs " + Number(order.total).toLocaleString()]);
-    } else {
-        // Try to parse from text format: "Service (Rs 3500)"
-        workItems.forEach(item => {
-            let match = item.match(/\(Rs\s*([\d,]+)\)/);
-            if (match) {
-                let name = item.replace(/\(Rs\s*[\d,]+\)/, '').trim();
-                let price = "Rs " + match[1];
-                finalTableData.push([name, price]);
-            } else {
-                finalTableData.push([item.trim(), "-"]);
-            }
-        });
+    async function placeOrder() {
+        const info = prompt("Apna Naam aur Number likhein (Billing ke liye):");
+        if(!info) return;
+        const total = cart.reduce((a, b) => a + b.price, 0);
+        const work = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: info, work: work, total: total}) });
+        window.location.href = `https://wa.me/923152458657?text=*DNHQ NEW BOOKING*%0AClient: ${info}%0AWork: ${work}%0ATotal: Rs ${total}`;
     }
-
-    // 4. Table Rendering
-    doc.autoTable({
-        startY: 70,
-        head: [['SERVICE DESCRIPTION', 'AMOUNT']],
-        body: finalTableData,
-        theme: 'grid',
-        headStyles: { fillColor: [20, 20, 20], textColor: [251, 191, 36], fontSize: 11 },
-        styles: { fontSize: 10, cellPadding: 5, overflow: 'linebreak' },
-        columnStyles: {
-            0: { cellWidth: 140 },
-            1: { cellWidth: 40, halign: 'right' }
-        }
-    });
-
-    // 5. Grand Total Section
-    let finalY = doc.lastAutoTable.finalY + 15;
-    
-    doc.setDrawColor(251, 191, 36);
-    doc.setLineWidth(1);
-    doc.line(110, finalY - 5, 195, finalY - 5);
-
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-    doc.text("GRAND TOTAL:", 115, finalY);
-    
-    doc.setTextColor(184, 134, 11);
-    let totalVal = "Rs " + Number(order.total).toLocaleString();
-    doc.text(totalVal, 195, finalY, { align: 'right' });
-
-    // 6. Footer
-    doc.setTextColor(150, 150, 150);
-    doc.setFontSize(9);
-    doc.text("Contact: +92 315 2458657 | Quality Work Guaranteed", 105, 285, { align: "center" });
-
-    doc.save("DNHQ_" + order.client + ".pdf");
-}
     </script>
 </body>
 </html>
