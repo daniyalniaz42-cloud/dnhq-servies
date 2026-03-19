@@ -361,20 +361,47 @@ async function fetchCustomerHistory() {
     const name = document.getElementById('histName').value.trim().toUpperCase();
     const phone = document.getElementById('histPhone').value.trim();
     const err = document.getElementById('histError');
-    if (!name || !phone) { err.textContent = "Enter both Name and Phone"; err.style.display = 'block'; return; }
+    
+    if (!name || !phone) { 
+        err.textContent = "⚠️ Enter both Name and Phone"; 
+        err.style.display = 'block'; 
+        return; 
+    }
+    
     err.style.display = 'none';
     document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
+    
     try {
-        const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
+        // ✅ Auto-add leading 0 if missing (for search)
+        let searchPhone = phone;
+        if (!searchPhone.startsWith('0') && searchPhone.startsWith('3')) {
+            searchPhone = '0' + searchPhone;
+        }
+        
+        const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(searchPhone)}`;
         const res = await fetch(url);
         const data = await res.json();
+        
         if (data.error) throw new Error(data.error);
-        if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
+        
+        if (!data || data.length === 0) { 
+            err.textContent = "❌ No records found. Please check Name & Phone."; 
+            err.style.display = 'block'; 
+            return; 
+        }
+        
         currentCustData = data;
         document.getElementById('verifyStep').style.display = 'none';
         document.getElementById('showStep').style.display = 'block';
+        
         const totalSpent = data.reduce((sum, o) => sum + (Number(o.total)||0), 0);
-        document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
+        document.getElementById('custInfo').innerHTML = `
+            <b>👤 ${name}</b><br>
+            <b class="phone">📱 ${phone}</b><br>
+            <b>Orders:</b> ${data.length} | 
+            <b>Total:</b> Rs ${totalSpent.toLocaleString()}
+        `;
+        
         document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `
             <div class="history-item">
                 <b>#${data.length - i} • ${o.date ? new Date(o.date).toLocaleDateString() : 'N/A'}</b>
@@ -382,10 +409,15 @@ async function fetchCustomerHistory() {
                 <small>🔧 ${(o.work || "").substring(0, 60)}</small>
                 <span class="amt">Rs ${Number(o.total||0).toLocaleString()}</span>
                 <button class="pdf-sm" onclick='downloadSingleHistPDF(${JSON.stringify(o).replace(/'/g,"\\'")})'>📄 Download</button>
-            </div>`).join('');
-    } catch (e) { err.textContent = "Error loading data"; err.style.display = 'block'; }
+            </div>
+        `).join('');
+        
+    } catch (e) { 
+        err.textContent = "⚠️ Error loading data: " + e.message; 
+        err.style.display = 'block'; 
+        console.error("History error:", e);
+    }
 }
-
 function downloadSingleHistPDF(order) { generatePDF(order); }
 
 function downloadCustomerHistoryPDF() {
