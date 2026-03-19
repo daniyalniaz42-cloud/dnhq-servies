@@ -209,22 +209,33 @@ function generatePDF(order) {
     doc.text("INVOICE TO: " + order.client.toUpperCase(), 15, 55);
     doc.text("DATE: " + (order.date ? order.date.split('T')[0] : "N/A"), 145, 55);
 
-    // 3. Data Processing (Safe Method)
+    // 3. Data Processing - IMPROVED
     let workItems = order.work.split(", ");
     let finalTableData = [];
-
-    workItems.forEach(item => {
-        // Agar item mein "(Rs " mojood hai toh split karein
-        if (item.indexOf("(Rs ") !== -1) {
-            let parts = item.split("(Rs ");
-            let name = parts[0].trim();
-            let price = "Rs " + parts[1].replace(")", "").trim();
-            finalTableData.push([name, price]);
-        } else {
-            // Agar format alag hai toh pura item description mein aur amount mein dash
-            finalTableData.push([item.trim(), "-"]);
-        }
-    });
+    
+    // Check if order has prices array
+    if (order.prices && Array.isArray(order.prices)) {
+        // Use prices array if available
+        workItems.forEach((item, index) => {
+            let price = order.prices[index] ? "Rs " + Number(order.prices[index]).toLocaleString() : "-";
+            finalTableData.push([item.trim(), price]);
+        });
+    } else if (workItems.length === 1) {
+        // If only one item, use total amount
+        finalTableData.push([workItems[0].trim(), "Rs " + Number(order.total).toLocaleString()]);
+    } else {
+        // Try to parse from text format: "Service (Rs 3500)"
+        workItems.forEach(item => {
+            let match = item.match(/\(Rs\s*([\d,]+)\)/);
+            if (match) {
+                let name = item.replace(/\(Rs\s*[\d,]+\)/, '').trim();
+                let price = "Rs " + match[1];
+                finalTableData.push([name, price]);
+            } else {
+                finalTableData.push([item.trim(), "-"]);
+            }
+        });
+    }
 
     // 4. Table Rendering
     doc.autoTable({
@@ -240,10 +251,9 @@ function generatePDF(order) {
         }
     });
 
-    // 5. Grand Total Section (Fixed Position)
+    // 5. Grand Total Section
     let finalY = doc.lastAutoTable.finalY + 15;
     
-    // Draw a Gold Line
     doc.setDrawColor(251, 191, 36);
     doc.setLineWidth(1);
     doc.line(110, finalY - 5, 195, finalY - 5);
@@ -252,7 +262,7 @@ function generatePDF(order) {
     doc.setFont("helvetica", "bold");
     doc.text("GRAND TOTAL:", 115, finalY);
     
-    doc.setTextColor(184, 134, 11); // Deep Gold
+    doc.setTextColor(184, 134, 11);
     let totalVal = "Rs " + Number(order.total).toLocaleString();
     doc.text(totalVal, 195, finalY, { align: 'right' });
 
@@ -262,7 +272,7 @@ function generatePDF(order) {
     doc.text("Contact: +92 315 2458657 | Quality Work Guaranteed", 105, 285, { align: "center" });
 
     doc.save("DNHQ_" + order.client + ".pdf");
-}   
+}
     </script>
 </body>
 </html>
