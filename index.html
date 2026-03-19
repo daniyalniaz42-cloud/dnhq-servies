@@ -510,35 +510,37 @@
 
     // === Load Admin Logs ===
     async function loadLogs() {
-        const container = document.getElementById('logItems');
-        container.innerHTML = '<div class="loading">Fetching Records</div>';
+    const container = document.getElementById('logItems');
+    container.innerHTML = '<div class="loading">Fetching Records</div>';
+    
+    try {
+        const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
+        const data = await res.json();
         
-        try {
-            const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
-            const data = await res.json();
-            
-            if(data.error) throw new Error(data.error);
-            
-            if(data.length === 0) {
-                container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>';
-                return;
-            }
-            
-            container.innerHTML = data.map((d, index) => `
-                <div class="log-card">
-                    <button class="pdf-btn" onclick='generatePDF(${JSON.stringify(d).replace(/'/g, "\\'")})'>PDF</button>
-                    <b>${d.client || "Unknown"}</b><br>
-                    <small class="phone">📱 ${d.phone || "N/A"}</small><br>
-                    <small>${(d.work || "").substring(0, 50)}${(d.work||"").length>50?'...':''}</small><br>
-                    <b style="color:gold; font-size:16px;">Rs ${Number(d.total||0).toLocaleString()}</b><br>
-                    <small style="color:#64748b;">${d.date ? new Date(d.date).toLocaleDateString() : ''}</small><br>
-                    <button class="del-btn" onclick="deleteEntry(${index + 2})">🗑️ Delete</button>
-                </div>
-            `).join('');
-        } catch(e) {
-            container.innerHTML = `<p style="color:#ef4444;text-align:center;">Error: ${e.message}</p>`;
-            console.error(e);
+        if(data.error) throw new Error(data.error);
+        
+        if(data.length === 0) {
+            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>';
+            return;
         }
+        
+        // ✅ YE HAI PURA UPDATED BLOCK
+        container.innerHTML = data.map((d, index) => `
+            <div class="log-card">
+                <button class="pdf-btn" onclick="generatePDFAsync(${JSON.stringify(d).replace(/'/g, "\\'")})">PDF</button>
+                <b>${d.client || "Unknown"}</b><br>
+                <small class="phone">📱 ${d.phone || "N/A"}</small><br>
+                <small>${(d.work || "").substring(0, 50)}${(d.work||"").length>50?'...':''}</small><br>
+                <b style="color:gold; font-size:16px;">Rs ${Number(d.total||0).toLocaleString()}</b><br>
+                <small style="color:#64748b;">${d.date ? new Date(d.date).toLocaleDateString() : ''}</small><br>
+                <button class="del-btn" onclick="deleteEntry(${index + 2})">🗑️ Delete</button>
+            </div>
+        `).join('');
+    } catch(e) {
+        container.innerHTML = `<p style="color:#ef4444;text-align:center;">Error: ${e.message}</p>`;
+        console.error(e);
+    }
+}
     }
 
     // === Delete Entry ===
