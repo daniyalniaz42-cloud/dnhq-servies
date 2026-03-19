@@ -4,12 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json?v=10">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
-<!-- Libraries -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
@@ -23,8 +21,7 @@ body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; colo
 .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; flex-wrap: wrap; }
 .nav-btn { flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .app-download-btn { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-.app-download-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5); }
-.app-download-btn i { font-size: 18px; }
+.app-download-btn:hover { transform: translateY(-2px); }
 .tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin: 15px 0 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
 .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
@@ -43,36 +40,28 @@ body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; colo
 .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
 footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
 .history-btn { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; }
-.history-btn:hover { transform: translateY(-2px); }
 .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }
 .modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
 .modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
-.modal-close:hover { color: #fbbf24; }
 .form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
-.form-input:focus { outline: none; border-color: #fbbf24; }
 .verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
-.verify-btn:hover { background: #f59e0b; }
 .error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
 .success-msg { color: #22c55e; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
 .history-item { background: #1e293b; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #fbbf24; }
-.history-item b { color: white; display: block; margin-bottom: 5px; font-size: 14px; }
+.history-item b { color: white; display: block; margin-bottom: 5px; }
 .history-item small { color: #94a3b8; display: block; margin: 3px 0; }
 .history-item .phone { color: #60a5fa; font-size: 12px; }
 .history-item .amt { color: #fbbf24; font-weight: 800; font-size: 16px; display: block; margin: 8px 0; }
-.history-item .pdf-sm { background: #3b82f6; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; }
-.history-item .pdf-sm:hover { background: #2563eb; }
+.history-item .pdf-sm { background: #3b82f6; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 8px; }
 .action-row { display: flex; gap: 10px; margin-top: 15px; }
-.action-row button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; }
+.action-row button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
 .btn-download-all { background: #22c55e; color: white; }
 .btn-back { background: #64748b; color: white; }
-#installPrompt { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 2px solid #3b82f6; border-radius: 12px; padding: 15px 20px; z-index: 2500; max-width: 90%; text-align: center; }
+#installPrompt { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 2px solid #3b82f6; border-radius: 12px; padding: 15px 20px; z-index: 2500; }
 #installPrompt p { margin: 0 0 10px 0; font-size: 14px; color: white; }
 #installPrompt button { background: #3b82f6; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 8px; }
-#installPrompt .close-install { background: transparent; color: #94a3b8; border: 1px solid #94a3b8; }
 .loading { text-align: center; padding: 20px; color: #fbbf24; }
-.loading::after { content: "⠋⠹⠸⠦⠧⠏"; animation: spin 1s steps(10) infinite; display: inline-block; margin-left: 10px; }
-@keyframes spin { to { transform: translateX(-10ch); } }
-@media (max-width: 480px) { .brand-title { font-size: 20px; } .logo-main { height: 70px; } .svc-meta b { font-size: 14px; } .checkout-bar { padding: 15px; } .btn-wa { padding: 12px 20px; font-size: 14px; } }
+@media (max-width: 480px) { .brand-title { font-size: 20px; } .logo-main { height: 70px; } }
 </style>
 </head>
 <body>
@@ -87,11 +76,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </div>
 <button class="app-download-btn" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Download Our App</button>
 <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
-<div id="videoBox" style="display:none; margin-bottom:20px; text-align:center;">
-<video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);">
-<source src="tutorial.mp4" type="video/mp4">
-</video>
-</div>
+<div id="videoBox" style="display:none; margin-bottom:20px;"><video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);"><source src="tutorial.mp4" type="video/mp4"></video></div>
 <button class="history-btn" onclick="openHistoryModal()"><i class="fas fa-clock-rotate-left"></i> Check My Service History</button>
 <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
@@ -109,73 +94,30 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
 </div>
 <div id="adminView">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-<h2 style="color:gold; margin:0;">DNHQ DASHBOARD</h2>
-<button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">CLOSE</button>
-</div>
-<div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
-<h4 style="color:var(--gold); margin: 0 0 10px 0;">CREATE MANUAL BILL</h4>
+<div style="display:flex;justify-content:space-between;margin-bottom:20px;"><h2 style="color:gold;margin:0;">DNHQ DASHBOARD</h2><button onclick="document.getElementById('adminView').style.display='none'" style="background:red;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;">CLOSE</button></div>
+<div style="background:#1e293b;padding:15px;border-radius:12px;border:1px dashed var(--gold);margin-bottom:25px;">
+<h4 style="color:var(--gold);margin:0 0 10px 0;">CREATE MANUAL BILL</h4>
 <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
-<input type="tel" id="man_phone" class="man-input" placeholder="Phone: 03XX-XXXXXXX" pattern="03[0-9]{9}">
-<div id="manual_works_container">
-<div style="display:flex; gap:10px; margin-bottom:10px;">
-<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;">
-<input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">
+<input type="tel" id="man_phone" class="man-input" placeholder="Phone: 03XX-XXXXXXX">
+<div id="manual_works_container"><div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;"></div></div>
+<button onclick="addNewManualRow()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:8px;margin-bottom:15px;border-radius:8px;">+ Add More Work</button>
+<button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;">SAVE & REFRESH</button>
 </div>
+<div id="logItems" class="loading">Loading...</div>
 </div>
-<button onclick="addNewManualRow()" style="width:100%; background:transparent; border:1px dashed gold; color:gold; padding:8px; margin-bottom:15px; border-radius:8px;">+ Add More Work</button>
-<button onclick="saveManualEntry()" style="width:100%; background:gold; color:black; font-weight:bold; border:none; padding:12px; border-radius:8px;">SAVE & REFRESH</button>
-</div>
-<div id="logItems" class="loading">Loading records...</div>
-</div>
-<div class="checkout-bar" id="cart">
-<div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto;">
-<div><small style="color:#94a3b8;">Total Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
-<button class="btn-wa" onclick="placeOrder()"><i class="fab fa-whatsapp"></i> PLACE ORDER</button>
-</div>
-</div>
-<div id="historyModal" class="modal">
-<div class="modal-content">
-<span class="modal-close" onclick="closeHistoryModal()">&times;</span>
-<div id="verifyStep">
-<h3 style="text-align:center; color:#fbbf24; margin-bottom:5px;">🔐 Verify Identity</h3>
-<p style="text-align:center; color:#94a3b8; font-size:13px; margin-bottom:20px;">Enter your registered name & phone</p>
-<input type="text" id="histName" class="form-input" placeholder="Your Name (as registered)" autocomplete="name">
-<input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX" pattern="03[0-9]{9}" autocomplete="tel">
-<button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
-<div id="histError" class="error-msg"></div>
-<div id="histSuccess" class="success-msg"></div>
-</div>
-<div id="showStep" style="display:none;">
-<h3 style="text-align:center; color:#fbbf24; margin-bottom:15px;">📜 Your Service History</h3>
-<div id="custInfo" style="background:#0f172a; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border-left:3px solid #fbbf24;"></div>
-<div id="histList" style="max-height:300px; overflow-y:auto;"></div>
-<div class="action-row">
-<button class="btn-download-all" onclick="downloadCustomerHistoryPDF()"><i class="fas fa-file-pdf"></i> Download All (PDF)</button>
-<button class="btn-back" onclick="resetHistoryView()"><i class="fas fa-search"></i> New Search</button>
-</div>
-</div>
-</div>
-</div>
-<div id="installPrompt">
-<p><i class="fas fa-mobile-alt"></i> Install DNHQ App for faster access!</p>
-<button onclick="installApp()"><i class="fas fa-plus"></i> Install</button>
-<button class="close-install" onclick="dismissInstall()">✕</button>
-</div>
-<footer>
-<div onclick="openAdmin()" style="cursor:pointer; font-size:11px; opacity:0.5;">Admin Access</div>
-<p style="margin-top:10px; font-size:12px;">© 2026 DNHQ Services • +92 315 2458657</p>
-</footer>
+<div class="checkout-bar" id="cart"><div style="display:flex;justify-content:space-between;align-items:center;max-width:600px;margin:0 auto;"><div><small style="color:#94a3b8;">Total Bill</small><div style="font-size:20px;font-weight:900;">Rs <span id="billTotal">0</span></div></div><button class="btn-wa" onclick="placeOrder()"><i class="fab fa-whatsapp"></i> PLACE ORDER</button></div></div>
+<div id="historyModal" class="modal"><div class="modal-content"><span class="modal-close" onclick="closeHistoryModal()">&times;</span><div id="verifyStep"><h3 style="text-align:center;color:#fbbf24;">🔐 Verify Identity</h3><p style="text-align:center;color:#94a3b8;font-size:13px;">Enter your registered name & phone</p><input type="text" id="histName" class="form-input" placeholder="Your Name"><input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX"><button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button><div id="histError" class="error-msg"></div><div id="histSuccess" class="success-msg"></div></div><div id="showStep" style="display:none;"><h3 style="text-align:center;color:#fbbf24;">📜 Your Service History</h3><div id="custInfo" style="background:#0f172a;padding:12px;border-radius:8px;margin-bottom:15px;"></div><div id="histList" style="max-height:300px;overflow-y:auto;"></div><div class="action-row"><button class="btn-download-all" onclick="downloadCustomerHistoryPDF()">📥 Download All (PDF)</button><button class="btn-back" onclick="resetHistoryView()">🔍 New Search</button></div></div></div></div>
+<div id="installPrompt"><p>📱 Install DNHQ App!</p><button onclick="installApp()">Install</button><button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;">✕</button></div>
+<footer><div onclick="openAdmin()" style="cursor:pointer;font-size:11px;opacity:0.5;">Admin Access</div><p style="margin-top:10px;font-size:12px;">© 2026 DNHQ Services • +92 315 2458657</p></footer>
 <script>
-// === Global Variables ===
 let cart = [];
 let currentCustData = null;
 let deferredPrompt = null;
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMB5IipyvuknuPzbcnkQ44JfUIPggz37X45gKaqXfBNAfKBUU7fwgOyr7xF6Mm-pTJlQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2fj7aV6RDA6RNRyFfgz40-OT36djVF3KFFW-6z3IZ5LsvA12xygVxbspOTcv7jpmmSA/exec";
 
-// ✅ FIX 1: Image to Base64 Converter (ADDED)
+// ✅ ADDED: Image to Base64
 function getImageBase64(imgElement) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         try {
             if (!imgElement || !imgElement.src) { resolve(null); return; }
             const canvas = document.createElement('canvas');
@@ -186,8 +128,7 @@ function getImageBase64(imgElement) {
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
-                const dataURL = canvas.toDataURL('image/jpeg', 0.9);
-                resolve(dataURL);
+                resolve(canvas.toDataURL('image/jpeg'));
             };
             img.onerror = () => resolve(null);
             img.src = imgElement.src;
@@ -195,19 +136,16 @@ function getImageBase64(imgElement) {
     });
 }
 
-// === Video Function ===
 function playVid() {
     const box = document.getElementById('videoBox');
     const vid = document.getElementById('myVideo');
     box.style.display = box.style.display === "none" ? "block" : "none";
-    if(box.style.display === "block") vid.play();
-    else vid.pause();
+    box.style.display === "block" ? vid.play() : vid.pause();
 }
 
-// === Service Toggle ===
 function toggleSvc(el, name, price) {
     const idx = cart.findIndex(c => c.name === name);
-    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
+    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); }
     else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
     updateCart();
 }
@@ -218,22 +156,20 @@ function updateCart() {
     document.getElementById('billTotal').innerText = total.toLocaleString();
 }
 
-// === Admin Access ===
 function openAdmin() {
-    if(prompt("Enter Admin PIN:") === "dnhq123") { 
-        document.getElementById('adminView').style.display='block'; 
-        loadLogs(); 
+    if(prompt("Enter Admin PIN:") === "dnhq123") {
+        document.getElementById('adminView').style.display='block';
+        loadLogs();
     }
 }
 
 function addNewManualRow() {
     const div = document.createElement('div');
-    div.style = "display:flex; gap:10px; margin-bottom:10px;";
-    div.innerHTML = '<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">';
+    div.style = "display:flex;gap:10px;margin-bottom:10px;";
+    div.innerHTML = '<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;">';
     document.getElementById('manual_works_container').appendChild(div);
 }
 
-// === Save Manual Entry ===
 async function saveManualEntry() {
     const name = document.getElementById('man_name').value.trim();
     const phone = document.getElementById('man_phone').value.trim();
@@ -252,18 +188,16 @@ async function saveManualEntry() {
     const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: allWork.join(", "), total: total };
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        alert("✅ Order saved successfully!");
+        alert("✅ Order saved!");
         loadLogs();
         document.getElementById('man_name').value = '';
         document.getElementById('man_phone').value = '';
-        document.getElementById('manual_works_container').innerHTML = `<div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;"></div>`;
-    } catch(e) { alert("Error saving: " + e.message); }
+    } catch(e) { alert("Error: " + e.message); }
 }
 
-// === Load Admin Logs ===
 async function loadLogs() {
     const container = document.getElementById('logItems');
-    container.innerHTML = '<div class="loading">Fetching Records</div>';
+    container.innerHTML = '<div class="loading">Fetching...</div>';
     try {
         const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
         const data = await res.json();
@@ -274,31 +208,30 @@ async function loadLogs() {
                 <button class="pdf-btn" onclick="generatePDFAsync(${JSON.stringify(d).replace(/'/g, "\\'")})">PDF</button>
                 <b>${d.client || "Unknown"}</b><br>
                 <small class="phone">📱 ${d.phone || "N/A"}</small><br>
-                <small>${(d.work || "").substring(0, 50)}${(d.work||"").length>50?'...':''}</small><br>
-                <b style="color:gold; font-size:16px;">Rs ${Number(d.total||0).toLocaleString()}</b><br>
-                <small style="color:#64748b;">${d.date ? new Date(d.date).toLocaleDateString() : ''}</small><br>
+                <small>${(d.work || "").substring(0, 50)}</small><br>
+                <b style="color:gold;">Rs ${Number(d.total||0).toLocaleString()}</b><br>
                 <button class="del-btn" onclick="deleteEntry(${index + 2})">🗑️ Delete</button>
-            </div>
-        `).join('');
-    } catch(e) { container.innerHTML = `<p style="color:#ef4444;text-align:center;">Error: ${e.message}</p>`; console.error(e); }
+            </div>`).join('');
+    } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
-// ✅ FIX 2: Delete Entry (Properly Closed)
+// ✅ FIXED: Properly closed function
 async function deleteEntry(rowIdx) {
-    if(confirm("Are you sure you want to delete this entry?")) {
+    if(confirm("Delete this entry?")) {
         try {
             await fetch(SCRIPT_URL + "?deleteRow=" + rowIdx, { method: 'GET' });
             alert("✅ Deleted!");
             loadLogs();
-        } catch(e) { alert("Error deleting: " + e.message); }
+        } catch(e) { alert("Error: " + e.message); }
     }
 }
 
-// ✅ FIX 3: Generate PDF (Separate Function with Logo)
+// ✅ ADDED: Helper function
+window.generatePDFAsync = async function(order) { await generatePDF(order); };
+
 async function generatePDF(order) {
-    console.log('📄 Generating PDF for:', order.client);
     try {
-        if (!window.jspdf) { alert('❌ jsPDF library not loaded. Please refresh.'); return; }
+        if (!window.jspdf) { alert('jsPDF not loaded'); return; }
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         doc.setFillColor(0,0,0);
@@ -311,8 +244,7 @@ async function generatePDF(order) {
                 canvas.width = imgElement.naturalWidth || 100;
                 canvas.height = imgElement.naturalHeight || 100;
                 ctx.drawImage(imgElement, 0, 0);
-                const logoData = canvas.toDataURL('image/jpeg');
-                doc.addImage(logoData, 'JPEG', 15, 8, 30, 30);
+                doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 15, 8, 30, 30);
             }
         } catch (e) { console.log('Logo skip:', e); }
         doc.setTextColor(251, 191, 36);
@@ -339,92 +271,59 @@ async function generatePDF(order) {
             }
             return [item.trim(), "-"];
         });
-        doc.autoTable({
-            startY: 78,
-            head: [['SERVICE DESCRIPTION', 'AMOUNT']],
-            body: body,
-            theme: 'grid',
-            headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 },
-            styles: { fontSize: 9, cellPadding: 4 },
-            columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }
-        });
+        doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
         let finalY = doc.lastAutoTable.finalY + 15;
         doc.setDrawColor(251, 191, 36);
         doc.setLineWidth(1);
         doc.line(110, finalY - 5, 195, finalY - 5);
         doc.setFontSize(14);
         doc.setFont("helvetica", "bold");
-        doc.text("GRAND TOTAL:", 115, finalY);
+        doc.text("TOTAL:", 115, finalY);
         doc.setTextColor(184, 134, 11);
         doc.text("Rs " + Number(order.total || 0).toLocaleString(), 195, finalY, { align: 'right' });
         doc.setTextColor(150, 150, 150);
         doc.setFontSize(9);
-        doc.text("Contact: +92 315 2458657 | Quality Work Guaranteed", 105, 285, { align: "center" });
+        doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
         const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
         const dateStr = order.date ? new Date(order.date).toISOString().split('T')[0] : 'invoice';
         doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
-        console.log('✅ PDF saved!');
-    } catch (error) { console.error('❌ PDF Error:', error); alert('Error: ' + error.message); }
+    } catch (error) { alert('PDF Error: ' + error.message); }
 }
 
-// ✅ FIX 4: Helper Function for onclick
-window.generatePDFAsync = async function(order) { await generatePDF(order); };
-
-// === Place Order ===
 async function placeOrder() {
-    if(cart.length === 0) return alert("Please select at least one service!");
+    if(cart.length === 0) return alert("Select at least one service!");
     const name = prompt("Customer Name:")?.trim();
-    const phone = prompt("Phone Number (03XX-XXXXXXX):")?.trim();
-    if(!name || !phone) { alert("Name and Phone are required!"); return; }
-    if(!/^03[0-9]{9}$/.test(phone)) { alert("Please enter valid phone: 03XX-XXXXXXX"); return; }
+    const phone = prompt("Phone (03XX-XXXXXXX):")?.trim();
+    if(!name || !phone) { alert("Name and Phone required!"); return; }
     const total = cart.reduce((a, b) => a + (b.price || 0), 0);
     const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
     const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, total: total };
-    const btn = document.querySelector('.btn-wa');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-    btn.disabled = true;
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        const waText = `*🔧 DNHQ SERVICES ORDER*%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Services:*%0A${cart.map(c=>`• ${c.name} - Rs ${c.price}`).join('%0A')}%0A%0A*💰 Total: Rs ${total.toLocaleString()}*%0A%0A_Please confirm my appointment. Thank you!_`;
+        const waText = `*DNHQ ORDER*%0ACustomer: ${name}%0APhone: ${phone}%0AWork: ${workFormatted}%0ATotal: Rs ${total}`;
         window.location.href = `https://wa.me/923152458657?text=${waText}`;
         cart = [];
         updateCart();
         document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
-    } catch(e) { alert("Error placing order: " + e.message); btn.innerHTML = originalText; btn.disabled = false; }
+    } catch(e) { alert("Error: " + e.message); }
 }
 
-// === App Download / PWA Install ===
 function triggerAppInstall() {
-    if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; } 
-    else {
-        const ua = navigator.userAgent.toLowerCase();
-        if (ua.includes('android')) { alert("📲 To install:\n1. Tap the 3 dots (⋮)\n2. Select 'Add to Home screen'\n3. Name it 'DNHQ Services'"); } 
-        else if (ua.includes('iphone') || ua.includes('ipad')) { alert("📲 To install on iOS:\n1. Tap Share button (📤)\n2. Select 'Add to Home Screen'\n3. Name it 'DNHQ Services'"); } 
-        else { alert("📱 Open on mobile to install!"); }
-    }
+    if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; }
+    else { alert("📲 Tap Share → Add to Home Screen"); }
 }
-function installApp() {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choice) => { if (choice.outcome === 'accepted') console.log('PWA installed'); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; });
-    }
-}
+function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }
 function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-window.addEventListener('appinstalled', () => { deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; });
 
-// === Customer History Functions ===
-function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
-function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; document.body.style.overflow = 'auto'; resetHistoryView(); }
+function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
+function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
 function resetHistoryView() {
     document.getElementById('verifyStep').style.display = 'block';
     document.getElementById('showStep').style.display = 'none';
     document.getElementById('histName').value = '';
     document.getElementById('histPhone').value = '';
     document.getElementById('histError').style.display = 'none';
-    document.getElementById('histSuccess').style.display = 'none';
-    document.getElementById('histList').innerHTML = '';
     currentCustData = null;
 }
 
@@ -432,35 +331,29 @@ async function fetchCustomerHistory() {
     const name = document.getElementById('histName').value.trim().toUpperCase();
     const phone = document.getElementById('histPhone').value.trim();
     const err = document.getElementById('histError');
-    const success = document.getElementById('histSuccess');
-    if (!name || !phone) { err.textContent = "⚠️ Please enter both Name and Phone"; err.style.display = 'block'; return; }
-    if (!/^03[0-9]{9}$/.test(phone)) { err.textContent = "⚠️ Enter valid phone: 03XX-XXXXXXX"; err.style.display = 'block'; return; }
+    if (!name || !phone) { err.textContent = "Enter both Name and Phone"; err.style.display = 'block'; return; }
     err.style.display = 'none';
-    success.style.display = 'none';
     document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
     try {
-        const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&t=${Date.now()}`;
+        const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
         const res = await fetch(url);
         const data = await res.json();
         if (data.error) throw new Error(data.error);
-        if (!data || data.length === 0) { err.textContent = "❌ No records found. Please check your Name & Phone."; err.style.display = 'block'; return; }
+        if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
         currentCustData = data;
-        success.textContent = `✅ Found ${data.length} order(s)!`;
-        success.style.display = 'block';
-        showHistoryUI(data, name, phone);
-    } catch (e) { err.textContent = "⚠️ Error loading data."; err.style.display = 'block'; console.error("History fetch error:", e); }
-}
-
-function showHistoryUI(orders, name, phone) {
-    document.getElementById('verifyStep').style.display = 'none';
-    document.getElementById('showStep').style.display = 'block';
-    const totalSpent = orders.reduce((sum, o) => sum + (Number(o.total)||0), 0);
-    document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b class="phone">📱 ${phone}</b><br><b>📦 Orders:</b> ${orders.length} | <b>💰 Total:</b> Rs ${totalSpent.toLocaleString()}`;
-    const list = document.getElementById('histList');
-    list.innerHTML = orders.slice().reverse().map((o, i) => {
-        const date = o.date ? new Date(o.date).toLocaleDateString('en-PK') : 'N/A';
-        return `<div class="history-item"><b>#${orders.length - i} • 📅 ${date}</b><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small><span class="amt">💰 Rs ${Number(o.total||0).toLocaleString()}</span><button class="pdf-sm" onclick='downloadSingleHistPDF(${JSON.stringify(o).replace(/'/g,"\\'")})'>📄 Download</button></div>`;
-    }).join('');
+        document.getElementById('verifyStep').style.display = 'none';
+        document.getElementById('showStep').style.display = 'block';
+        const totalSpent = data.reduce((sum, o) => sum + (Number(o.total)||0), 0);
+        document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `
+            <div class="history-item">
+                <b>#${data.length - i} • ${o.date ? new Date(o.date).toLocaleDateString() : 'N/A'}</b>
+                <small class="phone">📱 ${o.phone || phone}</small>
+                <small>🔧 ${(o.work || "").substring(0, 60)}</small>
+                <span class="amt">Rs ${Number(o.total||0).toLocaleString()}</span>
+                <button class="pdf-sm" onclick='downloadSingleHistPDF(${JSON.stringify(o).replace(/'/g,"\\'")})'>📄 Download</button>
+            </div>`).join('');
+    } catch (e) { err.textContent = "Error loading data"; err.style.display = 'block'; }
 }
 
 function downloadSingleHistPDF(order) { generatePDF(order); }
@@ -478,14 +371,13 @@ function downloadCustomerHistoryPDF() {
     doc.setFont("helvetica","bold");
     doc.text("DNHQ SERVICES", 55, 22);
     doc.setFontSize(9);
-    doc.text("SERVICE HISTORY REPORT", 55, 28);
+    doc.text("SERVICE HISTORY", 55, 28);
     doc.setTextColor(0,0,0);
     doc.setFontSize(10);
     doc.text("Customer: " + cust.client, 15, 52);
     doc.text("Phone: " + cust.phone, 15, 58);
-    doc.text("Total Orders: " + currentCustData.length, 145, 52);
-    const rows = currentCustData.map(o => [o.date ? new Date(o.date).toLocaleDateString('en-PK') : 'N/A', (o.work || "").substring(0, 40), "Rs " + Number(o.total||0).toLocaleString()]);
-    doc.autoTable({ startY: 64, head: [['DATE', 'SERVICE', 'AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 3 }, columnStyles: { 0: { cellWidth: 35 }, 1: { cellWidth: 105 }, 2: { cellWidth: 40, halign: 'right' } } });
+    const rows = currentCustData.map(o => [o.date ? new Date(o.date).toLocaleDateString() : 'N/A', (o.work || "").substring(0, 40), "Rs " + Number(o.total||0).toLocaleString()]);
+    doc.autoTable({ startY: 64, head: [['DATE', 'SERVICE', 'AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 3 } });
     let y = doc.lastAutoTable.finalY + 12;
     doc.setDrawColor(251,191,36);
     doc.line(110, y-4, 195, y-4);
@@ -493,15 +385,10 @@ function downloadCustomerHistoryPDF() {
     doc.text("GRAND TOTAL:", 115, y);
     doc.setTextColor(184,134,11);
     doc.text("Rs " + grandTotal.toLocaleString(), 195, y, {align:'right'});
-    doc.setTextColor(150,150,150);
-    doc.setFontSize(8);
-    doc.text("Contact: +92 315 2458657", 105, 285, {align:'center'});
     doc.save(`DNHQ_History_${cust.client}.pdf`);
 }
 
 window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); }
-
-// ✅ FIX 5: Make Functions Global
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
@@ -510,8 +397,6 @@ window.triggerAppInstall = triggerAppInstall;
 window.generatePDF = generatePDF;
 window.deleteEntry = deleteEntry;
 window.fetchCustomerHistory = fetchCustomerHistory;
-
-// === Initialize ===
 document.addEventListener('DOMContentLoaded', () => { updateCart(); });
 </script>
 </body>
