@@ -3,221 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ MASTER APP | Karachi No.1</title>
+    <title>DNHQ SERVICES | Karachi Professional Maintenance</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+
     <style>
-        :root { --gold: #fbbf24; --dark: #070a13; --card: #111827; --success: #22c55e; }
-        body { font-family: 'Poppins', sans-serif; background: var(--dark); color: #e2e8f0; margin: 0; padding-bottom: 180px; }
-        
-        /* Premium Header */
-        .app-header { background: linear-gradient(180deg, #000 0%, #111 100%); padding: 50px 20px; text-align: center; border-bottom: 5px solid var(--gold); border-radius: 0 0 60px 60px; box-shadow: 0 15px 50px rgba(0,0,0,0.8); }
-        .main-logo { height: 120px; border-radius: 25px; border: 3px solid var(--gold); margin-bottom: 20px; box-shadow: 0 0 20px rgba(251,191,36,0.3); }
-        .brand-name { font-size: 36px; font-weight: 900; color: var(--gold); margin: 0; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .container { max-width: 700px; margin: 0 auto; padding: 25px; }
+        :root { 
+            --gold: #fbbf24; 
+            --dark-main: #0a0f1a; 
+            --card-bg: #161e2d; 
+            --text-gray: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
 
-        /* Welcome Section */
-        .welcome-card { background: var(--card); padding: 25px; border-radius: 30px; border: 1px solid #1f2937; margin-top: -40px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: var(--dark-main); 
+            color: #f1f5f9; 
+            margin: 0; 
+            padding-bottom: 140px;
+            overflow-x: hidden;
+        }
 
-        /* App Download Banner */
-        .download-banner { background: linear-gradient(90deg, #fbbf24, #d97706); padding: 25px; border-radius: 30px; margin: 40px 0; color: #000; text-align: center; position: relative; }
-        .btn-apk { background: #000; color: #fff; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; margin-top: 15px; }
+        /* --- STYLISH HEADER --- */
+        .header {
+            background: linear-gradient(180deg, #000 0%, #111 100%);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+            border-radius: 0 0 60px 60px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            position: relative;
+        }
+        .header img {
+            height: 110px;
+            border-radius: 25px;
+            border: 3px solid var(--gold);
+            padding: 5px;
+            background: #000;
+            transition: 0.5s;
+        }
+        .header h1 {
+            margin: 15px 0 5px;
+            font-size: 35px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+        .header p {
+            margin: 0;
+            color: var(--text-gray);
+            font-size: 14px;
+            letter-spacing: 4px;
+        }
 
-        /* History Panel */
-        .search-box { background: #1a2234; padding: 30px; border-radius: 30px; border: 1px solid #334155; margin-bottom: 50px; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 12px; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; font-weight: bold; }
-        .form-control { width: 100%; padding: 18px; border-radius: 15px; border: 1px solid #334155; background: #000; color: #fff; box-sizing: border-box; font-size: 16px; }
+        .container { max-width: 650px; margin: 0 auto; padding: 25px; }
 
-        /* Modern Grid for Services */
-        .category-title { display: flex; align-items: center; margin: 50px 0 25px; }
-        .category-title h2 { color: var(--gold); font-size: 18px; text-transform: uppercase; letter-spacing: 3px; margin: 0; }
-        .hr-line { flex-grow: 1; height: 2px; background: rgba(251,191,36,0.2); margin-left: 20px; }
+        /* --- NAVIGATION CARDS --- */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: -40px;
+        }
+        .nav-card {
+            background: var(--card-bg);
+            border: 1px solid #1f2937;
+            padding: 25px;
+            border-radius: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .nav-card:active { transform: scale(0.95); }
+        .nav-card i { font-size: 30px; color: var(--gold); margin-bottom: 12px; display: block; }
+        .nav-card span { font-weight: 600; font-size: 15px; }
 
-        .service-list { display: grid; gap: 15px; }
-        .svc-card { background: var(--card); padding: 25px; border-radius: 25px; border: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
-        .svc-card.selected { border: 2px solid var(--gold); background: #000; }
-        .svc-card.selected::before { content: '✓'; position: absolute; left: 0; top: 0; background: var(--gold); color: #000; padding: 5px 12px; font-weight: 900; border-radius: 0 0 15px 0; }
-        .svc-info b { font-size: 18px; display: block; color: #fff; }
-        .svc-info p { font-size: 13px; color: #94a3b8; margin: 5px 0 0; }
-        .svc-price { font-size: 18px; font-weight: 900; color: var(--gold); }
+        /* --- TRACK RECORD BUTTON --- */
+        .track-box {
+            margin: 40px 0;
+            text-align: center;
+        }
+        .btn-track-main {
+            background: linear-gradient(90deg, #fbbf24 0%, #d97706 100%);
+            color: #000;
+            padding: 20px;
+            width: 100%;
+            border-radius: 20px;
+            border: none;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(251, 191, 36, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
 
-        /* Real-time Floating Checkout */
-        .floating-cart { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 5px solid var(--gold); padding: 35px 25px; display: none; z-index: 999; box-shadow: 0 -20px 50px rgba(0,0,0,0.9); border-radius: 40px 40px 0 0; }
-        .cart-content { max-width: 700px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .btn-checkout { background: var(--success); color: #fff; padding: 20px 45px; border-radius: 20px; font-weight: 900; font-size: 18px; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+        /* --- SERVICE SECTIONS --- */
+        .section-label {
+            display: flex;
+            align-items: center;
+            margin: 40px 0 20px;
+        }
+        .section-label h2 {
+            font-size: 16px;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        .label-line { flex-grow: 1; height: 1px; background: #334155; margin-left: 15px; }
 
-        /* Admin Experience */
-        #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 10000; padding: 40px 25px; overflow-y: auto; }
-        .admin-log { background: #111; border: 1px solid #333; padding: 25px; border-radius: 25px; margin-bottom: 20px; position: relative; }
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid #1f2937;
+            padding: 20px;
+            border-radius: 22px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .service-card.selected {
+            border: 2px solid var(--gold);
+            background: rgba(251, 191, 36, 0.05);
+        }
+        .svc-details b { font-size: 18px; display: block; margin-bottom: 4px; }
+        .svc-details p { font-size: 13px; color: var(--text-gray); margin: 0; line-height: 1.4; }
+        .svc-price { color: var(--gold); font-weight: 900; font-size: 18px; }
 
-        footer { text-align: center; padding: 100px 20px; opacity: 0.5; border-top: 1px solid #1f2937; }
+        /* --- OVERLAYS (Full Page) --- */
+        .page-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--dark-main);
+            z-index: 10000;
+            padding: 25px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #1f2937;
+        }
+        .btn-close-overlay {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        /* --- ADMIN & FORM STYLES --- */
+        .input-box {
+            background: #000;
+            border: 1px solid #334155;
+            padding: 18px;
+            border-radius: 15px;
+            color: white;
+            width: 100%;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .admin-action-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        /* --- CHECKOUT BAR --- */
+        .checkout-bar {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%;
+            background: #000;
+            border-top: 4px solid var(--gold);
+            padding: 30px 20px;
+            display: none;
+            z-index: 9999;
+            border-radius: 40px 40px 0 0;
+        }
+        .checkout-flex {
+            max-width: 650px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-book-wa {
+            background: var(--success);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 18px;
+            border: none;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* --- TEAM & PORTFOLIO CARDS --- */
+        .team-member {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .team-member img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); }
     </style>
 </head>
 <body>
 
-    <header class="app-header">
-        <img src="1773452778552.jpeg" class="main-logo" id="brandLogo">
-        <h1 class="brand-name">DNHQ SERVICES</h1>
-        <div style="color:var(--gold); font-size:12px; letter-spacing:5px;">KARACHI'S ELITE SOLUTIONS</div>
-    </header>
+    <div class="header">
+        <img src="1773452778552.jpeg" id="brandLogo">
+        <h1>DNHQ SERVICES</h1>
+        <p>REPAIRING & MAINTENANCE</p>
+    </div>
 
     <div class="container">
-        <div class="welcome-card">
-            <h3>Assalam-o-Alaikum!</h3>
-            <p style="color:#94a3b8;">Choose a service below to book an expert technician.</p>
+        <div class="nav-grid">
+            <div class="nav-card" onclick="openOverlay('teamPage')"><i class="fas fa-users"></i><span>OUR TEAM</span></div>
+            <div class="nav-card" onclick="openOverlay('portfolioPage')"><i class="fas fa-images"></i><span>PORTFOLIO</span></div>
+            <div class="nav-card" onclick="openOverlay('tutorialPage')"><i class="fas fa-play-circle"></i><span>TUTORIALS</span></div>
+            <div class="nav-card" onclick="openAdmin()"><i class="fas fa-user-shield"></i><span>ADMIN</span></div>
         </div>
 
-        <div class="download-banner">
-            <h2 style="margin:0;">Official Mobile App</h2>
-            <p>Install our app for 10% discount on every service!</p>
-            <a href="DNHQ_Services.apk" class="btn-apk" download><i class="fab fa-android"></i> DOWNLOAD APK V2.0</a>
-        </div>
-
-        <div class="category-title"><h2>Customer History</h2><div class="hr-line"></div></div>
-        <div class="search-box">
-            <div class="input-group">
-                <label>Registered Name</label>
-                <input type="text" id="cust_name" class="form-control" placeholder="e.g. Daniyal Khan">
-            </div>
-            <div class="input-group">
-                <label>Registered Phone</label>
-                <input type="number" id="cust_phone" class="form-control" placeholder="03XXXXXXXXX">
-            </div>
-            <button class="btn-apk" style="width:100%; justify-content:center; background:var(--gold); color:#000;" onclick="checkSecureHistory()">FETCH MY RECORDS</button>
-            <div id="secureResult" style="margin-top:20px; display:none;"></div>
-        </div>
-
-        <div class="category-title"><h2>AC & Cooling Experts</h2><div class="hr-line"></div></div>
-        <div class="service-list">
-            <div class="svc-card" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-info"><b>Master Service (Chemical)</b><p>Deep cleaning of Indoor/Outdoor with chemicals</p></div><div class="svc-price">Rs 3,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'AC General Service', 1500)"><div class="svc-info"><b>General Service</b><p>Basic jet wash and filter cleaning</p></div><div class="svc-price">Rs 1,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'AC Gas Refill (R22)', 8500)"><div class="svc-info"><b>Full Gas Charging (R22)</b><p>1.5 Ton Full Gas Refilling</p></div><div class="svc-price">Rs 8,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'AC Gas Refill (Inverter)', 9500)"><div class="svc-info"><b>Inverter Gas (R410)</b><p>Pure R410 Inverter Gas Refill</p></div><div class="svc-price">Rs 9,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'AC Installation', 4500)"><div class="svc-info"><b>Professional Installation</b><p>Wall mount setup with bracket fix</p></div><div class="svc-price">Rs 4,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'AC Dismantle', 1500)"><div class="svc-info"><b>AC Dismantling</b><p>Gas locking and safe removal</p></div><div class="svc-price">Rs 1,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'AC Leakage Solution', 3000)"><div class="svc-info"><b>Leakage & Welding</b><p>Nitrogen test and silver welding</p></div><div class="svc-price">Rs 3,000</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'AC PCB Repair', 3500)"><div class="svc-info"><b>PCB Board Repairing</b><p>Inverter/Non-Inverter card repair</p></div><div class="svc-price">Rs 3,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'AC Capacitor Replacement', 1500)"><div class="svc-info"><b>New Capacitor</b><p>Original 45uf-55uf Replacement</p></div><div class="svc-price">Rs 1,500</div></div>
-        </div>
-
-        <div class="category-title"><h2>Electrical Solutions</h2><div class="hr-line"></div></div>
-        <div class="service-list">
-            <div class="svc-card" onclick="toggleSvc(this, 'Short Circuit Fix', 1500)"><div class="svc-info"><b>Short Circuit Repair</b><p>Main line fault finding and repair</p></div><div class="svc-price">Rs 1,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'UPS Installation', 2500)"><div class="svc-info"><b>UPS & Battery Setup</b><p>Professional backup wiring</p></div><div class="svc-price">Rs 2,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'DB Dressing', 4500)"><div class="svc-info"><b>Full DB Dressing</b><p>Breaker alignment and load management</p></div><div class="svc-price">Rs 4,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'Ceiling Fan Install', 800)"><div class="svc-info"><b>Fan Installation</b><p>Ceiling, Bracket or Exhaust Fan</p></div><div class="svc-price">Rs 800</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'Switch Board Repair', 1200)"><div class="svc-info"><b>Switch Board Service</b><p>Complete button/socket replacement</p></div><div class="svc-price">Rs 1,200</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'Electric Geyser Fix', 2000)"><div class="svc-info"><b>Electric Geyser</b><p>Thermostat/Element change</p></div><div class="svc-price">Rs 2,000</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'Complete House Wiring', 15000)"><div class="svc-info"><b>New House Wiring</b><p>Starting from 1-Unit complete wiring</p></div><div class="svc-price">Rs 15,000</div></div>
-        </div>
-
-        <div class="category-title"><h2>Home Appliances</h2><div class="hr-line"></div></div>
-        <div class="service-list">
-            <div class="svc-card" onclick="toggleSvc(this, 'Refrigerator Gas', 6500)"><div class="svc-info"><b>Fridge Gas Refill</b><p>Gas Charging with filter change</p></div><div class="svc-price">Rs 6,500</div></div>
-            <div class="svc-card" onclick="toggleSvc(this, 'Washing Machine Repair', 2500)"><div class="svc-info"><b>Washing Machine</b><p>Motor winding or gear box fix</p></div><div class="svc-price">Rs 2,500</div></div>
-        </div>
-    </div>
-
-    <div id="adminView">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h1 style="color:var(--gold);">ADMIN CONSOLE</h1>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:#fff; border:none; padding:15px 25px; border-radius:15px; font-weight:900;">EXIT</button>
-        </div>
-        <div id="logItems">Fetching Secure Logs...</div>
-    </div>
-
-    <div class="floating-cart" id="cart">
-        <div class="cart-content">
-            <div>
-                <span style="color:#94a3b8; font-size:14px;">Selected Services</span>
-                <div style="font-size:28px; font-weight:900;">Rs <span id="billTotal">0</span></div>
-            </div>
-            <button class="btn-checkout" onclick="placeOrder()">
-                <i class="fab fa-whatsapp"></i> BOOK NOW
+        <div class="track-box">
+            <button class="btn-track-main" onclick="openOverlay('historyPage')">
+                <i class="fas fa-search-dollar"></i> TRACK YOUR RECORD
             </button>
         </div>
+
+        <div class="section-label"><h2>AC Services</h2><div class="label-line"></div></div>
+        <div class="service-card" onclick="toggleSvc(this, 'AC Master Service', 3500)">
+            <div class="svc-details"><b>Master Service</b><p>Indoor/Outdoor Chemical Clean & Jet Wash</p></div>
+            <div class="svc-price">Rs 3,500</div>
+        </div>
+        <div class="service-card" onclick="toggleSvc(this, 'AC General Service', 1500)">
+            <div class="svc-details"><b>General Service</b><p>Basic filter cleaning and basic checkup</p></div>
+            <div class="svc-price">Rs 1,500</div>
+        </div>
+        <div class="service-card" onclick="toggleSvc(this, 'AC Installation', 4500)">
+            <div class="svc-details"><b>New Installation</b><p>Professional wall mounting with pipe setup</p></div>
+            <div class="svc-price">Rs 4,500</div>
+        </div>
+        <div class="service-card" onclick="toggleSvc(this, 'Full Gas Charging', 8500)">
+            <div class="svc-details"><b>Gas Refill (Full)</b><p>R22/R410 Pure American Gas Charging</p></div>
+            <div class="svc-price">Rs 8,500</div>
+        </div>
+        <div class="service-card" onclick="toggleSvc(this, 'AC PCB Repairing', 3500)">
+            <div class="svc-details"><b>PCB Board Fix</b><p>Electronic circuit board component repair</p></div>
+            <div class="svc-price">Rs 3,500</div>
+        </div>
+
+        <div class="section-label"><h2>Electrical Solutions</h2><div class="label-line"></div></div>
+        <div class="service-card" onclick="toggleSvc(this, 'UPS Installation', 2500)">
+            <div class="svc-details"><b>UPS & Battery</b><p>Complete inverter setup and wiring</p></div>
+            <div class="svc-price">Rs 2,500</div>
+        </div>
+        <div class="service-card" onclick="toggleSvc(this, 'Short Circuit Repair', 1500)">
+            <div class="svc-details"><b>Fault Finding</b><p>Short circuiting and wiring burn repair</p></div>
+            <div class="svc-price">Rs 1,500</div>
+        </div>
+        <div class="service-card" onclick="toggleSvc(this, 'DB Panel Dressing', 4500)">
+            <div class="svc-details"><b>DB Dressing</b><p>Main breaker box alignment and load management</p></div>
+            <div class="svc-price">Rs 4,500</div>
+        </div>
+
+        <div class="section-label"><h2>Home Appliances</h2><div class="label-line"></div></div>
+        <div class="service-card" onclick="toggleSvc(this, 'Fridge Gas Charge', 6500)">
+            <div class="svc-details"><b>Refrigerator Gas</b><p>Complete cooling gas refill and filter change</p></div>
+            <div class="svc-price">Rs 6,500</div>
+        </div>
     </div>
 
-    <footer>
-        <h3 style="color:var(--gold);">DNHQ SERVICES</h3>
-        <p>Expert Electricians & AC Technicians • Quality Guaranteed</p>
-        <div onclick="openAdmin()" style="margin-top:50px; opacity:0.1; font-size:10px;">Cloud Login</div>
-    </footer>
+    <div id="historyPage" class="page-overlay">
+        <div class="page-header"><h2>Track Your Record</h2><button class="btn-close-overlay" onclick="closeOverlay('historyPage')">CLOSE</button></div>
+        <div class="admin-action-card">
+            <p style="color:var(--text-gray); margin-bottom:20px;">Enter your details to fetch all previous bills and service dates.</p>
+            <input type="text" id="track_name" class="input-box" placeholder="Your Name">
+            <input type="number" id="track_phone" class="input-box" placeholder="Your Phone Number">
+            <button class="btn-track-main" onclick="fetchClientHistory()">SEARCH NOW</button>
+        </div>
+        <div id="historyOutput"></div>
+    </div>
+
+    <div id="teamPage" class="page-overlay">
+        <div class="page-header"><h2>Our Experts</h2><button class="btn-close-overlay" onclick="closeOverlay('teamPage')">CLOSE</button></div>
+        <div class="team-member">
+            <div style="background:var(--gold); color:#000; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">DK</div>
+            <div><b>Daniyal Khan</b><p style="margin:0; color:var(--text-gray);">Head of Technical Services</p></div>
+        </div>
+        <div class="team-member">
+            <div style="background:#333; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center;"><i class="fas fa-bolt"></i></div>
+            <div><b>Electrical Unit</b><p style="margin:0; color:var(--text-gray);">Certified Industrial Electricians</p></div>
+        </div>
+    </div>
+
+    <div id="portfolioPage" class="page-overlay">
+        <div class="page-header"><h2>Our Work Portfolio</h2><button class="btn-close-overlay" onclick="closeOverlay('portfolioPage')">CLOSE</button></div>
+        <div class="admin-action-card"><h3>Commercial AC Installation</h3><p>Successfully completed 20 Tons VRF system at Gulshan Heights.</p></div>
+        <div class="admin-action-card"><h3>Industrial DB Panel</h3><p>Design and dressing of main control panel for textile mill.</p></div>
+    </div>
+
+    <div id="tutorialPage" class="page-overlay">
+        <div class="page-header"><h2>Tutorials & Tips</h2><button class="btn-close-overlay" onclick="closeOverlay('tutorialPage')">CLOSE</button></div>
+        <div class="admin-action-card" onclick="alert('Video Opening...')">
+            <i class="fas fa-play-circle" style="font-size:40px; color:var(--gold);"></i>
+            <h4 style="margin:10px 0 0;">How to check AC Cooling</h4>
+        </div>
+    </div>
+
+    <div id="adminPage" class="page-overlay">
+        <div class="page-header"><h2>Admin Dashboard</h2><button class="btn-close-overlay" onclick="closeOverlay('adminPage')">CLOSE</button></div>
+        
+        <div class="admin-action-card">
+            <h3>📝 CREATE MANUAL BILL</h3>
+            <input type="text" id="m_name" class="input-box" placeholder="Customer Name">
+            <input type="text" id="m_work" class="input-box" placeholder="Work Done">
+            <input type="number" id="m_price" class="input-box" placeholder="Base Amount (Rs)">
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="m_discount" class="input-box" placeholder="Discount (Rs)">
+                <input type="number" id="m_tax" class="input-box" placeholder="Tax (Rs)">
+            </div>
+            <button class="btn-track-main" style="background:var(--gold); color:#000;" onclick="generateManualBill()">GENERATE & SAVE PDF</button>
+        </div>
+
+        <div id="logItems">Loading Records...</div>
+    </div>
+
+    <div class="checkout-bar" id="cartBar">
+        <div class="checkout-flex">
+            <div><small style="color:var(--text-gray);">Estimated Bill</small><div style="font-size:24px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
+            <button class="btn-book-wa" onclick="confirmBooking()"><i class="fab fa-whatsapp"></i> BOOK NOW</button>
+        </div>
+    </div>
 
     <script>
-    let cart = [];
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
+        let cart = [];
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
-    function toggleSvc(el, name, price) {
-        const idx = cart.findIndex(c => c.name === name);
-        if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
-        else { cart.push({name, price: parseInt(price)}); el.classList.add('selected'); }
-        document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
-        document.getElementById('billTotal').innerText = cart.reduce((a, b) => a + b.price, 0).toLocaleString();
-    }
+        function openOverlay(id) { document.getElementById(id).style.display = 'block'; }
+        function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
 
-    async function checkSecureHistory() {
-        const n = document.getElementById('cust_name').value.trim().toLowerCase();
-        const p = document.getElementById('cust_phone').value.trim();
-        const resDiv = document.getElementById('secureResult');
-        if(!n || !p) return alert("Pehle details mukammal karein!");
-        resDiv.innerHTML = "<p style='text-align:center;'>Searching Records...</p>"; resDiv.style.display = "block";
-        const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
-        const data = await res.json();
-        const records = data.filter(d => d.client.toLowerCase().includes(n) && (d.work.includes(p) || d.client.includes(p)));
-        resDiv.innerHTML = records.length > 0 ? records.map(d => `
-            <div style="background:#000; padding:25px; border-radius:25px; margin-bottom:15px; border-left:8px solid var(--gold);">
-                <div style="display:flex; justify-content:space-between; font-weight:900;"><span>${d.date.split('T')[0]}</span><span style="color:var(--gold);">Rs ${d.total}</span></div>
-                <div style="font-size:14px; color:#94a3b8; margin-top:10px; line-height:1.6;">${d.work}</div>
-            </div>`).join('') : "<p style='color:red;text-align:center;'>Koi record nahi mila.</p>";
-    }
+        function toggleSvc(el, name, price) {
+            const idx = cart.findIndex(c => c.name === name);
+            if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); }
+            else { cart.push({name, price: parseInt(price)}); el.classList.add('selected'); }
+            document.getElementById('cartBar').style.display = cart.length > 0 ? 'block' : 'none';
+            document.getElementById('billTotal').innerText = cart.reduce((a, b) => a + b.price, 0).toLocaleString();
+        }
 
-    function openAdmin() { if(prompt("ACCESS PIN:") === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); } }
-
-    async function loadLogs() {
-        const container = document.getElementById('logItems'); container.innerHTML = "Accessing Database...";
-        const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
-        const data = await res.json();
-        container.innerHTML = data.reverse().map((d, i) => {
-            const rowIdx = data.length - 1 - i;
-            return `<div class="admin-log">
-                <b style="font-size:20px;">${d.client}</b><br><small style="color:gray;">${d.work}</small><br><b style="color:var(--gold); font-size:20px;">Rs ${d.total}</b><br>
-                <div style="margin-top:20px;">
-                    <button style="background:var(--gold); border:none; padding:12px 25px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick='generatePDF(${JSON.stringify(d)})'>PRINT BILL</button>
-                    <button style="background:red; color:white; border:none; padding:12px 25px; border-radius:10px; margin-left:15px; cursor:pointer;" onclick="deleteEntry(${rowIdx})">DELETE</button>
+        async function fetchClientHistory() {
+            const name = document.getElementById('track_name').value.toLowerCase();
+            const phone = document.getElementById('track_phone').value;
+            const output = document.getElementById('historyOutput');
+            if(!name || !phone) return alert("Fill all details!");
+            output.innerHTML = "Searching DNHQ Database...";
+            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
+            const data = await res.json();
+            const filtered = data.filter(d => d.client.toLowerCase().includes(name) && d.client.includes(phone));
+            output.innerHTML = filtered.map(d => `
+                <div class="admin-action-card" style="border-left:5px solid gold;">
+                    <div style="display:flex; justify-content:space-between;"><b>${d.date.split('T')[0]}</b><b style="color:gold;">Rs ${d.total}</b></div>
+                    <p style="margin:10px 0 0; font-size:14px;">${d.work}</p>
                 </div>
-            </div>`;
-        }).join('');
-    }
+            `).join('') || "No record found.";
+        }
 
-    async function deleteEntry(row) { if(confirm("Confirm Delete?")) { await fetch(SCRIPT_URL + "?deleteRow=" + (row + 2)); loadLogs(); } }
+        function openAdmin() { if(prompt("Admin PIN:") === "dnhq123") { openOverlay('adminPage'); loadAdminLogs(); } }
 
-    function generatePDF(order) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,50,'F');
-        const img = document.getElementById('brandLogo');
-        try { doc.addImage(img, 'JPEG', 15, 10, 30, 30); } catch(e) {}
-        doc.setTextColor(251, 191, 36); doc.setFontSize(32); doc.text("DNHQ SERVICES", 55, 32);
-        doc.setTextColor(0,0,0); doc.setFontSize(14); doc.text("BILL TO: " + order.client.toUpperCase(), 15, 65);
-        let items = order.work.split(", ").map(it => it.includes("(Rs ") ? [it.split("(Rs ")[0], "Rs " + it.split("(Rs ")[1].replace(")","")] : [it, "-"]);
-        doc.autoTable({ startY: 75, head: [['SERVICE', 'PRICE']], body: items, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36] } });
-        doc.setFontSize(20); doc.text("NET TOTAL: Rs " + Number(order.total).toLocaleString(), 115, doc.lastAutoTable.finalY + 20);
-        doc.save("DNHQ_BILL_" + order.client + ".pdf");
-    }
+        async function loadAdminLogs() {
+            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
+            const data = await res.json();
+            document.getElementById('logItems').innerHTML = data.reverse().map(d => `
+                <div class="admin-action-card">
+                    <b>${d.client}</b><br><small>${d.work}</small><br><b>Rs ${d.total}</b><br>
+                    <button onclick='createPDF(${JSON.stringify(d)})' style="margin-top:10px; background:var(--gold); border:none; padding:5px 15px; border-radius:5px;">PRINT</button>
+                </div>
+            `).join('');
+        }
 
-    async function placeOrder() {
-        const info = prompt("Apna Naam aur Number likhein (Billing ke liye):");
-        if(!info) return;
-        const total = cart.reduce((a, b) => a + b.price, 0);
-        const work = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: info, work: work, total: total}) });
-        window.location.href = `https://wa.me/923152458657?text=*DNHQ NEW BOOKING*%0AClient: ${info}%0AWork: ${work}%0ATotal: Rs ${total}`;
-    }
+        function generateManualBill() {
+            const base = parseInt(document.getElementById('m_price').value) || 0;
+            const disc = parseInt(document.getElementById('m_discount').value) || 0;
+            const tax = parseInt(document.getElementById('m_tax').value) || 0;
+            const total = base - disc + tax;
+            const order = {
+                client: document.getElementById('m_name').value,
+                work: document.getElementById('m_work').value + ` (Disc: ${disc}, Tax: ${tax})`,
+                total: total,
+                date: new Date().toISOString()
+            };
+            if(!order.client || !order.total) return alert("Fill data!");
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(order) });
+            createPDF(order);
+        }
+
+        function createPDF(order) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
+            doc.setTextColor(251,191,36); doc.setFontSize(26); doc.text("DNHQ SERVICES", 60, 25);
+            doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text("INVOICE TO: " + order.client.toUpperCase(), 15, 55);
+            doc.autoTable({ startY: 65, head: [['SERVICE', 'PRICE']], body: [[order.work, "Rs " + order.total]], theme: 'grid' });
+            doc.setFontSize(18); doc.text("TOTAL: Rs " + order.total, 130, doc.lastAutoTable.finalY + 20);
+            doc.save(`Bill_${order.client}.pdf`);
+        }
+
+        function confirmBooking() {
+            const info = prompt("Name & Phone Number:");
+            if(!info) return;
+            const total = cart.reduce((a, b) => a + b.price, 0);
+            const work = cart.map(c => c.name).join(", ");
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: info, work: work, total: total}) });
+            window.location.href = `https://wa.me/923152458657?text=*DNHQ NEW BOOKING*%0AClient: ${info}%0AWork: ${work}%0ATotal: Rs ${total}`;
+        }
     </script>
 </body>
 </html>
