@@ -4,53 +4,292 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DNHQ SERVICES | Official</title>
-    <link rel="manifest" href="manifest.json?v=9">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json?v=10">
     <meta name="theme-color" content="#fbbf24">
     <link rel="apple-touch-icon" href="1773452778552.jpeg">
+    
+    <!-- Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
     <style>
         :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 160px; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 180px; }
+        
+        /* Header */
         .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
         .logo-main { height: 85px; display: block; margin: 0 auto; border-radius: 10px; }
         .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
+        
+        /* Wrapper */
         .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
-        .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
-        .nav-btn { flex: 1; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin-bottom: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        /* Nav Buttons */
+        .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; flex-wrap: wrap; }
+        .nav-btn { flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        
+        /* App Download Button */
+        .app-download-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 15px;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        .app-download-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5); }
+        .app-download-btn i { font-size: 18px; }
+        
+        /* Tutorial Button */
+        .tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin: 15px 0 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        /* Section Tags */
         .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
         .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
         .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
+        
+        /* Service Items */
         .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .svc-item.selected { border: 2px solid var(--gold); background: #000; }
         .svc-meta b { display: block; font-size: 16px; color: white; }
         .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
         .svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
+        
+        /* Admin View */
         #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
         .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
         .del-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
         .pdf-btn { background: var(--gold); color: black; border: none; border-radius: 5px; padding: 5px 15px; font-weight: bold; cursor: pointer; float: right; }
         .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+        
+        /* Checkout Bar */
         .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
         .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        
+        /* Footer */
         footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
+        
+        /* === Customer History Modal Styles === */
+        .history-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #000;
+            border: none;
+            padding: 14px 25px;
+            font-size: 15px;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+        }
+        .history-btn:hover { transform: translateY(-2px); }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            overflow-y: auto;
+        }
+        .modal-content {
+            background: #111827;
+            margin: 8% auto;
+            padding: 20px;
+            border: 2px solid #fbbf24;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            right: 15px; top: 10px;
+            font-size: 24px;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: #fbbf24; }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .form-input:focus { outline: none; border-color: #fbbf24; }
+        
+        .verify-btn {
+            width: 100%;
+            background: #fbbf24;
+            color: black;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .verify-btn:hover { background: #f59e0b; }
+        
+        .error-msg {
+            color: #ef4444;
+            text-align: center;
+            font-size: 13px;
+            margin: 10px 0;
+            display: none;
+        }
+        .success-msg {
+            color: #22c55e;
+            text-align: center;
+            font-size: 13px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .history-item {
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            border-left: 3px solid #fbbf24;
+        }
+        .history-item b { color: white; display: block; margin-bottom: 5px; font-size: 14px; }
+        .history-item small { color: #94a3b8; display: block; margin: 3px 0; }
+        .history-item .phone { color: #60a5fa; font-size: 12px; }
+        .history-item .amt { color: #fbbf24; font-weight: 800; font-size: 16px; display: block; margin: 8px 0; }
+        .history-item .pdf-sm {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .history-item .pdf-sm:hover { background: #2563eb; }
+        
+        .action-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .action-row button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .btn-download-all { background: #22c55e; color: white; }
+        .btn-back { background: #64748b; color: white; }
+        
+        /* PWA Install Prompt */
+        #installPrompt {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 15px 20px;
+            z-index: 2500;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        #installPrompt p { margin: 0 0 10px 0; font-size: 14px; color: white; }
+        #installPrompt button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        #installPrompt .close-install {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid #94a3b8;
+        }
+        
+        /* Loading Spinner */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #fbbf24;
+        }
+        .loading::after {
+            content: "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏";
+            animation: spin 1s steps(10) infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        @keyframes spin { to { transform: translateX(-10ch); } }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .brand-title { font-size: 20px; }
+            .logo-main { height: 70px; }
+            .svc-meta b { font-size: 14px; }
+            .checkout-bar { padding: 15px; }
+            .btn-wa { padding: 12px 20px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <header class="brand-header">
         <img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ">
         <div class="brand-title">DNHQ SERVICES</div>
     </header>
 
     <div class="wrapper">
+        <!-- Navigation -->
         <div class="nav-container">
             <a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
             <a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
         </div>
 
+        <!-- 📱 App Download Button -->
+        <button class="app-download-btn" onclick="triggerAppInstall()">
+            <i class="fas fa-download"></i> Download Our App
+        </button>
+
+        <!-- Tutorial Button -->
         <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
         <div id="videoBox" style="display:none; margin-bottom:20px; text-align:center;">
             <video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);">
@@ -58,6 +297,12 @@
             </video>
         </div>
 
+        <!-- 🔍 Customer History Button -->
+        <button class="history-btn" onclick="openHistoryModal()">
+            <i class="fas fa-clock-rotate-left"></i> Check My Service History
+        </button>
+
+        <!-- Services: AC -->
         <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div></div>
@@ -65,18 +310,22 @@
         <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
 
+        <!-- Services: Electrical -->
         <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Short Circuit Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
         <div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div>
 
+        <!-- Services: Fridge -->
         <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Full Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
 
+        <!-- Services: Projects -->
         <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
         <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
     </div>
 
+    <!-- Admin View -->
     <div id="adminView">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="color:gold; margin:0;">DNHQ DASHBOARD</h2>
@@ -86,6 +335,7 @@
         <div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
             <h4 style="color:var(--gold); margin: 0 0 10px 0;">CREATE MANUAL BILL</h4>
             <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
+            <input type="tel" id="man_phone" class="man-input" placeholder="Phone: 03XX-XXXXXXX" pattern="03[0-9]{9}">
             <div id="manual_works_container">
                 <div style="display:flex; gap:10px; margin-bottom:10px;">
                     <input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;">
@@ -96,40 +346,109 @@
             <button onclick="saveManualEntry()" style="width:100%; background:gold; color:black; font-weight:bold; border:none; padding:12px; border-radius:8px;">SAVE & REFRESH</button>
         </div>
 
-        <div id="logItems">Data loading...</div>
+        <div id="logItems" class="loading">Loading records...</div>
     </div>
 
+    <!-- Checkout Bar -->
     <div class="checkout-bar" id="cart">
         <div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto;">
-            <div><small>Total Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
-            <button class="btn-wa" onclick="placeOrder()">PLACE ORDER</button>
+            <div><small style="color:#94a3b8;">Total Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
+            <button class="btn-wa" onclick="placeOrder()"><i class="fab fa-whatsapp"></i> PLACE ORDER</button>
         </div>
     </div>
 
-    <footer><div onclick="openAdmin()" style="cursor:pointer; font-size:11px; opacity:0.5;">Admin Access</div></footer>
+    <!-- 🔐 Customer History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeHistoryModal()">&times;</span>
+            
+            <!-- Step 1: Verify -->
+            <div id="verifyStep">
+                <h3 style="text-align:center; color:#fbbf24; margin-bottom:5px;">🔐 Verify Identity</h3>
+                <p style="text-align:center; color:#94a3b8; font-size:13px; margin-bottom:20px;">Enter your registered name & phone</p>
+                
+                <input type="text" id="histName" class="form-input" placeholder="Your Name (as registered)" autocomplete="name">
+                <input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX" pattern="03[0-9]{9}" autocomplete="tel">
+                
+                <button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
+                <div id="histError" class="error-msg"></div>
+                <div id="histSuccess" class="success-msg"></div>
+            </div>
+            
+            <!-- Step 2: Show History -->
+            <div id="showStep" style="display:none;">
+                <h3 style="text-align:center; color:#fbbf24; margin-bottom:15px;">📜 Your Service History</h3>
+                <div id="custInfo" style="background:#0f172a; padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px; border-left:3px solid #fbbf24;"></div>
+                <div id="histList" style="max-height:300px; overflow-y:auto;"></div>
+                
+                <div class="action-row">
+                    <button class="btn-download-all" onclick="downloadCustomerHistoryPDF()">
+                        <i class="fas fa-file-pdf"></i> Download All (PDF)
+                    </button>
+                    <button class="btn-back" onclick="resetHistoryView()">
+                        <i class="fas fa-search"></i> New Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt">
+        <p><i class="fas fa-mobile-alt"></i> Install DNHQ App for faster access!</p>
+        <button onclick="installApp()"><i class="fas fa-plus"></i> Install</button>
+        <button class="close-install" onclick="dismissInstall()">✕</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div onclick="openAdmin()" style="cursor:pointer; font-size:11px; opacity:0.5;">Admin Access</div>
+        <p style="margin-top:10px; font-size:12px;">© 2026 DNHQ Services • +92 315 2458657</p>
+    </footer>
 
     <script>
+    // === Global Variables ===
     let cart = [];
+    let currentCustData = null;
+    let deferredPrompt = null; // For PWA install
+    
+    // ✅ Updated: Apps Script URL (apna URL yahan paste karein)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
+    // === Video Function ===
     function playVid() {
         const box = document.getElementById('videoBox');
         const vid = document.getElementById('myVideo');
         box.style.display = box.style.display === "none" ? "block" : "none";
-        box.style.display === "block" ? vid.play() : vid.pause();
+        if(box.style.display === "block") vid.play();
+        else vid.pause();
     }
 
+    // === Service Toggle ===
     function toggleSvc(el, name, price) {
         const idx = cart.findIndex(c => c.name === name);
-        if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
-        else { cart.push({name, price: parseInt(price)}); el.classList.add('selected'); }
-        const total = cart.reduce((a, b) => a + b.price, 0);
+        if (idx > -1) { 
+            cart.splice(idx, 1); 
+            el.classList.remove('selected'); 
+        } else { 
+            cart.push({name, price: parseInt(price) || 0}); 
+            el.classList.add('selected'); 
+        }
+        updateCart();
+    }
+
+    function updateCart() {
+        const total = cart.reduce((a, b) => a + (b.price || 0), 0);
         document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
         document.getElementById('billTotal').innerText = total.toLocaleString();
     }
 
+    // === Admin Access ===
     function openAdmin() {
-        if(prompt("Enter PIN:") === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); }
+        if(prompt("Enter Admin PIN:") === "dnhq123") { 
+            document.getElementById('adminView').style.display='block'; 
+            loadLogs(); 
+        }
     }
 
     function addNewManualRow() {
@@ -139,80 +458,523 @@
         document.getElementById('manual_works_container').appendChild(div);
     }
 
+    // === Save Manual Entry (with Phone) ===
     async function saveManualEntry() {
-        const name = document.getElementById('man_name').value;
+        const name = document.getElementById('man_name').value.trim();
+        const phone = document.getElementById('man_phone').value.trim();
         const workInputs = document.querySelectorAll('.m-work');
         const priceInputs = document.querySelectorAll('.m-price');
-        let allWork = []; let total = 0;
+        
+        if(!name || !phone) return alert("Please enter Name AND Phone!");
+        
+        let allWork = [], total = 0;
         workInputs.forEach((input, i) => {
             if(input.value.trim() !== "") {
-                const p = priceInputs[i].value || 0;
-                allWork.push(input.value + " (Rs " + p + ")");
-                total += parseInt(p);
+                const p = parseInt(priceInputs[i].value) || 0;
+                allWork.push(input.value.trim() + " (Rs " + p + ")");
+                total += p;
             }
         });
-        if(!name || allWork.length === 0) return alert("Fill details!");
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: name, work: allWork.join(", "), total}) });
-        alert("Saved!"); loadLogs();
-    }
-
-    async function loadLogs() {
-        const container = document.getElementById('logItems');
-        container.innerHTML = "Fetching Records...";
+        
+        if(allWork.length === 0) return alert("Add at least one service!");
+        
+        const payload = {
+            date: new Date().toISOString(),
+            client: name.toUpperCase(),
+            phone: phone,
+            work: allWork.join(", "),
+            total: total
+        };
+        
         try {
-            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
-            const data = await res.json();
-            container.innerHTML = data.reverse().map((d, index) => `
-                <div class="log-card">
-                    <button class="pdf-btn" onclick='generatePDF(${JSON.stringify(d)})'>PDF</button>
-                    <b>${d.client}</b><br><small>${d.work}</small><br>
-                    <b style="color:gold;">Rs ${d.total}</b><br>
-                    <button class="del-btn" onclick="deleteEntry(${data.length - 1 - index})">DELETE</button>
-                </div>
-            `).join('');
-        } catch(e) { container.innerHTML = "Error loading."; }
-    }
-
-    async function deleteEntry(rowIdx) {
-        if(confirm("Delete this?")) {
-            fetch(SCRIPT_URL + "?deleteRow=" + (rowIdx + 2), { method: 'GET' });
-            alert("Deleted!"); loadLogs();
+            await fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                mode: 'no-cors',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload) 
+            });
+            alert("✅ Order saved successfully!");
+            loadLogs();
+            // Reset form
+            document.getElementById('man_name').value = '';
+            document.getElementById('man_phone').value = '';
+            document.getElementById('manual_works_container').innerHTML = `
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;">
+                    <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">
+                </div>`;
+        } catch(e) {
+            alert("Error saving: " + e.message);
         }
     }
 
+    // === Load Admin Logs ===
+    async function loadLogs() {
+        const container = document.getElementById('logItems');
+        container.innerHTML = '<div class="loading">Fetching Records</div>';
+        
+        try {
+            const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
+            const data = await res.json();
+            
+            if(data.error) throw new Error(data.error);
+            
+            if(data.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>';
+                return;
+            }
+            
+            container.innerHTML = data.map((d, index) => `
+                <div class="log-card">
+                    <button class="pdf-btn" onclick='generatePDF(${JSON.stringify(d).replace(/'/g, "\\'")})'>PDF</button>
+                    <b>${d.client || "Unknown"}</b><br>
+                    <small class="phone">📱 ${d.phone || "N/A"}</small><br>
+                    <small>${(d.work || "").substring(0, 50)}${(d.work||"").length>50?'...':''}</small><br>
+                    <b style="color:gold; font-size:16px;">Rs ${Number(d.total||0).toLocaleString()}</b><br>
+                    <small style="color:#64748b;">${d.date ? new Date(d.date).toLocaleDateString() : ''}</small><br>
+                    <button class="del-btn" onclick="deleteEntry(${index + 2})">🗑️ Delete</button>
+                </div>
+            `).join('');
+        } catch(e) {
+            container.innerHTML = `<p style="color:#ef4444;text-align:center;">Error: ${e.message}</p>`;
+            console.error(e);
+        }
+    }
+
+    // === Delete Entry ===
+    async function deleteEntry(rowIdx) {
+        if(confirm("Are you sure you want to delete this entry?")) {
+            try {
+                await fetch(SCRIPT_URL + "?deleteRow=" + rowIdx, { method: 'GET' });
+                alert("✅ Deleted!");
+                loadLogs();
+            } catch(e) {
+                alert("Error deleting: " + e.message);
+            }
+        }
+    }
+
+    // === Generate PDF (Updated with Phone) ===
     function generatePDF(order) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
+        
+        // Header
+        doc.setFillColor(0,0,0);
+        doc.rect(0,0,210,45,'F');
         const img = document.getElementById('brandLogo');
-        try { doc.addImage(img, 'JPEG', 15, 7, 25, 25); } catch(e) {}
-        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 20);
-        doc.setTextColor(0,0,0); doc.setFontSize(11);
-        doc.text("Customer: " + order.client, 15, 50);
-        doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 15, 57);
-        doc.setFontSize(18); doc.text("INVOICE", 105, 72, { align: "center" });
-
-        let items = order.work.split(", ");
+        try { doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e) {}
+        
+        doc.setTextColor(251, 191, 36);
+        doc.setFontSize(24);
+        doc.setFont("helvetica", "bold");
+        doc.text("DNHQ SERVICES", 55, 24);
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text("Professional Electrical & AC Maintenance", 55, 31);
+        
+        // Customer Info (with Phone)
+        doc.setTextColor(0,0,0);
+        doc.setFontSize(11);
+        doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
+        doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
+        doc.text("DATE: " + (order.date ? new Date(order.date).toLocaleDateString() : "N/A"), 145, 55);
+        
+        doc.setFontSize(16);
+        doc.text("INVOICE", 105, 72, { align: "center" });
+        
+        // Parse items
+        let items = (order.work || "").split(", ");
         let body = items.map(item => {
             if (item.includes("(Rs ")) {
                 let parts = item.split(" (Rs ");
-                return [parts[0], "Rs " + parts[1].replace(")", "")];
+                return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
             }
-            return [item, "-"];
+            return [item.trim(), "-"];
         });
-
-        doc.autoTable({ startY: 78, head: [['Description', 'Amount']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] }, theme: 'grid' });
-        doc.setFontSize(16); doc.text("TOTAL: Rs " + order.total, 115, doc.lastAutoTable.finalY + 20);
-        doc.save("DNHQ_" + order.client + ".pdf");
+        
+        // Table
+        doc.autoTable({
+            startY: 78,
+            head: [['SERVICE DESCRIPTION', 'AMOUNT']],
+            body: body,
+            theme: 'grid',
+            headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 },
+            styles: { fontSize: 9, cellPadding: 4 },
+            columnStyles: {
+                0: { cellWidth: 135 },
+                1: { cellWidth: 45, halign: 'right' }
+            }
+        });
+        
+        // Total
+        let finalY = doc.lastAutoTable.finalY + 15;
+        doc.setDrawColor(251, 191, 36);
+        doc.setLineWidth(1);
+        doc.line(110, finalY - 5, 195, finalY - 5);
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("GRAND TOTAL:", 115, finalY);
+        doc.setTextColor(184, 134, 11);
+        doc.text("Rs " + Number(order.total || 0).toLocaleString(), 195, finalY, { align: 'right' });
+        
+        // Footer
+        doc.setTextColor(150, 150, 150);
+        doc.setFontSize(9);
+        doc.text("Contact: +92 315 2458657 | Quality Work Guaranteed", 105, 285, { align: "center" });
+        
+        const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
+        const dateStr = order.date ? new Date(order.date).toISOString().split('T')[0] : 'invoice';
+        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
     }
 
+    // === Place Order (with Phone) ===
     async function placeOrder() {
-        const user = prompt("Customer Name:") || "Client";
-        const total = cart.reduce((a, b) => a + b.price, 0);
+        if(cart.length === 0) return alert("Please select at least one service!");
+        
+        const name = prompt("Customer Name:")?.trim();
+        const phone = prompt("Phone Number (03XX-XXXXXXX):")?.trim();
+        
+        if(!name || !phone) {
+            alert("Name and Phone are required!");
+            return;
+        }
+        
+        if(!/^03[0-9]{9}$/.test(phone)) {
+            alert("Please enter valid phone: 03XX-XXXXXXX");
+            return;
+        }
+        
+        const total = cart.reduce((a, b) => a + (b.price || 0), 0);
         const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: user, work: workFormatted, total}) });
-        window.location.href = "https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: " + user + "%0AWork: " + workFormatted + "%0ATotal: Rs " + total;
+        
+        const payload = {
+            date: new Date().toISOString(),
+            client: name.toUpperCase(),
+            phone: phone,
+            work: workFormatted,
+            total: total
+        };
+        
+        // Show loading
+        const btn = document.querySelector('.btn-wa');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        btn.disabled = true;
+        
+        try {
+            await fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                mode: 'no-cors',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload) 
+            });
+            
+            // WhatsApp redirect
+            const waText = `*🔧 DNHQ SERVICES ORDER*%0A%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Services:*%0A${cart.map(c=>`• ${c.name} - Rs ${c.price}`).join('%0A')}%0A%0A*💰 Total: Rs ${total.toLocaleString()}*%0A%0A_Please confirm my appointment. Thank you!_`;
+            window.location.href = `https://wa.me/923152458657?text=${waText}`;
+            
+            // Reset cart
+            cart = [];
+            updateCart();
+            document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
+            
+        } catch(e) {
+            alert("Error placing order: " + e.message);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
     }
+
+    // === 📱 App Download / PWA Install ===
+    function triggerAppInstall() {
+        // Agar PWA install prompt available hai
+        if (deferredPrompt) {
+            document.getElementById('installPrompt').style.display = 'block';
+        } else {
+            // Mobile par direct app store ya instructions
+            const ua = navigator.userAgent.toLowerCase();
+            if (ua.includes('android')) {
+                alert("📲 To install:\n1. Tap the 3 dots (⋮) in browser\n2. Select 'Add to Home screen'\n3. Name it 'DNHQ Services'");
+            } else if (ua.includes('iphone') || ua.includes('ipad')) {
+                alert("📲 To install on iOS:\n1. Tap the Share button (📤)\n2. Select 'Add to Home Screen'\n3. Name it 'DNHQ Services'");
+            } else {
+                alert("📱 App available on mobile devices. Open this site on your phone to install!");
+            }
+        }
+    }
+
+    function installApp() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choice) => {
+                if (choice.outcome === 'accepted') {
+                    console.log('User installed the PWA');
+                }
+                deferredPrompt = null;
+                document.getElementById('installPrompt').style.display = 'none';
+            });
+        }
+    }
+
+    function dismissInstall() {
+        document.getElementById('installPrompt').style.display = 'none';
+    }
+
+    // PWA beforeinstallprompt event
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log('PWA install prompt available');
+    });
+
+    // App installed event
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed');
+        deferredPrompt = null;
+        document.getElementById('installPrompt').style.display = 'none';
+    });
+
+    // === 🔐 Customer History Functions ===
+    function openHistoryModal() {
+        document.getElementById('historyModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeHistoryModal() {
+        document.getElementById('historyModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        resetHistoryView();
+    }
+
+    function resetHistoryView() {
+        document.getElementById('verifyStep').style.display = 'block';
+        document.getElementById('showStep').style.display = 'none';
+        document.getElementById('histName').value = '';
+        document.getElementById('histPhone').value = '';
+        document.getElementById('histError').style.display = 'none';
+        document.getElementById('histSuccess').style.display = 'none';
+        document.getElementById('histList').innerHTML = '';
+        currentCustData = null;
+    }
+
+    async function fetchCustomerHistory() {
+        const name = document.getElementById('histName').value.trim().toUpperCase();
+        const phone = document.getElementById('histPhone').value.trim();
+        const err = document.getElementById('histError');
+        const success = document.getElementById('histSuccess');
+        
+        if (!name || !phone) {
+            err.textContent = "⚠️ Please enter both Name and Phone";
+            err.style.display = 'block';
+            success.style.display = 'none';
+            return;
+        }
+        
+        if (!/^03[0-9]{9}$/.test(phone)) {
+            err.textContent = "⚠️ Enter valid phone: 03XX-XXXXXXX";
+            err.style.display = 'block';
+            success.style.display = 'none';
+            return;
+        }
+        
+        err.style.display = 'none';
+        success.style.display = 'none';
+        document.getElementById('histList').innerHTML = '<div class="loading">Loading your history</div>';
+        
+        try {
+            const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&t=${Date.now()}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            if (data.error) throw new Error(data.error);
+            
+            if (!data || data.length === 0) {
+                err.textContent = "❌ No records found. Please check your Name & Phone.";
+                err.style.display = 'block';
+                return;
+            }
+            
+            currentCustData = data;
+            success.textContent = `✅ Found ${data.length} order(s)!`;
+            success.style.display = 'block';
+            showHistoryUI(data, name, phone);
+            
+        } catch (e) {
+            err.textContent = "⚠️ Error loading data. Please try again.";
+            err.style.display = 'block';
+            console.error("History fetch error:", e);
+        }
+    }
+
+    function showHistoryUI(orders, name, phone) {
+        document.getElementById('verifyStep').style.display = 'none';
+        document.getElementById('showStep').style.display = 'block';
+        
+        // Customer summary
+        const totalSpent = orders.reduce((sum, o) => sum + (Number(o.total)||0), 0);
+        const firstOrder = orders[orders.length - 1];
+        const lastOrder = orders[0];
+        
+        document.getElementById('custInfo').innerHTML = `
+            <b>👤 ${name}</b><br>
+            <b class="phone">📱 ${phone}</b><br>
+            <b>📦 Total Orders:</b> ${orders.length} | 
+            <b>💰 Total Spent:</b> Rs ${totalSpent.toLocaleString()}<br>
+            <small style="color:#94a3b8;">First: ${firstOrder?.date ? new Date(firstOrder.date).toLocaleDateString() : 'N/A'} • Last: ${lastOrder?.date ? new Date(lastOrder.date).toLocaleDateString() : 'N/A'}</small>
+        `;
+        
+        // History list (newest first)
+        const list = document.getElementById('histList');
+        list.innerHTML = orders.slice().reverse().map((o, i) => {
+            const date = o.date ? new Date(o.date).toLocaleDateString('en-PK') : 'N/A';
+            const shortWork = (o.work || "").length > 60 ? (o.work).substring(0, 60) + "..." : o.work;
+            return `
+            <div class="history-item">
+                <b>#${orders.length - i} • 📅 ${date}</b>
+                <small class="phone">📱 ${o.phone || phone}</small>
+                <small>🔧 ${shortWork}</small>
+                <span class="amt">💰 Rs ${Number(o.total||0).toLocaleString()}</span>
+                <button class="pdf-sm" onclick='downloadSingleHistPDF(${JSON.stringify(o).replace(/'/g,"\\'")})'>
+                    <i class="fas fa-file-pdf"></i> Download Invoice
+                </button>
+            </div>`;
+        }).join('');
+    }
+
+    function downloadSingleHistPDF(order) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const custName = order.client || currentCustData?.[0]?.client || "Customer";
+        const custPhone = order.phone || currentCustData?.[0]?.phone || "N/A";
+        
+        // Header
+        doc.setFillColor(0,0,0);
+        doc.rect(0,0,210,45,'F');
+        doc.setTextColor(251,191,36);
+        doc.setFontSize(22);
+        doc.setFont("helvetica","bold");
+        doc.text("DNHQ SERVICES", 55, 23);
+        doc.setFontSize(9);
+        doc.text("Professional Electrical & AC Maintenance", 55, 29);
+        
+        // Customer Info
+        doc.setTextColor(0,0,0);
+        doc.setFontSize(10);
+        doc.text("INVOICE TO: " + custName, 15, 52);
+        doc.text("PHONE: " + custPhone, 15, 58);
+        doc.text("DATE: " + (order.date ? new Date(order.date).toLocaleDateString() : "N/A"), 145, 52);
+        
+        // Items
+        let items = (order.work || "").split(", ");
+        let body = items.map(it => {
+            if (it.includes("(Rs ")) {
+                let p = it.split(" (Rs ");
+                return [p[0].trim(), "Rs " + p[1].replace(")","").trim()];
+            }
+            return [it.trim(), "-"];
+        });
+        
+        doc.autoTable({
+            startY: 64,
+            head: [['SERVICE', 'AMOUNT']],
+            body: body,
+            theme: 'grid',
+            headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 },
+            styles: { fontSize: 9, cellPadding: 4 },
+            columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }
+        });
+        
+        // Total
+        let y = doc.lastAutoTable.finalY + 12;
+        doc.setDrawColor(251,191,36);
+        doc.line(110, y-4, 195, y-4);
+        doc.setFontSize(13);
+        doc.text("TOTAL:", 115, y);
+        doc.setTextColor(184,134,11);
+        doc.text("Rs " + Number(order.total||0).toLocaleString(), 195, y, {align:'right'});
+        
+        // Footer
+        doc.setTextColor(150,150,150);
+        doc.setFontSize(8);
+        doc.text("Contact: +92 315 2458657 | Quality Work Guaranteed", 105, 285, {align:'center'});
+        
+        const cname = custName.replace(/[^a-z0-9]/gi, '_');
+        const dateStr = order.date ? new Date(order.date).toISOString().split('T')[0] : 'invoice';
+        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
+    }
+
+    function downloadCustomerHistoryPDF() {
+        if (!currentCustData || currentCustData.length === 0) return alert("No data to download!");
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const cust = currentCustData[0];
+        const grandTotal = currentCustData.reduce((s,o) => s + (Number(o.total)||0), 0);
+        
+        // Header
+        doc.setFillColor(0,0,0);
+        doc.rect(0,0,210,45,'F');
+        doc.setTextColor(251,191,36);
+        doc.setFontSize(20);
+        doc.setFont("helvetica","bold");
+        doc.text("DNHQ SERVICES", 55, 22);
+        doc.setFontSize(9);
+        doc.text("SERVICE HISTORY REPORT", 55, 28);
+        
+        // Info
+        doc.setTextColor(0,0,0);
+        doc.setFontSize(10);
+        doc.text("Customer: " + cust.client, 15, 52);
+        doc.text("Phone: " + cust.phone, 15, 58);
+        doc.text("Total Orders: " + currentCustData.length, 145, 52);
+        
+        // Table
+        const rows = currentCustData.map(o => [
+            o.date ? new Date(o.date).toLocaleDateString('en-PK') : 'N/A',
+            (o.work || "").substring(0, 40) + ((o.work||"").length>40?'...':''),
+            "Rs " + Number(o.total||0).toLocaleString()
+        ]);
+        
+        doc.autoTable({
+            startY: 64,
+            head: [['DATE', 'SERVICE', 'AMOUNT']],
+            body: rows,
+            theme: 'grid',
+            headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 },
+            styles: { fontSize: 8, cellPadding: 3 },
+            columnStyles: { 0: { cellWidth: 35 }, 1: { cellWidth: 105 }, 2: { cellWidth: 40, halign: 'right' } }
+        });
+        
+        // Grand Total
+        let y = doc.lastAutoTable.finalY + 12;
+        doc.setDrawColor(251,191,36);
+        doc.line(110, y-4, 195, y-4);
+        doc.setFontSize(12);
+        doc.text("GRAND TOTAL:", 115, y);
+        doc.setTextColor(184,134,11);
+        doc.text("Rs " + grandTotal.toLocaleString(), 195, y, {align:'right'});
+        
+        // Footer
+        doc.setTextColor(150,150,150);
+        doc.setFontSize(8);
+        doc.text("Contact: +92 315 2458657 | Generated: " + new Date().toLocaleDateString('en-PK'), 105, 285, {align:'center'});
+        
+        const cname = (cust.client || "Customer").replace(/[^a-z0-9]/gi, '_');
+        doc.save(`DNHQ_History_${cname}.pdf`);
+    }
+
+    // Close modal on outside click
+    window.onclick = function(e) {
+        const modal = document.getElementById('historyModal');
+        if (e.target == modal) closeHistoryModal();
+    }
+
+    // === Initialize ===
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check if cart has items from sessionStorage (optional)
+        updateCart();
+    });
     </script>
 </body>
 </html>
