@@ -47,7 +47,8 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
 .error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
 .success-msg { color: #22c55e; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
-.history-item { background: #1e293b; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #fbbf24; }.history-item b { color: white; display: block; margin-bottom: 5px; }
+.history-item { background: #1e293b; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #fbbf24; }
+.history-item b { color: white; display: block; margin-bottom: 5px; }
 .history-item small { color: #94a3b8; display: block; margin: 3px 0; }
 .history-item .phone { color: #60a5fa; font-size: 12px; }
 .history-item .amt { color: #fbbf24; font-weight: 800; font-size: 16px; display: block; margin: 8px 0; }
@@ -96,7 +97,8 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <div style="display:flex;justify-content:space-between;margin-bottom:20px;"><h2 style="color:gold;margin:0;">DNHQ DASHBOARD</h2><button onclick="document.getElementById('adminView').style.display='none'" style="background:red;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;">CLOSE</button></div>
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px dashed var(--gold);margin-bottom:25px;">
 <h4 style="color:var(--gold);margin:0 0 10px 0;">CREATE MANUAL BILL</h4>
-<input type="text" id="man_name" class="man-input" placeholder="Customer Name"><input type="tel" id="man_phone" class="man-input" placeholder="Phone: 03XX-XXXXXXX">
+<input type="text" id="man_name" class="man-input" placeholder="Customer Name">
+<input type="tel" id="man_phone" class="man-input" placeholder="Phone: 03XX-XXXXXXX">
 <div id="manual_works_container"><div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;"></div></div>
 <button onclick="addNewManualRow()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:8px;margin-bottom:15px;border-radius:8px;">+ Add More Work</button>
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;">SAVE & REFRESH</button>
@@ -145,7 +147,8 @@ function toggleSvc(el, name, price) {
     const idx = cart.findIndex(c => c.name === name);
     if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); }
     else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
-    updateCart();}
+    updateCart();
+}
 
 function updateCart() {
     const total = cart.reduce((a, b) => a + (b.price || 0), 0);
@@ -194,7 +197,8 @@ async function saveManualEntry() {
 
 async function loadLogs() {
     const container = document.getElementById('logItems');
-    container.innerHTML = '<div class="loading">Fetching...</div>';    try {
+    container.innerHTML = '<div class="loading">Fetching...</div>';
+    try {
         const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
         const data = await res.json();
         if(data.error) throw new Error(data.error);
@@ -227,7 +231,7 @@ window.generatePDFAsync = async function(order) {
     await generatePDF(order);
 };
 
-// ✅ FIX 4: Generate PDF (Cleaned)
+// ✅ FIX 4: Generate PDF (Cleaned with Logo)
 async function generatePDF(order) {
     try {
         if (!window.jspdf) { alert('jsPDF not loaded'); return; }
@@ -235,6 +239,8 @@ async function generatePDF(order) {
         const doc = new jsPDF();
         doc.setFillColor(0,0,0);
         doc.rect(0,0,210,45,'F');
+        
+        // Logo add karein
         try {
             const imgElement = document.getElementById('brandLogo');
             if (imgElement && imgElement.complete) {
@@ -243,8 +249,10 @@ async function generatePDF(order) {
                 canvas.width = imgElement.naturalWidth || 100;
                 canvas.height = imgElement.naturalHeight || 100;
                 ctx.drawImage(imgElement, 0, 0);
-                doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 15, 8, 30, 30);            }
+                doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 15, 8, 30, 30);
+            }
         } catch (e) { console.log('Logo skip:', e); }
+        
         doc.setTextColor(251, 191, 36);
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
@@ -292,7 +300,8 @@ async function placeOrder() {
     if(cart.length === 0) return alert("Select at least one service!");
     const name = prompt("Customer Name:")?.trim();
     const phone = prompt("Phone (03XX-XXXXXXX):")?.trim();
-    if(!name || !phone) { alert("Name and Phone required!"); return; }    const total = cart.reduce((a, b) => a + (b.price || 0), 0);
+    if(!name || !phone) { alert("Name and Phone required!"); return; }
+    const total = cart.reduce((a, b) => a + (b.price || 0), 0);
     const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
     const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, total: total };
     try {
@@ -341,7 +350,8 @@ async function fetchCustomerHistory() {
         document.getElementById('verifyStep').style.display = 'none';
         document.getElementById('showStep').style.display = 'block';
         const totalSpent = data.reduce((sum, o) => sum + (Number(o.total)||0), 0);
-        document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `
+        document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `
             <div class="history-item">
                 <b>#${data.length - i} • ${o.date ? new Date(o.date).toLocaleDateString() : 'N/A'}</b>
                 <small class="phone">📱 ${o.phone || phone}</small>
@@ -390,7 +400,8 @@ window.onclick = function(e) { if (e.target == document.getElementById('historyM
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
-window.openHistoryModal = openHistoryModal;window.triggerAppInstall = triggerAppInstall;
+window.openHistoryModal = openHistoryModal;
+window.triggerAppInstall = triggerAppInstall;
 window.generatePDF = generatePDF;
 window.generatePDFAsync = generatePDFAsync;
 window.deleteEntry = deleteEntry;
