@@ -169,37 +169,63 @@ let currentCustData = null;
 let deferredPrompt = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJVeSNFYWUhA1U5gOFXupe2so3WDCWsMBa1kPs_xNOLoP9L3Zi6bgRj5mBdTraIUNlgQ/exec";
 
-// ✅ NEW: Robust date formatter for PDF
+// ✅ ULTRA-ROBUST DATE FORMATTER WITH DEBUG
 function formatDate(dateInput) {
-    if (!dateInput) return "N/A";
+    console.log('🔍 Raw Date Input:', dateInput, 'Type:', typeof dateInput);
+    
+    if (!dateInput || dateInput === '' || dateInput === 'null' || dateInput === 'undefined') {
+        console.log('⚠️ Empty date, using current date');
+        return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+    }
+    
     try {
         let date;
-        // Handle ISO string, timestamp, or Date object
-        if (typeof dateInput === 'string') {
-            // Try direct parse first
-            date = new Date(dateInput);
-            // If invalid, try splitting common formats
-            if (isNaN(date.getTime())) {
-                const parts = dateInput.split(/[-/T\s:]/);
-                if (parts.length >= 3) {
-                    const [y, m, d] = parts;
-                    date = new Date(y, (m||1)-1, d||1);
-                }
-            }
-        } else if (typeof dateInput === 'number') {
-            date = new Date(dateInput);
-        } else if (dateInput instanceof Date) {
+        
+        // Case 1: Already a Date object
+        if (dateInput instanceof Date) {
             date = dateInput;
         }
+        // Case 2: Number (timestamp)
+        else if (typeof dateInput === 'number') {
+            date = new Date(dateInput);
+        }
+        // Case 3: String - try multiple formats
+        else if (typeof dateInput === 'string') {
+            const str = dateInput.trim();
+            
+            // Try ISO format first (2026-03-20T14:30:00Z)
+            date = new Date(str);
+            
+            // If invalid, try DD/MM/YYYY or DD-MM-YYYY
+            if (isNaN(date.getTime())) {
+                const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+                if (ddmmyyyy) {
+                    date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
+                }
+            }
+            
+            // If still invalid, try YYYY/MM/DD
+            if (isNaN(date.getTime())) {
+                const yyyymmdd = str.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+                if (yyyymmdd) {
+                    date = new Date(yyyymmdd[1], yyyymmdd[2] - 1, yyyymmdd[3]);
+                }
+            }
+        }
         
-        if (isNaN(date.getTime())) return "N/A";
+        // Validate the date
+        if (!date || isNaN(date.getTime())) {
+            console.log('⚠️ Invalid date, using current date');
+            return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+        }
         
-        // Format: DD-MMM-YYYY (e.g., 20-Mar-2026)
-        const options = { day: '2-digit', month: 'short', year: 'numeric' };
-        return date.toLocaleDateString('en-GB', options).replace(/ /g, '-');
+        const formatted = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+        console.log('✅ Formatted Date:', formatted);
+        return formatted;
+        
     } catch (e) {
-        console.warn('Date format error:', e);
-        return "N/A";
+        console.error('❌ Date Error:', e);
+        return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     }
 }
 
@@ -328,8 +354,10 @@ async function deleteEntry(rowIdx) {
     }
 }
 
-// ✅ FIXED: generatePDF with proper date formatting
+// ✅ PDF GENERATION WITH DEBUG LOGGING
 async function generatePDF(order) {
+    console.log('📄 Generating PDF for order:', order);
+    
     try {
         const JsPDFConstructor = getJsPDFConstructor();
         if (!JsPDFConstructor) { 
@@ -363,12 +391,16 @@ async function generatePDF(order) {
         doc.setTextColor(255, 255, 255);
         doc.text("Professional Electrical & AC Maintenance", 55, 31);
         
-        // Customer Info - ✅ FIXED DATE HERE
+        // Customer Info
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(11);
         doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
         doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
-        doc.text("DATE: " + formatDate(order.date), 145, 55);  // ✅ Proper date formatting
+        
+        // ✅ DATE WITH DEBUG
+        const pdfDate = formatDate(order.date);
+        console.log('📅 PDF Date Value:', pdfDate);
+        doc.text("DATE: " + pdfDate, 145, 55);
         
         // Invoice Title
         doc.setFontSize(16);
@@ -414,11 +446,12 @@ async function generatePDF(order) {
         
         // Save
         const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
-        const dateStr = formatDate(order.date).replace(/[^a-z0-9]/gi, '_');
-        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
+        doc.save(`DNHQ_${cname}_${pdfDate.replace(/[^a-z0-9]/gi, '_')}.pdf`);
+        
+        console.log('✅ PDF Generated Successfully');
         
     } catch (error) {
-        console.error('PDF Error:', error);
+        console.error('❌ PDF Error:', error);
         alert('❌ PDF Generation Failed: ' + error.message);
     }
 }
@@ -539,7 +572,6 @@ function downloadCustomerHistoryPDF() {
 
 window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); }
 
-// Make all functions globally accessible
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
