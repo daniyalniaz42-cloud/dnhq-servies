@@ -67,6 +67,26 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 5px; }
 .badge-discount { background: #10b981; color: white; }
 .badge-advance { background: #3b82f6; color: white; }
+.confirm-dialog { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
+.confirm-box { background: #1e293b; margin: 5% auto; padding: 25px; border: 3px solid #fbbf24; border-radius: 20px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3); }
+.confirm-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #334155; }
+.confirm-header h3 { color: #fbbf24; margin: 0; font-size: 22px; }
+.confirm-header p { color: #94a3b8; margin: 5px 0 0 0; font-size: 13px; }
+.confirm-body { background: #0f172a; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+.confirm-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #334155; }
+.confirm-row:last-child { border-bottom: none; }
+.confirm-row label { color: #94a3b8; font-size: 14px; }
+.confirm-row .value { color: white; font-weight: bold; font-size: 14px; }
+.confirm-row.highlight { background: rgba(251, 191, 36, 0.1); padding: 12px; border-radius: 8px; margin: 10px 0; }
+.confirm-row.discount { color: #10b981; }
+.confirm-row.advance { color: #3b82f6; }
+.confirm-row.balance { font-size: 18px; font-weight: bold; color: #ef4444; border-top: 2px solid #fbbf24; padding-top: 15px; margin-top: 15px; }
+.confirm-row.balance.paid { color: #10b981; }
+.confirm-footer { display: flex; gap: 15px; }
+.btn-confirm { flex: 1; background: #10b981; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
+.btn-confirm:hover { background: #059669; }
+.btn-cancel { flex: 1; background: #ef4444; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
+.btn-cancel:hover { background: #dc2626; }
 @media (max-width: 480px) { .brand-title { font-size: 20px; } .logo-main { height: 70px; } }
 </style>
 </head>
@@ -107,7 +127,6 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
     <button onclick="document.getElementById('adminView').style.display='none'" style="background:red;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;">CLOSE</button>
 </div>
 
-<!-- ✅ NEW: Manual Bill with Discount & Advance -->
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px dashed var(--gold);margin-bottom:25px;">
 <h4 style="color:var(--gold);margin:0 0 10px 0;">💵 CREATE MANUAL BILL</h4>
 <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
@@ -120,7 +139,6 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </div>
 <button onclick="addNewManualRow()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:8px;margin-bottom:15px;border-radius:8px;">+ Add More Work</button>
 
-<!-- ✅ Discount Section -->
 <div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
 <h5 style="color:#fbbf24;margin:0 0 10px 0;">🎁 Discount (Optional)</h5>
 <div class="discount-row">
@@ -133,7 +151,6 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </div>
 </div>
 
-<!-- ✅ Advance Payment Section -->
 <div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
 <h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
 <input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
@@ -181,6 +198,21 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
     </div>
 </div>
 
+<!-- CONFIRMATION DIALOG -->
+<div id="confirmDialog" class="confirm-dialog">
+    <div class="confirm-box">
+        <div class="confirm-header">
+            <h3>📋 CONFIRM BILL DETAILS</h3>
+            <p>Please review before generating PDF</p>
+        </div>
+        <div class="confirm-body" id="confirmBody"></div>
+        <div class="confirm-footer">
+            <button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button>
+            <button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
+        </div>
+    </div>
+</div>
+
 <div id="installPrompt">
     <p>📱 Install DNHQ App!</p>
     <button onclick="installApp()">Install</button>
@@ -196,9 +228,9 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 let cart = [];
 let currentCustData = null;
 let deferredPrompt = null;
+let pendingOrderData = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJVeSNFYWUhA1U5gOFXupe2so3WDCWsMBa1kPs_xNOLoP9L3Zi6bgRj5mBdTraIUNlgQ/exec";
 
-// ✅ Toggle Discount Input Visibility
 function toggleDiscountInput() {
     const type = document.getElementById('discount_type').value;
     const input = document.getElementById('discount_value');
@@ -206,12 +238,10 @@ function toggleDiscountInput() {
     if (type === 'none') input.value = '';
 }
 
-// ✅ Ultra-Robust Date Formatter with Debug
 function formatDate(dateInput) {
     if (!dateInput || dateInput === '' || dateInput === 'null' || dateInput === 'undefined') {
         return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     }
-    
     try {
         let date;
         if (dateInput instanceof Date) {
@@ -223,24 +253,17 @@ function formatDate(dateInput) {
             date = new Date(str);
             if (isNaN(date.getTime())) {
                 const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
-                if (ddmmyyyy) {
-                    date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
-                }
+                if (ddmmyyyy) date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
             }
             if (isNaN(date.getTime())) {
                 const yyyymmdd = str.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
-                if (yyyymmdd) {
-                    date = new Date(yyyymmdd[1], yyyymmdd[2] - 1, yyyymmdd[3]);
-                }
+                if (yyyymmdd) date = new Date(yyyymmdd[1], yyyymmdd[2] - 1, yyyymmdd[3]);
             }
         }
-        
         if (!date || isNaN(date.getTime())) {
             return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
         }
-        
         return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-        
     } catch (e) {
         console.error('Date Error:', e);
         return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
@@ -310,7 +333,7 @@ function addNewManualRow() {
     document.getElementById('manual_works_container').appendChild(div);
 }
 
-// ✅ UPDATED: Save Manual Entry with Discount & Advance
+// ✅ FIXED: Save Manual Entry with proper calculations
 async function saveManualEntry() {
     const name = document.getElementById('man_name').value.trim();
     const phone = document.getElementById('man_phone').value.trim();
@@ -319,55 +342,60 @@ async function saveManualEntry() {
     
     if(!name || !phone) return alert("Please enter Name AND Phone!");
     
-    let allWork = [], total = 0;
+    let allWork = [], subtotal = 0;
     workInputs.forEach((input, i) => {
         if(input.value.trim() !== "") {
             const p = parseInt(priceInputs[i].value) || 0;
             allWork.push(input.value.trim() + " (Rs " + p + ")");
-            total += p;
+            subtotal += p;
         }
     });
     
     if(allWork.length === 0) return alert("Add at least one service!");
     
-    // ✅ Get Discount Details
+    // Calculate Discount
     const discountType = document.getElementById('discount_type').value;
     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
     let discountAmount = 0;
     let discountText = "None";
     
     if (discountType === 'percent' && discountValue > 0) {
-        discountAmount = (total * discountValue) / 100;
+        discountAmount = (subtotal * discountValue) / 100;
         discountText = discountValue + "%";
     } else if (discountType === 'fixed' && discountValue > 0) {
         discountAmount = discountValue;
         discountText = "Rs " + discountValue;
     }
     
-    const finalTotal = total - discountAmount;
+    const totalAfterDiscount = subtotal - discountAmount;
     
-    // ✅ Get Advance Payment
+    // Get Advance Payment
     const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
-    const balanceDue = finalTotal - advance;
+    const balanceDue = totalAfterDiscount - advance;
+    
+    console.log('💾 Saving Order:', {
+        subtotal, discountType, discountValue, discountAmount, 
+        totalAfterDiscount, advance, balanceDue
+    });
     
     const payload = { 
         date: new Date().toISOString(), 
         client: name.toUpperCase(), 
         phone: phone, 
         work: allWork.join(", "), 
-        subtotal: total,
+        subtotal: subtotal,
         discount_type: discountType,
         discount_value: discountValue,
         discount_amount: discountAmount,
         discount_text: discountText,
         advance: advance,
-        total: finalTotal,
+        total: totalAfterDiscount,
         balance_due: balanceDue
     };
     
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        alert("✅ Order saved with discount & advance!");
+        alert("✅ Order saved successfully!");
         loadLogs();
         // Reset form
         document.getElementById('man_name').value = '';
@@ -384,6 +412,7 @@ async function saveManualEntry() {
     } catch(e) { alert("Error: " + e.message); }
 }
 
+// ✅ FIXED: Load Logs with proper data parsing
 async function loadLogs() {
     const container = document.getElementById('logItems');
     container.innerHTML = '<div class="loading">Fetching...</div>';
@@ -394,12 +423,19 @@ async function loadLogs() {
         if(data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
         
         container.innerHTML = data.map((d, index) => {
+            // Parse numbers safely
+            const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
+            const discountAmount = parseFloat(d.discount_amount) || 0;
+            const advance = parseFloat(d.advance) || 0;
+            const total = parseFloat(d.total) || (subtotal - discountAmount);
+            const balanceDue = parseFloat(d.balance_due) || (total - advance);
+            
             let badges = '';
-            if (d.discount_amount > 0) {
-                badges += '<span class="badge badge-discount">🎁 ' + d.discount_text + ' OFF</span>';
+            if (discountAmount > 0) {
+                badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'} OFF</span>`;
             }
-            if (d.advance > 0) {
-                badges += '<span class="badge badge-advance">💰 Advance: Rs ' + d.advance + '</span>';
+            if (advance > 0) {
+                badges += `<span class="badge badge-advance">💰 Advance: Rs ${advance}</span>`;
             }
             
             return `
@@ -408,10 +444,10 @@ async function loadLogs() {
                 <b>${d.client || "Unknown"}</b> ${badges}<br>
                 <small class="phone">📱 ${d.phone || "N/A"}</small><br>
                 <small>${(d.work || "").substring(0, 50)}</small><br>
-                ${d.subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${d.subtotal.toLocaleString()}</small><br>` : ''}
-                ${d.discount_amount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${d.discount_amount.toLocaleString()}</small><br>` : ''}
-                ${d.advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${d.advance.toLocaleString()}</small><br>` : ''}
-                <b style="color:gold;">${d.balance_due > 0 ? 'Balance: Rs ' + d.balance_due.toLocaleString() : 'Paid: Rs ' + d.total.toLocaleString()}</b><br>
+                ${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}
+                ${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAmount.toLocaleString()}</small><br>` : ''}
+                ${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}
+                <b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br>
                 <button class="del-btn" onclick="deleteEntry(${index + 2})">🗑️ Delete</button>
             </div>`;
         }).join('');
@@ -419,10 +455,98 @@ async function loadLogs() {
         container.querySelectorAll('.pdf-btn').forEach(btn => {
             btn.onclick = function() {
                 const order = JSON.parse(this.dataset.order.replace(/&apos;/g, "'"));
-                generatePDF(order);
+                showConfirmDialog(order);
             };
         });
     } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
+}
+
+function showConfirmDialog(order) {
+    pendingOrderData = order;
+    
+    // Parse all values safely
+    const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
+    const discountAmount = parseFloat(order.discount_amount) || 0;
+    const advance = parseFloat(order.advance) || 0;
+    const total = parseFloat(order.total) || (subtotal - discountAmount);
+    const balanceDue = parseFloat(order.balance_due) || (total - advance);
+    
+    console.log('📋 Confirm Dialog Data:', { subtotal, discountAmount, advance, total, balanceDue });
+    
+    let html = `
+        <div class="confirm-row">
+            <label>👤 Customer:</label>
+            <span class="value">${order.client || 'Customer'}</span>
+        </div>
+        <div class="confirm-row">
+            <label>📱 Phone:</label>
+            <span class="value">${order.phone || 'N/A'}</span>
+        </div>
+        <div class="confirm-row">
+            <label>📅 Date:</label>
+            <span class="value">${formatDate(order.date || order.timestamp)}</span>
+        </div>
+        <div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;">
+            <label>📦 Subtotal:</label>
+            <span class="value">Rs ${subtotal.toLocaleString()}</span>
+        </div>
+    `;
+    
+    if (discountAmount > 0) {
+        html += `
+            <div class="confirm-row discount highlight">
+                <label>🎁 Discount (${order.discount_text || 'Discount'}):</label>
+                <span class="value">-Rs ${discountAmount.toLocaleString()}</span>
+            </div>
+        `;
+    }
+    
+    html += `
+        <div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);">
+            <label style="color:#fbbf24;font-size:16px;">💵 Total:</label>
+            <span class="value" style="color:#fbbf24;font-size:18px;">Rs ${total.toLocaleString()}</span>
+        </div>
+    `;
+    
+    if (advance > 0) {
+        html += `
+            <div class="confirm-row advance highlight">
+                <label>💰 Advance Received:</label>
+                <span class="value">-Rs ${advance.toLocaleString()}</span>
+            </div>
+        `;
+    }
+    
+    if (balanceDue > 0) {
+        html += `
+            <div class="confirm-row balance">
+                <label>⚠️ Balance Due:</label>
+                <span class="value">Rs ${balanceDue.toLocaleString()}</span>
+            </div>
+        `;
+    } else {
+        html += `
+            <div class="confirm-row balance paid">
+                <label>✅ Payment Status:</label>
+                <span class="value">FULLY PAID</span>
+            </div>
+        `;
+    }
+    
+    document.getElementById('confirmBody').innerHTML = html;
+    document.getElementById('confirmDialog').style.display = 'block';
+}
+
+function closeConfirmDialog() {
+    document.getElementById('confirmDialog').style.display = 'none';
+    pendingOrderData = null;
+}
+
+function confirmAndGeneratePDF() {
+    if (pendingOrderData) {
+        closeConfirmDialog();
+        generatePDF(pendingOrderData);
+    }
 }
 
 async function deleteEntry(rowIdx) {
@@ -435,7 +559,7 @@ async function deleteEntry(rowIdx) {
     }
 }
 
-// ✅ UPDATED: PDF Generation with Discount & Advance
+// ✅ FIXED: PDF Generation with proper calculations
 async function generatePDF(order) {
     console.log('📄 Generating PDF for order:', order);
     
@@ -505,13 +629,15 @@ async function generatePDF(order) {
             columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } 
         });
         
-        // Calculations
+        // ✅ FIXED: Calculations with proper parsing
         let finalY = doc.lastAutoTable.finalY + 10;
-        const subtotal = order.subtotal || order.total || 0;
-        const discount = order.discount_amount || 0;
-        const advance = order.advance || 0;
+        const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
+        const discount = parseFloat(order.discount_amount) || 0;
+        const advance = parseFloat(order.advance) || 0;
         const totalAfterDiscount = subtotal - discount;
         const balanceDue = totalAfterDiscount - advance;
+        
+        console.log('🧮 PDF Calculations:', { subtotal, discount, advance, totalAfterDiscount, balanceDue });
         
         // Subtotal
         doc.setFontSize(10);
@@ -655,24 +781,30 @@ async function fetchCustomerHistory() {
         currentCustData = data;
         document.getElementById('verifyStep').style.display = 'none';
         document.getElementById('showStep').style.display = 'block';
-        const totalSpent = data.reduce((sum, o) => sum + (Number(o.total)||0), 0);
+        const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
         document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
         
-        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => {
+            const discountAmt = parseFloat(o.discount_amount) || 0;
+            const adv = parseFloat(o.advance) || 0;
+            const balDue = parseFloat(o.balance_due) || 0;
+            
+            return `
             <div class="history-item">
                 <b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b>
                 <small class="phone">📱 ${o.phone || phone}</small>
                 <small>🔧 ${(o.work || "").substring(0, 60)}</small>
-                ${o.discount_amount > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${o.discount_amount}</small>` : ''}
-                ${o.advance > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${o.advance}</small>` : ''}
-                <span class="amt">${o.balance_due > 0 ? 'Balance: Rs ' + o.balance_due.toLocaleString() : '✓ Paid'}</span>
+                ${discountAmt > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${discountAmt}</small>` : ''}
+                ${adv > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${adv}</small>` : ''}
+                <span class="amt">${balDue > 0 ? 'Balance: Rs ' + balDue.toLocaleString() : '✓ Paid'}</span>
                 <button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 Download</button>
-            </div>`).join('');
+            </div>`;
+        }).join('');
         
         document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => {
             btn.onclick = function() {
                 const order = JSON.parse(this.dataset.order.replace(/&apos;/g, "'"));
-                generatePDF(order);
+                showConfirmDialog(order);
             };
         });
     } catch (e) { err.textContent = "Error loading data"; err.style.display = 'block'; }
@@ -685,7 +817,7 @@ function downloadCustomerHistoryPDF() {
     
     const doc = new JsPDFConstructor();
     const cust = currentCustData[0];
-    const grandTotal = currentCustData.reduce((s,o) => s + (Number(o.total)||0), 0);
+    const grandTotal = currentCustData.reduce((s,o) => s + (parseFloat(o.total)||0), 0);
     
     doc.setFillColor(0,0,0);
     doc.rect(0,0,210,45,'F');
@@ -707,7 +839,7 @@ function downloadCustomerHistoryPDF() {
         const rows = currentCustData.map(o => [
             formatDate(o.date || o.timestamp), 
             (o.work || "").substring(0, 30), 
-            "Rs " + Number(o.total||0).toLocaleString()
+            "Rs " + (parseFloat(o.total)||0).toLocaleString()
         ]);
         doc.autoTable({ startY: 64, head: [['DATE', 'SERVICE', 'AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 3 } });
         
@@ -734,13 +866,16 @@ window.deleteEntry = deleteEntry;
 window.fetchCustomerHistory = fetchCustomerHistory;
 window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
 window.toggleDiscountInput = toggleDiscountInput;
+window.showConfirmDialog = showConfirmDialog;
+window.closeConfirmDialog = closeConfirmDialog;
+window.confirmAndGeneratePDF = confirmAndGeneratePDF;
 
 document.addEventListener('DOMContentLoaded', () => { 
     updateCart(); 
     document.querySelectorAll('.pdf-btn, .pdf-sm').forEach(btn => {
         btn.onclick = function() {
             const order = JSON.parse(this.dataset.order.replace(/&apos;/g, "'"));
-            generatePDF(order);
+            showConfirmDialog(order);
         };
     });
 });
