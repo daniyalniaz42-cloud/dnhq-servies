@@ -197,87 +197,76 @@ function generatePDF(order) {
     const img = document.getElementById('brandLogo');
     try { doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e) {}
 
-    // Brand Name & Professional Tagline
+    // Brand Name
     doc.setTextColor(251, 191, 36); 
     doc.setFontSize(26);
     doc.setFont("helvetica", "bold");
     doc.text("DNHQ SERVICES", 55, 25);
     doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
     doc.text("Professional Electrical & AC Maintenance", 55, 32);
 
-    // Invoice Header Details
+    // Info Section
     doc.setTextColor(0,0,0);
     doc.setFontSize(11);
-    doc.text("Customer: " + order.client.toUpperCase(), 15, 55);
-    doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 15, 62);
-    
-    doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
-    doc.text("SERVICE INVOICE", 105, 75, { align: "center" });
+    doc.text("INVOICE TO:", 15, 55);
+    doc.setFont("helvetica", "normal");
+    doc.text(order.client.toUpperCase(), 15, 62);
+    doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 145, 62);
 
-    // Table Logic: Aligning amounts properly
-    let body = order.work.split(", ").map(item => {
+    // --- DATA CLEANING (Most Important) ---
+    // Hum manually check kar rahe hain ke Rs kahan likha hai
+    let tableData = [];
+    let items = order.work.split(", ");
+    
+    items.forEach(item => {
         if (item.includes("(Rs ")) {
             let parts = item.split(" (Rs ");
-            let workName = parts[0].trim();
+            let desc = parts[0].trim();
             let price = "Rs " + parts[1].replace(")", "").trim();
-            return [workName, price];
+            tableData.push([desc, price]);
+        } else {
+            tableData.push([item.trim(), "Quote"]);
         }
-        return [item.trim(), "-"]; // Agar price na ho to dash show kare
     });
 
+    // --- TABLE GENERATION ---
     doc.autoTable({
-        startY: 85,
-        head: [['WORK DESCRIPTION', 'AMOUNT']],
-        body: body,
-        headStyles: { 
-            fillColor: [40, 40, 40], 
-            textColor: [251, 191, 36], 
-            fontSize: 10, 
-            halign: 'left'
-        },
+        startY: 75,
+        head: [['SERVICE DESCRIPTION', 'AMOUNT']],
+        body: tableData,
+        headStyles: { fillColor: [30, 30, 30], textColor: [251, 191, 36], fontStyle: 'bold' },
+        bodyStyles: { textColor: [0, 0, 0], fontSize: 10 },
         columnStyles: {
-            0: { cellWidth: 140 }, 
-            1: { cellWidth: 40, halign: 'right' } 
+            0: { cellWidth: 140 },
+            1: { cellWidth: 40, halign: 'right' }
         },
-        styles: { fontSize: 10, cellPadding: 6 },
-        theme: 'grid'
+        theme: 'grid',
+        margin: { left: 15, right: 15 }
     });
 
-    // --- GRAND TOTAL BOX (Fixing the Overlap) ---
-    let finalY = doc.lastAutoTable.finalY + 20;
+    // --- TOTAL SECTION (Fixed Position) ---
+    let finalY = doc.lastAutoTable.finalY + 15;
     
-    // Total calculation and formatting
-    let displayTotal = "Rs " + Number(order.total).toLocaleString();
+    // Safety check: Agar table bohot lambi ho jaye toh naye page pe na chala jaye
+    if (finalY > 270) { doc.addPage(); finalY = 30; }
 
-    // Drawing a clear box for Total
-    doc.setFillColor(245, 245, 245);
-    doc.rect(110, finalY - 10, 85, 15, 'F');
-    
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.setTextColor(0,0,0);
-    doc.text("GRAND TOTAL:", 115, finalY);
+    doc.text("GRAND TOTAL:", 120, finalY);
     
-    // Golden amount color
+    // Amount in bold Red/Gold mix
     doc.setTextColor(184, 134, 11); 
-    doc.text(displayTotal, 190, finalY, { align: 'right' });
+    let formattedTotal = "Rs " + Number(order.total).toLocaleString();
+    doc.text(formattedTotal, 195, finalY, { align: 'right' });
 
     // Footer
     doc.setTextColor(150, 150, 150);
     doc.setFontSize(9);
-    doc.setFont("helvetica", "italic");
-    doc.text("Thank you for choosing DNHQ Services! +92 315 2458657", 105, 285, { align: "center" });
+    doc.text("This is a computer generated invoice. Contact: +92 315 2458657", 105, 285, { align: "center" });
 
     doc.save("DNHQ_Invoice_" + order.client + ".pdf");
-}    async function placeOrder() {
-        const user = prompt("Customer Name:") || "Client";
-        const total = cart.reduce((a, b) => a + b.price, 0);
-        const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
-        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: user, work: workFormatted, total}) });
-        window.location.href = "https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: " + user + "%0AWork: " + workFormatted + "%0ATotal: Rs " + total;
-    }
+}
     </script>
 </body>
 </html>
