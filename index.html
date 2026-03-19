@@ -115,7 +115,7 @@ let currentCustData = null;
 let deferredPrompt = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2fj7aV6RDA6RNRyFfgz40-OT36djVF3KFFW-6z3IZ5LsvA12xygVxbspOTcv7jpmmSA/exec";
 
-// ✅ FIX 1: Image to Base64 (ADDED - Missing Function)
+// ✅ FIX 1: Image to Base64 (ADDED)
 function getImageBase64(imgElement) {
     return new Promise((resolve) => {
         try {
@@ -226,12 +226,12 @@ async function deleteEntry(rowIdx) {
     }
 }
 
-// ✅ FIX 3: Helper Function (ADDED - Missing)
+// ✅ FIX 3: Helper Function (ADDED)
 window.generatePDFAsync = async function(order) {
     await generatePDF(order);
 };
 
-// ✅ FIX 4: Generate PDF (Cleaned with Logo)
+// ✅ FIX 4: Generate PDF (With Logo)
 async function generatePDF(order) {
     try {
         if (!window.jspdf) { alert('jsPDF not loaded'); return; }
@@ -239,8 +239,6 @@ async function generatePDF(order) {
         const doc = new jsPDF();
         doc.setFillColor(0,0,0);
         doc.rect(0,0,210,45,'F');
-        
-        // Logo add karein
         try {
             const imgElement = document.getElementById('brandLogo');
             if (imgElement && imgElement.complete) {
@@ -252,7 +250,6 @@ async function generatePDF(order) {
                 doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 15, 8, 30, 30);
             }
         } catch (e) { console.log('Logo skip:', e); }
-        
         doc.setTextColor(251, 191, 36);
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
