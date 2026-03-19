@@ -444,3 +444,353 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DNHQ | Karachi's Premier Technical Hub</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --accent: #fbbf24;
+            --bg: #05070a;
+            --surface: #11141b;
+            --surface-light: #1c212c;
+            --text: #ffffff;
+            --text-dim: #94a3b8;
+            --neon-glow: 0 0 15px rgba(251, 191, 36, 0.4);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+        }
+
+        /* --- PRELOADER ANIMATION --- */
+        .glass-header {
+            background: linear-gradient(180deg, #000 0%, rgba(5,7,10,0.9) 100%);
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            box-shadow: var(--neon-glow);
+            position: relative;
+        }
+        .main-logo {
+            width: 100px; height: 100px;
+            border-radius: 24px;
+            border: 2px solid var(--accent);
+            margin-bottom: 15px;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .main-logo:hover { transform: scale(1.1) rotate(5deg); }
+        .brand-title { font-family: 'Syncopate', sans-serif; font-size: 28px; font-weight: 700; color: var(--accent); margin: 0; }
+
+        .wrapper { max-width: 600px; margin: 0 auto; padding: 20px; }
+
+        /* --- NAVIGATION HUD --- */
+        .hud-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: -30px;
+            position: relative;
+            z-index: 10;
+        }
+        .hud-item {
+            background: var(--surface);
+            border: 1px solid #2d3748;
+            padding: 25px 15px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .hud-item i { font-size: 24px; color: var(--accent); margin-bottom: 10px; display: block; }
+        .hud-item span { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .hud-item:hover { background: var(--surface-light); border-color: var(--accent); box-shadow: var(--neon-glow); }
+
+        /* --- TRACKER BUTTON --- */
+        .mega-search-btn {
+            background: var(--accent);
+            color: #000;
+            width: 100%;
+            padding: 20px;
+            border-radius: 18px;
+            border: none;
+            font-weight: 900;
+            font-size: 16px;
+            margin: 30px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.2);
+        }
+
+        /* --- DYNAMIC SERVICES --- */
+        .section-header { display: flex; align-items: center; margin: 40px 0 20px; }
+        .section-header h2 { font-size: 14px; color: var(--accent); letter-spacing: 3px; margin: 0; text-transform: uppercase; }
+        .divider { flex-grow: 1; height: 1px; background: #2d3748; margin-left: 15px; }
+
+        .service-tile {
+            background: var(--surface);
+            border: 1px solid #1e293b;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .service-tile.active { border-color: var(--accent); background: #000; }
+        .tile-info b { display: block; font-size: 17px; margin-bottom: 5px; }
+        .tile-info p { margin: 0; font-size: 12px; color: var(--text-dim); }
+        .tile-price { color: var(--accent); font-weight: 900; font-size: 18px; }
+
+        /* --- FULLSCREEN MODULES (OVERLAYS) --- */
+        .module-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 10000;
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+        .module-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .btn-back { background: #1e293b; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; }
+
+        /* --- ADMIN INTERFACE --- */
+        .admin-card { background: var(--surface); border: 1px solid #2d3748; padding: 20px; border-radius: 20px; margin-bottom: 20px; }
+        .u-input { width: 100%; background: #000; border: 1px solid #2d3748; padding: 15px; color: white; border-radius: 12px; margin-bottom: 12px; font-size: 16px; }
+        .u-label { font-size: 11px; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 5px; display: block; }
+
+        /* --- FLOATING CART --- */
+        .floating-footer {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: #000;
+            border-top: 3px solid var(--accent);
+            padding: 25px;
+            display: none;
+            z-index: 9000;
+            border-radius: 30px 30px 0 0;
+        }
+        .footer-content { max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .btn-wa { background: #25d366; color: white; border: none; padding: 15px 30px; border-radius: 15px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
+        /* --- TEAM & PORTFOLIO CONTENT --- */
+        .profile-box { background: var(--surface); padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .profile-box img { width: 50px; height: 50px; border-radius: 50%; background: var(--accent); }
+        .portfolio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .work-thumb { background: #111; height: 120px; border-radius: 15px; border: 1px solid #222; overflow: hidden; position: relative; }
+    </style>
+</head>
+<body>
+
+    <header class="glass-header">
+        <img src="1773452778552.jpeg" class="main-logo" id="mainLogo">
+        <h1 class="brand-title">DNHQ</h1>
+        <p>ELITE MAINTENANCE</p>
+    </header>
+
+    <div class="wrapper">
+        <div class="hud-grid">
+            <div class="hud-item" onclick="toggleModule('teamMod')"><i class="fas fa-users-gear"></i><span>Our Team</span></div>
+            <div class="hud-item" onclick="toggleModule('portMod')"><i class="fas fa-shield-halved"></i><span>Portfolio</span></div>
+            <div class="hud-item" onclick="toggleModule('tutorMod')"><i class="fas fa-circle-play"></i><span>Tutorials</span></div>
+            <div class="hud-item" onclick="openSecureAdmin()"><i class="fas fa-microchip"></i><span>Console</span></div>
+        </div>
+
+        <button class="mega-search-btn" onclick="toggleModule('recordMod')">
+            <i class="fas fa-database"></i> TRACK YOUR RECORD
+        </button>
+
+        <div class="section-header"><h2>AC Experts</h2><div class="divider"></div></div>
+        <div class="service-tile" onclick="selectSvc(this, 'AC Master Service', 3500)">
+            <div class="tile-info"><b>Master Chemical Service</b><p>Indoor/Outdoor full jet wash with chemicals</p></div>
+            <div class="tile-price">3500</div>
+        </div>
+        <div class="service-tile" onclick="selectSvc(this, 'AC Installation', 4500)">
+            <div class="tile-info"><b>Professional Installation</b><p>Bracket fixing & piping included</p></div>
+            <div class="tile-price">4500</div>
+        </div>
+        <div class="service-tile" onclick="selectSvc(this, 'AC Gas Full Charge', 8500)">
+            <div class="tile-info"><b>Gas Refill (Full)</b><p>Leakage check + R22/R410 Pure Gas</p></div>
+            <div class="tile-price">8500</div>
+        </div>
+        <div class="service-tile" onclick="selectSvc(this, 'AC PCB Repair', 3500)">
+            <div class="tile-info"><b>PCB Board Repair</b><p>Inverter/Non-Inverter card fixing</p></div>
+            <div class="tile-price">3500</div>
+        </div>
+
+        <div class="section-header"><h2>Electrical Solutions</h2><div class="divider"></div></div>
+        <div class="service-tile" onclick="selectSvc(this, 'UPS Setup', 2500)">
+            <div class="tile-info"><b>UPS & Battery Installation</b><p>Wiring for battery backup systems</p></div>
+            <div class="tile-price">2500</div>
+        </div>
+        <div class="service-tile" onclick="selectSvc(this, 'Short Circuit Fix', 1500)">
+            <div class="tile-info"><b>Short Circuit Repair</b><p>Fault finding and line restoration</p></div>
+            <div class="tile-price">1500</div>
+        </div>
+        <div class="service-tile" onclick="selectSvc(this, 'DB Panel Dressing', 5000)">
+            <div class="tile-info"><b>Main DB Dressing</b><p>Industrial breaker box management</p></div>
+            <div class="tile-price">5000</div>
+        </div>
+
+        <div class="section-header"><h2>Appliances</h2><div class="divider"></div></div>
+        <div class="service-tile" onclick="selectSvc(this, 'Fridge Gas Refill', 6500)">
+            <div class="tile-info"><b>Refrigerator Gas</b><p>Filter change + High pressure gas charge</p></div>
+            <div class="tile-price">6500</div>
+        </div>
+        <div class="service-tile" onclick="selectSvc(this, 'Washing Machine', 2500)">
+            <div class="tile-info"><b>Auto Machine Repair</b><p>Motor, gear box or board repair</p></div>
+            <div class="tile-price">2500</div>
+        </div>
+    </div>
+
+    <div id="recordMod" class="module-overlay">
+        <div class="module-nav"><h3>TRACKER</h3><button class="btn-back" onclick="closeModule('recordMod')">BACK</button></div>
+        <div class="admin-card">
+            <span class="u-label">Customer Name</span>
+            <input type="text" id="trackN" class="u-input" placeholder="e.g. Ahmed Ali">
+            <span class="u-label">Mobile Number</span>
+            <input type="number" id="trackP" class="u-input" placeholder="03XXXXXXXXX">
+            <button class="mega-search-btn" onclick="fetchRecords()">SEARCH DATABASE</button>
+        </div>
+        <div id="recordOut"></div>
+    </div>
+
+    <div id="teamMod" class="module-overlay">
+        <div class="module-nav"><h3>OUR TEAM</h3><button class="btn-back" onclick="closeModule('teamMod')">BACK</button></div>
+        <div class="profile-box"><div>DK</div><div><b>Daniyal Khan</b><p>Chief Technical Specialist</p></div></div>
+        <div class="profile-box"><div>E1</div><div><b>Electrical Unit</b><p>Certified Load Managers</p></div></div>
+        <div class="profile-box"><div>A1</div><div><b>AC Squad</b><p>Industrial Cooling Experts</p></div></div>
+    </div>
+
+    <div id="portMod" class="module-overlay">
+        <div class="module-nav"><h3>WORK HISTORY</h3><button class="btn-back" onclick="closeModule('portMod')">BACK</button></div>
+        <div class="portfolio-grid">
+            <div class="work-thumb"><div style="padding:10px;font-size:10px;">Bank Alfalah AC Maintenance</div></div>
+            <div class="work-thumb"><div style="padding:10px;font-size:10px;">K-Electric Panel Work</div></div>
+            <div class="work-thumb"><div style="padding:10px;font-size:10px;">Residential UPS Setup</div></div>
+            <div class="work-thumb"><div style="padding:10px;font-size:10px;">Commercial Fridge Repair</div></div>
+        </div>
+    </div>
+
+    <div id="tutorMod" class="module-overlay">
+        <div class="module-nav"><h3>VIDEO GUIDES</h3><button class="btn-back" onclick="closeModule('tutorMod')">BACK</button></div>
+        <div class="admin-card"><h4>AC Filter Cleaning</h4><p>DIY guide for better cooling.</p></div>
+        <div class="admin-card"><h4>Breaker Safety</h4><p>How to reset a tripped MCB.</p></div>
+    </div>
+
+    <div id="adminMod" class="module-overlay">
+        <div class="module-nav"><h3>CONSOLE</h3><button class="btn-back" onclick="closeModule('adminMod')">BACK</button></div>
+        <div class="admin-card">
+            <h4 style="color:var(--accent);">CREATE PROFESSIONAL BILL</h4>
+            <span class="u-label">Client Name</span><input type="text" id="m_name" class="u-input">
+            <span class="u-label">Work Done</span><input type="text" id="m_work" class="u-input">
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1;"><span class="u-label">Base Price</span><input type="number" id="m_price" class="u-input"></div>
+                <div style="flex:1;"><span class="u-label">Discount</span><input type="number" id="m_disc" class="u-input" value="0"></div>
+            </div>
+            <span class="u-label">Service Tax (Rs)</span><input type="number" id="m_tax" class="u-input" value="0">
+            <button class="mega-search-btn" style="background:var(--accent); color:#000;" onclick="saveAndPrintManual()">PRINT & SYNC BILL</button>
+        </div>
+        <div id="adminLogs"></div>
+    </div>
+
+    <div class="floating-footer" id="cartHub">
+        <div class="footer-content">
+            <div><small style="color:var(--text-dim);">Total Estimate</small><div style="font-size:24px; font-weight:900;">Rs <span id="billVal">0</span></div></div>
+            <button class="btn-wa" onclick="bookOnWhatsApp()"><i class="fab fa-whatsapp"></i> BOOK NOW</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
+
+        function toggleModule(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModule(id) { document.getElementById(id).style.display = 'none'; }
+
+        function selectSvc(el, name, price) {
+            const idx = cart.findIndex(c => c.name === name);
+            if (idx > -1) { cart.splice(idx, 1); el.classList.remove('active'); }
+            else { cart.push({name, price: parseInt(price)}); el.classList.add('active'); }
+            document.getElementById('cartHub').style.display = cart.length > 0 ? 'block' : 'none';
+            document.getElementById('billVal').innerText = cart.reduce((a, b) => a + b.price, 0).toLocaleString();
+        }
+
+        async function fetchRecords() {
+            const n = document.getElementById('trackN').value.toLowerCase();
+            const p = document.getElementById('trackP').value;
+            const out = document.getElementById('recordOut');
+            if(!n || !p) return alert("All fields required");
+            out.innerHTML = "Accessing DNHQ Cloud...";
+            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
+            const data = await res.json();
+            const found = data.filter(d => d.client.toLowerCase().includes(n) && d.client.includes(p));
+            out.innerHTML = found.map(d => `<div class="admin-card" style="border-left:5px solid var(--accent);"><b>${d.date.split('T')[0]}</b><br>${d.work}<br><b style="color:var(--accent);">Rs ${d.total}</b></div>`).join('') || "No Records Found";
+        }
+
+        function openSecureAdmin() { if(prompt("ACCESS PIN:") === "dnhq123") { toggleModule('adminMod'); loadAdminData(); } }
+
+        async function loadAdminData() {
+            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
+            const data = await res.json();
+            document.getElementById('adminLogs').innerHTML = data.reverse().map(d => `<div class="admin-card"><b>${d.client}</b><br><small>${d.work}</small><br>Rs ${d.total}<br><button onclick='printPDF(${JSON.stringify(d)})' style="margin-top:10px;">PDF</button></div>`).join('');
+        }
+
+        function saveAndPrintManual() {
+            const base = parseInt(document.getElementById('m_price').value) || 0;
+            const disc = parseInt(document.getElementById('m_disc').value) || 0;
+            const tax = parseInt(document.getElementById('m_tax').value) || 0;
+            const total = base - disc + tax;
+            const order = {
+                client: document.getElementById('m_name').value,
+                work: document.getElementById('m_work').value + ` (Disc: ${disc}, Tax: ${tax})`,
+                total: total,
+                date: new Date().toISOString()
+            };
+            if(!order.client || !order.total) return alert("Fill data");
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(order) });
+            printPDF(order);
+        }
+
+        function printPDF(order) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
+            doc.setTextColor(251,191,36); doc.setFontSize(26); doc.text("DNHQ SERVICES", 60, 25);
+            doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text("CUSTOMER: " + order.client.toUpperCase(), 15, 55);
+            doc.autoTable({ startY: 65, head: [['SERVICE DESCRIPTION', 'AMOUNT']], body: [[order.work, "Rs " + order.total]], theme: 'grid' });
+            doc.text("GRAND TOTAL: Rs " + order.total, 130, doc.lastAutoTable.finalY + 15);
+            doc.save(`${order.client}_Bill.pdf`);
+        }
+
+        function bookOnWhatsApp() {
+            const user = prompt("Your Name & Mobile:");
+            if(!user) return;
+            const total = cart.reduce((a, b) => a + b.price, 0);
+            const work = cart.map(c => c.name).join(", ");
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: user, work: work, total: total}) });
+            window.location.href = `https://wa.me/923152458657?text=*DNHQ BOOKING*%0AClient: ${user}%0AWork: ${work}%0ATotal: Rs ${total}`;
+        }
+    </script>
+</body>
+</html>
