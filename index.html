@@ -189,84 +189,80 @@ function generatePDF(order) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    // Header Black Background
-    doc.setFillColor(0,0,0);
+    // 1. Header Design
+    doc.setFillColor(0, 0, 0);
     doc.rect(0, 0, 210, 45, 'F');
-
-    // Brand Logo
     const img = document.getElementById('brandLogo');
     try { doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e) {}
 
-    // Brand Name
     doc.setTextColor(251, 191, 36); 
     doc.setFontSize(26);
     doc.setFont("helvetica", "bold");
     doc.text("DNHQ SERVICES", 55, 25);
     doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
     doc.text("Professional Electrical & AC Maintenance", 55, 32);
 
-    // Info Section
-    doc.setTextColor(0,0,0);
+    // 2. Customer Info
+    doc.setTextColor(0, 0, 0);
     doc.setFontSize(11);
-    doc.setFont("helvetica", "bold");
-    doc.text("INVOICE TO:", 15, 55);
-    doc.setFont("helvetica", "normal");
-    doc.text(order.client.toUpperCase(), 15, 62);
-    doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 145, 62);
+    doc.text("INVOICE TO: " + order.client.toUpperCase(), 15, 55);
+    doc.text("DATE: " + (order.date ? order.date.split('T')[0] : "N/A"), 145, 55);
 
-    // --- DATA CLEANING (Most Important) ---
-    // Hum manually check kar rahe hain ke Rs kahan likha hai
-    let tableData = [];
-    let items = order.work.split(", ");
-    
-    items.forEach(item => {
-        if (item.includes("(Rs ")) {
-            let parts = item.split(" (Rs ");
-            let desc = parts[0].trim();
+    // 3. Data Processing (Safe Method)
+    let workItems = order.work.split(", ");
+    let finalTableData = [];
+
+    workItems.forEach(item => {
+        // Agar item mein "(Rs " mojood hai toh split karein
+        if (item.indexOf("(Rs ") !== -1) {
+            let parts = item.split("(Rs ");
+            let name = parts[0].trim();
             let price = "Rs " + parts[1].replace(")", "").trim();
-            tableData.push([desc, price]);
+            finalTableData.push([name, price]);
         } else {
-            tableData.push([item.trim(), "Quote"]);
+            // Agar format alag hai toh pura item description mein aur amount mein dash
+            finalTableData.push([item.trim(), "-"]);
         }
     });
 
-    // --- TABLE GENERATION ---
+    // 4. Table Rendering
     doc.autoTable({
-        startY: 75,
+        startY: 70,
         head: [['SERVICE DESCRIPTION', 'AMOUNT']],
-        body: tableData,
-        headStyles: { fillColor: [30, 30, 30], textColor: [251, 191, 36], fontStyle: 'bold' },
-        bodyStyles: { textColor: [0, 0, 0], fontSize: 10 },
+        body: finalTableData,
+        theme: 'grid',
+        headStyles: { fillColor: [20, 20, 20], textColor: [251, 191, 36], fontSize: 11 },
+        styles: { fontSize: 10, cellPadding: 5, overflow: 'linebreak' },
         columnStyles: {
             0: { cellWidth: 140 },
             1: { cellWidth: 40, halign: 'right' }
-        },
-        theme: 'grid',
-        margin: { left: 15, right: 15 }
+        }
     });
 
-    // --- TOTAL SECTION (Fixed Position) ---
+    // 5. Grand Total Section (Fixed Position)
     let finalY = doc.lastAutoTable.finalY + 15;
     
-    // Safety check: Agar table bohot lambi ho jaye toh naye page pe na chala jaye
-    if (finalY > 270) { doc.addPage(); finalY = 30; }
+    // Draw a Gold Line
+    doc.setDrawColor(251, 191, 36);
+    doc.setLineWidth(1);
+    doc.line(110, finalY - 5, 195, finalY - 5);
 
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text("GRAND TOTAL:", 120, finalY);
+    doc.text("GRAND TOTAL:", 115, finalY);
     
-    // Amount in bold Red/Gold mix
-    doc.setTextColor(184, 134, 11); 
-    let formattedTotal = "Rs " + Number(order.total).toLocaleString();
-    doc.text(formattedTotal, 195, finalY, { align: 'right' });
+    doc.setTextColor(184, 134, 11); // Deep Gold
+    let totalVal = "Rs " + Number(order.total).toLocaleString();
+    doc.text(totalVal, 195, finalY, { align: 'right' });
 
-    // Footer
+    // 6. Footer
     doc.setTextColor(150, 150, 150);
     doc.setFontSize(9);
-    doc.text("This is a computer generated invoice. Contact: +92 315 2458657", 105, 285, { align: "center" });
+    doc.text("Contact: +92 315 2458657 | Quality Work Guaranteed", 105, 285, { align: "center" });
 
-    doc.save("DNHQ_Invoice_" + order.client + ".pdf");
-}
+    doc.save("DNHQ_" + order.client + ".pdf");
+}   
     </script>
 </body>
 </html>
