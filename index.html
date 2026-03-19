@@ -554,80 +554,94 @@
         }
     }
 
-    // === Generate PDF (Updated with Phone) ===
-    function generatePDF(order) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        // Header
-        doc.setFillColor(0,0,0);
-        doc.rect(0,0,210,45,'F');
-        const img = document.getElementById('brandLogo');
-        try { doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e) {}
-        
-        doc.setTextColor(251, 191, 36);
-        doc.setFontSize(24);
-        doc.setFont("helvetica", "bold");
-        doc.text("DNHQ SERVICES", 55, 24);
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "normal");
-        doc.text("Professional Electrical & AC Maintenance", 55, 31);
-        
-        // Customer Info (with Phone)
-        doc.setTextColor(0,0,0);
-        doc.setFontSize(11);
-        doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
-        doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
-        doc.text("DATE: " + (order.date ? new Date(order.date).toLocaleDateString() : "N/A"), 145, 55);
-        
-        doc.setFontSize(16);
-        doc.text("INVOICE", 105, 72, { align: "center" });
-        
-        // Parse items
-        let items = (order.work || "").split(", ");
-        let body = items.map(item => {
-            if (item.includes("(Rs ")) {
-                let parts = item.split(" (Rs ");
-                return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
-            }
-            return [item.trim(), "-"];
-        });
-        
-        // Table
-        doc.autoTable({
-            startY: 78,
-            head: [['SERVICE DESCRIPTION', 'AMOUNT']],
-            body: body,
-            theme: 'grid',
-            headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 },
-            styles: { fontSize: 9, cellPadding: 4 },
-            columnStyles: {
-                0: { cellWidth: 135 },
-                1: { cellWidth: 45, halign: 'right' }
-            }
-        });
-        
-        // Total
-        let finalY = doc.lastAutoTable.finalY + 15;
-        doc.setDrawColor(251, 191, 36);
-        doc.setLineWidth(1);
-        doc.line(110, finalY - 5, 195, finalY - 5);
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text("GRAND TOTAL:", 115, finalY);
-        doc.setTextColor(184, 134, 11);
-        doc.text("Rs " + Number(order.total || 0).toLocaleString(), 195, finalY, { align: 'right' });
-        
-        // Footer
-        doc.setTextColor(150, 150, 150);
-        doc.setFontSize(9);
-        doc.text("Contact: +92 315 2458657 | Quality Work Guaranteed", 105, 285, { align: "center" });
-        
-        const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
-        const dateStr = order.date ? new Date(order.date).toISOString().split('T')[0] : 'invoice';
-        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
+async function generatePDF(order) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Logo ko base64 me convert karein
+    let logoBase64 = null;
+    try {
+        const imgElement = document.getElementById('brandLogo');
+        logoBase64 = await getImageBase64(imgElement);
+    } catch (e) {
+        console.error('Logo load error:', e);
     }
-
+    
+    // Header
+    doc.setFillColor(0,0,0);
+    doc.rect(0,0,210,45,'F');
+    
+    // Agar logo load hua hai to add karein
+    if (logoBase64) {
+        try {
+            doc.addImage(logoBase64, 'JPEG', 15, 8, 30, 30);
+        } catch (e) {
+            console.error('Logo add error:', e);
+        }
+    }
+    
+    doc.setTextColor(251, 191, 36);
+    doc.setFontSize(24);
+    doc.setFont("helvetica", "bold");
+    doc.text("DNHQ SERVICES", 55, 24);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Professional Electrical & AC Maintenance", 55, 31);
+    
+    // Customer Info (with Phone)
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(11);
+    doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
+    doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
+    doc.text("DATE: " + (order.date ? new Date(order.date).toLocaleDateString() : "N/A"), 145, 55);
+    
+    doc.setFontSize(16);
+    doc.text("INVOICE", 105, 72, { align: "center" });
+    
+    // Parse items
+    let items = (order.work || "").split(", ");
+    let body = items.map(item => {
+        if (item.includes("(Rs ")) {
+            let parts = item.split(" (Rs ");
+            return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
+        }
+        return [item.trim(), "-"];
+    });
+    
+    // Table
+    doc.autoTable({
+        startY: 78,
+        head: [['SERVICE DESCRIPTION', 'AMOUNT']],
+        body: body,
+        theme: 'grid',
+        headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 },
+        styles: { fontSize: 9, cellPadding: 4 },
+        columnStyles: {
+            0: { cellWidth: 135 },
+            1: { cellWidth: 45, halign: 'right' }
+        }
+    });
+    
+    // Total
+    let finalY = doc.lastAutoTable.finalY + 15;
+    doc.setDrawColor(251, 191, 36);
+    doc.setLineWidth(1);
+    doc.line(110, finalY - 5, 195, finalY - 5);
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("GRAND TOTAL:", 115, finalY);
+    doc.setTextColor(184, 134, 11);
+    doc.text("Rs " + Number(order.total || 0).toLocaleString(), 195, finalY, { align: 'right' });
+    
+    // Footer
+    doc.setTextColor(150, 150, 150);
+    doc.setFontSize(9);
+    doc.text("Contact: +92 315 2458657 | Quality Work Guaranteed", 105, 285, { align: "center" });
+    
+    const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
+    const dateStr = order.date ? new Date(order.date).toISOString().split('T')[0] : 'invoice';
+    doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
+}
     // === Place Order (with Phone) ===
     async function placeOrder() {
         if(cart.length === 0) return alert("Please select at least one service!");
