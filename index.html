@@ -36,6 +36,9 @@ body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; colo
 .del-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
 .pdf-btn { background: var(--gold); color: black; border: none; border-radius: 5px; padding: 5px 15px; font-weight: bold; cursor: pointer; float: right; }
 .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+.discount-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+.discount-row select { padding: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; }
+.discount-row input { flex: 1; }
 .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
 .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
 footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
@@ -61,6 +64,9 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 #installPrompt p { margin: 0 0 10px 0; font-size: 14px; color: white; }
 #installPrompt button { background: #3b82f6; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 8px; }
 .loading { text-align: center; padding: 20px; color: #fbbf24; }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 5px; }
+.badge-discount { background: #10b981; color: white; }
+.badge-advance { background: #3b82f6; color: white; }
 @media (max-width: 480px) { .brand-title { font-size: 20px; } .logo-main { height: 70px; } }
 </style>
 </head>
@@ -100,8 +106,10 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
     <h2 style="color:gold;margin:0;">DNHQ DASHBOARD</h2>
     <button onclick="document.getElementById('adminView').style.display='none'" style="background:red;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;">CLOSE</button>
 </div>
+
+<!-- ✅ NEW: Manual Bill with Discount & Advance -->
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px dashed var(--gold);margin-bottom:25px;">
-<h4 style="color:var(--gold);margin:0 0 10px 0;">CREATE MANUAL BILL</h4>
+<h4 style="color:var(--gold);margin:0 0 10px 0;">💵 CREATE MANUAL BILL</h4>
 <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
 <input type="tel" id="man_phone" class="man-input" placeholder="Phone: 03XX-XXXXXXX">
 <div id="manual_works_container">
@@ -111,8 +119,29 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
     </div>
 </div>
 <button onclick="addNewManualRow()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:8px;margin-bottom:15px;border-radius:8px;">+ Add More Work</button>
-<button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;">SAVE & REFRESH</button>
+
+<!-- ✅ Discount Section -->
+<div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
+<h5 style="color:#fbbf24;margin:0 0 10px 0;">🎁 Discount (Optional)</h5>
+<div class="discount-row">
+    <select id="discount_type" onchange="toggleDiscountInput()">
+        <option value="none">No Discount</option>
+        <option value="percent">% Percentage</option>
+        <option value="fixed">Rs Fixed Amount</option>
+    </select>
+    <input type="number" id="discount_value" class="man-input" placeholder="Enter value" style="display:none;margin-bottom:0;">
 </div>
+</div>
+
+<!-- ✅ Advance Payment Section -->
+<div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
+<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
+<input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
+</div>
+
+<button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
+</div>
+
 <div id="logItems" class="loading">Loading...</div>
 </div>
 
@@ -169,42 +198,35 @@ let currentCustData = null;
 let deferredPrompt = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJVeSNFYWUhA1U5gOFXupe2so3WDCWsMBa1kPs_xNOLoP9L3Zi6bgRj5mBdTraIUNlgQ/exec";
 
-// ✅ ULTRA-ROBUST DATE FORMATTER WITH DEBUG
+// ✅ Toggle Discount Input Visibility
+function toggleDiscountInput() {
+    const type = document.getElementById('discount_type').value;
+    const input = document.getElementById('discount_value');
+    input.style.display = type === 'none' ? 'none' : 'block';
+    if (type === 'none') input.value = '';
+}
+
+// ✅ Ultra-Robust Date Formatter with Debug
 function formatDate(dateInput) {
-    console.log('🔍 Raw Date Input:', dateInput, 'Type:', typeof dateInput);
-    
     if (!dateInput || dateInput === '' || dateInput === 'null' || dateInput === 'undefined') {
-        console.log('⚠️ Empty date, using current date');
         return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     }
     
     try {
         let date;
-        
-        // Case 1: Already a Date object
         if (dateInput instanceof Date) {
             date = dateInput;
-        }
-        // Case 2: Number (timestamp)
-        else if (typeof dateInput === 'number') {
+        } else if (typeof dateInput === 'number') {
             date = new Date(dateInput);
-        }
-        // Case 3: String - try multiple formats
-        else if (typeof dateInput === 'string') {
+        } else if (typeof dateInput === 'string') {
             const str = dateInput.trim();
-            
-            // Try ISO format first (2026-03-20T14:30:00Z)
             date = new Date(str);
-            
-            // If invalid, try DD/MM/YYYY or DD-MM-YYYY
             if (isNaN(date.getTime())) {
                 const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
                 if (ddmmyyyy) {
                     date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
                 }
             }
-            
-            // If still invalid, try YYYY/MM/DD
             if (isNaN(date.getTime())) {
                 const yyyymmdd = str.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
                 if (yyyymmdd) {
@@ -213,18 +235,14 @@ function formatDate(dateInput) {
             }
         }
         
-        // Validate the date
         if (!date || isNaN(date.getTime())) {
-            console.log('⚠️ Invalid date, using current date');
             return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
         }
         
-        const formatted = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-        console.log('✅ Formatted Date:', formatted);
-        return formatted;
+        return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
         
     } catch (e) {
-        console.error('❌ Date Error:', e);
+        console.error('Date Error:', e);
         return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     }
 }
@@ -292,12 +310,15 @@ function addNewManualRow() {
     document.getElementById('manual_works_container').appendChild(div);
 }
 
+// ✅ UPDATED: Save Manual Entry with Discount & Advance
 async function saveManualEntry() {
     const name = document.getElementById('man_name').value.trim();
     const phone = document.getElementById('man_phone').value.trim();
     const workInputs = document.querySelectorAll('.m-work');
     const priceInputs = document.querySelectorAll('.m-price');
+    
     if(!name || !phone) return alert("Please enter Name AND Phone!");
+    
     let allWork = [], total = 0;
     workInputs.forEach((input, i) => {
         if(input.value.trim() !== "") {
@@ -306,14 +327,60 @@ async function saveManualEntry() {
             total += p;
         }
     });
+    
     if(allWork.length === 0) return alert("Add at least one service!");
-    const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: allWork.join(", "), total: total };
+    
+    // ✅ Get Discount Details
+    const discountType = document.getElementById('discount_type').value;
+    const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+    let discountAmount = 0;
+    let discountText = "None";
+    
+    if (discountType === 'percent' && discountValue > 0) {
+        discountAmount = (total * discountValue) / 100;
+        discountText = discountValue + "%";
+    } else if (discountType === 'fixed' && discountValue > 0) {
+        discountAmount = discountValue;
+        discountText = "Rs " + discountValue;
+    }
+    
+    const finalTotal = total - discountAmount;
+    
+    // ✅ Get Advance Payment
+    const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
+    const balanceDue = finalTotal - advance;
+    
+    const payload = { 
+        date: new Date().toISOString(), 
+        client: name.toUpperCase(), 
+        phone: phone, 
+        work: allWork.join(", "), 
+        subtotal: total,
+        discount_type: discountType,
+        discount_value: discountValue,
+        discount_amount: discountAmount,
+        discount_text: discountText,
+        advance: advance,
+        total: finalTotal,
+        balance_due: balanceDue
+    };
+    
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        alert("✅ Order saved!");
+        alert("✅ Order saved with discount & advance!");
         loadLogs();
+        // Reset form
         document.getElementById('man_name').value = '';
         document.getElementById('man_phone').value = '';
+        document.getElementById('discount_type').value = 'none';
+        document.getElementById('discount_value').value = '';
+        document.getElementById('discount_value').style.display = 'none';
+        document.getElementById('advance_payment').value = '';
+        document.getElementById('manual_works_container').innerHTML = `
+            <div style="display:flex;gap:10px;margin-bottom:10px;">
+                <input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;">
+                <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;">
+            </div>`;
     } catch(e) { alert("Error: " + e.message); }
 }
 
@@ -325,15 +392,29 @@ async function loadLogs() {
         const data = await res.json();
         if(data.error) throw new Error(data.error);
         if(data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
-        container.innerHTML = data.map((d, index) => `
+        
+        container.innerHTML = data.map((d, index) => {
+            let badges = '';
+            if (d.discount_amount > 0) {
+                badges += '<span class="badge badge-discount">🎁 ' + d.discount_text + ' OFF</span>';
+            }
+            if (d.advance > 0) {
+                badges += '<span class="badge badge-advance">💰 Advance: Rs ' + d.advance + '</span>';
+            }
+            
+            return `
             <div class="log-card">
-                <button class="pdf-btn" data-order='${JSON.stringify(d).replace(/'/g, "&apos;")}'>PDF</button>
-                <b>${d.client || "Unknown"}</b><br>
+                <button class="pdf-btn" data-order='${JSON.stringify(d).replace(/'/g, "&apos;")}'>📄 PDF</button>
+                <b>${d.client || "Unknown"}</b> ${badges}<br>
                 <small class="phone">📱 ${d.phone || "N/A"}</small><br>
                 <small>${(d.work || "").substring(0, 50)}</small><br>
-                <b style="color:gold;">Rs ${Number(d.total||0).toLocaleString()}</b><br>
+                ${d.subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${d.subtotal.toLocaleString()}</small><br>` : ''}
+                ${d.discount_amount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${d.discount_amount.toLocaleString()}</small><br>` : ''}
+                ${d.advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${d.advance.toLocaleString()}</small><br>` : ''}
+                <b style="color:gold;">${d.balance_due > 0 ? 'Balance: Rs ' + d.balance_due.toLocaleString() : 'Paid: Rs ' + d.total.toLocaleString()}</b><br>
                 <button class="del-btn" onclick="deleteEntry(${index + 2})">🗑️ Delete</button>
-            </div>`).join('');
+            </div>`;
+        }).join('');
         
         container.querySelectorAll('.pdf-btn').forEach(btn => {
             btn.onclick = function() {
@@ -354,7 +435,7 @@ async function deleteEntry(rowIdx) {
     }
 }
 
-// ✅ PDF GENERATION WITH DEBUG LOGGING
+// ✅ UPDATED: PDF Generation with Discount & Advance
 async function generatePDF(order) {
     console.log('📄 Generating PDF for order:', order);
     
@@ -371,7 +452,7 @@ async function generatePDF(order) {
         doc.setFillColor(0, 0, 0);
         doc.rect(0, 0, 210, 45, 'F');
         
-        // Logo with safe handling
+        // Logo
         try {
             const imgData = await getImageDataForPDF(document.getElementById('brandLogo'));
             if (imgData) {
@@ -396,11 +477,7 @@ async function generatePDF(order) {
         doc.setFontSize(11);
         doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
         doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
-        
-        // ✅ DATE WITH DEBUG
-        const pdfDate = formatDate(order.date);
-        console.log('📅 PDF Date Value:', pdfDate);
-        doc.text("DATE: " + pdfDate, 145, 55);
+        doc.text("DATE: " + formatDate(order.date || order.timestamp), 145, 55);
         
         // Invoice Title
         doc.setFontSize(16);
@@ -428,25 +505,81 @@ async function generatePDF(order) {
             columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } 
         });
         
-        // Total
-        let finalY = doc.lastAutoTable.finalY + 15;
+        // Calculations
+        let finalY = doc.lastAutoTable.finalY + 10;
+        const subtotal = order.subtotal || order.total || 0;
+        const discount = order.discount_amount || 0;
+        const advance = order.advance || 0;
+        const totalAfterDiscount = subtotal - discount;
+        const balanceDue = totalAfterDiscount - advance;
+        
+        // Subtotal
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(150, 150, 150);
+        doc.text("Subtotal:", 115, finalY);
+        doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' });
+        finalY += 7;
+        
+        // Discount (if any)
+        if (discount > 0) {
+            doc.setTextColor(16, 185, 129);
+            doc.text(order.discount_text + " Discount:", 115, finalY);
+            doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' });
+            finalY += 7;
+            doc.setTextColor(150, 150, 150);
+        }
+        
+        // Total After Discount
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(0, 0, 0);
+        doc.text("Total:", 115, finalY);
+        doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' });
+        finalY += 10;
+        
+        // Advance Payment (if any)
+        if (advance > 0) {
+            doc.setDrawColor(59, 130, 246);
+            doc.setLineWidth(0.5);
+            doc.line(110, finalY - 5, 195, finalY - 5);
+            doc.setFontSize(10);
+            doc.setTextColor(59, 130, 246);
+            doc.setFont("helvetica", "bold");
+            doc.text("Advance Received:", 115, finalY);
+            doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' });
+            finalY += 10;
+        }
+        
+        // Balance Due / Paid
         doc.setDrawColor(251, 191, 36);
         doc.setLineWidth(1);
         doc.line(110, finalY - 5, 195, finalY - 5);
         doc.setFontSize(14);
         doc.setFont("helvetica", "bold");
-        doc.text("TOTAL:", 115, finalY);
-        doc.setTextColor(184, 134, 11);
-        doc.text("Rs " + Number(order.total || 0).toLocaleString(), 195, finalY, { align: 'right' });
+        
+        if (balanceDue > 0) {
+            doc.setTextColor(239, 68, 68);
+            doc.text("BALANCE DUE:", 115, finalY);
+            doc.setTextColor(239, 68, 68);
+            doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' });
+        } else {
+            doc.setTextColor(16, 185, 129);
+            doc.text("FULLY PAID ✓", 115, finalY);
+            doc.setTextColor(16, 185, 129);
+            doc.text("Rs 0", 195, finalY, { align: 'right' });
+        }
         
         // Footer
         doc.setTextColor(150, 150, 150);
         doc.setFontSize(9);
+        doc.setFont("helvetica", "normal");
         doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
         
         // Save
         const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
-        doc.save(`DNHQ_${cname}_${pdfDate.replace(/[^a-z0-9]/gi, '_')}.pdf`);
+        const dateStr = formatDate(order.date || order.timestamp).replace(/[^a-z0-9]/gi, '_');
+        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
         
         console.log('✅ PDF Generated Successfully');
         
@@ -463,7 +596,20 @@ async function placeOrder() {
     if(!name || !phone) { alert("Name and Phone required!"); return; }
     const total = cart.reduce((a, b) => a + (b.price || 0), 0);
     const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
-    const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, total: total };
+    const payload = { 
+        date: new Date().toISOString(), 
+        client: name.toUpperCase(), 
+        phone: phone, 
+        work: workFormatted, 
+        subtotal: total,
+        discount_type: 'none',
+        discount_value: 0,
+        discount_amount: 0,
+        discount_text: 'None',
+        advance: 0,
+        total: total,
+        balance_due: total
+    };
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         const waText = `*DNHQ ORDER*%0ACustomer: ${name}%0APhone: ${phone}%0AWork: ${workFormatted}%0ATotal: Rs ${total}`;
@@ -514,10 +660,12 @@ async function fetchCustomerHistory() {
         
         document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `
             <div class="history-item">
-                <b>#${data.length - i} • ${formatDate(o.date)}</b>
+                <b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b>
                 <small class="phone">📱 ${o.phone || phone}</small>
                 <small>🔧 ${(o.work || "").substring(0, 60)}</small>
-                <span class="amt">Rs ${Number(o.total||0).toLocaleString()}</span>
+                ${o.discount_amount > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${o.discount_amount}</small>` : ''}
+                ${o.advance > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${o.advance}</small>` : ''}
+                <span class="amt">${o.balance_due > 0 ? 'Balance: Rs ' + o.balance_due.toLocaleString() : '✓ Paid'}</span>
                 <button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 Download</button>
             </div>`).join('');
         
@@ -556,7 +704,11 @@ function downloadCustomerHistoryPDF() {
         doc.text("Customer: " + cust.client, 15, 52);
         doc.text("Phone: " + cust.phone, 15, 58);
         
-        const rows = currentCustData.map(o => [formatDate(o.date), (o.work || "").substring(0, 40), "Rs " + Number(o.total||0).toLocaleString()]);
+        const rows = currentCustData.map(o => [
+            formatDate(o.date || o.timestamp), 
+            (o.work || "").substring(0, 30), 
+            "Rs " + Number(o.total||0).toLocaleString()
+        ]);
         doc.autoTable({ startY: 64, head: [['DATE', 'SERVICE', 'AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 3 } });
         
         let y = doc.lastAutoTable.finalY + 12;
@@ -581,6 +733,7 @@ window.generatePDF = generatePDF;
 window.deleteEntry = deleteEntry;
 window.fetchCustomerHistory = fetchCustomerHistory;
 window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
+window.toggleDiscountInput = toggleDiscountInput;
 
 document.addEventListener('DOMContentLoaded', () => { 
     updateCart(); 
