@@ -371,6 +371,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyk5U4H2duKLKNOlfqXl
 
 // ✅ FIX 1: Image to Base64 Converter (Missing Function)
 // ✅ Image to Base64 Converter
+// ✅ Add this function before playVid()
 function getImageBase64(imgElement) {
     return new Promise((resolve, reject) => {
         try {
@@ -396,6 +397,12 @@ function getImageBase64(imgElement) {
         }
     });
 }
+
+// ✅ Add this helper function after generatePDF
+window.generatePDFAsync = async function(order) {
+    await generatePDF(order);
+};
+    }
 // === Video Function ===
 function playVid() {
     const box = document.getElementById('videoBox');
