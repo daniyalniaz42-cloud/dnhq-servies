@@ -3,348 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DNHQ | Karachi's Premier Technical Hub</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>DNHQ SERVICES | Official</title>
+    <link rel="manifest" href="manifest.json?v=9">
+    <meta name="theme-color" content="#fbbf24">
+    <link rel="apple-touch-icon" href="1773452778552.jpeg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
     <style>
-        :root {
-            --accent: #fbbf24;
-            --bg: #05070a;
-            --surface: #11141b;
-            --surface-light: #1c212c;
-            --text: #ffffff;
-            --text-dim: #94a3b8;
-            --neon-glow: 0 0 15px rgba(251, 191, 36, 0.4);
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding-bottom: 120px;
-            overflow-x: hidden;
-        }
-
-        /* --- PRELOADER ANIMATION --- */
-        .glass-header {
-            background: linear-gradient(180deg, #000 0%, rgba(5,7,10,0.9) 100%);
-            padding: 50px 20px;
-            text-align: center;
-            border-bottom: 2px solid var(--accent);
-            box-shadow: var(--neon-glow);
-            position: relative;
-        }
-        .main-logo {
-            width: 100px; height: 100px;
-            border-radius: 24px;
-            border: 2px solid var(--accent);
-            margin-bottom: 15px;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .main-logo:hover { transform: scale(1.1) rotate(5deg); }
-        .brand-title { font-family: 'Syncopate', sans-serif; font-size: 28px; font-weight: 700; color: var(--accent); margin: 0; }
-
-        .wrapper { max-width: 600px; margin: 0 auto; padding: 20px; }
-
-        /* --- NAVIGATION HUD --- */
-        .hud-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: -30px;
-            position: relative;
-            z-index: 10;
-        }
-        .hud-item {
-            background: var(--surface);
-            border: 1px solid #2d3748;
-            padding: 25px 15px;
-            border-radius: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .hud-item i { font-size: 24px; color: var(--accent); margin-bottom: 10px; display: block; }
-        .hud-item span { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-        .hud-item:hover { background: var(--surface-light); border-color: var(--accent); box-shadow: var(--neon-glow); }
-
-        /* --- TRACKER BUTTON --- */
-        .mega-search-btn {
-            background: var(--accent);
-            color: #000;
-            width: 100%;
-            padding: 20px;
-            border-radius: 18px;
-            border: none;
-            font-weight: 900;
-            font-size: 16px;
-            margin: 30px 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.2);
-        }
-
-        /* --- DYNAMIC SERVICES --- */
-        .section-header { display: flex; align-items: center; margin: 40px 0 20px; }
-        .section-header h2 { font-size: 14px; color: var(--accent); letter-spacing: 3px; margin: 0; text-transform: uppercase; }
-        .divider { flex-grow: 1; height: 1px; background: #2d3748; margin-left: 15px; }
-
-        .service-tile {
-            background: var(--surface);
-            border: 1px solid #1e293b;
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.2s;
-        }
-        .service-tile.active { border-color: var(--accent); background: #000; }
-        .tile-info b { display: block; font-size: 17px; margin-bottom: 5px; }
-        .tile-info p { margin: 0; font-size: 12px; color: var(--text-dim); }
-        .tile-price { color: var(--accent); font-weight: 900; font-size: 18px; }
-
-        /* --- FULLSCREEN MODULES (OVERLAYS) --- */
-        .module-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--bg);
-            z-index: 10000;
-            padding: 30px 20px;
-            overflow-y: auto;
-        }
-        .module-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .btn-back { background: #1e293b; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; }
-
-        /* --- ADMIN INTERFACE --- */
-        .admin-card { background: var(--surface); border: 1px solid #2d3748; padding: 20px; border-radius: 20px; margin-bottom: 20px; }
-        .u-input { width: 100%; background: #000; border: 1px solid #2d3748; padding: 15px; color: white; border-radius: 12px; margin-bottom: 12px; font-size: 16px; }
-        .u-label { font-size: 11px; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 5px; display: block; }
-
-        /* --- FLOATING CART --- */
-        .floating-footer {
-            position: fixed;
-            bottom: 0; left: 0; width: 100%;
-            background: #000;
-            border-top: 3px solid var(--accent);
-            padding: 25px;
-            display: none;
-            z-index: 9000;
-            border-radius: 30px 30px 0 0;
-        }
-        .footer-content { max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .btn-wa { background: #25d366; color: white; border: none; padding: 15px 30px; border-radius: 15px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-
-        /* --- TEAM & PORTFOLIO CONTENT --- */
-        .profile-box { background: var(--surface); padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-        .profile-box img { width: 50px; height: 50px; border-radius: 50%; background: var(--accent); }
-        .portfolio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .work-thumb { background: #111; height: 120px; border-radius: 15px; border: 1px solid #222; overflow: hidden; position: relative; }
+        :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 160px; }
+        .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
+        .logo-main { height: 85px; display: block; margin: 0 auto; border-radius: 10px; }
+        .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
+        .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
+        .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
+        .nav-btn { flex: 1; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin-bottom: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
+        .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
+        .svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .svc-item.selected { border: 2px solid var(--gold); background: #000; }
+        .svc-meta b { display: block; font-size: 16px; color: white; }
+        .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
+        .svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
+        #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
+        .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
+        .del-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .pdf-btn { background: var(--gold); color: black; border: none; border-radius: 5px; padding: 5px 15px; font-weight: bold; cursor: pointer; float: right; }
+        .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+        .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 20px; display: none; box-sizing: border-box; z-index: 2000; }
+        .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        footer { background: #000; color: #64748b; padding: 40px 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <header class="glass-header">
-        <img src="1773452778552.jpeg" class="main-logo" id="mainLogo">
-        <h1 class="brand-title">DNHQ</h1>
-        <p>ELITE MAINTENANCE</p>
+    <header class="brand-header">
+        <img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ">
+        <div class="brand-title">DNHQ SERVICES</div>
     </header>
 
     <div class="wrapper">
-        <div class="hud-grid">
-            <div class="hud-item" onclick="toggleModule('teamMod')"><i class="fas fa-users-gear"></i><span>Our Team</span></div>
-            <div class="hud-item" onclick="toggleModule('portMod')"><i class="fas fa-shield-halved"></i><span>Portfolio</span></div>
-            <div class="hud-item" onclick="toggleModule('tutorMod')"><i class="fas fa-circle-play"></i><span>Tutorials</span></div>
-            <div class="hud-item" onclick="openSecureAdmin()"><i class="fas fa-microchip"></i><span>Console</span></div>
+        <div class="nav-container">
+            <a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
+            <a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
         </div>
 
-        <button class="mega-search-btn" onclick="toggleModule('recordMod')">
-            <i class="fas fa-database"></i> TRACK YOUR RECORD
-        </button>
-
-        <div class="section-header"><h2>AC Experts</h2><div class="divider"></div></div>
-        <div class="service-tile" onclick="selectSvc(this, 'AC Master Service', 3500)">
-            <div class="tile-info"><b>Master Chemical Service</b><p>Indoor/Outdoor full jet wash with chemicals</p></div>
-            <div class="tile-price">3500</div>
-        </div>
-        <div class="service-tile" onclick="selectSvc(this, 'AC Installation', 4500)">
-            <div class="tile-info"><b>Professional Installation</b><p>Bracket fixing & piping included</p></div>
-            <div class="tile-price">4500</div>
-        </div>
-        <div class="service-tile" onclick="selectSvc(this, 'AC Gas Full Charge', 8500)">
-            <div class="tile-info"><b>Gas Refill (Full)</b><p>Leakage check + R22/R410 Pure Gas</p></div>
-            <div class="tile-price">8500</div>
-        </div>
-        <div class="service-tile" onclick="selectSvc(this, 'AC PCB Repair', 3500)">
-            <div class="tile-info"><b>PCB Board Repair</b><p>Inverter/Non-Inverter card fixing</p></div>
-            <div class="tile-price">3500</div>
+        <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
+        <div id="videoBox" style="display:none; margin-bottom:20px; text-align:center;">
+            <video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);">
+                <source src="tutorial.mp4" type="video/mp4">
+            </video>
         </div>
 
-        <div class="section-header"><h2>Electrical Solutions</h2><div class="divider"></div></div>
-        <div class="service-tile" onclick="selectSvc(this, 'UPS Setup', 2500)">
-            <div class="tile-info"><b>UPS & Battery Installation</b><p>Wiring for battery backup systems</p></div>
-            <div class="tile-price">2500</div>
-        </div>
-        <div class="service-tile" onclick="selectSvc(this, 'Short Circuit Fix', 1500)">
-            <div class="tile-info"><b>Short Circuit Repair</b><p>Fault finding and line restoration</p></div>
-            <div class="tile-price">1500</div>
-        </div>
-        <div class="service-tile" onclick="selectSvc(this, 'DB Panel Dressing', 5000)">
-            <div class="tile-info"><b>Main DB Dressing</b><p>Industrial breaker box management</p></div>
-            <div class="tile-price">5000</div>
-        </div>
+        <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 6500)"><div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 6,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
 
-        <div class="section-header"><h2>Appliances</h2><div class="divider"></div></div>
-        <div class="service-tile" onclick="selectSvc(this, 'Fridge Gas Refill', 6500)">
-            <div class="tile-info"><b>Refrigerator Gas</b><p>Filter change + High pressure gas charge</p></div>
-            <div class="tile-price">6500</div>
-        </div>
-        <div class="service-tile" onclick="selectSvc(this, 'Washing Machine', 2500)">
-            <div class="tile-info"><b>Auto Machine Repair</b><p>Motor, gear box or board repair</p></div>
-            <div class="tile-price">2500</div>
-        </div>
+        <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Short Circuit Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
+        <div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div>
+
+        <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Full Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
+
+        <div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
+        <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
     </div>
 
-    <div id="recordMod" class="module-overlay">
-        <div class="module-nav"><h3>TRACKER</h3><button class="btn-back" onclick="closeModule('recordMod')">BACK</button></div>
-        <div class="admin-card">
-            <span class="u-label">Customer Name</span>
-            <input type="text" id="trackN" class="u-input" placeholder="e.g. Ahmed Ali">
-            <span class="u-label">Mobile Number</span>
-            <input type="number" id="trackP" class="u-input" placeholder="03XXXXXXXXX">
-            <button class="mega-search-btn" onclick="fetchRecords()">SEARCH DATABASE</button>
+    <div id="adminView">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="color:gold; margin:0;">DNHQ DASHBOARD</h2>
+            <button onclick="document.getElementById('adminView').style.display='none'" style="background:red; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">CLOSE</button>
         </div>
-        <div id="recordOut"></div>
-    </div>
 
-    <div id="teamMod" class="module-overlay">
-        <div class="module-nav"><h3>OUR TEAM</h3><button class="btn-back" onclick="closeModule('teamMod')">BACK</button></div>
-        <div class="profile-box"><div>DK</div><div><b>Daniyal Khan</b><p>Chief Technical Specialist</p></div></div>
-        <div class="profile-box"><div>E1</div><div><b>Electrical Unit</b><p>Certified Load Managers</p></div></div>
-        <div class="profile-box"><div>A1</div><div><b>AC Squad</b><p>Industrial Cooling Experts</p></div></div>
-    </div>
-
-    <div id="portMod" class="module-overlay">
-        <div class="module-nav"><h3>WORK HISTORY</h3><button class="btn-back" onclick="closeModule('portMod')">BACK</button></div>
-        <div class="portfolio-grid">
-            <div class="work-thumb"><div style="padding:10px;font-size:10px;">Bank Alfalah AC Maintenance</div></div>
-            <div class="work-thumb"><div style="padding:10px;font-size:10px;">K-Electric Panel Work</div></div>
-            <div class="work-thumb"><div style="padding:10px;font-size:10px;">Residential UPS Setup</div></div>
-            <div class="work-thumb"><div style="padding:10px;font-size:10px;">Commercial Fridge Repair</div></div>
-        </div>
-    </div>
-
-    <div id="tutorMod" class="module-overlay">
-        <div class="module-nav"><h3>VIDEO GUIDES</h3><button class="btn-back" onclick="closeModule('tutorMod')">BACK</button></div>
-        <div class="admin-card"><h4>AC Filter Cleaning</h4><p>DIY guide for better cooling.</p></div>
-        <div class="admin-card"><h4>Breaker Safety</h4><p>How to reset a tripped MCB.</p></div>
-    </div>
-
-    <div id="adminMod" class="module-overlay">
-        <div class="module-nav"><h3>CONSOLE</h3><button class="btn-back" onclick="closeModule('adminMod')">BACK</button></div>
-        <div class="admin-card">
-            <h4 style="color:var(--accent);">CREATE PROFESSIONAL BILL</h4>
-            <span class="u-label">Client Name</span><input type="text" id="m_name" class="u-input">
-            <span class="u-label">Work Done</span><input type="text" id="m_work" class="u-input">
-            <div style="display:flex; gap:10px;">
-                <div style="flex:1;"><span class="u-label">Base Price</span><input type="number" id="m_price" class="u-input"></div>
-                <div style="flex:1;"><span class="u-label">Discount</span><input type="number" id="m_disc" class="u-input" value="0"></div>
+        <div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-bottom: 25px;">
+            <h4 style="color:var(--gold); margin: 0 0 10px 0;">CREATE MANUAL BILL</h4>
+            <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
+            <div id="manual_works_container">
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;">
+                    <input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">
+                </div>
             </div>
-            <span class="u-label">Service Tax (Rs)</span><input type="number" id="m_tax" class="u-input" value="0">
-            <button class="mega-search-btn" style="background:var(--accent); color:#000;" onclick="saveAndPrintManual()">PRINT & SYNC BILL</button>
+            <button onclick="addNewManualRow()" style="width:100%; background:transparent; border:1px dashed gold; color:gold; padding:8px; margin-bottom:15px; border-radius:8px;">+ Add More Work</button>
+            <button onclick="saveManualEntry()" style="width:100%; background:gold; color:black; font-weight:bold; border:none; padding:12px; border-radius:8px;">SAVE & REFRESH</button>
         </div>
-        <div id="adminLogs"></div>
+
+        <div id="logItems">Data loading...</div>
     </div>
 
-    <div class="floating-footer" id="cartHub">
-        <div class="footer-content">
-            <div><small style="color:var(--text-dim);">Total Estimate</small><div style="font-size:24px; font-weight:900;">Rs <span id="billVal">0</span></div></div>
-            <button class="btn-wa" onclick="bookOnWhatsApp()"><i class="fab fa-whatsapp"></i> BOOK NOW</button>
+    <div class="checkout-bar" id="cart">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto;">
+            <div><small>Total Bill</small><div style="font-size:20px; font-weight:900;">Rs <span id="billTotal">0</span></div></div>
+            <button class="btn-wa" onclick="placeOrder()">PLACE ORDER</button>
         </div>
     </div>
+
+    <footer><div onclick="openAdmin()" style="cursor:pointer; font-size:11px; opacity:0.5;">Admin Access</div></footer>
 
     <script>
-        let cart = [];
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
+    let cart = [];
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwI_fTT4vMiuPjehYhnyADO8_ZS0XifwZbKAuPEqrJoxB-uWf48UjkKuyO9IOHTkJccPw/exec";
 
-        function toggleModule(id) { document.getElementById(id).style.display = 'block'; }
-        function closeModule(id) { document.getElementById(id).style.display = 'none'; }
+    function playVid() {
+        const box = document.getElementById('videoBox');
+        const vid = document.getElementById('myVideo');
+        box.style.display = box.style.display === "none" ? "block" : "none";
+        box.style.display === "block" ? vid.play() : vid.pause();
+    }
 
-        function selectSvc(el, name, price) {
-            const idx = cart.findIndex(c => c.name === name);
-            if (idx > -1) { cart.splice(idx, 1); el.classList.remove('active'); }
-            else { cart.push({name, price: parseInt(price)}); el.classList.add('active'); }
-            document.getElementById('cartHub').style.display = cart.length > 0 ? 'block' : 'none';
-            document.getElementById('billVal').innerText = cart.reduce((a, b) => a + b.price, 0).toLocaleString();
-        }
+    function toggleSvc(el, name, price) {
+        const idx = cart.findIndex(c => c.name === name);
+        if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
+        else { cart.push({name, price: parseInt(price)}); el.classList.add('selected'); }
+        const total = cart.reduce((a, b) => a + b.price, 0);
+        document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
+        document.getElementById('billTotal').innerText = total.toLocaleString();
+    }
 
-        async function fetchRecords() {
-            const n = document.getElementById('trackN').value.toLowerCase();
-            const p = document.getElementById('trackP').value;
-            const out = document.getElementById('recordOut');
-            if(!n || !p) return alert("All fields required");
-            out.innerHTML = "Accessing DNHQ Cloud...";
+    function openAdmin() {
+        if(prompt("Enter PIN:") === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); }
+    }
+
+    function addNewManualRow() {
+        const div = document.createElement('div');
+        div.style = "display:flex; gap:10px; margin-bottom:10px;";
+        div.innerHTML = '<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2; margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1; margin-bottom:0;">';
+        document.getElementById('manual_works_container').appendChild(div);
+    }
+
+    async function saveManualEntry() {
+        const name = document.getElementById('man_name').value;
+        const workInputs = document.querySelectorAll('.m-work');
+        const priceInputs = document.querySelectorAll('.m-price');
+        let allWork = []; let total = 0;
+        workInputs.forEach((input, i) => {
+            if(input.value.trim() !== "") {
+                const p = priceInputs[i].value || 0;
+                allWork.push(input.value + " (Rs " + p + ")");
+                total += parseInt(p);
+            }
+        });
+        if(!name || allWork.length === 0) return alert("Fill details!");
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: name, work: allWork.join(", "), total}) });
+        alert("Saved!"); loadLogs();
+    }
+
+    async function loadLogs() {
+        const container = document.getElementById('logItems');
+        container.innerHTML = "Fetching Records...";
+        try {
             const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
             const data = await res.json();
-            const found = data.filter(d => d.client.toLowerCase().includes(n) && d.client.includes(p));
-            out.innerHTML = found.map(d => `<div class="admin-card" style="border-left:5px solid var(--accent);"><b>${d.date.split('T')[0]}</b><br>${d.work}<br><b style="color:var(--accent);">Rs ${d.total}</b></div>`).join('') || "No Records Found";
-        }
+            container.innerHTML = data.reverse().map((d, index) => `
+                <div class="log-card">
+                    <button class="pdf-btn" onclick='generatePDF(${JSON.stringify(d)})'>PDF</button>
+                    <b>${d.client}</b><br><small>${d.work}</small><br>
+                    <b style="color:gold;">Rs ${d.total}</b><br>
+                    <button class="del-btn" onclick="deleteEntry(${data.length - 1 - index})">DELETE</button>
+                </div>
+            `).join('');
+        } catch(e) { container.innerHTML = "Error loading."; }
+    }
 
-        function openSecureAdmin() { if(prompt("ACCESS PIN:") === "dnhq123") { toggleModule('adminMod'); loadAdminData(); } }
-
-        async function loadAdminData() {
-            const res = await fetch(SCRIPT_URL + "?v=" + Math.random());
-            const data = await res.json();
-            document.getElementById('adminLogs').innerHTML = data.reverse().map(d => `<div class="admin-card"><b>${d.client}</b><br><small>${d.work}</small><br>Rs ${d.total}<br><button onclick='printPDF(${JSON.stringify(d)})' style="margin-top:10px;">PDF</button></div>`).join('');
+    async function deleteEntry(rowIdx) {
+        if(confirm("Delete this?")) {
+            fetch(SCRIPT_URL + "?deleteRow=" + (rowIdx + 2), { method: 'GET' });
+            alert("Deleted!"); loadLogs();
         }
+    }
 
-        function saveAndPrintManual() {
-            const base = parseInt(document.getElementById('m_price').value) || 0;
-            const disc = parseInt(document.getElementById('m_disc').value) || 0;
-            const tax = parseInt(document.getElementById('m_tax').value) || 0;
-            const total = base - disc + tax;
-            const order = {
-                client: document.getElementById('m_name').value,
-                work: document.getElementById('m_work').value + ` (Disc: ${disc}, Tax: ${tax})`,
-                total: total,
-                date: new Date().toISOString()
-            };
-            if(!order.client || !order.total) return alert("Fill data");
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(order) });
-            printPDF(order);
-        }
+    function generatePDF(order) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
+        const img = document.getElementById('brandLogo');
+        try { doc.addImage(img, 'JPEG', 15, 7, 25, 25); } catch(e) {}
+        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.text("DNHQ SERVICES", 45, 20);
+        doc.setTextColor(0,0,0); doc.setFontSize(11);
+        doc.text("Customer: " + order.client, 15, 50);
+        doc.text("Date: " + (order.date ? order.date.split('T')[0] : "N/A"), 15, 57);
+        doc.setFontSize(18); doc.text("INVOICE", 105, 72, { align: "center" });
 
-        function printPDF(order) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.setFillColor(0,0,0); doc.rect(0,0,210,40,'F');
-            doc.setTextColor(251,191,36); doc.setFontSize(26); doc.text("DNHQ SERVICES", 60, 25);
-            doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text("CUSTOMER: " + order.client.toUpperCase(), 15, 55);
-            doc.autoTable({ startY: 65, head: [['SERVICE DESCRIPTION', 'AMOUNT']], body: [[order.work, "Rs " + order.total]], theme: 'grid' });
-            doc.text("GRAND TOTAL: Rs " + order.total, 130, doc.lastAutoTable.finalY + 15);
-            doc.save(`${order.client}_Bill.pdf`);
-        }
+        let items = order.work.split(", ");
+        let body = items.map(item => {
+            if (item.includes("(Rs ")) {
+                let parts = item.split(" (Rs ");
+                return [parts[0], "Rs " + parts[1].replace(")", "")];
+            }
+            return [item, "-"];
+        });
 
-        function bookOnWhatsApp() {
-            const user = prompt("Your Name & Mobile:");
-            if(!user) return;
-            const total = cart.reduce((a, b) => a + b.price, 0);
-            const work = cart.map(c => c.name).join(", ");
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: user, work: work, total: total}) });
-            window.location.href = `https://wa.me/923152458657?text=*DNHQ BOOKING*%0AClient: ${user}%0AWork: ${work}%0ATotal: Rs ${total}`;
-        }
+        doc.autoTable({ startY: 78, head: [['Description', 'Amount']], body, headStyles: { fillColor: [0,0,0], textColor: [251,191,36] }, theme: 'grid' });
+        doc.setFontSize(16); doc.text("TOTAL: Rs " + order.total, 115, doc.lastAutoTable.finalY + 20);
+        doc.save("DNHQ_" + order.client + ".pdf");
+    }
+
+    async function placeOrder() {
+        const user = prompt("Customer Name:") || "Client";
+        const total = cart.reduce((a, b) => a + b.price, 0);
+        const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({date: new Date().toLocaleDateString(), client: user, work: workFormatted, total}) });
+        window.location.href = "https://wa.me/923152458657?text=*DNHQ ORDER*%0AClient: " + user + "%0AWork: " + workFormatted + "%0ATotal: Rs " + total;
+    }
     </script>
 </body>
 </html>
