@@ -370,6 +370,7 @@ let deferredPrompt = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2fj7aV6RDA6RNRyFfgz40-OT36djVF3KFFW-6z3IZ5LsvA12xygVxbspOTcv7jpmmSA/exec";
 
 // ✅ FIX 1: Image to Base64 Converter (Missing Function)
+// ✅ Image to Base64 Converter
 function getImageBase64(imgElement) {
     return new Promise((resolve, reject) => {
         try {
@@ -395,7 +396,6 @@ function getImageBase64(imgElement) {
         }
     });
 }
-
 // === Video Function ===
 function playVid() {
     const box = document.getElementById('videoBox');
@@ -855,7 +855,7 @@ window.onclick = function(e) {
     if (e.target == document.getElementById('historyModal')) closeHistoryModal();
 }
 
-// === Make Functions Global ===
+// ✅ Make Functions Global
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
@@ -863,7 +863,8 @@ window.openHistoryModal = openHistoryModal;
 window.triggerAppInstall = triggerAppInstall;
 window.generatePDF = generatePDF;
 window.deleteEntry = deleteEntry;
-
+window.fetchCustomerHistory = fetchCustomerHistory;
+    
 // === Initialize ===
 document.addEventListener('DOMContentLoaded', () => {
     updateCart();
