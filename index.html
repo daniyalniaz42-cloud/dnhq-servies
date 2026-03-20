@@ -246,7 +246,7 @@ let cart = [];
 let currentCustData = null;let deferredPrompt = null;
 let pendingOrderData = null;
 let editOrderData = null;
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAI6M5-hrhxwmH06UgOsB3AfYOAkdM2cp5leY5S9aJJQcF48bW-e0ijWgpvqudxA854g/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEtpram288oHSqLpOAaJatXbH3k0vW2VfAkOeMw9Dj-vV4i0UAu-BO-HDvoUDgiLRgWQ/exec";
 
 function toggleDiscountInput() {
 const type = document.getElementById('discount_type').value;
@@ -384,14 +384,13 @@ discountText = "Rs " + discountValue;
 const totalAfterDiscount = subtotal - discountAmount;
 const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
 const balanceDue = totalAfterDiscount - advance;
-console.log('💾 Saving Order:', { subtotal, discountType, discountValue, discountAmount, totalAfterDiscount, advance, balanceDue });
 const payload = {
 date: new Date().toISOString(),
 client: name.toUpperCase(),
 phone: phone,
 work: allWork.join(", "),
-subtotal: subtotal,discount_type: discountType,
-discount_value: discountValue,
+subtotal: subtotal,
+discount_type: discountType,discount_value: discountValue,
 discount_amount: discountAmount,
 discount_text: discountText,
 advance: advance,
@@ -439,8 +438,8 @@ badges += `<span class="badge badge-advance">💰 Advance: Rs ${advance}</span>`
 }
 return `
 <div class="log-card">
-<button class="pdf-btn" data-order='${JSON.stringify(d).replace(/'/g, "'")}'>📄 PDF</button><button class="edit-btn" onclick='openEditBillModal(${JSON.stringify(d).replace(/'/g, "'")}, ${index + 2})'>✏️ Edit</button>
-<b>${d.client || "Unknown"}</b> ${badges}<br>
+<button class="pdf-btn" data-order='${JSON.stringify(d).replace(/'/g, "'")}'>📄 PDF</button>
+<button class="edit-btn" onclick='openEditBillModal(${JSON.stringify(d).replace(/'/g, "'")}, ${index + 2})'>✏️ Edit</button><b>${d.client || "Unknown"}</b> ${badges}<br>
 <small class="phone">📱 ${d.phone || "N/A"}</small><br>
 <small>${(d.work || "").substring(0, 50)}</small><br>
 ${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}
@@ -459,7 +458,7 @@ showConfirmDialog(order);
 } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
-// EDIT BILL FUNCTIONS
+// ✅ EDIT BILL FUNCTIONS
 function openEditBillModal(order, rowIndex) {
 editOrderData = order;
 document.getElementById('edit_row_index').value = rowIndex;
@@ -488,8 +487,8 @@ discountAmount = (parseFloat(editOrderData.subtotal || editOrderData.total) * di
 discountText = discountValue + "%";
 } else if (discountType === 'fixed' && discountValue > 0) {
 discountAmount = discountValue;
-discountText = "Rs " + discountValue;}
-const subtotal = parseFloat(editOrderData.subtotal) || parseFloat(editOrderData.total) || 0;
+discountText = "Rs " + discountValue;
+}const subtotal = parseFloat(editOrderData.subtotal) || parseFloat(editOrderData.total) || 0;
 const totalAfterDiscount = subtotal - discountAmount;
 const balanceDue = totalAfterDiscount - advance;
 const updatedOrder = {
@@ -522,7 +521,6 @@ const discountAmount = parseFloat(order.discount_amount) || 0;
 const advance = parseFloat(order.advance) || 0;
 const total = parseFloat(order.total) || (subtotal - discountAmount);
 const balanceDue = parseFloat(order.balance_due) || (total - advance);
-console.log('📋 Confirm Dialog Data:', { subtotal, discountAmount, advance, total, balanceDue });
 let html = `
 <div class="confirm-row">
 <label>👤 Customer:</label>
@@ -537,9 +535,9 @@ let html = `
 <span class="value">${formatDate(order.date || order.timestamp)}</span>
 </div>
 <div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;">
-<label>📦 Subtotal:</label><span class="value">Rs ${subtotal.toLocaleString()}</span>
-</div>
-`;
+<label>📦 Subtotal:</label>
+<span class="value">Rs ${subtotal.toLocaleString()}</span>
+</div>`;
 if (discountAmount > 0) {
 html += `
 <div class="confirm-row discount highlight">
@@ -581,14 +579,17 @@ document.getElementById('confirmBody').innerHTML = html;
 document.getElementById('confirmDialog').style.display = 'block';
 }
 
+// ✅ FIXED: Don't clear pendingOrderData here
 function closeConfirmDialog() {
 document.getElementById('confirmDialog').style.display = 'none';
-pendingOrderData = null;
+// pendingOrderData = null; ← REMOVED
 }
 
+// ✅ FIXED: Save data before closing dialog
 function confirmAndGeneratePDF() {if (pendingOrderData) {
+const orderData = { ...pendingOrderData };
 closeConfirmDialog();
-generatePDF(pendingOrderData);
+generatePDF(orderData);
 }
 }
 
@@ -602,22 +603,17 @@ loadLogs();
 }
 }
 
-// ✅ UPDATED PDF GENERATION - Professional Colors
+// ✅ FIXED: All colors black except Balance Due (Red) and Fully Paid (Green)
 async function generatePDF(order) {
-console.log('📄 Generating PDF for order:', order);
 try {
 const JsPDFConstructor = getJsPDFConstructor();
 if (!JsPDFConstructor) {
-alert('❌ jsPDF library not loaded! Check your internet connection.');
+alert('❌ jsPDF library not loaded!');
 return;
 }
 const doc = new JsPDFConstructor();
-
-// Header background
 doc.setFillColor(0, 0, 0);
 doc.rect(0, 0, 210, 45, 'F');
-
-// Logo
 try {
 const imgData = await getImageDataForPDF(document.getElementById('brandLogo'));
 if (imgData) {
@@ -626,31 +622,23 @@ doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
 } catch (e) {
 console.warn('Logo skipped:', e);
 }
-
 // ✅ Company Name - GOLD (branding)
 doc.setTextColor(251, 191, 36);
 doc.setFontSize(24);
 doc.setFont("helvetica", "bold");
 doc.text("DNHQ SERVICES", 55, 24);
-
-// ✅ Tagline - WHITE (on black background)
 doc.setFontSize(10);
-doc.setFont("helvetica", "normal");doc.setTextColor(255, 255, 255);
+doc.setFont("helvetica", "normal");
+doc.setTextColor(255, 255, 255);
 doc.text("Professional Electrical & AC Maintenance", 55, 31);
-
-// Customer Info - BLACK
+// ✅ All other text - BLACK
 doc.setTextColor(0, 0, 0);
 doc.setFontSize(11);
 doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
-doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
-doc.text("DATE: " + formatDate(order.date || order.timestamp), 145, 55);
-
-// Invoice Title - BLACK
+doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);doc.text("DATE: " + formatDate(order.date || order.timestamp), 145, 55);
 doc.setFontSize(16);
 doc.setFont("helvetica", "bold");
 doc.text("INVOICE", 105, 72, { align: "center" });
-
-// Parse items
 let items = (order.work || "").split(", ");
 let body = items.map(item => {
 if (item.includes("(Rs ")) {
@@ -659,8 +647,6 @@ return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
 }
 return [item.trim(), "-"];
 });
-
-// Table - BLACK text
 doc.autoTable({
 startY: 78,
 head: [['SERVICE', 'AMOUNT']],
@@ -670,24 +656,19 @@ headStyles: { fillColor: [0,0,0], textColor: [0,0,0], fontSize: 10 },
 styles: { fontSize: 9, cellPadding: 4, textColor: [0,0,0] },
 columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }
 });
-
-// Calculations
 let finalY = doc.lastAutoTable.finalY + 10;
 const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
 const discount = parseFloat(order.discount_amount) || 0;
 const advance = parseFloat(order.advance) || 0;
 const totalAfterDiscount = subtotal - discount;
 const balanceDue = totalAfterDiscount - advance;
-
-console.log('🧮 PDF Calculations:', { subtotal, discount, advance, totalAfterDiscount, balanceDue });
-
 // ✅ Subtotal - BLACK
 doc.setFontSize(10);
 doc.setFont("helvetica", "normal");
-doc.setTextColor(0, 0, 0);doc.text("Subtotal:", 115, finalY);
+doc.setTextColor(0, 0, 0);
+doc.text("Subtotal:", 115, finalY);
 doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 7;
-
 // ✅ Discount - BLACK (was green)
 if (discount > 0) {
 doc.setTextColor(0, 0, 0);
@@ -695,7 +676,6 @@ doc.text(order.discount_text + " Discount:", 115, finalY);
 doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 7;
 }
-
 // ✅ Total - BLACK BOLD
 doc.setFontSize(11);
 doc.setFont("helvetica", "bold");
@@ -703,10 +683,8 @@ doc.setTextColor(0, 0, 0);
 doc.text("Total:", 115, finalY);
 doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 10;
-
 // ✅ Advance - BLACK (was blue)
-if (advance > 0) {
-doc.setDrawColor(0, 0, 0);
+if (advance > 0) {doc.setDrawColor(0, 0, 0);
 doc.setLineWidth(0.5);
 doc.line(110, finalY - 5, 195, finalY - 5);
 doc.setFontSize(10);
@@ -716,43 +694,34 @@ doc.text("Advance Received:", 115, finalY);
 doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 10;
 }
-
-// ✅ GRAND TOTAL / BALANCE DUE - RED or GREEN
+// ✅ BALANCE DUE - RED or GREEN
 doc.setDrawColor(251, 191, 36);
 doc.setLineWidth(1);
 doc.line(110, finalY - 5, 195, finalY - 5);
 doc.setFontSize(14);
 doc.setFont("helvetica", "bold");
-
 if (balanceDue > 0) {
-doc.setTextColor(239, 68, 68); // 🔴 RED for Balance Due
+doc.setTextColor(239, 68, 68); // 🔴 RED
 doc.text("BALANCE DUE:", 115, finalY);
 doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' });
 } else {
-doc.setTextColor(16, 185, 129); // 🟢 GREEN for Fully Paid
+doc.setTextColor(16, 185, 129); // 🟢 GREEN
 doc.text("FULLY PAID ✓", 115, finalY);
 doc.text("Rs 0", 195, finalY, { align: 'right' });
 }
-// Footer - GRAY
 doc.setTextColor(150, 150, 150);
 doc.setFontSize(9);
 doc.setFont("helvetica", "normal");
 doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
-
-// Save
 const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
 const dateStr = formatDate(order.date || order.timestamp).replace(/[^a-z0-9]/gi, '_');
 doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
-
-console.log('✅ PDF Generated Successfully');
-
 } catch (error) {
 console.error('❌ PDF Error:', error);
 alert('❌ PDF Generation Failed: ' + error.message);
 }
 }
 
-// ✅ WhatsApp Message with Discount & Advance
 async function placeOrder() {
 if(cart.length === 0) return alert("Select at least one service!");
 const name = prompt("Customer Name:")?.trim();
@@ -764,8 +733,7 @@ const payload = {
 date: new Date().toISOString(),
 client: name.toUpperCase(),
 phone: phone,
-work: workFormatted,
-subtotal: subtotal,
+work: workFormatted,subtotal: subtotal,
 discount_type: 'none',
 discount_value: 0,
 discount_amount: 0,
@@ -783,6 +751,7 @@ updateCart();
 document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
 } catch(e) { alert("Error: " + e.message); }
 }
+
 function triggerAppInstall() {
 if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; }
 else { alert("📲 Tap Share → Add to Home Screen"); }
@@ -813,8 +782,7 @@ try {
 const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
 const res = await fetch(url);
 const data = await res.json();
-if (data.error) throw new Error(data.error);
-if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
+if (data.error) throw new Error(data.error);if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
 currentCustData = data;
 document.getElementById('verifyStep').style.display = 'none';
 document.getElementById('showStep').style.display = 'block';
@@ -831,7 +799,8 @@ return `
 <small>🔧 ${(o.work || "").substring(0, 60)}</small>
 ${discountAmt > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${discountAmt}</small>` : ''}
 ${adv > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${adv}</small>` : ''}
-<span class="amt">${balDue > 0 ? 'Balance: Rs ' + balDue.toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"'")}'>📄 Download</button>
+<span class="amt">${balDue > 0 ? 'Balance: Rs ' + balDue.toLocaleString() : '✓ Paid'}</span>
+<button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"'")}'>📄 Download</button>
 </div>`;
 }).join('');
 document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => {
@@ -862,8 +831,7 @@ doc.setFontSize(9);
 doc.text("SERVICE HISTORY", 55, 28);
 doc.setTextColor(0,0,0);
 doc.setFontSize(10);
-doc.text("Customer: " + cust.client, 15, 52);
-doc.text("Phone: " + cust.phone, 15, 58);
+doc.text("Customer: " + cust.client, 15, 52);doc.text("Phone: " + cust.phone, 15, 58);
 const rows = currentCustData.map(o => [
 formatDate(o.date || o.timestamp),
 (o.work || "").substring(0, 30),
@@ -880,6 +848,7 @@ doc.text("Rs " + grandTotal.toLocaleString(), 195, y, {align:'right'});
 doc.save(`DNHQ_History_${cust.client}.pdf`);
 });
 }
+
 window.onclick = function(e) {
 if (e.target == document.getElementById('historyModal')) closeHistoryModal();
 if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog();
@@ -911,8 +880,7 @@ btn.onclick = function() {
 const order = JSON.parse(this.dataset.order.replace(/'/g, "'"));
 showConfirmDialog(order);
 };
-});
-});
+});});
 </script>
 </body>
   </html>
