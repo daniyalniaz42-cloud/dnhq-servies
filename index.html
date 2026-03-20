@@ -205,7 +205,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </div>
 </div>
 
-<!-- EDIT BILL MODAL -->
+<!-- ✅ EDIT BILL MODAL (ADDED) -->
 <div id="editBillModal" class="modal">
 <div class="modal-content">
 <span class="modal-close" onclick="closeEditBillModal()">&times;</span>
@@ -255,6 +255,7 @@ input.style.display = type === 'none' ? 'none' : 'block';
 if (type === 'none') input.value = '';
 }
 
+// ✅ ADDED: Toggle Edit Discount Input
 function toggleEditDiscountInput() {
 const type = document.getElementById('edit_discount_type').value;
 const input = document.getElementById('edit_discount_value');
@@ -291,8 +292,8 @@ return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 
 } catch (e) {
 console.error('Date Error:', e);
 return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-}
-}
+}}
+
 function getJsPDFConstructor() {
 if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
 if (window.jspdf) return window.jspdf;
@@ -389,8 +390,8 @@ date: new Date().toISOString(),
 client: name.toUpperCase(),
 phone: phone,
 work: allWork.join(", "),
-subtotal: subtotal,
-discount_type: discountType,discount_value: discountValue,
+subtotal: subtotal,discount_type: discountType,
+discount_value: discountValue,
 discount_amount: discountAmount,
 discount_text: discountText,
 advance: advance,
@@ -438,8 +439,8 @@ badges += `<span class="badge badge-advance">💰 Advance: Rs ${advance}</span>`
 }
 return `
 <div class="log-card">
-<button class="pdf-btn" data-order='${JSON.stringify(d).replace(/'/g, "'")}'>📄 PDF</button>
-<button class="edit-btn" onclick='openEditBillModal(${JSON.stringify(d).replace(/'/g, "'")}, ${index + 2})'>✏️ Edit</button><b>${d.client || "Unknown"}</b> ${badges}<br>
+<button class="pdf-btn" data-order='${JSON.stringify(d).replace(/'/g, "'")}'>📄 PDF</button><button class="edit-btn" onclick='openEditBillModal(${JSON.stringify(d).replace(/'/g, "'")}, ${index + 2})'>✏️ Edit</button>
+<b>${d.client || "Unknown"}</b> ${badges}<br>
 <small class="phone">📱 ${d.phone || "N/A"}</small><br>
 <small>${(d.work || "").substring(0, 50)}</small><br>
 ${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}
@@ -458,7 +459,7 @@ showConfirmDialog(order);
 } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
-// ✅ EDIT BILL FUNCTIONS
+// ✅ ADDED: Edit Bill Functions
 function openEditBillModal(order, rowIndex) {
 editOrderData = order;
 document.getElementById('edit_row_index').value = rowIndex;
@@ -487,8 +488,8 @@ discountAmount = (parseFloat(editOrderData.subtotal || editOrderData.total) * di
 discountText = discountValue + "%";
 } else if (discountType === 'fixed' && discountValue > 0) {
 discountAmount = discountValue;
-discountText = "Rs " + discountValue;
-}const subtotal = parseFloat(editOrderData.subtotal) || parseFloat(editOrderData.total) || 0;
+discountText = "Rs " + discountValue;}
+const subtotal = parseFloat(editOrderData.subtotal) || parseFloat(editOrderData.total) || 0;
 const totalAfterDiscount = subtotal - discountAmount;
 const balanceDue = totalAfterDiscount - advance;
 const updatedOrder = {
@@ -536,8 +537,8 @@ let html = `
 </div>
 <div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;">
 <label>📦 Subtotal:</label>
-<span class="value">Rs ${subtotal.toLocaleString()}</span>
-</div>`;
+<span class="value">Rs ${subtotal.toLocaleString()}</span></div>
+`;
 if (discountAmount > 0) {
 html += `
 <div class="confirm-row discount highlight">
@@ -579,15 +580,13 @@ document.getElementById('confirmBody').innerHTML = html;
 document.getElementById('confirmDialog').style.display = 'block';
 }
 
-// ✅ FIXED: Don't clear pendingOrderData here
 function closeConfirmDialog() {
 document.getElementById('confirmDialog').style.display = 'none';
-// pendingOrderData = null; ← REMOVED
+pendingOrderData = null;
 }
 
-// ✅ FIXED: Save data before closing dialog
-function confirmAndGeneratePDF() {if (pendingOrderData) {
-const orderData = { ...pendingOrderData };
+function confirmAndGeneratePDF() {
+if (pendingOrderData) {const orderData = { ...pendingOrderData };
 closeConfirmDialog();
 generatePDF(orderData);
 }
@@ -603,7 +602,7 @@ loadLogs();
 }
 }
 
-// ✅ FIXED: All colors black except Balance Due (Red) and Fully Paid (Green)
+// ✅ FIXED: PDF Generation - Balance Due Logic Fixed
 async function generatePDF(order) {
 try {
 const JsPDFConstructor = getJsPDFConstructor();
@@ -622,7 +621,6 @@ doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
 } catch (e) {
 console.warn('Logo skipped:', e);
 }
-// ✅ Company Name - GOLD (branding)
 doc.setTextColor(251, 191, 36);
 doc.setFontSize(24);
 doc.setFont("helvetica", "bold");
@@ -631,14 +629,13 @@ doc.setFontSize(10);
 doc.setFont("helvetica", "normal");
 doc.setTextColor(255, 255, 255);
 doc.text("Professional Electrical & AC Maintenance", 55, 31);
-// ✅ All other text - BLACK
 doc.setTextColor(0, 0, 0);
 doc.setFontSize(11);
 doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
-doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);doc.text("DATE: " + formatDate(order.date || order.timestamp), 145, 55);
+doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
+doc.text("DATE: " + formatDate(order.date || order.timestamp), 145, 55);
 doc.setFontSize(16);
-doc.setFont("helvetica", "bold");
-doc.text("INVOICE", 105, 72, { align: "center" });
+doc.setFont("helvetica", "bold");doc.text("INVOICE", 105, 72, { align: "center" });
 let items = (order.work || "").split(", ");
 let body = items.map(item => {
 if (item.includes("(Rs ")) {
@@ -662,50 +659,46 @@ const discount = parseFloat(order.discount_amount) || 0;
 const advance = parseFloat(order.advance) || 0;
 const totalAfterDiscount = subtotal - discount;
 const balanceDue = totalAfterDiscount - advance;
-// ✅ Subtotal - BLACK
 doc.setFontSize(10);
 doc.setFont("helvetica", "normal");
 doc.setTextColor(0, 0, 0);
 doc.text("Subtotal:", 115, finalY);
 doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 7;
-// ✅ Discount - BLACK (was green)
 if (discount > 0) {
 doc.setTextColor(0, 0, 0);
 doc.text(order.discount_text + " Discount:", 115, finalY);
 doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 7;
 }
-// ✅ Total - BLACK BOLD
 doc.setFontSize(11);
 doc.setFont("helvetica", "bold");
 doc.setTextColor(0, 0, 0);
 doc.text("Total:", 115, finalY);
 doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 10;
-// ✅ Advance - BLACK (was blue)
-if (advance > 0) {doc.setDrawColor(0, 0, 0);
+if (advance > 0) {
+doc.setDrawColor(0, 0, 0);
 doc.setLineWidth(0.5);
 doc.line(110, finalY - 5, 195, finalY - 5);
 doc.setFontSize(10);
 doc.setTextColor(0, 0, 0);
 doc.setFont("helvetica", "bold");
-doc.text("Advance Received:", 115, finalY);
-doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' });
+doc.text("Advance Received:", 115, finalY);doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 10;
 }
-// ✅ BALANCE DUE - RED or GREEN
 doc.setDrawColor(251, 191, 36);
 doc.setLineWidth(1);
 doc.line(110, finalY - 5, 195, finalY - 5);
 doc.setFontSize(14);
 doc.setFont("helvetica", "bold");
-if (balanceDue > 0) {
-doc.setTextColor(239, 68, 68); // 🔴 RED
+// ✅ FIXED: Balance Due Logic - Check if balanceDue <= 0.01 (for floating point)
+if (balanceDue > 0.01) {
+doc.setTextColor(239, 68, 68);
 doc.text("BALANCE DUE:", 115, finalY);
 doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' });
 } else {
-doc.setTextColor(16, 185, 129); // 🟢 GREEN
+doc.setTextColor(16, 185, 129);
 doc.text("FULLY PAID ✓", 115, finalY);
 doc.text("Rs 0", 195, finalY, { align: 'right' });
 }
@@ -733,14 +726,14 @@ const payload = {
 date: new Date().toISOString(),
 client: name.toUpperCase(),
 phone: phone,
-work: workFormatted,subtotal: subtotal,
+work: workFormatted,
+subtotal: subtotal,
 discount_type: 'none',
 discount_value: 0,
 discount_amount: 0,
 discount_text: 'None',
 advance: 0,
-total: subtotal,
-balance_due: subtotal
+total: subtotal,balance_due: subtotal
 };
 try {
 await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
@@ -782,14 +775,14 @@ try {
 const url = `${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
 const res = await fetch(url);
 const data = await res.json();
-if (data.error) throw new Error(data.error);if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
+if (data.error) throw new Error(data.error);
+if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
 currentCustData = data;
 document.getElementById('verifyStep').style.display = 'none';
 document.getElementById('showStep').style.display = 'block';
 const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
 document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
-document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => {
-const discountAmt = parseFloat(o.discount_amount) || 0;
+document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => {const discountAmt = parseFloat(o.discount_amount) || 0;
 const adv = parseFloat(o.advance) || 0;
 const balDue = parseFloat(o.balance_due) || 0;
 return `
@@ -831,14 +824,14 @@ doc.setFontSize(9);
 doc.text("SERVICE HISTORY", 55, 28);
 doc.setTextColor(0,0,0);
 doc.setFontSize(10);
-doc.text("Customer: " + cust.client, 15, 52);doc.text("Phone: " + cust.phone, 15, 58);
+doc.text("Customer: " + cust.client, 15, 52);
+doc.text("Phone: " + cust.phone, 15, 58);
 const rows = currentCustData.map(o => [
 formatDate(o.date || o.timestamp),
 (o.work || "").substring(0, 30),
 "Rs " + (parseFloat(o.total)||0).toLocaleString()
 ]);
-doc.autoTable({ startY: 64, head: [['DATE', 'SERVICE', 'AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [0,0,0], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 3 } });
-let y = doc.lastAutoTable.finalY + 12;
+doc.autoTable({ startY: 64, head: [['DATE', 'SERVICE', 'AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [0,0,0], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 3 } });let y = doc.lastAutoTable.finalY + 12;
 doc.setDrawColor(251,191,36);
 doc.line(110, y-4, 195, y-4);
 doc.setFontSize(12);
@@ -880,7 +873,8 @@ btn.onclick = function() {
 const order = JSON.parse(this.dataset.order.replace(/'/g, "'"));
 showConfirmDialog(order);
 };
-});});
+});
+});
 </script>
 </body>
-  </html>
+                                                                                                                                    </html>
