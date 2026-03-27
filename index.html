@@ -47,8 +47,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }
 .modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
 .modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
-.form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }.verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
-.error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
+.form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }.verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }.error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
 .success-msg { color: #22c55e; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
 .history-item { background: #1e293b; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #fbbf24; }
 .history-item b { color: white; display: block; margin-bottom: 5px; }
@@ -97,8 +96,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </header>
 <div class="wrapper">
 <div class="nav-container"><a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
-<a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
-</div>
+<a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a></div>
 <button class="app-download-btn" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Download Our App</button>
 <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
 <div id="videoBox" style="display:none; margin-bottom:20px;"><video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);"><source src="tutorial.mp4" type="video/mp4"></video></div>
@@ -147,8 +145,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <input type="number" id="discount_value" class="man-input" placeholder="Enter value" style="display:none;margin-bottom:0;">
 </div></div>
 <div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
-<input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
+<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5><input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
 </div>
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
 </div>
@@ -197,8 +194,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <div class="confirm-header"><h3>📋 CONFIRM BILL DETAILS</h3>
 <p>Please review before generating PDF</p>
 </div>
-<div class="confirm-body" id="confirmBody"></div>
-<div class="confirm-footer">
+<div class="confirm-body" id="confirmBody"></div><div class="confirm-footer">
 <button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button>
 <button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
 </div>
@@ -247,7 +243,6 @@ let currentCustData = null;let deferredPrompt = null;
 let pendingOrderData = null;
 let editOrderData = null;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAI6M5-hrhxwmH06UgOsB3AfYOAkdM2cp5leY5S9aJJQcF48bW-e0ijWgpvqudxA854g/exec";
-
 function toggleDiscountInput() {
 const type = document.getElementById('discount_type').value;
 const input = document.getElementById('discount_value');
@@ -297,8 +292,7 @@ function getJsPDFConstructor() {
 if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
 if (window.jspdf) return window.jspdf;
 if (window.jsPDF) return window.jsPDF;
-return null;
-}
+return null;}
 
 function getImageDataForPDF(imgElement) {
 return new Promise((resolve) => {
@@ -347,7 +341,6 @@ document.getElementById('adminView').style.display='block';
 loadLogs();
 }
 }
-
 function addNewManualRow() {
 const div = document.createElement('div');
 div.style = "display:flex;gap:10px;margin-bottom:10px;";
@@ -397,8 +390,7 @@ advance: advance,
 total: totalAfterDiscount,
 balance_due: balanceDue
 };
-try {
-await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+try {await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
 alert("✅ Order saved successfully!");
 loadLogs();
 document.getElementById('man_name').value = '';
@@ -447,19 +439,40 @@ ${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAm
 ${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}
 <b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br>
 <button class="del-btn" onclick="deleteEntry(${index + 2})">🗑️ Delete</button>
-</div>`;
-}).join('');
+</div>`;}).join('');
+
+// ✅ FIXED: PDF button click handler with proper error handling
 container.querySelectorAll('.pdf-btn').forEach(btn => {
 btn.onclick = function() {
-const order = JSON.parse(this.dataset.order.replace(/'/g, "'"));
+try {
+const orderStr = this.getAttribute('data-order');
+if (!orderStr) {
+alert('❌ Error: Order data not found!');
+return;
+}
+const order = JSON.parse(orderStr.replace(/'/g, "'"));
+if (!order || !order.client) {
+alert('❌ Error: Invalid order data!');
+console.error('Invalid order:', order);
+return;
+}
 showConfirmDialog(order);
+} catch(e) {
+console.error('Parse error:', e);
+alert('❌ Error loading order data!');
+}
 };
 });
+
 } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
 // ✅ NEW: Edit Order Functions
 function openEditOrderModal(order, rowIndex) {
+if (!order) {
+alert('❌ Error: Order data not found!');
+return;
+}
 editOrderData = order;
 document.getElementById('editRowIndex').value = rowIndex;
 document.getElementById('editDiscountType').value = order.discount_type || 'none';
@@ -475,8 +488,7 @@ editOrderData = null;
 }
 
 async function updateOrderAndGeneratePDF() {
-if (!editOrderData) return alert('Error: No order data');
-const rowIndex = document.getElementById('editRowIndex').value;
+if (!editOrderData) return alert('Error: No order data');const rowIndex = document.getElementById('editRowIndex').value;
 const discountType = document.getElementById('editDiscountType').value;
 const discountValue = parseFloat(document.getElementById('editDiscountValue').value) || 0;
 const advance = parseFloat(document.getElementById('editAdvancePayment').value) || 0;
@@ -514,30 +526,44 @@ alert("Error updating order: " + e.message);
 }
 }
 
+// ✅ FIXED: showConfirmDialog with validation
 function showConfirmDialog(order) {
+// ✅ Validation add karein
+if (!order) {
+alert('❌ Error: Order data not found!');
+console.error('showConfirmDialog: order is null/undefined');
+return;
+}
+
 pendingOrderData = order;
+
+// ✅ Safe data extractionconst client = order.client || order.Client || 'Customer';
+const phone = order.phone || order.Phone || 'N/A';
+const orderDate = order.date || order.timestamp || new Date().toISOString();
 const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
 const discountAmount = parseFloat(order.discount_amount) || 0;
 const advance = parseFloat(order.advance) || 0;
 const total = parseFloat(order.total) || (subtotal - discountAmount);
 const balanceDue = parseFloat(order.balance_due) || (total - advance);
+
 let html = `
 <div class="confirm-row">
 <label>👤 Customer:</label>
-<span class="value">${order.client || 'Customer'}</span>
+<span class="value">${client}</span>
 </div>
 <div class="confirm-row">
 <label>📱 Phone:</label>
-<span class="value">${order.phone || 'N/A'}</span>
+<span class="value">${phone}</span>
 </div>
 <div class="confirm-row">
 <label>📅 Date:</label>
-<span class="value">${formatDate(order.date || order.timestamp)}</span>
+<span class="value">${formatDate(orderDate)}</span>
 </div>
 <div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;">
 <label>📦 Subtotal:</label>
 <span class="value">Rs ${subtotal.toLocaleString()}</span>
 </div>`;
+
 if (discountAmount > 0) {
 html += `
 <div class="confirm-row discount highlight">
@@ -546,20 +572,22 @@ html += `
 </div>
 `;
 }
+
 html += `
 <div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);">
 <label style="color:#fbbf24;font-size:16px;">💵 Total:</label>
 <span class="value" style="color:#fbbf24;font-size:18px;">Rs ${total.toLocaleString()}</span>
 </div>
 `;
+
 if (advance > 0) {
 html += `
 <div class="confirm-row advance highlight">
 <label>💰 Advance Received:</label>
 <span class="value">-Rs ${advance.toLocaleString()}</span>
 </div>
-`;
-}
+`;}
+
 if (balanceDue > 0) {
 html += `
 <div class="confirm-row balance">
@@ -575,6 +603,7 @@ html += `
 </div>
 `;
 }
+
 document.getElementById('confirmBody').innerHTML = html;
 document.getElementById('confirmDialog').style.display = 'block';
 }
@@ -584,10 +613,17 @@ document.getElementById('confirmDialog').style.display = 'none';
 pendingOrderData = null;
 }
 
+// ✅ FIXED: confirmAndGeneratePDF with validation
 function confirmAndGeneratePDF() {
-if (pendingOrderData) {
-closeConfirmDialog();generatePDF(pendingOrderData);
+if (!pendingOrderData) {
+alert('❌ Error: No order data available!');
+console.error('confirmAndGeneratePDF: pendingOrderData is null');
+return;
 }
+
+console.log('Generating PDF for:', pendingOrderData);
+closeConfirmDialog();
+generatePDF(pendingOrderData);
 }
 
 async function deleteEntry(rowIdx) {
@@ -599,17 +635,40 @@ loadLogs();
 } catch(e) { alert("Error: " + e.message); }
 }
 }
-
+// ✅ FIXED: generatePDF with validation and safe data extraction
 async function generatePDF(order) {
 try {
+// ✅ Validation add karein
+if (!order) {
+alert('❌ Error: Order data is missing!');
+console.error('PDF Error: order is null/undefined');
+return;
+}
+
+// ✅ Safe data extraction
+const client = order.client || order.Client || 'Customer';
+const phone = order.phone || order.Phone || 'N/A';
+const orderDate = order.date || order.timestamp || new Date().toISOString();
+const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
+const discountAmount = parseFloat(order.discount_amount) || 0;
+const advance = parseFloat(order.advance) || 0;
+const total = parseFloat(order.total) || (subtotal - discountAmount);
+const balanceDue = parseFloat(order.balance_due) || (total - advance);
+const work = order.work || '';
+
 const JsPDFConstructor = getJsPDFConstructor();
 if (!JsPDFConstructor) {
 alert('❌ jsPDF library not loaded!');
 return;
 }
+
 const doc = new JsPDFConstructor();
+
+// Header
 doc.setFillColor(0, 0, 0);
 doc.rect(0, 0, 210, 45, 'F');
+
+// Logo
 try {
 const imgData = await getImageDataForPDF(document.getElementById('brandLogo'));
 if (imgData) {
@@ -618,29 +677,38 @@ doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
 } catch (e) {
 console.warn('Logo skipped:', e);
 }
+
+// Company Name
 doc.setTextColor(251, 191, 36);
 doc.setFontSize(24);
 doc.setFont("helvetica", "bold");
 doc.text("DNHQ SERVICES", 55, 24);
 doc.setFontSize(10);
-doc.setFont("helvetica", "normal");
-doc.setTextColor(255, 255, 255);
+doc.setFont("helvetica", "normal");doc.setTextColor(255, 255, 255);
 doc.text("Professional Electrical & AC Maintenance", 55, 31);
+
+// Customer Info
 doc.setTextColor(0, 0, 0);
 doc.setFontSize(11);
-doc.text("INVOICE TO: " + (order.client || "Customer"), 15, 55);
-doc.text("PHONE: " + (order.phone || "N/A"), 15, 62);
-doc.text("DATE: " + formatDate(order.date || order.timestamp), 145, 55);
+doc.text("INVOICE TO: " + client, 15, 55);
+doc.text("PHONE: " + phone, 15, 62);
+doc.text("DATE: " + formatDate(orderDate), 145, 55);
+
 doc.setFontSize(16);
 doc.setFont("helvetica", "bold");
 doc.text("INVOICE", 105, 72, { align: "center" });
-let items = (order.work || "").split(", ");
-let body = items.map(item => {if (item.includes("(Rs ")) {
+
+// Parse items
+let items = work.split(", ");
+let body = items.map(item => {
+if (item.includes("(Rs ")) {
 let parts = item.split(" (Rs ");
 return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
 }
 return [item.trim(), "-"];
 });
+
+// Table
 doc.autoTable({
 startY: 78,
 head: [['SERVICE', 'AMOUNT']],
@@ -650,30 +718,29 @@ headStyles: { fillColor: [0,0,0], textColor: [0,0,0], fontSize: 10 },
 styles: { fontSize: 9, cellPadding: 4, textColor: [0,0,0] },
 columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }
 });
+
+// Totals
 let finalY = doc.lastAutoTable.finalY + 10;
-const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
-const discount = parseFloat(order.discount_amount) || 0;
-const advance = parseFloat(order.advance) || 0;
-const totalAfterDiscount = subtotal - discount;
-const balanceDue = totalAfterDiscount - advance;
 doc.setFontSize(10);
 doc.setFont("helvetica", "normal");
 doc.setTextColor(0, 0, 0);
 doc.text("Subtotal:", 115, finalY);
 doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 7;
-if (discount > 0) {
+
+if (discountAmount > 0) {
 doc.setTextColor(0, 0, 0);
-doc.text(order.discount_text + " Discount:", 115, finalY);
-doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' });
+doc.text((order.discount_text || 'Discount') + ":", 115, finalY);
+doc.text("-Rs " + discountAmount.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 7;
 }
 doc.setFontSize(11);
 doc.setFont("helvetica", "bold");
 doc.setTextColor(0, 0, 0);
 doc.text("Total:", 115, finalY);
-doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' });
+doc.text("Rs " + total.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 10;
+
 if (advance > 0) {
 doc.setDrawColor(0, 0, 0);
 doc.setLineWidth(0.5);
@@ -684,11 +751,14 @@ doc.setFont("helvetica", "bold");
 doc.text("Advance Received:", 115, finalY);
 doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 10;
-}doc.setDrawColor(251, 191, 36);
+}
+
+doc.setDrawColor(251, 191, 36);
 doc.setLineWidth(1);
 doc.line(110, finalY - 5, 195, finalY - 5);
 doc.setFontSize(14);
 doc.setFont("helvetica", "bold");
+
 if (balanceDue > 0.01) {
 doc.setTextColor(239, 68, 68);
 doc.text("BALANCE DUE:", 115, finalY);
@@ -698,17 +768,21 @@ doc.setTextColor(16, 185, 129);
 doc.text("FULLY PAID ✓", 115, finalY);
 doc.text("Rs 0", 195, finalY, { align: 'right' });
 }
+
+// Footer
 doc.setTextColor(150, 150, 150);
 doc.setFontSize(9);
 doc.setFont("helvetica", "normal");
 doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
-const cname = (order.client || "Customer").replace(/[^a-z0-9]/gi, '_');
-const dateStr = formatDate(order.date || order.timestamp).replace(/[^a-z0-9]/gi, '_');
+
+// Save PDF
+const cname = client.replace(/[^a-z0-9]/gi, '_');
+const dateStr = formatDate(orderDate).replace(/[^a-z0-9]/gi, '_');
 doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
+
 } catch (error) {
 console.error('❌ PDF Error:', error);
-alert('❌ PDF Generation Failed: ' + error.message);
-}
+alert('❌ PDF Generation Failed: ' + error.message);}
 }
 
 async function placeOrder() {
@@ -757,8 +831,7 @@ document.getElementById('showStep').style.display = 'none';
 document.getElementById('histName').value = '';
 document.getElementById('histPhone').value = '';
 document.getElementById('histError').style.display = 'none';
-currentCustData = null;
-}
+currentCustData = null;}
 
 async function fetchCustomerHistory() {
 const name = document.getElementById('histName').value.trim().toUpperCase();
@@ -794,8 +867,22 @@ ${adv > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${adv}</small>` : ''
 }).join('');
 document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => {
 btn.onclick = function() {
-const order = JSON.parse(this.dataset.order.replace(/'/g, "'"));
+try {
+const orderStr = this.getAttribute('data-order');
+if (!orderStr) {
+alert('❌ Error: Order data not found!');
+return;
+}
+const order = JSON.parse(orderStr.replace(/'/g, "'"));
+if (!order || !order.client) {
+alert('❌ Error: Invalid order data!');
+console.error('Invalid order:', order);
+return;
+}
 showConfirmDialog(order);
+} catch(e) {console.error('Parse error:', e);
+alert('❌ Error loading order data!');
+}
 };
 });
 } catch (e) { err.textContent = "Error loading data"; err.style.display = 'block'; }
@@ -843,7 +930,6 @@ if (e.target == document.getElementById('historyModal')) closeHistoryModal();
 if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog();
 if (e.target == document.getElementById('editOrderModal')) closeEditOrderModal();
 }
-
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
@@ -866,8 +952,23 @@ document.addEventListener('DOMContentLoaded', () => {
 updateCart();
 document.querySelectorAll('.pdf-btn, .pdf-sm').forEach(btn => {
 btn.onclick = function() {
-const order = JSON.parse(this.dataset.order.replace(/'/g, "'"));
+try {
+const orderStr = this.getAttribute('data-order');
+if (!orderStr) {
+alert('❌ Error: Order data not found!');
+return;
+}
+const order = JSON.parse(orderStr.replace(/'/g, "'"));
+if (!order || !order.client) {
+alert('❌ Error: Invalid order data!');
+console.error('Invalid order:', order);
+return;
+}
 showConfirmDialog(order);
+} catch(e) {
+console.error('Parse error:', e);
+alert('❌ Error loading order data!');
+}
 };
 });
 });
