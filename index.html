@@ -90,7 +90,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .btn-cancel { flex: 1; background: #ef4444; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
 .btn-cancel:hover { background: #dc2626; }
 
-/* ✅ Visitor Counter */
+/* Visitor Counter */
 .visitor-counter {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
@@ -105,7 +105,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .visitor-counter .count { font-size: 28px; font-weight: 900; }
 .visitor-counter .label { font-size: 14px; opacity: 0.9; }
 
-/* ✅ Floating Call Button */
+/* Floating Call Button */
 .floating-call-btn {
     position: fixed;
     bottom: 100px;
@@ -132,7 +132,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
     100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
 }
 
-/* ✅ Working Hours Box */
+/* Working Hours Box */
 .working-hours {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     border: 1px solid var(--gold);
@@ -144,7 +144,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .working-hours p { color: #94a3b8; margin: 5px 0; font-size: 13px; }
 .working-hours .urgent { color: #ef4444; font-weight: bold; }
 
-/* ✅ Service Areas */
+/* Service Areas */
 .service-areas {    background: #1e293b;
     border-radius: 12px;
     padding: 15px;
@@ -154,7 +154,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .service-areas ul { color: #94a3b8; margin: 0; padding-left: 20px; }
 .service-areas li { margin: 5px 0; }
 
-/* ✅ Payment Methods */
+/* Payment Methods */
 .payment-methods {
     background: #1e293b;
     border-radius: 12px;
@@ -166,7 +166,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .payment-methods .icons { font-size: 30px; color: #94a3b8; }
 .payment-methods .icons i { margin: 0 10px; }
 
-/* ✅ Customer Reviews */
+/* Customer Reviews */
 .reviews-section {
     background: #1e293b;
     border-radius: 12px;
@@ -186,7 +186,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .review-card .text { color: #94a3b8; font-size: 13px; margin: 5px 0; }
 .review-card .date { color: #64748b; font-size: 11px; }
 
-/* ✅ FAQ Section */
+/* FAQ Section */
 .faq-section {
     background: #1e293b;
     border-radius: 12px;
@@ -205,7 +205,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .faq-item.active .answer { display: block; }
 .faq-item.active .question i { transform: rotate(180deg); }
 
-/* ✅ Urgent Service Button */
+/* Urgent Service Button */
 .urgent-service-btn {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
@@ -241,7 +241,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </header>
 <div class="wrapper">
 
-<!-- ✅ Working Hours -->
+<!-- Working Hours -->
 <div class="working-hours">
 <h4><i class="fas fa-clock"></i> Working Hours</h4><p>📅 Monday - Saturday: 9:00 AM - 8:00 PM</p>
 <p>📅 Sunday: 10:00 AM - 6:00 PM</p>
@@ -255,7 +255,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 
 <button class="app-download-btn" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Download Our App</button>
 
-<!-- ✅ Urgent Service Button -->
+<!-- Urgent Service Button -->
 <button class="urgent-service-btn" onclick="urgentService()">
 <i class="fas fa-exclamation-triangle"></i> 🚨 URGENT SERVICE
 </button>
@@ -264,7 +264,26 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <div id="videoBox" style="display:none; margin-bottom:20px;"><video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);"><source src="tutorial.mp4" type="video/mp4"></video></div>
 <button class="history-btn" onclick="openHistoryModal()"><i class="fas fa-clock-rotate-left"></i> Check My Service History</button>
 
-<!-- ✅ Service Areas -->
+<!-- SERVICES SECTION -->
+<div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 6500)"><div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 6,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
+
+<div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Short Circuit Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
+<div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div>
+
+<div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Full Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
+
+<div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
+
+<!-- Service Areas - AB SERVICES KE NEECHE -->
 <div class="service-areas">
 <h4><i class="fas fa-map-marker-alt"></i> Service Areas</h4>
 <ul>
@@ -273,11 +292,10 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <li>Clifton & Defence</li>
 <li>North Nazimabad</li>
 <li>Gulistan-e-Jauhar</li>
-<li>PECHS & Jamshed</li>
-</ul>
+<li>PECHS & Jamshed</li></ul>
 </div>
 
-<!-- ✅ Payment Methods -->
+<!-- Payment Methods - AB SERVICES KE NEECHE -->
 <div class="payment-methods">
 <h4><i class="fas fa-credit-card"></i> Payment Methods</h4>
 <div class="icons">
@@ -289,10 +307,11 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <p style="color:#94a3b8;font-size:13px;margin-top:10px;">Cash, JazzCash, EasyPaisa, Bank Transfer</p>
 </div>
 
-<!-- ✅ Customer Reviews -->
+<!-- Customer Reviews - AB SERVICES KE NEECHE -->
 <div class="reviews-section">
 <h4><i class="fas fa-star"></i> Customer Reviews</h4>
-<div class="review-card"><div class="stars">⭐⭐⭐⭐⭐</div>
+<div class="review-card">
+<div class="stars">⭐⭐⭐⭐⭐</div>
 <div class="name">Ahmed Khan</div>
 <div class="text">"Excellent AC service! Technician was professional and completed work on time."</div>
 <div class="date">2 days ago</div>
@@ -311,7 +330,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </div>
 </div>
 
-<!-- ✅ FAQ Section -->
+<!-- FAQ Section - AB SERVICES KE NEECHE -->
 <div class="faq-section">
 <h4><i class="fas fa-question-circle"></i> Frequently Asked Questions</h4>
 <div class="faq-item" onclick="toggleFaq(this)">
@@ -322,8 +341,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <div class="question">Do you provide warranty? <i class="fas fa-chevron-down"></i></div>
 <div class="answer">Yes! 30 days warranty on all services. 90 days on gas refill. 1 year on new installations.</div>
 </div>
-<div class="faq-item" onclick="toggleFaq(this)">
-<div class="question">What are your payment options? <i class="fas fa-chevron-down"></i></div>
+<div class="faq-item" onclick="toggleFaq(this)"><div class="question">What are your payment options? <i class="fas fa-chevron-down"></i></div>
 <div class="answer">We accept Cash, JazzCash, EasyPaisa, and Bank Transfer. Payment after service completion.</div>
 </div>
 <div class="faq-item" onclick="toggleFaq(this)">
@@ -332,19 +350,6 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </div>
 </div>
 
-<div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 3500)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 3,500</div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 2500)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 2,500</div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 6500)"><div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 6,500</div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 8500)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 8,500</div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4000)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,000</div></div>
-<div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Short Circuit Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
-<div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div><div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Full Charging</p></div><div class="svc-rate">Rs 7,500</div></div>
-<div class="section-tag"><h2>Home Projects</h2><div class="section-line"></div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
 </div>
 
 <!-- ADMIN PANEL -->
@@ -359,7 +364,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </div>
 </div>
 
-<!-- ✅ Visitor Counter -->
+<!-- Visitor Counter -->
 <div class="visitor-counter">
 <div>
 <div class="label"><i class="fas fa-eye"></i> Total Website Visitors</div>
@@ -385,12 +390,12 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <select id="discount_type" onchange="toggleDiscountInput()">
 <option value="none">No Discount</option>
 <option value="percent">% Percentage</option>
-<option value="fixed">Rs Fixed Amount</option>
-</select>
+<option value="fixed">Rs Fixed Amount</option></select>
 <input type="number" id="discount_value" class="man-input" placeholder="Enter value" style="display:none;margin-bottom:0;">
 </div></div>
 <div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5><input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
+<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
+<input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
 </div>
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
 </div>
@@ -434,19 +439,19 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 </div>
 
 <!-- CONFIRMATION DIALOG -->
-<div id="confirmDialog" class="confirm-dialog">
-<div class="confirm-box">
+<div id="confirmDialog" class="confirm-dialog"><div class="confirm-box">
 <div class="confirm-header"><h3>📋 CONFIRM BILL DETAILS</h3>
 <p>Please review before generating PDF</p>
 </div>
-<div class="confirm-body" id="confirmBody"></div><div class="confirm-footer">
+<div class="confirm-body" id="confirmBody"></div>
+<div class="confirm-footer">
 <button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button>
 <button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
 </div>
 </div>
 </div>
 
-<!-- ✅ EDIT ORDER MODAL -->
+<!-- EDIT ORDER MODAL -->
 <div id="editOrderModal" class="modal">
 <div class="modal-content">
 <span class="modal-close" onclick="closeEditOrderModal()">&times;</span>
@@ -477,31 +482,31 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 <button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;">✕</button>
 </div>
 
-<!-- ✅ Floating Call Button -->
+<!-- Floating Call Button -->
 <a href="tel:+923152458657" class="floating-call-btn">
 <i class="fas fa-phone"></i>
 </a>
 
 <footer>
-<div onclick="openAdmin()" style="cursor:pointer;font-size:11px;opacity:0.5;">Admin Access</div>
-<p style="margin-top:10px;font-size:12px;">© 2026 DNHQ Services • +92 315 2458657</p>
+<div onclick="openAdmin()" style="cursor:pointer;font-size:11px;opacity:0.5;">Admin Access</div><p style="margin-top:10px;font-size:12px;">© 2026 DNHQ Services • +92 315 2458657</p>
 </footer>
 
 <script>
-let cart = [];let currentCustData = null;
+let cart = [];
+let currentCustData = null;
 let deferredPrompt = null;
 let pendingOrderData = null;
 let editOrderData = null;
 window.orderDataStore = {};
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFi9BgmfF5qHjFawI1VXAPOcS7gQEQCn2jLEk5F8K_ZpOww9KD-BF8WufJzm_D0OxRWw/exec";
 
-// ✅ Track Unique Visitor on Page Load
+// Track Unique Visitor on Page Load
 document.addEventListener('DOMContentLoaded', () => {
     updateCart();
     trackUniqueVisitor();
 });
 
-// ✅ Generate Unique Visitor ID
+// Generate Unique Visitor ID
 function getVisitorId() {
     let visitorId = localStorage.getItem('dnhq_visitor_id');
     if (!visitorId) {
@@ -511,7 +516,7 @@ function getVisitorId() {
     return visitorId;
 }
 
-// ✅ Track Unique Visitor
+// Track Unique Visitor
 async function trackUniqueVisitor() {
     const visitorId = getVisitorId();
     const hasVisited = localStorage.getItem('dnhq_has_visited');
@@ -530,24 +535,24 @@ async function trackUniqueVisitor() {
     }
 }
 
-// ✅ Load Visitor Count
+// Load Visitor Count
 async function loadVisitorCount() {
-    try {
-        const res = await fetch(SCRIPT_URL + '?getVisitorCount=true&t=' + Date.now());
+    try {        const res = await fetch(SCRIPT_URL + '?getVisitorCount=true&t=' + Date.now());
         const data = await res.json();
         const count = data.count || 0;
         document.getElementById('visitorCount').innerText = count.toLocaleString();
-    } catch(e) {        console.error('Error loading visitor count:', e);
+    } catch(e) {
+        console.error('Error loading visitor count:', e);
         document.getElementById('visitorCount').innerText = 'N/A';
     }
 }
 
-// ✅ Toggle FAQ
+// Toggle FAQ
 function toggleFaq(element) {
     element.classList.toggle('active');
 }
 
-// ✅ Urgent Service
+// Urgent Service
 function urgentService() {
     const confirmUrgent = confirm('🚨 URGENT SERVICE\n\nFor emergency repairs, our technician will arrive within 2 hours.\n\nAdditional charges apply for urgent service.\n\nDo you want to proceed?');
     if (confirmUrgent) {
@@ -581,12 +586,12 @@ return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', 
 }
 try {
 let date;
-if (dateInput instanceof Date) {
-date = dateInput;
+if (dateInput instanceof Date) {date = dateInput;
 } else if (typeof dateInput === 'number') {
 date = new Date(dateInput);
 } else if (typeof dateInput === 'string') {
-const str = dateInput.trim();date = new Date(str);
+const str = dateInput.trim();
+date = new Date(str);
 if (isNaN(date.getTime())) {
 const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
 if (ddmmyyyy) date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
@@ -630,12 +635,12 @@ ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
 resolve(canvas.toDataURL('image/jpeg', 0.9));
 } catch (e) {
 console.warn('Logo conversion error:', e);
-resolve(null);
-}
+resolve(null);}
 });
 }
 
-function playVid() {const box = document.getElementById('videoBox');
+function playVid() {
+const box = document.getElementById('videoBox');
 const vid = document.getElementById('myVideo');
 box.style.display = box.style.display === "none" ? "block" : "none";
 box.style.display === "block" ? vid.play() : vid.pause();
@@ -679,12 +684,12 @@ let allWork = [], subtotal = 0;
 workInputs.forEach((input, i) => {
 if(input.value.trim() !== "") {
 const p = parseInt(priceInputs[i].value) || 0;
-allWork.push(input.value.trim() + " (Rs " + p + ")");
-subtotal += p;
+allWork.push(input.value.trim() + " (Rs " + p + ")");subtotal += p;
 }
 });
 if(allWork.length === 0) return alert("Add at least one service!");
-const discountType = document.getElementById('discount_type').value;const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+const discountType = document.getElementById('discount_type').value;
+const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
 let discountAmount = 0;
 let discountText = "None";
 if (discountType === 'percent' && discountValue > 0) {
@@ -728,11 +733,11 @@ document.getElementById('manual_works_container').innerHTML = `
 </div>`;
 } catch(e) { alert("Error: " + e.message); }
 }
-
 async function loadLogs() {
 const container = document.getElementById('logItems');
 container.innerHTML = '<div class="loading">Fetching...</div>';
 window.orderDataStore = {};
+
 try {
 const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
 const data = await res.json();
@@ -777,12 +782,12 @@ ${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleSt
 }).join('');
 
 data.forEach((order, idx) => {
-window.orderDataStore[idx] = order;
-});
+window.orderDataStore[idx] = order;});
 
 container.querySelectorAll('.pdf-btn').forEach((btn) => {
 btn.onclick = function() {
-try {const orderIndex = this.getAttribute('data-index');
+try {
+const orderIndex = this.getAttribute('data-index');
 console.log('PDF button clicked, index:', orderIndex);
 
 if (!orderIndex) {
@@ -826,12 +831,12 @@ editOrderData = order;
 document.getElementById('editRowIndex').value = idx;
 document.getElementById('editDiscountType').value = order.discount_type || 'none';
 document.getElementById('editDiscountValue').value = order.discount_value || '';
-document.getElementById('editDiscountValue').style.display = (order.discount_type && order.discount_type !== 'none') ? 'block' : 'none';
-document.getElementById('editAdvancePayment').value = order.advance || '';
+document.getElementById('editDiscountValue').style.display = (order.discount_type && order.discount_type !== 'none') ? 'block' : 'none';document.getElementById('editAdvancePayment').value = order.advance || '';
 document.getElementById('editOrderModal').style.display = 'block';
 }
 
-function closeEditOrderModal() {document.getElementById('editOrderModal').style.display = 'none';
+function closeEditOrderModal() {
+document.getElementById('editOrderModal').style.display = 'none';
 editOrderData = null;
 }
 
@@ -875,12 +880,12 @@ await fetch(SCRIPT_URL + "?deleteRow=" + (index + 2), { method: 'GET' });
 await new Promise(resolve => setTimeout(resolve, 500));
 await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(updatedOrder) });
 alert("✅ Order updated successfully!");
-closeEditOrderModal();
-loadLogs();
+closeEditOrderModal();loadLogs();
 showConfirmDialog(updatedOrder);
 } catch(e) {
 alert("Error updating order: " + e.message);
-}}
+}
+}
 
 function showConfirmDialog(order) {
 console.log('showConfirmDialog called with:', order);
@@ -924,12 +929,12 @@ let html = `
 </div>`;
 
 if (discountAmount > 0) {
-html += `
-<div class="confirm-row discount highlight">
+html += `<div class="confirm-row discount highlight">
 <label>🎁 Discount (${order.discount_text || 'Discount'}):</label>
 <span class="value">-Rs ${discountAmount.toLocaleString()}</span>
 </div>
-`;}
+`;
+}
 
 html += `
 <div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);">
@@ -973,12 +978,12 @@ pendingOrderData = null;
 }
 
 function confirmAndGeneratePDF() {
-console.log('confirmAndGeneratePDF called');
-console.log('pendingOrderData:', pendingOrderData);
+console.log('confirmAndGeneratePDF called');console.log('pendingOrderData:', pendingOrderData);
 
 if (!pendingOrderData) {
 console.error('No pending order data!');
-alert('❌ Error: Order data is missing! Please try again.');return;
+alert('❌ Error: Order data is missing! Please try again.');
+return;
 }
 
 if (!pendingOrderData.client && !pendingOrderData.Client) {
@@ -1022,12 +1027,12 @@ alert('❌ Error: Phone number not found!');
 return;
 }
 
-if (balanceDue <= 0) {
-alert('ℹ️ No balance due for this customer!');
+if (balanceDue <= 0) {alert('ℹ️ No balance due for this customer!');
 return;
 }
 
-const pdfBlob = await generatePDFBlob(order);const waPhone = phone.replace(/^0/, '92');
+const pdfBlob = await generatePDFBlob(order);
+const waPhone = phone.replace(/^0/, '92');
 
 const reminderMessage = `*🔔 PAYMENT REMINDER - DNHQ SERVICES*%0A%0A` +
 `👤 *Customer:* ${client}%0A` +
@@ -1071,12 +1076,12 @@ return null;
 }
 
 const doc = new JsPDFConstructor();
-
 const client = order.client || order.Client || 'Customer';
 const phone = order.phone || order.Phone || 'N/A';
 const orderDate = order.date || order.timestamp || new Date().toISOString();
 const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
-const discountAmount = parseFloat(order.discount_amount) || 0;const advance = parseFloat(order.advance) || 0;
+const discountAmount = parseFloat(order.discount_amount) || 0;
+const advance = parseFloat(order.advance) || 0;
 const total = parseFloat(order.total) || (subtotal - discountAmount);
 const balanceDue = parseFloat(order.balance_due) || (total - advance);
 const work = order.work || '';
@@ -1120,12 +1125,12 @@ return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
 }
 return [item.trim(), "-"];
 });
-
 doc.autoTable({
 startY: 78,
 head: [['SERVICE', 'AMOUNT']],
 body: body,
-theme: 'grid',headStyles: { fillColor: [0,0,0], textColor: [0,0,0], fontSize: 10 },
+theme: 'grid',
+headStyles: { fillColor: [0,0,0], textColor: [0,0,0], fontSize: 10 },
 styles: { fontSize: 9, cellPadding: 4, textColor: [0,0,0] },
 columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }
 });
@@ -1169,12 +1174,12 @@ doc.setLineWidth(1);
 doc.line(110, finalY - 5, 195, finalY - 5);
 doc.setFontSize(14);
 doc.setFont("helvetica", "bold");
-
 if (balanceDue > 0.01) {
 doc.setTextColor(239, 68, 68);
 doc.text("BALANCE DUE:", 115, finalY);
 doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' });
-} else {doc.setTextColor(16, 185, 129);
+} else {
+doc.setTextColor(16, 185, 129);
 doc.text("FULLY PAID ✓", 115, finalY);
 doc.text("Rs 0", 195, finalY, { align: 'right' });
 }
@@ -1218,12 +1223,12 @@ const balanceDue = parseFloat(order.balance_due) || 0;
 
 if (!phone || balanceDue <= 0) return;
 
-const waPhone = phone.replace(/^0/, '92');
-const orderDate = order.date || order.timestamp || new Date().toISOString();
+const waPhone = phone.replace(/^0/, '92');const orderDate = order.date || order.timestamp || new Date().toISOString();
 
 const reminderMessage = `*🔔 PAYMENT REMINDER - DNHQ SERVICES*%0A%0A` +
 `👤 *Customer:* ${client}%0A` +
-`⚠️ *Balance Due: Rs ${balanceDue.toLocaleString()}*%0A%0A` +`📞 Contact: +92 315 2458657`;
+`⚠️ *Balance Due: Rs ${balanceDue.toLocaleString()}*%0A%0A` +
+`📞 Contact: +92 315 2458657`;
 
 const pdfBlob = await generatePDFBlob(order);
 const cname = client.replace(/[^a-z0-9]/gi, '_');
@@ -1267,11 +1272,11 @@ if (!JsPDFConstructor) {
 alert('❌ jsPDF library not loaded!');
 return;
 }
-
 const doc = new JsPDFConstructor();
 
 doc.setFillColor(0, 0, 0);
 doc.rect(0, 0, 210, 45, 'F');
+
 try {
 const imgData = await getImageDataForPDF(document.getElementById('brandLogo'));
 if (imgData) {
@@ -1316,12 +1321,12 @@ body: body,
 theme: 'grid',
 headStyles: { fillColor: [0,0,0], textColor: [0,0,0], fontSize: 10 },
 styles: { fontSize: 9, cellPadding: 4, textColor: [0,0,0] },
-columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }
-});
+columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }});
 
 let finalY = doc.lastAutoTable.finalY + 10;
 doc.setFontSize(10);
-doc.setFont("helvetica", "normal");doc.setTextColor(0, 0, 0);
+doc.setFont("helvetica", "normal");
+doc.setTextColor(0, 0, 0);
 doc.text("Subtotal:", 115, finalY);
 doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' });
 finalY += 7;
@@ -1365,12 +1370,12 @@ doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' });
 } else {
 doc.setTextColor(16, 185, 129);
 doc.text("FULLY PAID ✓", 115, finalY);
-doc.text("Rs 0", 195, finalY, { align: 'right' });
-}
+doc.text("Rs 0", 195, finalY, { align: 'right' });}
 
 doc.setTextColor(150, 150, 150);
 doc.setFontSize(9);
-doc.setFont("helvetica", "normal");doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
+doc.setFont("helvetica", "normal");
+doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
 
 const cname = client.replace(/[^a-z0-9]/gi, '_');
 const dateStr = formatDate(orderDate).replace(/[^a-z0-9]/gi, '_');
@@ -1414,12 +1419,12 @@ document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('select
 }
 
 function triggerAppInstall() {
-if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; }
-else { alert("📲 Tap Share → Add to Home Screen"); }
+if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; }else { alert("📲 Tap Share → Add to Home Screen"); }
 }
 function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }
 function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+
 function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
 function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
 function resetHistoryView() {
@@ -1463,12 +1468,12 @@ ${adv > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${adv}</small>` : ''
 <button class="pdf-sm" data-hist-index="${i}">📄 Download</button>
 </div>`;
 }).join('');
-
 window.historyDataStore = data;
 document.getElementById('histList').querySelectorAll('.pdf-sm').forEach((btn, index) => {
 btn.onclick = function() {
 try {
-const order = window.historyDataStore[index];if (!order) {
+const order = window.historyDataStore[index];
+if (!order) {
 alert('❌ Error: Order data not found!');
 return;
 }
@@ -1512,12 +1517,12 @@ formatDate(o.date || o.timestamp),
 doc.autoTable({ startY: 64, head: [['DATE', 'SERVICE', 'AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [0,0,0], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 3 } });
 let y = doc.lastAutoTable.finalY + 12;
 doc.setDrawColor(251,191,36);
-doc.line(110, y-4, 195, y-4);
-doc.setFontSize(12);
+doc.line(110, y-4, 195, y-4);doc.setFontSize(12);
 doc.text("GRAND TOTAL:", 115, y);
 doc.setTextColor(0, 0, 0);
 doc.text("Rs " + grandTotal.toLocaleString(), 195, y, {align:'right'});
-doc.save(`DNHQ_History_${cust.client}.pdf`);});
+doc.save(`DNHQ_History_${cust.client}.pdf`);
+});
 }
 
 window.onclick = function(e) {
@@ -1554,4 +1559,4 @@ updateCart();
 });
 </script>
 </body>
-  </html>
+    </html>
