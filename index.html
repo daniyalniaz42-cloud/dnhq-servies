@@ -81,7 +81,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-left: 5px; }
 .badge-discount { background: #10b981; color: white; }
 .badge-advance { background: #3b82f6; color: white; }
-.badge-warranty { background: #8b5cf6; color: white; }
+.badge-warranty { background: #000; color: white; border: 1px solid #8b5cf6; }
 .confirm-dialog { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
 .confirm-box { background: #1e293b; margin: 5% auto; padding: 25px; border: 3px solid #fbbf24; border-radius: 20px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3); }
 .confirm-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #334155; }
@@ -96,7 +96,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 .confirm-row.discount { color: #10b981; }
 .confirm-row.advance { color: #3b82f6; }
 .confirm-row.balance { font-size: 18px; font-weight: bold; color: #ef4444; border-top: 2px solid #fbbf24; padding-top: 15px; margin-top: 15px; }
-.confirm-row.balance.paid { color: #10b981; }.confirm-row.warranty { background: rgba(139, 92, 246, 0.1); border-left: 3px solid #8b5cf6; padding: 12px; border-radius: 8px; margin: 10px 0; }
+.confirm-row.balance.paid { color: #10b981; }.confirm-row.warranty { background: rgba(0,0,0,0.1); border-left: 3px solid #000; padding: 12px; border-radius: 8px; margin: 10px 0; }
 .confirm-footer { display: flex; gap: 15px; }
 .btn-confirm { flex: 1; background: #10b981; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; }
 .btn-confirm:hover { background: #059669; }
@@ -305,7 +305,6 @@ let deferredPrompt = null;
 let pendingOrderData = null;
 let editOrderData = null;
 window.orderDataStore = {};
-// ✅ UPDATED SCRIPT URL
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFi9BgmfF5qHjFawI1VXAPOcS7gQEQCn2jLEk5F8K_ZpOww9KD-BF8WufJzm_D0OxRWw/exec";
 
 document.addEventListener('DOMContentLoaded', () => { updateCart(); trackUniqueVisitor(); });
@@ -341,8 +340,8 @@ async function loadVisitorCount() {
         const res = await fetch(SCRIPT_URL + '?getVisitorCount=true&t=' + Date.now());
         const data = await res.json();
         const count = data.count || 0;
-        document.getElementById('visitorCount').innerText = count.toLocaleString();    } catch(e) {
-        console.error('Error loading visitor count:', e);
+        document.getElementById('visitorCount').innerText = count.toLocaleString();
+    } catch(e) {        console.error('Error loading visitor count:', e);
         document.getElementById('visitorCount').innerText = 'N/A';
     }
 }
@@ -390,8 +389,8 @@ function formatDate(dateInput) {
             date = new Date(dateInput);
         } else if (typeof dateInput === 'string') {
             const str = dateInput.trim();
-            date = new Date(str);            if (isNaN(date.getTime())) {
-                const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+            date = new Date(str);
+            if (isNaN(date.getTime())) {                const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
                 if (ddmmyyyy) date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
             }
             if (isNaN(date.getTime())) {
@@ -439,8 +438,8 @@ function getImageDataForPDF(imgElement) {
 }
 
 function playVid() {
-    const box = document.getElementById('videoBox');    const vid = document.getElementById('myVideo');
-    box.style.display = box.style.display === "none" ? "block" : "none";
+    const box = document.getElementById('videoBox');
+    const vid = document.getElementById('myVideo');    box.style.display = box.style.display === "none" ? "block" : "none";
     box.style.display === "block" ? vid.play() : vid.pause();
 }
 
@@ -488,8 +487,8 @@ async function saveManualEntry() {
         if(input.value.trim() !== "") {
             const p = parseInt(priceInputs[i].value) || 0;
             allWork.push(input.value.trim() + " (Rs " + p + ")");
-            subtotal += p;        }
-    });
+            subtotal += p;
+        }    });
     if(allWork.length === 0) return alert("Add at least one service!");
     const discountType = document.getElementById('discount_type').value;
     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
@@ -537,8 +536,8 @@ async function loadLogs() {
     const container = document.getElementById('logItems');
     container.innerHTML = '<div class="loading">Fetching...</div>';
     window.orderDataStore = {};
-    try {
-        const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
+
+    try {        const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
         const data = await res.json();
         if(data.error) throw new Error(data.error);
         if(data.length === 0) {
@@ -559,7 +558,7 @@ async function loadLogs() {
             let badges = '';
             if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'}</span>`;
             if (advance > 0) badges += `<span class="badge badge-advance">💰 Rs ${advance}</span>`;
-            badges += `<span class="badge badge-warranty">🛡️ 3 Days Warranty</span>`;
+            badges += `<span class="badge badge-warranty">3 Days Warranty</span>`;
             if (balanceDue > 0.01) {
                 badges += `<span class="badge" style="background:#ef4444;color:white;">⚠️ Due: Rs ${balanceDue.toLocaleString()}</span>`;
             } else {
@@ -586,8 +585,8 @@ async function loadLogs() {
             let balanceDue = parseFloat(order.balance_due);
             if (isNaN(balanceDue) || balanceDue === null || balanceDue === undefined) {
                 const total = parseFloat(order.total) || 0;
-                const advance = parseFloat(order.advance) || 0;                balanceDue = Math.max(0, total - advance);
-            }
+                const advance = parseFloat(order.advance) || 0;
+                balanceDue = Math.max(0, total - advance);            }
             order.balance_due = balanceDue;
             window.orderDataStore[idx] = order;
         });
@@ -635,8 +634,8 @@ async function updateOrderAndGeneratePDF() {
     const discountType = document.getElementById('editDiscountType').value;
     const discountValue = parseFloat(document.getElementById('editDiscountValue').value) || 0;
     const advance = parseFloat(document.getElementById('editAdvancePayment').value) || 0;
-    let discountAmount = 0, discountText = "None";    if (discountType === 'percent' && discountValue > 0) { discountAmount = (parseFloat(editOrderData.subtotal || editOrderData.total) * discountValue) / 100; discountText = discountValue + "%"; }
-    else if (discountType === 'fixed' && discountValue > 0) { discountAmount = discountValue; discountText = "Rs " + discountValue; }
+    let discountAmount = 0, discountText = "None";
+    if (discountType === 'percent' && discountValue > 0) { discountAmount = (parseFloat(editOrderData.subtotal || editOrderData.total) * discountValue) / 100; discountText = discountValue + "%"; }    else if (discountType === 'fixed' && discountValue > 0) { discountAmount = discountValue; discountText = "Rs " + discountValue; }
     const subtotal = parseFloat(editOrderData.subtotal) || parseFloat(editOrderData.total) || 0;
     const totalAfterDiscount = subtotal - discountAmount;
     const balanceDue = Math.max(0, totalAfterDiscount - advance);
@@ -653,7 +652,7 @@ async function updateOrderAndGeneratePDF() {
 }
 
 function showConfirmDialog(order) {
-    if (!order || typeof order !== 'object') { console.error('Invalid order data:', order); alert('❌ Error: Order data is missing!'); return; }
+    if (!order || typeof order !== 'object') { console.error('Invalid order ', order); alert('❌ Error: Order data is missing!'); return; }
     pendingOrderData = order;
     const client = order.client || order.Client || 'Customer';
     const phone = order.phone || order.Phone || 'N/A';
@@ -669,7 +668,7 @@ function showConfirmDialog(order) {
     if (discountAmount > 0) html += `<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span>-Rs ${discountAmount.toLocaleString()}</span></div>`;
     html += `<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span style="color:#fbbf24;font-size:18px;">Rs ${total.toLocaleString()}</span></div>`;
     if (advance > 0) html += `<div class="confirm-row advance highlight"><label>💰 Advance:</label><span>-Rs ${advance.toLocaleString()}</span></div>`;
-    html += `<div class="confirm-row warranty"><label>🛡️ Warranty:</label><span class="value" style="color:#8b5cf6;">3 Days Checking Warranty</span></div>`;
+    html += `<div class="confirm-row warranty"><label>Warranty:</label><span class="value" style="color:#000;">3 Days Checking Warranty</span></div>`;
     if (balanceDue > 0.01) { html += `<div class="confirm-row balance"><label>⚠️ Balance Due:</label><span>Rs ${balanceDue.toLocaleString()}</span></div>`; }
     else { html += `<div class="confirm-row balance paid"><label>✅ Payment Status:</label><span>FULLY PAID</span></div>`; }
     document.getElementById('confirmBody').innerHTML = html;
@@ -684,14 +683,14 @@ async function sendPaymentReminderWithPDF(index) {
     const order = window.orderDataStore[index];
     if (!order) { alert('❌ Not found!'); return; }
     const client = order.client || 'Customer';
-    const phone = order.phone || '';    const balanceDue = parseFloat(order.balance_due) || 0;
-    if (!phone || balanceDue <= 0) { alert('ℹ️ No balance due!'); return; }
+    const phone = order.phone || '';
+    const balanceDue = parseFloat(order.balance_due) || 0;    if (!phone || balanceDue <= 0) { alert('ℹ️ No balance due!'); return; }
     const pdfBlob = await generatePDFBlob(order);
     const waPhone = phone.replace(/^0/, '92');
     const orderDate = order.date || order.timestamp || new Date().toISOString();
     const total = parseFloat(order.total) || 0;
     const work = order.work || '';
-    const reminderMessage = `*🔔 PAYMENT REMINDER*%0A👤 ${client}%0A📱 ${phone}%0A📅 ${formatDate(orderDate)}%0A🔧 ${work.substring(0,50)}%0A💵 Total: Rs ${total.toLocaleString()}%0A⚠️ Balance: Rs ${balanceDue.toLocaleString()}%0A🛡️ Warranty: 3 Days%0A%0A📞 +92 315 2458657`;
+    const reminderMessage = `*🔔 PAYMENT REMINDER*%0A👤 ${client}%0A📱 ${phone}%0A📅 ${formatDate(orderDate)}%0A🔧 ${work.substring(0,50)}%0A💵 Total: Rs ${total.toLocaleString()}%0A⚠️ Balance: Rs ${balanceDue.toLocaleString()}%0A Warranty: 3 Days%0A%0A📞 +92 315 2458657`;
     if (confirm(`Send reminder to ${client}?`)) {
         const downloadUrl = URL.createObjectURL(pdfBlob);
         const a = document.createElement('a');
@@ -733,8 +732,8 @@ async function generatePDFBlob(order) {
     doc.setDrawColor(251,191,36); doc.setLineWidth(1); doc.line(110, finalY-5, 195, finalY-5); doc.setFontSize(14);
     if (balanceDue > 0.01) { doc.setTextColor(239,68,68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
     else { doc.setTextColor(16,185,129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
-    finalY += 15; doc.setDrawColor(139,92,246); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;    doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(139,92,246); doc.text("🛡️ 3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 6;
-    doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(150,150,150); doc.text("Valid from service date. Any issues within 3 days fixed free.", 105, finalY, { align: "center" });
+    finalY += 15; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
+    doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0); doc.text("3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 6;    doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(150,150,150); doc.text("Valid from service date. Any issues within 3 days fixed free.", 105, finalY, { align: "center" });
     doc.setTextColor(150,150,150); doc.setFontSize(9); doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
     return doc.output('blob');
 }
@@ -762,7 +761,7 @@ async function sendPaymentReminderWithPDFByOrder(order) {
     a.download = `DNHQ_${client.replace(/[^a-z0-9]/gi, '_')}_${formatDate(orderDate)}.pdf`;
     a.click();
     URL.revokeObjectURL(downloadUrl);
-    setTimeout(() => { window.open(`https://wa.me/${waPhone}?text=*🔔 REMINDER*%0A👤 ${client}%0A⚠️ Rs ${balanceDue.toLocaleString()}%0A🛡️ 3 Days Warranty`, '_blank'); }, 1000);
+    setTimeout(() => { window.open(`https://wa.me/${waPhone}?text=*🔔 REMINDER*%0A👤 ${client}%0A⚠️ Rs ${balanceDue.toLocaleString()}%0A Warranty: 3 Days`, '_blank'); }, 1000);
 }
 
 async function generatePDF(order) {
@@ -782,8 +781,8 @@ async function generatePDF(order) {
         const work = order.work || '';
         doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
         try { const imgData = await getImageDataForPDF(document.getElementById('brandLogo')); if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30); } catch (e) {}
-        doc.setTextColor(251,191,36); doc.setFontSize(24); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 55, 24);        doc.setFontSize(10); doc.setTextColor(255,255,255); doc.text("Professional Electrical & AC Maintenance", 55, 31);
-        doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
+        doc.setTextColor(251,191,36); doc.setFontSize(24); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 55, 24);
+        doc.setFontSize(10); doc.setTextColor(255,255,255); doc.text("Professional Electrical & AC Maintenance", 55, 31);        doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
         doc.setFontSize(16); doc.text("INVOICE", 105, 72, { align: "center" });
         let items = work.split(", ");
         let body = items.map(item => { if (item.includes("(Rs ")) { let parts = item.split(" (Rs "); return [parts[0].trim(), "Rs " + parts[1].replace(")","").trim()]; } return [item.trim(), "-"]; });
@@ -796,8 +795,8 @@ async function generatePDF(order) {
         doc.setDrawColor(251,191,36); doc.setLineWidth(1); doc.line(110, finalY-5, 195, finalY-5); doc.setFontSize(14);
         if (balanceDue > 0.01) { doc.setTextColor(239,68,68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
         else { doc.setTextColor(16,185,129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
-        finalY += 15; doc.setDrawColor(139,92,246); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
-        doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(139,92,246); doc.text("🛡️ 3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 6;
+        finalY += 15; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
+        doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0); doc.text("3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 6;
         doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(150,150,150); doc.text("Valid from service date. Any issues within 3 days fixed free.", 105, finalY, { align: "center" });
         doc.setTextColor(150,150,150); doc.setFontSize(9); doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
         doc.save(`DNHQ_${client.replace(/[^a-z0-9]/gi, '_')}_${formatDate(orderDate)}.pdf`);
@@ -814,7 +813,7 @@ async function placeOrder() {
     const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, subtotal: subtotal, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', advance: 0, total: subtotal, balance_due: subtotal };
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        window.open(`https://wa.me/923152458657?text=*DNHQ ORDER*%0A👤 ${name}%0A📱 ${phone}%0A🔧 ${workFormatted}%0A💵 Total: Rs ${subtotal.toLocaleString()}%0A🛡️ Warranty: 3 Days`, '_blank');
+        window.open(`https://wa.me/923152458657?text=*DNHQ ORDER*%0A👤 ${name}%0A📱 ${phone}%0A🔧 ${workFormatted}%0A💵 Total: Rs ${subtotal.toLocaleString()}%0A Warranty: 3 Days`, '_blank');
         cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
     } catch(e) { alert("Error: " + e.message); }
 }
@@ -831,8 +830,8 @@ function resetHistoryView() { document.getElementById('verifyStep').style.displa
 async function fetchCustomerHistory() {
     const name = document.getElementById('histName').value.trim().toUpperCase();
     const phone = document.getElementById('histPhone').value.trim();
-    const err = document.getElementById('histError');    if (!name || !phone) { err.textContent = "Enter Name & Phone"; err.style.display = 'block'; return; }
-    err.style.display = 'none';
+    const err = document.getElementById('histError');
+    if (!name || !phone) { err.textContent = "Enter Name & Phone"; err.style.display = 'block'; return; }    err.style.display = 'none';
     document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
     try {
         const res = await fetch(`${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`);
@@ -844,7 +843,7 @@ async function fetchCustomerHistory() {
         document.getElementById('showStep').style.display = 'block';
         const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
         document.getElementById('custInfo').innerHTML = `<b>👤 ${name}</b><br><b>📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
-        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small>📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small><small style="color:#8b5cf6;">🛡️ 3 Days Warranty</small>${(parseFloat(o.balance_due)||0) > 0 ? `<span class="amt">Due: Rs ${(parseFloat(o.balance_due)||0).toLocaleString()}</span>` : `<span class="amt">✓ Paid</span>`}<button class="pdf-sm" onclick='showConfirmDialog(${JSON.stringify(o).replace(/'/g,"\\'")})'>📄</button></div>`).join('');
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small>📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small><small style="color:#000;">3 Days Warranty</small>${(parseFloat(o.balance_due)||0) > 0 ? `<span class="amt">Due: Rs ${(parseFloat(o.balance_due)||0).toLocaleString()}</span>` : `<span class="amt">✓ Paid</span>`}<button class="pdf-sm" onclick='showConfirmDialog(${JSON.stringify(o).replace(/'/g,"\\'")})'>📄</button></div>`).join('');
     } catch (e) { err.textContent = "Error"; err.style.display = 'block'; }
 }
 
@@ -880,8 +879,8 @@ window.deleteEntry = deleteEntry;
 window.fetchCustomerHistory = fetchCustomerHistory;
 window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
 window.toggleDiscountInput = toggleDiscountInput;
-window.toggleEditDiscountInput = toggleEditDiscountInput;window.showConfirmDialog = showConfirmDialog;
-window.closeConfirmDialog = closeConfirmDialog;
+window.toggleEditDiscountInput = toggleEditDiscountInput;
+window.showConfirmDialog = showConfirmDialog;window.closeConfirmDialog = closeConfirmDialog;
 window.confirmAndGeneratePDF = confirmAndGeneratePDF;
 window.openEditOrderModal = openEditOrderModal;
 window.closeEditOrderModal = closeEditOrderModal;
