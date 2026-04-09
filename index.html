@@ -733,12 +733,14 @@ async function generatePDFBlob(order) {
     if (balanceDue > 0.01) { doc.setTextColor(239,68,68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
     else { doc.setTextColor(16,185,129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
     finalY += 15; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
-    doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0); doc.text("3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 6;    doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(150,150,150); doc.text("Valid from service date. Any issues within 3 days fixed free.", 105, finalY, { align: "center" });
-    finalY += 12; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
-    doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(100,100,100);
-    doc.text("Contact: +92 315 2458657", 105, finalY, { align: "center" }); finalY += 6;
-    doc.text("Contact: +92 312 8542993", 105, finalY, { align: "center" }); finalY += 6;
-    doc.text("Website: dnhq-services.online", 105, finalY, { align: "center" });
+    doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0); doc.text("3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 5;    doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(150,150,150); doc.text("Valid from service date. Any issues within 3 days fixed free.", 105, finalY, { align: "center" });
+    // ✅ Footer at page end (position 280)
+    const footerY = 280;
+    doc.setDrawColor(200,200,200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY);
+    doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(120,120,120);
+    doc.text("Contact: +92 315 2458657", 105, footerY + 6, { align: "center" });
+    doc.text("Contact: +92 312 8542993", 105, footerY + 11, { align: "center" });
+    doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
     return doc.output('blob');
 }
 
@@ -780,9 +782,9 @@ async function generatePDF(order) {
         const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
         const discountAmount = parseFloat(order.discount_amount) || 0;
         const advance = parseFloat(order.advance) || 0;
-        const total = parseFloat(order.total) || (subtotal - discountAmount);
-        const balanceDue = Math.max(0, total - advance);
-        const work = order.work || '';        doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
+        const total = parseFloat(order.total) || (subtotal - discountAmount);        const balanceDue = Math.max(0, total - advance);
+        const work = order.work || '';
+        doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
         try { const imgData = await getImageDataForPDF(document.getElementById('brandLogo')); if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30); } catch (e) {}
         doc.setTextColor(251,191,36); doc.setFontSize(24); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 55, 24);
         doc.setFontSize(10); doc.setTextColor(255,255,255); doc.text("Professional Electrical & AC Maintenance", 55, 31);
@@ -800,13 +802,15 @@ async function generatePDF(order) {
         if (balanceDue > 0.01) { doc.setTextColor(239,68,68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
         else { doc.setTextColor(16,185,129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
         finalY += 15; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
-        doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0); doc.text("3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 6;
+        doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0); doc.text("3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 5;
         doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(150,150,150); doc.text("Valid from service date. Any issues within 3 days fixed free.", 105, finalY, { align: "center" });
-        finalY += 12; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
-        doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(100,100,100);
-        doc.text("Contact: +92 315 2458657", 105, finalY, { align: "center" }); finalY += 6;
-        doc.text("Contact: +92 312 8542993", 105, finalY, { align: "center" }); finalY += 6;
-        doc.text("Website: dnhq-services.online", 105, finalY, { align: "center" });
+        // ✅ Footer at page end (position 280)
+        const footerY = 280;
+        doc.setDrawColor(200,200,200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY);
+        doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(120,120,120);
+        doc.text("Contact: +92 315 2458657", 105, footerY + 6, { align: "center" });
+        doc.text("Contact: +92 312 8542993", 105, footerY + 11, { align: "center" });
+        doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
         doc.save(`DNHQ_${client.replace(/[^a-z0-9]/gi, '_')}_${formatDate(orderDate)}.pdf`);
     } catch (error) { alert('❌ PDF Error: ' + error.message); }
 }
@@ -827,11 +831,11 @@ async function placeOrder() {
 }
 
 function triggerAppInstall() { if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; } else { alert("📲 Tap Share → Add to Home Screen"); } }
-function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }
-function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
+function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
 
-function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
+function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
+function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
 function resetHistoryView() { document.getElementById('verifyStep').style.display = 'block'; document.getElementById('showStep').style.display = 'none'; document.getElementById('histName').value = ''; document.getElementById('histPhone').value = ''; document.getElementById('histError').style.display = 'none'; currentCustData = null; }
 
 async function fetchCustomerHistory() {
@@ -876,11 +880,11 @@ function downloadCustomerHistoryPDF() {
 }
 
 window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog(); if (e.target == document.getElementById('editOrderModal')) closeEditOrderModal(); }
-
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
-window.openHistoryModal = openHistoryModal;window.triggerAppInstall = triggerAppInstall;
+window.openHistoryModal = openHistoryModal;
+window.triggerAppInstall = triggerAppInstall;
 window.generatePDF = generatePDF;
 window.deleteEntry = deleteEntry;
 window.fetchCustomerHistory = fetchCustomerHistory;
@@ -902,4 +906,4 @@ window.urgentService = urgentService;
 document.addEventListener('DOMContentLoaded', () => { updateCart(); });
 </script>
 </body>
- </html>
+    </html>
