@@ -296,7 +296,7 @@ footer { background: #000; color: #64748b; padding: 40px 20px; text-align: cente
 
 <div id="installPrompt"><p>📱 Install DNHQ App!</p><button onclick="installApp()">Install</button><button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;">✕</button></div>
 <a href="tel:+923152458657" class="floating-call-btn"><i class="fas fa-phone"></i></a>
-<footer><div onclick="openAdmin()" style="cursor:pointer;font-size:12px;opacity:0.5;">Admin Access</div><p style="margin-top:10px;font-size:13px;">© 2026 DNHQ Services • +92 315 2458657</p></footer>
+<footer><div onclick="openAdmin()" style="cursor:pointer;font-size:12px;opacity:0.5;">Admin Access</div><p style="margin-top:10px;font-size:13px;">© 2026 DNHQ Services • +92 315 2458657 / +92 312 8542993 • dnhq-services.online</p></footer>
 
 <script>
 let cart = [];
@@ -690,7 +690,7 @@ async function sendPaymentReminderWithPDF(index) {
     const orderDate = order.date || order.timestamp || new Date().toISOString();
     const total = parseFloat(order.total) || 0;
     const work = order.work || '';
-    const reminderMessage = `*🔔 PAYMENT REMINDER*%0A👤 ${client}%0A📱 ${phone}%0A📅 ${formatDate(orderDate)}%0A🔧 ${work.substring(0,50)}%0A💵 Total: Rs ${total.toLocaleString()}%0A⚠️ Balance: Rs ${balanceDue.toLocaleString()}%0A Warranty: 3 Days%0A%0A📞 +92 315 2458657`;
+    const reminderMessage = `*🔔 PAYMENT REMINDER*%0A👤 ${client}%0A📱 ${phone}%0A📅 ${formatDate(orderDate)}%0A🔧 ${work.substring(0,50)}%0A💵 Total: Rs ${total.toLocaleString()}%0A⚠️ Balance: Rs ${balanceDue.toLocaleString()}%0A Warranty: 3 Days%0A%0A📞 +92 315 2458657 / +92 312 8542993%0A🌐 dnhq-services.online`;
     if (confirm(`Send reminder to ${client}?`)) {
         const downloadUrl = URL.createObjectURL(pdfBlob);
         const a = document.createElement('a');
@@ -734,7 +734,11 @@ async function generatePDFBlob(order) {
     else { doc.setTextColor(16,185,129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
     finalY += 15; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
     doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0); doc.text("3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 6;    doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(150,150,150); doc.text("Valid from service date. Any issues within 3 days fixed free.", 105, finalY, { align: "center" });
-    doc.setTextColor(150,150,150); doc.setFontSize(9); doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
+    finalY += 12; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
+    doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(100,100,100);
+    doc.text("Contact: +92 315 2458657", 105, finalY, { align: "center" }); finalY += 6;
+    doc.text("Contact: +92 312 8542993", 105, finalY, { align: "center" }); finalY += 6;
+    doc.text("Website: dnhq-services.online", 105, finalY, { align: "center" });
     return doc.output('blob');
 }
 
@@ -761,7 +765,7 @@ async function sendPaymentReminderWithPDFByOrder(order) {
     a.download = `DNHQ_${client.replace(/[^a-z0-9]/gi, '_')}_${formatDate(orderDate)}.pdf`;
     a.click();
     URL.revokeObjectURL(downloadUrl);
-    setTimeout(() => { window.open(`https://wa.me/${waPhone}?text=*🔔 REMINDER*%0A👤 ${client}%0A⚠️ Rs ${balanceDue.toLocaleString()}%0A Warranty: 3 Days`, '_blank'); }, 1000);
+    setTimeout(() => { window.open(`https://wa.me/${waPhone}?text=*🔔 REMINDER*%0A👤 ${client}%0A⚠️ Rs ${balanceDue.toLocaleString()}%0A Warranty: 3 Days%0A%0A📞 +92 315 2458657 / +92 312 8542993%0A🌐 dnhq-services.online`, '_blank'); }, 1000);
 }
 
 async function generatePDF(order) {
@@ -778,11 +782,11 @@ async function generatePDF(order) {
         const advance = parseFloat(order.advance) || 0;
         const total = parseFloat(order.total) || (subtotal - discountAmount);
         const balanceDue = Math.max(0, total - advance);
-        const work = order.work || '';
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
+        const work = order.work || '';        doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
         try { const imgData = await getImageDataForPDF(document.getElementById('brandLogo')); if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30); } catch (e) {}
         doc.setTextColor(251,191,36); doc.setFontSize(24); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 55, 24);
-        doc.setFontSize(10); doc.setTextColor(255,255,255); doc.text("Professional Electrical & AC Maintenance", 55, 31);        doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
+        doc.setFontSize(10); doc.setTextColor(255,255,255); doc.text("Professional Electrical & AC Maintenance", 55, 31);
+        doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
         doc.setFontSize(16); doc.text("INVOICE", 105, 72, { align: "center" });
         let items = work.split(", ");
         let body = items.map(item => { if (item.includes("(Rs ")) { let parts = item.split(" (Rs "); return [parts[0].trim(), "Rs " + parts[1].replace(")","").trim()]; } return [item.trim(), "-"]; });
@@ -798,7 +802,11 @@ async function generatePDF(order) {
         finalY += 15; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
         doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0); doc.text("3 DAYS CHECKING WARRANTY", 105, finalY, { align: "center" }); finalY += 6;
         doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(150,150,150); doc.text("Valid from service date. Any issues within 3 days fixed free.", 105, finalY, { align: "center" });
-        doc.setTextColor(150,150,150); doc.setFontSize(9); doc.text("Contact: +92 315 2458657", 105, 285, { align: "center" });
+        finalY += 12; doc.setDrawColor(0,0,0); doc.setLineWidth(0.5); doc.line(20, finalY, 190, finalY); finalY += 8;
+        doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(100,100,100);
+        doc.text("Contact: +92 315 2458657", 105, finalY, { align: "center" }); finalY += 6;
+        doc.text("Contact: +92 312 8542993", 105, finalY, { align: "center" }); finalY += 6;
+        doc.text("Website: dnhq-services.online", 105, finalY, { align: "center" });
         doc.save(`DNHQ_${client.replace(/[^a-z0-9]/gi, '_')}_${formatDate(orderDate)}.pdf`);
     } catch (error) { alert('❌ PDF Error: ' + error.message); }
 }
@@ -813,7 +821,7 @@ async function placeOrder() {
     const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, subtotal: subtotal, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', advance: 0, total: subtotal, balance_due: subtotal };
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        window.open(`https://wa.me/923152458657?text=*DNHQ ORDER*%0A👤 ${name}%0A📱 ${phone}%0A🔧 ${workFormatted}%0A💵 Total: Rs ${subtotal.toLocaleString()}%0A Warranty: 3 Days`, '_blank');
+        window.open(`https://wa.me/923152458657?text=*DNHQ ORDER*%0A👤 ${name}%0A📱 ${phone}%0A🔧 ${workFormatted}%0A💵 Total: Rs ${subtotal.toLocaleString()}%0A Warranty: 3 Days%0A%0A📞 +92 315 2458657 / +92 312 8542993%0A🌐 dnhq-services.online`, '_blank');
         cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
     } catch(e) { alert("Error: " + e.message); }
 }
@@ -823,15 +831,15 @@ function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredP
 function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
 
-function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
-function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
+function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
 function resetHistoryView() { document.getElementById('verifyStep').style.display = 'block'; document.getElementById('showStep').style.display = 'none'; document.getElementById('histName').value = ''; document.getElementById('histPhone').value = ''; document.getElementById('histError').style.display = 'none'; currentCustData = null; }
 
 async function fetchCustomerHistory() {
     const name = document.getElementById('histName').value.trim().toUpperCase();
     const phone = document.getElementById('histPhone').value.trim();
     const err = document.getElementById('histError');
-    if (!name || !phone) { err.textContent = "Enter Name & Phone"; err.style.display = 'block'; return; }    err.style.display = 'none';
+    if (!name || !phone) { err.textContent = "Enter Name & Phone"; err.style.display = 'block'; return; }
+    err.style.display = 'none';
     document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
     try {
         const res = await fetch(`${SCRIPT_URL}?getHistory=true&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`);
@@ -872,15 +880,15 @@ window.onclick = function(e) { if (e.target == document.getElementById('historyM
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
-window.openHistoryModal = openHistoryModal;
-window.triggerAppInstall = triggerAppInstall;
+window.openHistoryModal = openHistoryModal;window.triggerAppInstall = triggerAppInstall;
 window.generatePDF = generatePDF;
 window.deleteEntry = deleteEntry;
 window.fetchCustomerHistory = fetchCustomerHistory;
 window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
 window.toggleDiscountInput = toggleDiscountInput;
 window.toggleEditDiscountInput = toggleEditDiscountInput;
-window.showConfirmDialog = showConfirmDialog;window.closeConfirmDialog = closeConfirmDialog;
+window.showConfirmDialog = showConfirmDialog;
+window.closeConfirmDialog = closeConfirmDialog;
 window.confirmAndGeneratePDF = confirmAndGeneratePDF;
 window.openEditOrderModal = openEditOrderModal;
 window.closeEditOrderModal = closeEditOrderModal;
@@ -894,4 +902,4 @@ window.urgentService = urgentService;
 document.addEventListener('DOMContentLoaded', () => { updateCart(); });
 </script>
 </body>
-    </html>
+ </html>
