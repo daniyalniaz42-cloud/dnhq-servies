@@ -477,8 +477,9 @@ function showConfirmDialog(order) {
         return;
     }
     pendingOrderData = order;
-    const client = order.client || 'Customer';
-    const phone = order.phone || 'N/A';
+    // ✅ Convert to string first to avoid .trim() error
+    const client = order.client ? String(order.client) : 'Customer';
+    const phone = order.phone ? String(order.phone) : 'N/A';
     const orderDate = order.date || order.timestamp || new Date().toISOString();
     const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
     const discountAmount = parseFloat(order.discount_amount) || 0;
@@ -532,9 +533,10 @@ async function generatePDF(order) {
         alert('❌ Error: Order is not a valid object!');
         return;
     }
-    const hasClient = order.client && order.client.trim() !== '';
-    const hasPhone = order.phone && order.phone.trim() !== '';
-    const hasWork = order.work && order.work.trim() !== '';
+    // ✅ Convert to string first before using .trim()
+    const hasClient = order.client && String(order.client).trim() !== '';
+    const hasPhone = order.phone && String(order.phone).trim() !== '';
+    const hasWork = order.work && String(order.work).trim() !== '';
     if (!hasClient && !hasPhone && !hasWork) {
         alert('❌ Error: Order has no valid data!');
         return;
@@ -546,10 +548,11 @@ async function generatePDF(order) {
             return;
         }
         const doc = new JsPDFConstructor();
-        const client = order.client || 'Customer';
-        const phone = order.phone || 'N/A';
+        // ✅ Convert all fields to string first
+        const client = order.client ? String(order.client) : 'Customer';
+        const phone = order.phone ? String(order.phone) : 'N/A';
         const orderDate = order.date || order.timestamp || new Date().toISOString();
-        const work = order.work || 'No work specified';
+        const work = order.work ? String(order.work) : 'No work specified';
         doc.setFillColor(0, 0, 0);
         doc.rect(0, 0, 210, 45, 'F');
         try {
