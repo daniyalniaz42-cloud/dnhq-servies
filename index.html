@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -35,6 +35,9 @@ body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; colo
 .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
 .del-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
 .pdf-btn { background: var(--gold); color: black; border: none; border-radius: 5px; padding: 5px 15px; font-weight: bold; cursor: pointer; float: right; }
+.status-btn { background: #3b82f6; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-weight: bold; cursor: pointer; font-size: 12px; margin-left: 5px; }
+.status-btn.completed { background: #10b981; }
+.status-btn.pending { background: #f59e0b; }
 .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
 .discount-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
 .discount-row select { padding: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; }
@@ -44,10 +47,10 @@ body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; colo
 footer { background: #000; color: #64748b; padding: 15px 20px; text-align: center; margin-top: 0; }
 footer a { color: #fbbf24; text-decoration: none; }
 footer a:hover { text-decoration: underline; }
-.history-btn { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; }
-.modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }
+.history-btn { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; }.modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }
 .modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
-.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }.form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
+.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
+.form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
 .verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
 .error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
 .success-msg { color: #22c55e; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
@@ -69,6 +72,12 @@ footer a:hover { text-decoration: underline; }
 .badge-discount { background: #10b981; color: white; }
 .badge-advance { background: #3b82f6; color: white; }
 .badge-complaint { background: #ef4444; color: white; }
+.badge-received { background: #3b82f6; color: white; }
+.badge-pending { background: #f59e0b; color: white; }
+.badge-completed { background: #10b981; color: white; }
+.order-filters { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+.order-filter-btn { padding: 8px 15px; border: 1px solid #334155; border-radius: 6px; background: #1e293b; color: #94a3b8; font-size: 13px; cursor: pointer; }
+.order-filter-btn.active { border-color: #fbbf24; color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
 .confirm-dialog { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
 .confirm-box { background: #1e293b; margin: 5% auto; padding: 25px; border: 3px solid #fbbf24; border-radius: 20px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3); }
 .confirm-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #334155; }
@@ -87,8 +96,7 @@ footer a:hover { text-decoration: underline; }
 .confirm-footer { display: flex; gap: 15px; }
 .btn-confirm { flex: 1; background: #10b981; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
 .btn-confirm:hover { background: #059669; }
-.btn-cancel { flex: 1; background: #ef4444; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
-.btn-cancel:hover { background: #dc2626; }
+.btn-cancel { flex: 1; background: #ef4444; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }.btn-cancel:hover { background: #dc2626; }
 .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
 .admin-tab { flex: 1; min-width: 120px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; }
 .admin-tab.active { background: rgba(251, 191, 36, 0.1); border-color: #fbbf24; color: #fbbf24; }
@@ -96,7 +104,8 @@ footer a:hover { text-decoration: underline; }
 .complaint-card { background: #1e293b; border: 1px solid #ef4444; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; border-left: 4px solid #ef4444; }
 @media (max-width: 480px) { 
     .brand-title { font-size: 20px; } 
-    .logo-main { height: 70px; }    body { padding-bottom: 90px; }
+    .logo-main { height: 70px; }
+    body { padding-bottom: 90px; }
     footer { padding: 12px 15px; }
 }
 </style>
@@ -116,7 +125,6 @@ footer a:hover { text-decoration: underline; }
 <div id="videoBox" style="display:none; margin-bottom:20px;"><video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);"><source src="tutorial.mp4" type="video/mp4"></video></div>
 <button class="history-btn" onclick="openHistoryModal()"><i class="fas fa-clock-rotate-left"></i> Check Service History</button>
 
-<!-- ✅ UPDATED: AC Services with +500 Rs Price Increase -->
 <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 4000)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 4,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 3000)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 3,000</div></div>
@@ -125,125 +133,25 @@ footer a:hover { text-decoration: underline; }
 <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4500)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,500</div></div>
 
 <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)">
-    <div class="svc-meta">
-        <b>Fault Finding</b>
-        <p>Short Circuit Fixing</p>
-    </div>
-    <div class="svc-rate">Rs 1,000</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)">
-    <div class="svc-meta">
-        <b>DB Dressing</b>
-        <p>Panel Organizing</p>
-    </div>
-    <div class="svc-rate">Rs 3,000</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)">
-    <div class="svc-meta">
-        <b>1 Room Wiring</b>
-        <p>Complete Fitting</p>    </div>
-    <div class="svc-rate">Rs 1,500</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, '2 Room Wiring', 2500)">
-    <div class="svc-meta">
-        <b>2 Room Wiring</b>
-        <p>Complete Fitting</p>
-    </div>
-    <div class="svc-rate">Rs 2,500</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Fan Installation', 800)">
-    <div class="svc-meta">
-        <b>Fan Installation</b>
-        <p>Per Fan</p>
-    </div>
-    <div class="svc-rate">Rs 800</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Light Installation', 500)">
-    <div class="svc-meta">
-        <b>Light Installation</b>
-        <p>Per Point</p>
-    </div>
-    <div class="svc-rate">Rs 500</div>
-</div>
-<div class="svc-item" onclick="toggleSvc(this, 'Socket Replacement', 300)">
-    <div class="svc-meta">
-        <b>Socket Replacement</b>
-        <p>Per Socket</p>
-    </div>
-    <div class="svc-rate">Rs 300</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Switch Replacement', 200)">
-    <div class="svc-meta">
-        <b>Switch Replacement</b>
-        <p>Per Switch</p>
-    </div>
-    <div class="svc-rate">Rs 200</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Motor Repair', 2500)">
-    <div class="svc-meta">
-        <b>Motor Repair</b>
-        <p>Single Phase</p>
-    </div>
-    <div class="svc-rate">Rs 2,500</div>
-</div>
-<div class="svc-item" onclick="toggleSvc(this, 'Inverter Installation', 5000)">
-    <div class="svc-meta">
-        <b>Inverter Installation</b>
-        <p>Complete Setup</p>
-    </div>
-    <div class="svc-rate">Rs 5,000</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 4000)">
-    <div class="svc-meta">
-        <b>UPS Installation</b>
-        <p>Complete Setup</p>
-    </div>
-    <div class="svc-rate">Rs 4,000</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Circuit Breaker', 1500)">
-    <div class="svc-meta">
-        <b>Circuit Breaker</b>
-        <p>Per Phase</p>
-    </div>
-    <div class="svc-rate">Rs 1,500</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Voltage Stabilizer', 2000)">
-    <div class="svc-meta">        <b>Voltage Stabilizer</b>
-        <p>Installation</p>
-    </div>
-    <div class="svc-rate">Rs 2,000</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)">
-    <div class="svc-meta">
-        <b>Complete Wiring</b>
-        <p>Area Based</p>
-    </div>
-    <div class="svc-rate">Rate/Sq.Ft</div>
-</div>
-
-<div class="svc-item" onclick="toggleSvc(this, 'Emergency Repair', 3000)">
-    <div class="svc-meta">
-        <b>Emergency Repair</b>
-        <p>24/7 Service</p>
-    </div>
-    <div class="svc-rate">Rs 7,000</div>
-</div>
+<div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Short Circuit Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
+<div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, '2 Room Wiring', 2500)"><div class="svc-meta"><b>2 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 2,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Fan Installation', 800)"><div class="svc-meta"><b>Fan Installation</b><p>Per Fan</p></div><div class="svc-rate">Rs 800</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Light Installation', 500)"><div class="svc-meta"><b>Light Installation</b><p>Per Point</p></div><div class="svc-rate">Rs 500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Socket Replacement', 300)"><div class="svc-meta"><b>Socket Replacement</b><p>Per Socket</p></div><div class="svc-rate">Rs 300</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Switch Replacement', 200)"><div class="svc-meta"><b>Switch Replacement</b><p>Per Switch</p></div><div class="svc-rate">Rs 200</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Motor Repair', 2500)"><div class="svc-meta"><b>Motor Repair</b><p>Single Phase</p></div><div class="svc-rate">Rs 2,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Inverter Installation', 5000)"><div class="svc-meta"><b>Inverter Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 5,000</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 4000)"><div class="svc-meta"><b>UPS Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 4,000</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Circuit Breaker', 1500)"><div class="svc-meta"><b>Circuit Breaker</b><p>Per Phase</p></div><div class="svc-rate">Rs 1,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Voltage Stabilizer', 2000)"><div class="svc-meta"><b>Voltage Stabilizer</b><p>Installation</p></div><div class="svc-rate">Rs 2,000</div></div><div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Emergency Repair', 3000)"><div class="svc-meta"><b>Emergency Repair</b><p>24/7 Service</p></div><div class="svc-rate">Rs 7,000</div></div>
 
 <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Full Charging</p></div><div class="svc-rate">Rs 5,500</div></div>
+</div>
+
 <!-- ADMIN PANEL -->
 <div id="adminView">
 <div style="display:flex;justify-content:space-between;margin-bottom:20px;">
@@ -251,13 +159,11 @@ footer a:hover { text-decoration: underline; }
 <button onclick="document.getElementById('adminView').style.display='none'" style="background:red;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;">CLOSE</button>
 </div>
 
-<!-- ✅ Admin Tabs for Orders & Complaints -->
 <div class="admin-tabs">
 <div class="admin-tab active" onclick="switchAdminTab('orders')" id="tab-orders">📄 Orders</div>
 <div class="admin-tab" onclick="switchAdminTab('complaints')" id="tab-complaints">⚠️ Complaints <span class="count" id="complaintCount">0</span></div>
 </div>
 
-<!-- Orders Section -->
 <div id="ordersSection">
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px dashed var(--gold);margin-bottom:25px;">
 <h4 style="color:var(--gold);margin:0 0 10px 0;">💵 CREATE MANUAL BILL</h4>
@@ -288,16 +194,24 @@ footer a:hover { text-decoration: underline; }
 <div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
 <h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
 <input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
+</div><button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
 </div>
-<button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
+
+<!-- ✅ Order Status Filters -->
+<div class="order-filters">
+<button class="order-filter-btn active" onclick="filterOrders('all')">All Orders</button>
+<button class="order-filter-btn" onclick="filterOrders('received')">📥 Received</button>
+<button class="order-filter-btn" onclick="filterOrders('pending')">⏳ Pending</button>
+<button class="order-filter-btn" onclick="filterOrders('completed')">✅ Completed</button>
 </div>
+
 <div id="logItems" class="loading">Loading...</div>
 </div>
-<!-- ✅ Complaints Section (Separate Folder) -->
+
 <div id="complaintsSection" style="display:none;">
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #ef4444;margin-bottom:25px;">
 <h4 style="color:#ef4444;margin:0 0 10px 0;">⚠️ Customer Complaints</h4>
-<p style="color:#94a3b8;font-size:13px;margin:0 0 15px 0;">All complaints are shown here (not on WhatsApp)</p>
+<p style="color:#94a3b8;font-size:13px;margin:0 0 15px 0;">Purpose: Track & resolve customer issues (not on WhatsApp)</p>
 <div id="complaintsList" class="loading">Loading complaints...</div>
 </div>
 </div>
@@ -314,7 +228,7 @@ footer a:hover { text-decoration: underline; }
 </div>
 </div>
 
-<!-- HISTORY MODAL - Phone Only Search -->
+<!-- HISTORY MODAL -->
 <div id="historyModal" class="modal">
 <div class="modal-content">
 <span class="modal-close" onclick="closeHistoryModal()">&times;</span>
@@ -329,8 +243,7 @@ footer a:hover { text-decoration: underline; }
 <div id="showStep" style="display:none;">
 <h3 style="text-align:center;color:#fbbf24;">📜 Service History</h3>
 <div id="custInfo" style="background:#0f172a;padding:12px;border-radius:8px;margin-bottom:15px;"></div>
-<div id="histList" style="max-height:300px;overflow-y:auto;"></div>
-<div class="action-row">
+<div id="histList" style="max-height:300px;overflow-y:auto;"></div><div class="action-row">
 <button class="btn-download-all" onclick="downloadCustomerHistoryPDF()">📥 Download All (PDF)</button>
 <button class="btn-back" onclick="resetHistoryView()">🔍 New Search</button>
 </div>
@@ -341,7 +254,8 @@ footer a:hover { text-decoration: underline; }
 <!-- COMPLAINT MODAL -->
 <div id="complaintModal" class="modal">
 <div class="modal-content">
-<span class="modal-close" onclick="closeComplaintModal()">&times;</span><h3 style="text-align:center;color:#ef4444;">⚠️ Submit Complaint</h3>
+<span class="modal-close" onclick="closeComplaintModal()">&times;</span>
+<h3 style="text-align:center;color:#ef4444;">⚠️ Submit Complaint</h3>
 <p style="text-align:center;color:#94a3b8;font-size:13px;">We'll resolve your issue within 24 hours</p>
 <input type="text" id="complaintName" class="form-input" placeholder="Your Name">
 <input type="tel" id="complaintPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
@@ -378,10 +292,8 @@ footer a:hover { text-decoration: underline; }
 <div id="installPrompt">
 <p>📱 Install DNHQ App!</p>
 <button onclick="installApp()">Install</button>
-<button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;">✕</button>
-</div>
+<button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;">✕</button></div>
 
-<!-- ✅ UPDATED FOOTER with Clickable Phone Numbers -->
 <footer>
 <div onclick="openAdmin()" style="cursor:pointer;font-size:11px;opacity:0.5;">Admin Access</div>
 <p style="margin:3px 0;font-size:12px;">© 2026 DNHQ Services</p>
@@ -391,12 +303,14 @@ footer a:hover { text-decoration: underline; }
 </p>
 <p style="margin:2px 0;font-size:11px;color:#64748b;">Call us for any query or complaint</p>
 </footer>
+
 <script>
 let cart = [];
 let currentCustData = null;
 let deferredPrompt = null;
 let pendingOrderData = null;
 let allComplaints = [];
+let allOrders = [];
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYZfisQoF6q-uiVa0br4ZhVcq3OwfdEEvmss1aDWmkk0Nc4G_hkJ52FbiZKFYyIs--qA/exec";
 const PHONE_1 = "+92 315 2458657";
 const PHONE_2 = "+92 312 8542993";
@@ -427,8 +341,7 @@ function formatDate(dateInput) {
         if (!date || isNaN(date.getTime())) {
             return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
         }
-        return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-    } catch (e) {
+        return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');    } catch (e) {
         console.error('Date Error:', e);
         return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     }
@@ -440,6 +353,7 @@ function getJsPDFConstructor() {
     if (window.jsPDF) return window.jsPDF;
     return null;
 }
+
 function getImageDataForPDF(imgElement) {
     return new Promise((resolve) => {
         try {
@@ -470,9 +384,13 @@ function playVid() {
 
 function toggleSvc(el, name, price) {
     const idx = cart.findIndex(c => c.name === name);
-    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); }
-    else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
-    updateCart();
+    if (idx > -1) { 
+        cart.splice(idx, 1); 
+        el.classList.remove('selected'); 
+    } else { 
+        cart.push({name, price: parseInt(price) || 0}); 
+        el.classList.add('selected'); 
+    }    updateCart();
 }
 
 function updateCart() {
@@ -482,13 +400,17 @@ function updateCart() {
 }
 
 function openAdmin() {
-    if(prompt("Enter Admin PIN:") === "dnhq123") {
+    const pin = prompt("Enter Admin PIN:");
+    if(pin === "dnhq123") {
         document.getElementById('adminView').style.display='block';
         loadLogs();
+    } else if(pin !== null) {
+        alert("Wrong PIN!");
     }
 }
 
-function switchAdminTab(tab) {    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+function switchAdminTab(tab) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
     if(tab === 'orders') {
         document.getElementById('ordersSection').style.display = 'block';
@@ -498,6 +420,82 @@ function switchAdminTab(tab) {    document.querySelectorAll('.admin-tab').forEac
         document.getElementById('ordersSection').style.display = 'none';
         document.getElementById('complaintsSection').style.display = 'block';
         loadComplaints();
+    }
+}
+
+// ✅ NEW: Filter Orders by Status
+function filterOrders(status) {
+    document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    const container = document.getElementById('logItems');
+    let filteredData = allOrders;
+    
+    if(status !== 'all') {
+        filteredData = allOrders.filter(d => d.order_status === status);
+    }
+    
+    if (filteredData.length === 0) { 
+        container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
+        return; 
+    }
+        container.innerHTML = filteredData.map((d, index) => {
+        const originalIndex = allOrders.indexOf(d);
+        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
+        const discountAmount = parseFloat(d.discount_amount) || 0;
+        const advance = parseFloat(d.advance) || 0;
+        const total = parseFloat(d.total) || (subtotal - discountAmount);
+        const balanceDue = parseFloat(d.balance_due) || (total - advance);
+        
+        let statusBadge = '';
+        if(d.order_status === 'received') statusBadge = '<span class="badge badge-received">📥 Received</span>';
+        else if(d.order_status === 'pending') statusBadge = '<span class="badge badge-pending">⏳ Pending</span>';
+        else if(d.order_status === 'completed') statusBadge = '<span class="badge badge-completed">✅ Completed</span>';
+        
+        let badges = statusBadge;
+        if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'}</span>`;
+        if (advance > 0) badges += `<span class="badge badge-advance">💰 Rs ${advance}</span>`;
+        
+        let statusButtons = '';
+        if(d.order_status !== 'received') {
+            statusButtons += `<button class="status-btn" onclick="updateOrderStatus(${originalIndex}, 'received')">📥 Received</button>`;
+        }
+        if(d.order_status !== 'pending') {
+            statusButtons += `<button class="status-btn pending" onclick="updateOrderStatus(${originalIndex}, 'pending')">⏳ Pending</button>`;
+        }
+        if(d.order_status !== 'completed') {
+            statusButtons += `<button class="status-btn completed" onclick="updateOrderStatus(${originalIndex}, 'completed')">✅ Complete</button>`;
+        }
+        
+        return `
+        <div class="log-card">
+            <button class="pdf-btn" data-index="${originalIndex}">📄 PDF</button>
+            <b>${d.client || "Unknown"}</b> ${badges}<br>
+            <small class="phone">📱 ${d.phone || "N/A"}</small><br>
+            <small>${(d.work || "").substring(0, 50)}</small><br>
+            ${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}
+            ${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAmount.toLocaleString()}</small><br>` : ''}
+            ${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}
+            <b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br>
+            <div style="margin-top:10px;">${statusButtons}</div>
+            <button class="del-btn" onclick="deleteEntry(${originalIndex + 2})">🗑️ Delete</button>
+        </div>`;
+    }).join('');
+    
+    container.querySelectorAll('.pdf-btn').forEach(btn => {
+        btn.onclick = function() {
+            const index = this.getAttribute('data-index');
+            const order = allOrders[parseInt(index)];
+            if (order) showConfirmDialog(order);
+        };
+    });}
+
+// ✅ NEW: Update Order Status
+async function updateOrderStatus(index, status) {
+    if(confirm(`Change order status to ${status}?`)) {
+        allOrders[index].order_status = status;
+        filterOrders(status);
+        alert(`✅ Order status updated to ${status}!`);
     }
 }
 
@@ -537,11 +535,11 @@ async function saveManualEntry() {
     const totalAfterDiscount = subtotal - discountAmount;
     const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
     const balanceDue = totalAfterDiscount - advance;
-    const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();    const payload = {
-        date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "),
-        subtotal: subtotal, discount_type: discountType, discount_value: discountValue,
+    const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();
+    const payload = {
+        date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "),        subtotal: subtotal, discount_type: discountType, discount_value: discountValue,
         discount_amount: discountAmount, discount_text: discountText, advance: advance,
-        total: totalAfterDiscount, balance_due: balanceDue, entry_type: 'order'
+        total: totalAfterDiscount, balance_due: balanceDue, entry_type: 'order', order_status: 'received'
     };
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
@@ -566,31 +564,9 @@ async function loadLogs() {
         const data = await res.json();
         if(data.error) throw new Error(data.error);
         if(data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
-        const validData = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint');
-        if (validData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; return; }
-        container.innerHTML = validData.map((d, index) => {
-            const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
-            const discountAmount = parseFloat(d.discount_amount) || 0;
-            const advance = parseFloat(d.advance) || 0;
-            const total = parseFloat(d.total) || (subtotal - discountAmount);
-            const balanceDue = parseFloat(d.balance_due) || (total - advance);
-            let badges = '';
-            if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'} OFF</span>`;
-            if (advance > 0) badges += `<span class="badge badge-advance">💰 Advance: Rs ${advance}</span>`;
-            return `<div class="log-card"><button class="pdf-btn" data-index="${index}">📄 PDF</button><b>${d.client || "Unknown"}</b> ${badges}<br><small class="phone">📱 ${d.phone || "N/A"}</small><br><small>${(d.work || "").substring(0, 50)}</small><br>${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAmount.toLocaleString()}</small><br>` : ''}${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}<b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br><button class="del-btn" onclick="deleteEntry(${index + 2})">🗑️ Delete</button></div>`;
-        }).join('');
-        container.querySelectorAll('.pdf-btn').forEach(btn => {
-            btn.onclick = function() {
-                try {
-                    const index = this.getAttribute('data-index');
-                    if (index === null || index === undefined) { alert('❌ Error: Order index not found!'); return; }
-                    const orderIndex = parseInt(index);
-                    const order = validData[orderIndex];
-                    if (!order) { alert('❌ Error: Order not found!'); return; }                    if (!order.client && !order.phone && !order.work) { alert('❌ Error: Invalid order data!'); return; }
-                    showConfirmDialog(order);
-                } catch(e) { console.error('PDF button error:', e); alert('❌ Error: ' + e.message); }
-            };
-        });
+        allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint');
+        if (allOrders.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; return; }
+        filterOrders('all');
     } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
@@ -610,8 +586,7 @@ async function loadComplaints() {
             return `
             <div class="complaint-card">
                 <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
-                    <div>
-                        <b style="color:white;font-size:15px;">${c.name || 'Unknown'}</b>
+                    <div>                        <b style="color:white;font-size:15px;">${c.name || 'Unknown'}</b>
                         <span class="badge badge-complaint">${c.type || 'General'}</span>
                     </div>
                     <small style="color:#94a3b8;">${complaintDate}</small>
@@ -635,6 +610,7 @@ function openComplaintModal() {
     document.getElementById('complaintError').style.display = 'none';
     document.getElementById('complaintSuccess').style.display = 'none';
 }
+
 function closeComplaintModal() {
     document.getElementById('complaintModal').style.display = 'none';
     document.getElementById('complaintName').value = '';
@@ -659,8 +635,7 @@ async function submitComplaint() {
         timestamp: Date.now().toString(), date: new Date().toISOString(),
         name: name.toUpperCase(), phone: phone, type: type, message: message,
         status: 'pending', entry_type: 'complaint'
-    };
-    try {
+    };    try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         success.textContent = '✅ Complaint submitted! We will contact you within 24 hours.';
         success.style.display = 'block';
@@ -684,7 +659,8 @@ function showConfirmDialog(order) {
     const total = parseFloat(order.total) || (subtotal - discountAmount);
     const balanceDue = parseFloat(order.balance_due) || (total - advance);
     let html = `<div class="confirm-row"><label>👤 Customer:</label><span class="value">${client}</span></div><div class="confirm-row"><label>📱 Phone:</label><span class="value">${phone}</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">${formatDate(orderDate)}</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label>📦 Subtotal:</label><span class="value">Rs ${subtotal.toLocaleString()}</span></div>`;
-    if (discountAmount > 0) html += `<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span class="value">-Rs ${discountAmount.toLocaleString()}</span></div>`;    html += `<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ${total.toLocaleString()}</span></div>`;
+    if (discountAmount > 0) html += `<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span class="value">-Rs ${discountAmount.toLocaleString()}</span></div>`;
+    html += `<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ${total.toLocaleString()}</span></div>`;
     if (advance > 0) html += `<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ${advance.toLocaleString()}</span></div>`;
     if (balanceDue > 0) html += `<div class="confirm-row balance"><label>⚠️ Balance Due:</label><span class="value">Rs ${balanceDue.toLocaleString()}</span></div>`;
     else html += `<div class="confirm-row balance paid"><label>✅ Payment Status:</label><span class="value">FULLY PAID</span></div>`;
@@ -708,8 +684,7 @@ async function deleteEntry(rowIdx) {
     if(confirm("Delete this entry?")) {
         try {
             await fetch(SCRIPT_URL + "?deleteRow=" + rowIdx, { method: 'GET' });
-            alert("✅ Deleted!");
-            loadLogs();
+            alert("✅ Deleted!");            loadLogs();
         } catch(e) { alert("Error: " + e.message); }
     }
 }
@@ -733,7 +708,8 @@ async function generatePDF(order) {
         doc.setFillColor(0, 0, 0);
         doc.rect(0, 0, 210, 45, 'F');
         try {
-            const imgData = await getImageDataForPDF(document.getElementById('brandLogo'));            if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
+            const imgData = await getImageDataForPDF(document.getElementById('brandLogo'));
+            if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
         } catch (e) { console.warn('Logo skipped:', e); }
         doc.setTextColor(251, 191, 36);
         doc.setFontSize(24);
@@ -757,8 +733,7 @@ async function generatePDF(order) {
                 let parts = item.split(" (Rs ");
                 return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
             }
-            return [item.trim(), "-"];
-        });
+            return [item.trim(), "-"];        });
         doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
         let finalY = doc.lastAutoTable.finalY + 10;
         const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
@@ -782,7 +757,8 @@ async function generatePDF(order) {
         doc.setFontSize(11);
         doc.setFont("helvetica", "bold");
         doc.setTextColor(0, 0, 0);
-        doc.text("Total:", 115, finalY);        doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' });
+        doc.text("Total:", 115, finalY);
+        doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' });
         finalY += 10;
         if (advance > 0) {
             doc.setDrawColor(59, 130, 246);
@@ -806,8 +782,7 @@ async function generatePDF(order) {
             doc.setTextColor(239, 68, 68);
             doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' });
         } else {
-            doc.setTextColor(16, 185, 129);
-            doc.text("FULLY PAID ✓", 115, finalY);
+            doc.setTextColor(16, 185, 129);            doc.text("FULLY PAID ✓", 115, finalY);
             doc.setTextColor(16, 185, 129);
             doc.text("Rs 0", 195, finalY, { align: 'right' });
         }
@@ -831,7 +806,7 @@ async function generatePDF(order) {
     }
 }
 
-// ✅ UPDATED: Place Order - Removed WhatsApp Redirectasync function placeOrder() {
+async function placeOrder() {
     if(cart.length === 0) return alert("Select at least one service!");
     const name = prompt("Customer Name:")?.trim();
     const phone = prompt("Phone (03XX-XXXXXXX):")?.trim();
@@ -851,19 +826,16 @@ async function generatePDF(order) {
         advance: 0, 
         total: total, 
         balance_due: total,
-        entry_type: 'order' 
+        entry_type: 'order',
+        order_status: 'received'
     };
     try {
         await fetch(SCRIPT_URL, { 
-            method: 'POST', 
-            mode: 'no-cors', 
+            method: 'POST',             mode: 'no-cors', 
             headers: {'Content-Type': 'application/json'}, 
             body: JSON.stringify(payload) 
         });
-        
-        // ✅ Show success message instead of WhatsApp
         alert("✅ Order placed successfully!\n\nCustomer: " + name + "\nPhone: " + phone + "\nTotal: Rs " + total + "\n\nOrder saved in admin panel.");
-        
         cart = [];
         updateCart();
         document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
@@ -880,7 +852,8 @@ function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredP
 function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
 
-function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
+function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
+function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
 function resetHistoryView() {
     document.getElementById('verifyStep').style.display = 'block';
     document.getElementById('showStep').style.display = 'none';
@@ -889,7 +862,6 @@ function resetHistoryView() {
     currentCustData = null;
 }
 
-// ✅ UPDATED: Phone Number Only Search with Customer Name
 async function fetchCustomerHistory() {
     const phone = document.getElementById('histPhone').value.trim();
     const err = document.getElementById('histError');
@@ -906,33 +878,14 @@ async function fetchCustomerHistory() {
         document.getElementById('verifyStep').style.display = 'none';
         document.getElementById('showStep').style.display = 'block';
         const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
-        
-        // ✅ Show first customer name from the records
         const firstName = data[0].client || 'Customer';
-        document.getElementById('custInfo').innerHTML = `
-            <b>👤 ${firstName}</b><br>
-            <b class="phone">📱 ${phone}</b><br>
-            <b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}
-        `;
-        
-        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => {
-            const discountAmt = parseFloat(o.discount_amount) || 0;
+        document.getElementById('custInfo').innerHTML = `<b>👤 ${firstName}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => {            const discountAmt = parseFloat(o.discount_amount) || 0;
             const adv = parseFloat(o.advance) || 0;
             const balDue = parseFloat(o.balance_due) || 0;
             const customerName = o.client || 'Customer';
-            
-            return `
-            <div class="history-item">
-                <b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b>
-                <small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${customerName}</small>
-                <small class="phone">📱 ${o.phone || phone}</small>
-                <small>🔧 ${(o.work || "").substring(0, 60)}</small>
-                ${discountAmt > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${discountAmt}</small>` : ''}
-                ${adv > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${adv}</small>` : ''}
-                <span class="amt">${balDue > 0 ? 'Balance: Rs ' + balDue.toLocaleString() : '✓ Paid'}</span>                <button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"'")}'>📄 Download</button>
-            </div>`;
+            return `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${customerName}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${discountAmt > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${discountAmt}</small>` : ''}${adv > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${adv}</small>` : ''}<span class="amt">${balDue > 0 ? 'Balance: Rs ' + balDue.toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"'")}'>📄 Download</button></div>`;
         }).join('');
-        
         document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => {
             btn.onclick = function() {
                 const order = JSON.parse(this.dataset.order.replace(/'/g, "'"));
@@ -976,9 +929,9 @@ function downloadCustomerHistoryPDF() {
 
 window.onclick = function(e) {
     if (e.target == document.getElementById('historyModal')) closeHistoryModal();
-    if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog();
-    if (e.target == document.getElementById('complaintModal')) closeComplaintModal();
+    if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog();    if (e.target == document.getElementById('complaintModal')) closeComplaintModal();
 }
+
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
 window.openAdmin = openAdmin;
@@ -998,6 +951,8 @@ window.contactCustomer = contactCustomer;
 window.openComplaintModal = openComplaintModal;
 window.closeComplaintModal = closeComplaintModal;
 window.submitComplaint = submitComplaint;
+window.filterOrders = filterOrders;
+window.updateOrderStatus = updateOrderStatus;
 
 document.addEventListener('DOMContentLoaded', () => {
     updateCart();
