@@ -135,8 +135,6 @@ footer a:hover { text-decoration: underline; }
 <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 7000)"><div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 7,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 9000)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 9,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4500)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,500</div></div>
-
-<!-- ✅ NEW AC SERVICES ADDED HERE -->
 <div class="svc-item" onclick="toggleSvc(this, '1 Ton AC Leakage Repair', 6000)"><div class="svc-meta"><b>1 Ton Leakage Repair</b><p>Leak detection & fixing</p></div><div class="svc-rate">Rs 6,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, '1.5 Ton AC Leakage Repair', 7000)"><div class="svc-meta"><b>1.5 Ton Leakage Repair</b><p>Leak detection & fixing</p></div><div class="svc-rate">Rs 7,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, '2 Ton Gas Charging', 12000)"><div class="svc-meta"><b>2 Ton Gas Charging</b><p>Heavy duty refill</p></div><div class="svc-rate">Rs 12,000</div></div>
@@ -209,7 +207,6 @@ footer a:hover { text-decoration: underline; }
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
 </div>
 
-<!-- ✅ UPDATED: Order Filters (Source + Status) -->
 <div class="order-filters">
 <button class="order-filter-btn active" onclick="filterOrders('all')">All Orders</button>
 <button class="order-filter-btn" onclick="filterOrders('website')">🌐 Website Orders</button>
@@ -321,15 +318,9 @@ footer a:hover { text-decoration: underline; }
 </footer>
 
 <script>
-let cart = [];
-let currentCustData = null;
-let deferredPrompt = null;
-let pendingOrderData = null;
-let allComplaints = [];
-let allOrders = [];
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLuMxmwDJ5jUJnWJvQ7yltqBbMCvxUW86SNYn8yasQyov8ECnTr1-RAc_Kuv9TWEPS/exec";
-const PHONE_1 = "+92 315 2458657";
-const PHONE_2 = "+92 312 8542993";
+let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPsHNNHJD6458YSWgx2FCZNnfXOPLdAHPbiL6Ku2IPniqC7YtYhAweJ2waqbTv1aDBgQ/exec";
+const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
 function toggleDiscountInput() {
     const type = document.getElementById('discount_type').value;
@@ -401,13 +392,8 @@ function playVid() {
 
 function toggleSvc(el, name, price) {
     const idx = cart.findIndex(c => c.name === name);
-    if (idx > -1) { 
-        cart.splice(idx, 1); 
-        el.classList.remove('selected'); 
-    } else { 
-        cart.push({name, price: parseInt(price) || 0}); 
-        el.classList.add('selected'); 
-    }
+    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
+    else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
     updateCart();
 }
 
@@ -422,9 +408,7 @@ function openAdmin() {
     if(pin === "dnhq123") {
         document.getElementById('adminView').style.display='block';
         loadLogs();
-    } else if(pin !== null) {
-        alert("Wrong PIN!");
-    }
+    } else if(pin !== null) { alert("Wrong PIN!"); }
 }
 
 function switchAdminTab(tab) {
@@ -441,21 +425,19 @@ function switchAdminTab(tab) {
     }
 }
 
-// ✅ UPDATED: Filter Orders by Source OR Status
+// ✅ UPDATED: Filter Orders with proper button highlighting
 function filterOrders(type) {
-    document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
-    if(event && event.target) event.target.classList.add('active');
+    document.querySelectorAll('.order-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if(btn.getAttribute('onclick').includes(`'${type}'`)) btn.classList.add('active');
+    });
     
     const container = document.getElementById('logItems');
     let filteredData = allOrders;
     
-    if(type === 'website') {
-        filteredData = allOrders.filter(d => d.order_source === 'website');
-    } else if(type === 'manual') {
-        filteredData = allOrders.filter(d => !d.order_source || d.order_source === 'manual');
-    } else if(type !== 'all') {
-        filteredData = allOrders.filter(d => d.order_status === type);
-    }
+    if(type === 'website') filteredData = allOrders.filter(d => d.order_source === 'website');
+    else if(type === 'manual') filteredData = allOrders.filter(d => !d.order_source || d.order_source === 'manual');
+    else if(type !== 'all') filteredData = allOrders.filter(d => d.order_status === type);
     
     if (filteredData.length === 0) { 
         container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
@@ -471,10 +453,9 @@ function filterOrders(type) {
         const balanceDue = parseFloat(d.balance_due) || (total - advance);
         
         let sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website">🌐 Website</span>' : '<span class="badge badge-manual">📝 Manual</span>';
-        let statusBadge = '';
-        if(d.order_status === 'received') statusBadge = '<span class="badge badge-received">📥 Received</span>';
-        else if(d.order_status === 'pending') statusBadge = '<span class="badge badge-pending">⏳ Pending</span>';
-        else if(d.order_status === 'completed') statusBadge = '<span class="badge badge-completed">✅ Completed</span>';
+        let statusBadge = d.order_status === 'received' ? '<span class="badge badge-received">📥 Received</span>' : 
+                       d.order_status === 'pending' ? '<span class="badge badge-pending">⏳ Pending</span>' : 
+                       '<span class="badge badge-completed">✅ Completed</span>';
         
         let badges = sourceBadge + ' ' + statusBadge;
         if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'}</span>`;
@@ -485,19 +466,7 @@ function filterOrders(type) {
         if(d.order_status !== 'pending') statusButtons += `<button class="status-btn pending" onclick="updateOrderStatus(${originalIndex}, 'pending')">⏳</button>`;
         if(d.order_status !== 'completed') statusButtons += `<button class="status-btn completed" onclick="updateOrderStatus(${originalIndex}, 'completed')">✅</button>`;
         
-        return `
-        <div class="log-card">
-            <button class="pdf-btn" data-index="${originalIndex}">📄 PDF</button>
-            <b>${d.client || "Unknown"}</b> ${badges}<br>
-            <small class="phone">📱 ${d.phone || "N/A"}</small><br>
-            <small>${(d.work || "").substring(0, 50)}</small><br>
-            ${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}
-            ${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAmount.toLocaleString()}</small><br>` : ''}
-            ${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}
-            <b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br>
-            <div style="margin-top:10px;">${statusButtons}</div>
-            <button class="del-btn" onclick="deleteEntry(${originalIndex + 2})">🗑️ Delete</button>
-        </div>`;
+        return `<div class="log-card"><button class="pdf-btn" data-index="${originalIndex}">📄 PDF</button><b>${d.client || "Unknown"}</b> ${badges}<br><small class="phone">📱 ${d.phone || "N/A"}</small><br><small>${(d.work || "").substring(0, 50)}</small><br>${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAmount.toLocaleString()}</small><br>` : ''}${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}<b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br><div style="margin-top:10px;">${statusButtons}</div><button class="del-btn" onclick="deleteEntry(${originalIndex + 2})">🗑️ Delete</button></div>`;
     }).join('');
     
     container.querySelectorAll('.pdf-btn').forEach(btn => {
@@ -509,17 +478,17 @@ function filterOrders(type) {
     });
 }
 
-// ✅ UPDATED: Update Order Status with Google Sheets Save
+// ✅ UPDATED: Update Order Status with Google Sheets
 async function updateOrderStatus(index, status) {
     if(confirm(`Change order status to ${status}?`)) {
         try {
             const order = allOrders[index];
-            order.order_status = status;
-            
             const payload = { ...order, order_status: status, update_status: true };
             await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
             
-            filterOrders(status);
+            // Update local array
+            allOrders[index].order_status = status;
+            filterOrders('all');
             alert(`✅ Order status updated to ${status}!`);
         } catch(e) { alert("Error: " + e.message); }
     }
@@ -532,13 +501,16 @@ function addNewManualRow() {
     document.getElementById('manual_works_container').appendChild(div);
 }
 
+// ✅ UPDATED: Save Manual Entry with proper refresh
 async function saveManualEntry() {
     const name = document.getElementById('man_name').value.trim();
     const phone = document.getElementById('man_phone').value.trim();
     const dateInput = document.getElementById('man_date').value;
     const workInputs = document.querySelectorAll('.m-work');
     const priceInputs = document.querySelectorAll('.m-price');
+    
     if(!name || !phone) return alert("Please enter Name AND Phone!");
+    
     let allWork = [], subtotal = 0;
     workInputs.forEach((input, i) => {
         if(input.value.trim() !== "") {
@@ -547,10 +519,13 @@ async function saveManualEntry() {
             subtotal += p;
         }
     });
+    
     if(allWork.length === 0) return alert("Add at least one service!");
+    
     const discountType = document.getElementById('discount_type').value;
     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
     let discountAmount = 0, discountText = "None";
+    
     if (discountType === 'percent' && discountValue > 0) {
         discountAmount = (subtotal * discountValue) / 100;
         discountText = discountValue + "%";
@@ -558,10 +533,12 @@ async function saveManualEntry() {
         discountAmount = discountValue;
         discountText = "Rs " + discountValue;
     }
+    
     const totalAfterDiscount = subtotal - discountAmount;
     const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
     const balanceDue = totalAfterDiscount - advance;
     const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();
+    
     const payload = {
         date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "),
         subtotal: subtotal, discount_type: discountType, discount_value: discountValue,
@@ -569,10 +546,15 @@ async function saveManualEntry() {
         total: totalAfterDiscount, balance_due: balanceDue, entry_type: 'order', 
         order_status: 'received', order_source: 'manual'
     };
+    
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         alert("✅ Order saved successfully!");
-        loadLogs();
+        
+        // ✅ Force refresh with delay for Google Sheets to update
+        setTimeout(() => { loadLogs(); }, 1500);
+        
+        // Reset form
         document.getElementById('man_name').value = '';
         document.getElementById('man_phone').value = '';
         document.getElementById('man_date').value = '';
@@ -581,28 +563,49 @@ async function saveManualEntry() {
         document.getElementById('discount_value').style.display = 'none';
         document.getElementById('advance_payment').value = '';
         document.getElementById('manual_works_container').innerHTML = '<div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;"></div>';
+        
     } catch(e) { alert("Error: " + e.message); }
 }
 
+// ✅ UPDATED: Load Logs with cache-busting & default filter reset
 async function loadLogs() {
     const container = document.getElementById('logItems');
     container.innerHTML = '<div class="loading">Fetching...</div>';
+    
     try {
-        const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
+        // Add cache-busting parameters
+        const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random());
         const data = await res.json();
-        if(data.error) throw new Error(data.error);
-        if(data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
         
-        allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint')
+        if(data.error) throw new Error(data.error);
+        if(!data || data.length === 0) { 
+            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
+            return; 
+        }
+        
+        // Process orders with defaults
+        allOrders = data
+            .filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint')
             .map(d => ({
                 ...d,
                 order_status: d.order_status || 'received',
                 order_source: d.order_source || 'manual'
             }));
             
-        if (allOrders.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; return; }
+        if (allOrders.length === 0) { 
+            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; 
+            return; 
+        }
+        
+        // Reset filter to 'all' and apply
+        document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.order-filter-btn[onclick="filterOrders(\'all\')"]').classList.add('active');
         filterOrders('all');
-    } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
+        
+    } catch(e) { 
+        console.error('Load Logs Error:', e);
+        container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; 
+    }
 }
 
 async function loadComplaints() {
@@ -616,24 +619,8 @@ async function loadComplaints() {
         allComplaints = complaints;
         document.getElementById('complaintCount').textContent = complaints.length;
         if(complaints.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No complaints yet.</p>'; return; }
-        container.innerHTML = complaints.slice().reverse().map((c, index) => {
-            const complaintDate = c.date ? formatDate(c.date) : 'N/A';
-            return `
-            <div class="complaint-card">
-                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
-                    <div>
-                        <b style="color:white;font-size:15px;">${c.name || 'Unknown'}</b>
-                        <span class="badge badge-complaint">${c.type || 'General'}</span>
-                    </div>
-                    <small style="color:#94a3b8;">${complaintDate}</small>
-                </div>
-                <small class="phone">📱 ${c.phone || 'N/A'}</small>
-                <p style="color:#f1f5f9;margin:10px 0;font-size:14px;">${c.message || 'No message'}</p>
-                <div style="display:flex;gap:10px;margin-top:10px;">
-                    <button onclick="contactCustomer('${c.phone}')" style="background:#3b82f6;color:white;border:none;padding:8px 15px;border-radius:6px;font-weight:bold;cursor:pointer;">📞 Contact</button>
-                </div>
-            </div>`;
-        }).join('');
+        container.innerHTML = complaints.slice().reverse().map((c, index) => `
+            <div class="complaint-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;"><div><b style="color:white;font-size:15px;">${c.name || 'Unknown'}</b><span class="badge badge-complaint">${c.type || 'General'}</span></div><small style="color:#94a3b8;">${c.date ? formatDate(c.date) : 'N/A'}</small></div><small class="phone">📱 ${c.phone || 'N/A'}</small><p style="color:#f1f5f9;margin:10px 0;font-size:14px;">${c.message || 'No message'}</p><div style="display:flex;gap:10px;margin-top:10px;"><button onclick="contactCustomer('${c.phone}')" style="background:#3b82f6;color:white;border:none;padding:8px 15px;border-radius:6px;font-weight:bold;cursor:pointer;">📞 Contact</button></div></div>`).join('');
     } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
@@ -669,12 +656,14 @@ function showConfirmDialog(order) {
     const advance = parseFloat(order.advance) || 0;
     const total = parseFloat(order.total) || (subtotal - discountAmount);
     const balanceDue = parseFloat(order.balance_due) || (total - advance);
+    
     let html = `<div class="confirm-row"><label>👤 Customer:</label><span class="value">${client}</span></div><div class="confirm-row"><label>📱 Phone:</label><span class="value">${phone}</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">${formatDate(orderDate)}</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label>📦 Subtotal:</label><span class="value">Rs ${subtotal.toLocaleString()}</span></div>`;
     if (discountAmount > 0) html += `<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span class="value">-Rs ${discountAmount.toLocaleString()}</span></div>`;
     html += `<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ${total.toLocaleString()}</span></div>`;
     if (advance > 0) html += `<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ${advance.toLocaleString()}</span></div>`;
     if (balanceDue > 0) html += `<div class="confirm-row balance"><label>⚠️ Balance Due:</label><span class="value">Rs ${balanceDue.toLocaleString()}</span></div>`;
     else html += `<div class="confirm-row balance paid"><label>✅ Payment Status:</label><span class="value">FULLY PAID</span></div>`;
+    
     document.getElementById('confirmBody').innerHTML = html;
     document.getElementById('confirmDialog').style.display = 'block';
 }
@@ -689,18 +678,19 @@ function confirmAndGeneratePDF() {
 
 async function deleteEntry(rowIdx) {
     if(confirm("Delete this entry?")) {
-        try { await fetch(SCRIPT_URL + "?deleteRow=" + rowIdx, { method: 'GET' }); alert("✅ Deleted!"); loadLogs(); } catch(e) { alert("Error: " + e.message); }
+        try { await fetch(SCRIPT_URL + "?deleteRow=" + rowIdx, { method: 'GET' }); alert("✅ Deleted!"); loadLogs(); } 
+        catch(e) { alert("Error: " + e.message); }
     }
 }
 
 async function generatePDF(order) {
-    console.log('📄 Generating PDF for order:', order);
     if (!order) { alert('❌ Error: Order data is missing!'); return; }
     if (typeof order !== 'object') { alert('❌ Error: Order is not a valid object!'); return; }
     const hasClient = order.client && String(order.client).trim() !== '';
     const hasPhone = order.phone && String(order.phone).trim() !== '';
     const hasWork = order.work && String(order.work).trim() !== '';
     if (!hasClient && !hasPhone && !hasWork) { alert('❌ Error: Order has no valid data!'); return; }
+    
     try {
         const JsPDFConstructor = getJsPDFConstructor();
         if (!JsPDFConstructor) { alert('❌ jsPDF library not loaded!'); return; }
@@ -709,36 +699,47 @@ async function generatePDF(order) {
         const phone = order.phone ? String(order.phone) : 'N/A';
         const orderDate = order.date || order.timestamp || new Date().toISOString();
         const work = order.work ? String(order.work) : 'No work specified';
+        
         doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 45, 'F');
         try { const imgData = await getImageDataForPDF(document.getElementById('brandLogo')); if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30); } catch (e) { console.warn('Logo skipped:', e); }
+        
         doc.setTextColor(251, 191, 36); doc.setFontSize(24); doc.setFont("helvetica", "bold"); doc.text("DNHQ SERVICES", 55, 24);
         doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(255, 255, 255); doc.text("Professional Electrical & AC Maintenance", 55, 31);
         doc.setTextColor(0, 0, 0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
         doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("INVOICE", 105, 72, { align: "center" });
+        
         let items = work.split(", ");
         let body = items.map(item => { if (item.includes("(Rs ")) { let parts = item.split(" (Rs "); return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()]; } return [item.trim(), "-"]; });
+        
         doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
+        
         let finalY = doc.lastAutoTable.finalY + 10;
         const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
         const discount = parseFloat(order.discount_amount) || 0;
         const advance = parseFloat(order.advance) || 0;
         const totalAfterDiscount = subtotal - discount;
         const balanceDue = totalAfterDiscount - advance;
+        
         doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150); doc.text("Subtotal:", 115, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7;
         if (discount > 0) { doc.setTextColor(16, 185, 129); doc.text(order.discount_text + " Discount:", 115, finalY); doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7; doc.setTextColor(150, 150, 150); }
         doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0); doc.text("Total:", 115, finalY); doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10;
         if (advance > 0) { doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(10); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold"); doc.text("Advance Received:", 115, finalY); doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10; }
+        
         doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-        if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.setTextColor(239, 68, 68); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
-        else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.setTextColor(16, 185, 129); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
+        if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
+        else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
+        
         const footerY = 280; doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY); doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
         doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" }); doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" }); doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
-        const cname = client.replace(/[^a-z0-9]/gi, '_'); const dateStr = formatDate(orderDate).replace(/[^a-z0-9]/gi, '_'); doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
+        
+        const cname = client.replace(/[^a-z0-9]/gi, '_');
+        const dateStr = formatDate(orderDate).replace(/[^a-z0-9]/gi, '_');
+        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
         console.log('✅ PDF Generated Successfully');
     } catch (error) { console.error('❌ PDF Error:', error); alert('❌ PDF Generation Failed: ' + error.message); }
 }
 
-// ✅ UPDATED: placeOrder with website source flag
+// ✅ UPDATED: Place Order with website source flag
 async function placeOrder() {
     if(cart.length === 0) return alert("Select at least one service!");
     const name = prompt("Customer Name:")?.trim();
@@ -746,12 +747,14 @@ async function placeOrder() {
     if(!name || !phone) { alert("Name and Phone required!"); return; }
     const total = cart.reduce((a, b) => a + (b.price || 0), 0);
     const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
+    
     const payload = { 
         date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, 
         subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', 
         advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received',
-        order_source: 'website' // ✅ NEW FLAG
+        order_source: 'website'
     };
+    
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         alert("✅ Order placed successfully!\n\nCustomer: " + name + "\nPhone: " + phone + "\nTotal: Rs " + total + "\n\nOrder saved in admin panel.");
@@ -773,16 +776,13 @@ async function fetchCustomerHistory() {
     if (!phone) { err.textContent = "Enter phone number"; err.style.display = 'block'; return; }
     err.style.display = 'none'; document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
     try {
-        const url = `${SCRIPT_URL}?getHistory=true&phone=${encodeURIComponent(phone)}`; const res = await fetch(url); const data = await res.json();
+        const url = `${SCRIPT_URL}?getHistory=true&phone=${encodeURIComponent(phone)}`;
+        const res = await fetch(url); const data = await res.json();
         if (data.error) throw new Error(data.error); if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
         currentCustData = data; document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block';
         const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
-        const firstName = data[0].client || 'Customer';
-        document.getElementById('custInfo').innerHTML = `<b>👤 ${firstName}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
-        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => {
-            const discountAmt = parseFloat(o.discount_amount) || 0; const adv = parseFloat(o.advance) || 0; const balDue = parseFloat(o.balance_due) || 0; const customerName = o.client || 'Customer';
-            return `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${customerName}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${discountAmt > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${discountAmt}</small>` : ''}${adv > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${adv}</small>` : ''}<span class="amt">${balDue > 0 ? 'Balance: Rs ' + balDue.toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 Download</button></div>`;
-        }).join('');
+        document.getElementById('custInfo').innerHTML = `<b>👤 ${data[0].client || 'Customer'}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${o.client || 'Customer'}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${parseFloat(o.discount_amount) > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${parseFloat(o.discount_amount).toLocaleString()}</small>` : ''}${parseFloat(o.advance) > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${parseFloat(o.advance).toLocaleString()}</small>` : ''}<span class="amt">${parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 Download</button></div>`).join('');
         document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => { btn.onclick = function() { const order = JSON.parse(this.dataset.order.replace(/&apos;/g, "'")); showConfirmDialog(order); }; });
     } catch (e) { err.textContent = "Error"; err.style.display = 'block'; }
 }
@@ -795,7 +795,7 @@ function downloadCustomerHistoryPDF() {
     getImageDataForPDF(document.getElementById('brandLogo')).then(imgData => {
         if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
         doc.setTextColor(251,191,36); doc.setFontSize(20); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 55, 22);
-        doc.setFontSize(9); doc.text("SERVICE HISTORY", 55, 28); doc.setTextColor(0,0,0); doc.setFontSize(10); doc.text("Phone: " + cust.phone, 15, 52);
+        doc.setTextColor(0,0,0); doc.setFontSize(9); doc.text("SERVICE HISTORY", 55, 28); doc.setTextColor(0,0,0); doc.setFontSize(10); doc.text("Phone: " + cust.phone, 15, 52);
         const rows = currentCustData.map(o => [formatDate(o.date || o.timestamp), (o.work || "").substring(0, 30), "Rs " + (parseFloat(o.total)||0).toLocaleString()]);
         doc.autoTable({ startY: 64, head: [['DATE','SERVICE','AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0] }, styles: { fontSize: 8 } });
         let y = doc.lastAutoTable.finalY + 12; doc.setDrawColor(251,191,36); doc.line(110, y-4, 195, y-4); doc.setFontSize(12); doc.text("GRAND TOTAL:", 115, y); doc.text("Rs " + grandTotal.toLocaleString(), 195, y, {align:'right'});
@@ -805,16 +805,26 @@ function downloadCustomerHistoryPDF() {
 
 window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog(); if (e.target == document.getElementById('complaintModal')) closeComplaintModal(); }
 
+// Export functions to window
 window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.openHistoryModal = openHistoryModal; window.triggerAppInstall = triggerAppInstall;
 window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
 window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF;
 window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal;
 window.closeComplaintModal = closeComplaintModal; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.updateOrderStatus = updateOrderStatus;
 
+// Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
     updateCart();
     document.querySelectorAll('.pdf-btn, .pdf-sm').forEach(btn => {
-        btn.onclick = function() { try { const orderData = this.dataset.order; if (!orderData) { alert('❌ Error: Order data not found!'); return; } const order = JSON.parse(orderData.replace(/&apos;/g, "'")); if (!order || (!order.client && !order.phone && !order.work)) { alert('❌ Error: Invalid order data!'); return; } showConfirmDialog(order); } catch(e) { console.error('PDF button error:', e); alert('❌ Error: ' + e.message); } };
+        btn.onclick = function() {
+            try {
+                const orderData = this.dataset.order;
+                if (!orderData) { alert('❌ Error: Order data not found!'); return; }
+                const order = JSON.parse(orderData.replace(/&apos;/g, "'"));
+                if (!order || (!order.client && !order.phone && !order.work)) { alert('❌ Error: Invalid order data!'); return; }
+                showConfirmDialog(order);
+            } catch(e) { console.error('PDF button error:', e); alert('❌ Error: ' + e.message); }
+        };
     });
 });
 </script>
