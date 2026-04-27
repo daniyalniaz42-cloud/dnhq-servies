@@ -214,6 +214,7 @@ footer a:hover { text-decoration: underline; }
 <button class="order-filter-btn" onclick="filterOrders('received')">📥 Received</button>
 <button class="order-filter-btn" onclick="filterOrders('pending')">⏳ Pending</button>
 <button class="order-filter-btn" onclick="filterOrders('completed')">✅ Completed</button>
+<button class="order-filter-btn" onclick="refreshOrders()" style="background:#3b82f6;color:white;border:none;">🔄 Refresh</button>
 </div>
 
 <div id="logItems" class="loading">Loading...</div>
@@ -319,7 +320,11 @@ footer a:hover { text-decoration: underline; }
 
 <script>
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPsHNNHJD6458YSWgx2FCZNnfXOPLdAHPbiL6Ku2IPniqC7YtYhAweJ2waqbTv1aDBgQ/exec";
+
+// ✅ ADMIN WHATSAPP NUMBER (Order yahan jayega - customer ko nahi pata chalega)
+const ADMIN_WHATSAPP = "923152458657";  // ✅ Aapka number
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLuMxmwDJ5jUJnWJvQ7yltqBbMCvxUW86SNYn8yasQyov8ECnTr1-RAc_Kuv9TWEPS/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
 function toggleDiscountInput() {
@@ -425,7 +430,7 @@ function switchAdminTab(tab) {
     }
 }
 
-// ✅ UPDATED: Filter Orders with proper button highlighting
+// ✅ UPDATED: Filter Orders - Fixed Website/Manual Separation
 function filterOrders(type) {
     document.querySelectorAll('.order-filter-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -435,9 +440,29 @@ function filterOrders(type) {
     const container = document.getElementById('logItems');
     let filteredData = allOrders;
     
-    if(type === 'website') filteredData = allOrders.filter(d => d.order_source === 'website');
-    else if(type === 'manual') filteredData = allOrders.filter(d => !d.order_source || d.order_source === 'manual');
-    else if(type !== 'all') filteredData = allOrders.filter(d => d.order_status === type);
+    console.log('🔍 Filtering orders:', type);
+    console.log('📊 Total orders:', allOrders.length);
+    
+    if(type === 'website') {
+        filteredData = allOrders.filter(d => {
+            const isWebsite = d.order_source === 'website';
+            console.log('Website check:', {client: d.client, source: d.order_source, isWebsite: isWebsite});
+            return isWebsite;
+        });
+        console.log('🌐 Website orders found:', filteredData.length);
+    }
+    else if(type === 'manual') {
+        filteredData = allOrders.filter(d => {
+            const isManual = !d.order_source || d.order_source === 'manual';
+            console.log('Manual check:', {client: d.client, source: d.order_source, isManual: isManual});
+            return isManual;
+        });
+        console.log('📝 Manual orders found:', filteredData.length);
+    }
+    else if(type !== 'all') {
+        filteredData = allOrders.filter(d => d.order_status === type);
+        console.log('📋 Status orders found:', filteredData.length);
+    }
     
     if (filteredData.length === 0) { 
         container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
@@ -452,10 +477,18 @@ function filterOrders(type) {
         const total = parseFloat(d.total) || (subtotal - discountAmount);
         const balanceDue = parseFloat(d.balance_due) || (total - advance);
         
-        let sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website">🌐 Website</span>' : '<span class="badge badge-manual">📝 Manual</span>';
-        let statusBadge = d.order_status === 'received' ? '<span class="badge badge-received">📥 Received</span>' : 
-                       d.order_status === 'pending' ? '<span class="badge badge-pending">⏳ Pending</span>' : 
-                       '<span class="badge badge-completed">✅ Completed</span>';
+        // ✅ Fixed: Proper source detection
+        let sourceBadge = '';
+        if(d.order_source === 'website') {
+            sourceBadge = '<span class="badge badge-website">🌐 Website</span>';
+        } else {
+            sourceBadge = '<span class="badge badge-manual">📝 Manual</span>';
+        }
+        
+        let statusBadge = '';
+        if(d.order_status === 'received') statusBadge = '<span class="badge badge-received">📥 Received</span>';
+        else if(d.order_status === 'pending') statusBadge = '<span class="badge badge-pending">⏳ Pending</span>';
+        else if(d.order_status === 'completed') statusBadge = '<span class="badge badge-completed">✅ Completed</span>';
         
         let badges = sourceBadge + ' ' + statusBadge;
         if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'}</span>`;
@@ -476,6 +509,13 @@ function filterOrders(type) {
             if (order) showConfirmDialog(order);
         };
     });
+}
+
+// ✅ Manual Refresh Function
+function refreshOrders() {
+    console.log('🔄 Manual refresh triggered');
+    loadLogs();
+    alert('🔄 Refreshing orders...');
 }
 
 // ✅ UPDATED: Update Order Status with Google Sheets
@@ -501,7 +541,7 @@ function addNewManualRow() {
     document.getElementById('manual_works_container').appendChild(div);
 }
 
-// ✅ UPDATED: Save Manual Entry with proper refresh
+// ✅ UPDATED: Save Manual Entry - order_source: 'manual'
 async function saveManualEntry() {
     const name = document.getElementById('man_name').value.trim();
     const phone = document.getElementById('man_phone').value.trim();
@@ -543,16 +583,23 @@ async function saveManualEntry() {
         date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "),
         subtotal: subtotal, discount_type: discountType, discount_value: discountValue,
         discount_amount: discountAmount, discount_text: discountText, advance: advance,
-        total: totalAfterDiscount, balance_due: balanceDue, entry_type: 'order', 
-        order_status: 'received', order_source: 'manual'
+        total: totalAfterDiscount, balance_due: balanceDue, 
+        entry_type: 'order', 
+        order_status: 'received', 
+        order_source: 'manual'  // ✅ MANUAL BILL
     };
+    
+    console.log('📤 Saving manual order:', payload);
     
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         alert("✅ Order saved successfully!");
         
-        // ✅ Force refresh with delay for Google Sheets to update
-        setTimeout(() => { loadLogs(); }, 1500);
+        // Force refresh with delay
+        setTimeout(() => { 
+            console.log('🔄 Refreshing logs...');
+            loadLogs(); 
+        }, 2000);
         
         // Reset form
         document.getElementById('man_name').value = '';
@@ -567,33 +614,57 @@ async function saveManualEntry() {
     } catch(e) { alert("Error: " + e.message); }
 }
 
-// ✅ UPDATED: Load Logs with cache-busting & default filter reset
+// ✅ UPDATED: Load Logs with Debug Logging
 async function loadLogs() {
     const container = document.getElementById('logItems');
     container.innerHTML = '<div class="loading">Fetching...</div>';
     
+    console.log('🔄 Loading logs from:', SCRIPT_URL);
+    
     try {
-        // Add cache-busting parameters
         const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random());
         const data = await res.json();
         
-        if(data.error) throw new Error(data.error);
+        console.log('📊 Raw data received:', data);
+        console.log('📊 Data length:', data.length);
+        
+        if(data.error) {
+            console.error('❌ API Error:', data.error);
+            throw new Error(data.error);
+        }
+        
         if(!data || data.length === 0) { 
             container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
+            console.log('⚠️ No data in sheet');
             return; 
         }
         
-        // Process orders with defaults
+        // Process orders with defaults - ✅ PREVIOUS DATA SAFE
         allOrders = data
-            .filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint')
+            .filter(d => {
+                const isValid = d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint';
+                console.log('📋 Order check:', {
+                    client: d.client,
+                    phone: d.phone,
+                    work: d.work,
+                    entry_type: d.entry_type,
+                    order_source: d.order_source,
+                    isValid: isValid
+                });
+                return isValid;
+            })
             .map(d => ({
                 ...d,
                 order_status: d.order_status || 'received',
                 order_source: d.order_source || 'manual'
             }));
             
+        console.log('✅ Processed orders:', allOrders.length);
+        console.log('📦 First order:', allOrders[0]);
+            
         if (allOrders.length === 0) { 
-            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; 
+            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found. Check entry_type column!</p>'; 
+            console.log('⚠️ All orders filtered out - check entry_type column');
             return; 
         }
         
@@ -603,8 +674,8 @@ async function loadLogs() {
         filterOrders('all');
         
     } catch(e) { 
-        console.error('Load Logs Error:', e);
-        container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; 
+        console.error('❌ Load Logs Error:', e);
+        container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}<br><small>Check console (F12) for details</small></p>`; 
     }
 }
 
@@ -739,7 +810,7 @@ async function generatePDF(order) {
     } catch (error) { console.error('❌ PDF Error:', error); alert('❌ PDF Generation Failed: ' + error.message); }
 }
 
-// ✅ UPDATED: Place Order with website source flag
+// ✅ FIXED: Website Order - Goes to ADMIN WhatsApp ONLY (Customer doesn't know)
 async function placeOrder() {
     if(cart.length === 0) return alert("Select at least one service!");
     const name = prompt("Customer Name:")?.trim();
@@ -749,17 +820,57 @@ async function placeOrder() {
     const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
     
     const payload = { 
-        date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, 
-        subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', 
-        advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received',
-        order_source: 'website'
+        date: new Date().toISOString(), 
+        client: name.toUpperCase(), 
+        phone: phone, 
+        work: workFormatted, 
+        subtotal: total, 
+        discount_type: 'none', 
+        discount_value: 0, 
+        discount_amount: 0, 
+        discount_text: 'None', 
+        advance: 0, 
+        total: total, 
+        balance_due: total, 
+        entry_type: 'order', 
+        order_status: 'received',
+        order_source: 'website'  // ✅ WEBSITE ORDER
     };
     
+    console.log('📤 Placing website order:', payload);
+    
     try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        alert("✅ Order placed successfully!\n\nCustomer: " + name + "\nPhone: " + phone + "\nTotal: Rs " + total + "\n\nOrder saved in admin panel.");
-        cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
-    } catch(e) { alert("Error: " + e.message); }
+        // ✅ Step 1: Save to Google Sheets (admin panel mein show hoga)
+        await fetch(SCRIPT_URL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify(payload) 
+        });
+        
+        // ✅ Step 2: Send to ADMIN WhatsApp ONLY (customer ko nahi pata chalega)
+        const waText = `*🔔 NEW WEBSITE ORDER*%0A%0A` +
+                       `*👤 Customer:* ${name}%0A` +
+                       `*📱 Phone:* ${phone}%0A` +
+                       `*🛠️ Services:* ${workFormatted}%0A` +
+                       `*💰 Total:* Rs ${total}%0A%0A` +
+                       `*📍 Source:* Website Order`;
+        
+        // ✅ Open admin WhatsApp in background (new tab)
+        window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${waText}`, '_blank');
+        
+        // ✅ Step 3: Customer ko sirf success message dikhega (WhatsApp ka pata nahi chalega)
+        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
+        
+        // Clear cart
+        cart = []; 
+        updateCart(); 
+        document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
+        
+    } catch(e) { 
+        console.error('❌ Place Order Error:', e);
+        alert("Error: " + e.message); 
+    }
 }
 
 function triggerAppInstall() { if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; } else { alert("📲 Tap Share → Add to Home Screen"); } }
@@ -811,6 +922,7 @@ window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetch
 window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF;
 window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal;
 window.closeComplaintModal = closeComplaintModal; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.updateOrderStatus = updateOrderStatus;
+window.refreshOrders = refreshOrders;
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
