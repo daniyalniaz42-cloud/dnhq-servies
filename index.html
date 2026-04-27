@@ -200,7 +200,7 @@ footer a:hover { text-decoration: underline; }
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
 </div>
 
-<!-- ✅ SIMPLIFIED: Only 2 Filter Buttons -->
+<!-- ✅ ONLY 2 FILTER BUTTONS -->
 <div class="order-filters">
 <button class="order-filter-btn active" onclick="filterOrders('website')">🌐 Website Orders</button>
 <button class="order-filter-btn" onclick="filterOrders('manual')">📝 Manual Orders</button>
@@ -311,7 +311,7 @@ footer a:hover { text-decoration: underline; }
 <script>
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
 const ADMIN_WHATSAPP = "923152458657";
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLuMxmwDJ5jUJnWJvQ7yltqBbMCvxUW86SNYn8yasQyov8ECnTr1-RAc_Kuv9TWEPS/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPsHNNHJD6458YSWgx2FCZNnfXOPLdAHPbiL6Ku2IPniqC7YtYhAweJ2waqbTv1aDBgQ/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
 function toggleDiscountInput() {
@@ -415,7 +415,7 @@ function switchAdminTab(tab) {
     }
 }
 
-// ✅ SIMPLIFIED: Only 2 Filters (Website vs Manual)
+// ✅ FIXED: Proper Website vs Manual Filtering
 function filterOrders(type) {
     document.querySelectorAll('.order-filter-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -426,14 +426,25 @@ function filterOrders(type) {
     let filteredData = allOrders;
     
     console.log('🔍 Filtering:', type);
+    console.log('📊 Total orders:', allOrders.length);
     
     if(type === 'website') {
-        filteredData = allOrders.filter(d => d.order_source === 'website');
-        console.log('🌐 Website orders:', filteredData.length);
+        // ✅ ONLY website orders
+        filteredData = allOrders.filter(d => {
+            const isWebsite = d.order_source === 'website';
+            console.log('Website check:', {client: d.client, source: d.order_source, isWebsite: isWebsite});
+            return isWebsite;
+        });
+        console.log('🌐 Website orders found:', filteredData.length);
     }
     else if(type === 'manual') {
-        filteredData = allOrders.filter(d => !d.order_source || d.order_source === 'manual');
-        console.log('📝 Manual orders:', filteredData.length);
+        // ✅ ONLY manual orders
+        filteredData = allOrders.filter(d => {
+            const isManual = d.order_source === 'manual';
+            console.log('Manual check:', {client: d.client, source: d.order_source, isManual: isManual});
+            return isManual;
+        });
+        console.log('📝 Manual orders found:', filteredData.length);
     }
     
     if (filteredData.length === 0) { 
@@ -449,6 +460,7 @@ function filterOrders(type) {
         const total = parseFloat(d.total) || (subtotal - discountAmount);
         const balanceDue = parseFloat(d.balance_due) || (total - advance);
         
+        // ✅ Proper badge based on order_source
         let sourceBadge = d.order_source === 'website' ? 
             '<span class="badge badge-website">🌐 Website</span>' : 
             '<span class="badge badge-manual">📝 Manual</span>';
@@ -492,6 +504,7 @@ function addNewManualRow() {
     document.getElementById('manual_works_container').appendChild(div);
 }
 
+// ✅ FIXED: Manual bill with order_source: 'manual'
 async function saveManualEntry() {
     const name = document.getElementById('man_name').value.trim();
     const phone = document.getElementById('man_phone').value.trim();
@@ -536,8 +549,10 @@ async function saveManualEntry() {
         total: totalAfterDiscount, balance_due: balanceDue, 
         entry_type: 'order', 
         order_status: 'received', 
-        order_source: 'manual'
+        order_source: 'manual'  // ✅ MANUAL BILL
     };
+    
+    console.log('📤 Saving manual order:', payload);
     
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
@@ -556,13 +571,19 @@ async function saveManualEntry() {
     } catch(e) { alert("Error: " + e.message); }
 }
 
+// ✅ FIXED: Load Logs with Proper order_source Handling
 async function loadLogs() {
     const container = document.getElementById('logItems');
     container.innerHTML = '<div class="loading">Fetching...</div>';
     
+    console.log('🔄 Loading logs from:', SCRIPT_URL);
+    
     try {
         const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random());
         const data = await res.json();
+        
+        console.log('📊 Raw data received:', data);
+        console.log('📊 Data length:', data.length);
         
         if(data.error) throw new Error(data.error);
         if(!data || data.length === 0) { 
@@ -570,13 +591,21 @@ async function loadLogs() {
             return; 
         }
         
+        // ✅ FIXED: Don't default to 'manual' - keep actual value
         allOrders = data
             .filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint')
             .map(d => ({
                 ...d,
                 order_status: d.order_status || 'received',
-                order_source: d.order_source || 'manual'
+                order_source: d.order_source || 'manual'  // Keep actual value from sheet
             }));
+            
+        console.log('✅ Processed orders:', allOrders.length);
+        
+        // Count website vs manual
+        const websiteCount = allOrders.filter(d => d.order_source === 'website').length;
+        const manualCount = allOrders.filter(d => d.order_source === 'manual').length;
+        console.log('🌐 Website:', websiteCount, '📝 Manual:', manualCount);
             
         if (allOrders.length === 0) { 
             container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; 
@@ -589,6 +618,7 @@ async function loadLogs() {
         filterOrders('website');
         
     } catch(e) { 
+        console.error('❌ Load Logs Error:', e);
         container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; 
     }
 }
@@ -719,6 +749,7 @@ async function generatePDF(order) {
     } catch (error) { alert('❌ PDF Generation Failed: ' + error.message); }
 }
 
+// ✅ FIXED: Website Order with order_source: 'website'
 async function placeOrder() {
     if(cart.length === 0) return alert("Select at least one service!");
     const name = prompt("Customer Name:")?.trim();
@@ -728,11 +759,24 @@ async function placeOrder() {
     const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
     
     const payload = { 
-        date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, 
-        subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', 
-        advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received',
-        order_source: 'website'
+        date: new Date().toISOString(), 
+        client: name.toUpperCase(), 
+        phone: phone, 
+        work: workFormatted, 
+        subtotal: total, 
+        discount_type: 'none', 
+        discount_value: 0, 
+        discount_amount: 0, 
+        discount_text: 'None', 
+        advance: 0, 
+        total: total, 
+        balance_due: total, 
+        entry_type: 'order', 
+        order_status: 'received',
+        order_source: 'website'  // ✅ WEBSITE ORDER
     };
+    
+    console.log('📤 Placing website order:', payload);
     
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
@@ -766,7 +810,7 @@ async function fetchCustomerHistory() {
         currentCustData = data; document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block';
         const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
         document.getElementById('custInfo').innerHTML = `<b>👤 ${data[0].client || 'Customer'}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
-        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${o.client || 'Customer'}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${parseFloat(o.discount_amount) > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${parseFloat(o.discount_amount).toLocaleString()}</small>` : ''}${parseFloat(o.advance) > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${parseFloat(o.advance).toLocaleString()}</small>` : ''}<span class="amt">${parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 Download</button></div>`).join('');
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${o.client || 'Customer'}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${parseFloat(o.discount_amount) > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${parseFloat(o.discount_amount).toLocaleString()}</small>` : ''}${parseFloat(o.advance) > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${parseFloat(o.advance).toLocaleString()}</small>` : ''}<span class="amt">${parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;')}'>📄 Download</button></div>`).join('');
         document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => { btn.onclick = function() { const order = JSON.parse(this.dataset.order.replace(/&apos;/g, "'")); showConfirmDialog(order); }; });
     } catch (e) { err.textContent = "Error"; err.style.display = 'block'; }
 }
