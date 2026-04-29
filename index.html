@@ -206,6 +206,15 @@ footer a:hover { text-decoration: underline; }
 <button class="order-filter-btn" onclick="refreshOrders()" style="background:#3b82f6;color:white;border:none;">🔄 Refresh</button>
 </div>
 
+<!-- ✅ BACKUP CONTROLS -->
+<div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #3b82f6;margin:15px 0;">
+  <h4 style="color:#3b82f6;margin:0 0 10px 0;">🗂️ Backup Controls</h4>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="order-filter-btn" onclick="viewBackups()" style="background:#3b82f6;color:white;border:none;">🗂️ View Backups</button>
+    <button class="order-filter-btn" onclick="exportBackups()" style="background:#10b981;color:white;border:none;">📥 Export Backups</button>
+  </div>
+</div>
+
 <div id="logItems" class="loading">Loading...</div>
 </div>
 
@@ -289,6 +298,19 @@ footer a:hover { text-decoration: underline; }
 <button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
 </div>
 </div>
+</div>
+
+<!-- ✅ BACKUP MODAL -->
+<div id="backupModal" class="modal">
+  <div class="modal-content" style="max-width:700px;">
+    <span class="modal-close" onclick="closeBackupModal()">&times;</span>
+    <h3 style="text-align:center;color:#3b82f6;">🗂️ Deleted Orders Backup</h3>
+    <div id="backupList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-back" onclick="closeBackupModal()" style="flex:1;">Close</button>
+      <button class="btn-confirm" onclick="refreshBackups()" style="flex:1;">🔄 Refresh</button>
+    </div>
+  </div>
 </div>
 
 <div id="installPrompt">
@@ -464,6 +486,7 @@ function filterOrders(type) {
         if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'}</span>`;
         if (advance > 0) badges += `<span class="badge badge-advance">💰 Rs ${advance}</span>`;
         
+        // ✅ FIXED: Use timestamp for delete button
         return `<div class="log-card">
             <button class="pdf-btn" data-index="${originalIndex}">📄 PDF</button>
             <b>${d.client || "Unknown"}</b> ${badges}<br>
@@ -473,7 +496,7 @@ function filterOrders(type) {
             ${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAmount.toLocaleString()}</small><br>` : ''}
             ${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}
             <b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br>
-            <button class="del-btn" onclick="deleteEntry(${originalIndex + 2})">🗑️ Delete</button>
+            <button class="del-btn" onclick="deleteEntry('${d.timestamp}')">🗑️ Delete</button>
         </div>`;
     }).join('');
     
@@ -670,11 +693,167 @@ function confirmAndGeneratePDF() {
     setTimeout(() => { generatePDF(orderData); }, 100);
 }
 
-async function deleteEntry(rowIdx) {
-    if(confirm("Delete this entry?")) {
-        try { await fetch(SCRIPT_URL + "?deleteRow=" + rowIdx, { method: 'GET' }); alert("✅ Deleted!"); loadLogs(); } 
-        catch(e) { alert("Error: " + e.message); }
+// ✅ UPDATED: Delete by timestamp + PIN + Reason + Backup
+async function deleteEntry(timestamp) {
+    if(!timestamp) return alert("❌ Error: No order ID!");
+    
+    const order = allOrders.find(o => o.timestamp === timestamp);
+    const client = order?.client || 'Unknown';
+    
+    const confirmMsg = `🗑️ Delete Order?\n\nClient: ${client}\n\nThis will:\n1. Save to Backup Sheet\n2. Delete from Main Sheet\n\nContinue?`;
+    if(!confirm(confirmMsg)) return;
+    
+    const pin = prompt("🔐 Enter Admin Delete PIN:");
+    if(pin !== "dnhq_delete_2026") {
+        alert("❌ Wrong PIN! Deletion cancelled.");
+        return;
     }
+    
+    const reason = prompt("📝 Delete Reason (optional):", "Admin request") || "No reason";
+    
+    try {
+        const url = `${SCRIPT_URL}?deleteRow=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}&reason=${encodeURIComponent(reason)}`;
+        const res = await fetch(url, { method: 'GET' });
+        const result = await res.json();
+        
+        if(result.error) throw new Error(result.error);
+        
+        alert(`✅ Order deleted & backed up!\n\nBackup saved in "Deleted_Orders" sheet`);
+        loadLogs();
+        
+    } catch(e) {
+        alert("❌ Delete Error: " + e.message);
+    }
+}
+
+// ✅ NEW: View backups
+async function viewBackups() {
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") {
+    alert("❌ Wrong PIN!");
+    return;
+  }
+  
+  document.getElementById('backupList').innerHTML = '<div class="loading">Loading backups...</div>';
+  document.getElementById('backupModal').style.display = 'block';
+  
+  try {
+    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
+    const backups = await res.json();
+    
+    if(backups.error) throw new Error(backups.error);
+    if(backups.length === 0) {
+      document.getElementById('backupList').innerHTML = '<p style="text-align:center;color:#94a3b8;">No deleted orders found.</p>';
+      return;
+    }
+    
+    document.getElementById('backupList').innerHTML = backups.map(b => `
+      <div class="log-card" style="border-left:4px solid #ef4444;">
+        <div style="display:flex;justify-content:space-between;align-items:start;">
+          <div>
+            <b style="color:white;">${b.client || 'Unknown'}</b>
+            <span class="badge badge-manual">📝 ${b.order_source}</span>
+          </div>
+          <small style="color:#94a3b8;">${formatDate(b.deleted_at)}</small>
+        </div>
+        <small class="phone">📱 ${b.phone || 'N/A'}</small>
+        <small style="color:#94a3b8;display:block;margin:5px 0;">🔧 ${(b.work||"").substring(0,40)}...</small>
+        <small style="color:#ef4444;display:block;margin:5px 0;">❌ Deleted by: ${b.deleted_by}</small>
+        <small style="color:#64748b;display:block;margin:5px 0;">📝 Reason: ${b.delete_reason}</small>
+        <small style="color:#fbbf24;display:block;margin:5px 0;">💰 Total: Rs ${(b.total||0).toLocaleString()}</small>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="pdf-btn" onclick="generatePDF(${JSON.stringify(b).replace(/'/g,"&apos;")})">📄 PDF</button>
+          <button class="btn-confirm" style="padding:5px 12px;font-size:11px;" onclick="restoreBackup('${b.timestamp}')">♻️ Restore</button>
+        </div>
+      </div>
+    `).join('');
+    
+  } catch(e) {
+    document.getElementById('backupList').innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
+  }
+}
+
+function closeBackupModal() {
+  document.getElementById('backupModal').style.display = 'none';
+}
+
+function refreshBackups() {
+  viewBackups();
+}
+
+// ✅ NEW: Export backups to CSV
+async function exportBackups() {
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") {
+    alert("❌ Wrong PIN!");
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
+    const backups = await res.json();
+    
+    if(backups.error) throw new Error(backups.error);
+    if(backups.length === 0) {
+      alert("No backups to export!");
+      return;
+    }
+    
+    // Create CSV
+    const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason'];
+    const csv = [headers.join(',')];
+    
+    backups.forEach(b => {
+      csv.push([
+        b.date||'',
+        `"${(b.client||'').replace(/"/g,'""')}"`,
+        b.phone||'',
+        `"${(b.work||'').replace(/"/g,'""')}"`,
+        b.total||0,
+        b.deleted_at||'',
+        b.deleted_by||'',
+        `"${(b.delete_reason||'').replace(/"/g,'""')}"`
+      ].join(','));
+    });
+    
+    // Download
+    const blob = new Blob([csv.join('\n')], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `DNHQ_Backups_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    
+    alert(`✅ Exported ${backups.length} backup records!`);
+    
+  } catch(e) {
+    alert("Export Error: " + e.message);
+  }
+}
+
+// ✅ NEW: Restore from backup
+async function restoreBackup(timestamp) {
+  if(!confirm("♻️ Restore this deleted order?\n\nIt will be added back to your main orders.")) return;
+  
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") {
+    alert("❌ Wrong PIN!");
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${SCRIPT_URL}?restoreBackup=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}`);
+    const result = await res.json();
+    
+    if(result.error) throw new Error(result.error);
+    
+    alert("✅ Order restored successfully!");
+    loadLogs(); // Refresh main orders
+    viewBackups(); // Refresh backup list
+    
+  } catch(e) {
+    alert("Restore Error: " + e.message);
+  }
 }
 
 async function generatePDF(order) {
@@ -796,7 +975,7 @@ function downloadCustomerHistoryPDF() {
     });
 }
 
-window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog(); if (e.target == document.getElementById('complaintModal')) closeComplaintModal(); }
+window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog(); if (e.target == document.getElementById('complaintModal')) closeComplaintModal(); if (e.target == document.getElementById('backupModal')) closeBackupModal(); }
 
 // ✅ Export ALL functions to window
 window.toggleSvc = toggleSvc;
@@ -828,6 +1007,13 @@ window.closeHistoryModal = closeHistoryModal;
 window.resetHistoryView = resetHistoryView;
 window.installApp = installApp;
 window.dismissInstall = dismissInstall;
+window.placeOrder = placeOrder;
+// ✅ Backup functions
+window.viewBackups = viewBackups;
+window.closeBackupModal = closeBackupModal;
+window.refreshBackups = refreshBackups;
+window.exportBackups = exportBackups;
+window.restoreBackup = restoreBackup;
 
 // ✅ Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
