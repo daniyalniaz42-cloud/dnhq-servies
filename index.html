@@ -12,8 +12,21 @@
 <!-- ✅ PDF Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-<!-- ✅ FIXED: QR Code Library (Using UNPKG for better reliability) -->
-<script src="https://unpkg.com/qrcode/build/qrcode.min.js"></script>
+<!-- ✅ QR Code Library with Fallback -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script>
+// Fallback check - agar primary library load nahi hui
+window.addEventListener('load', function() {
+    if (typeof QRCode === 'undefined') {
+        console.warn('⚠️ Primary QRCode library failed, trying alternative...');
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+        script.onload = function() { console.log('✅ Alternative QRCode library loaded'); };
+        script.onerror = function() { console.error('❌ All QRCode libraries failed'); };
+        document.head.appendChild(script);
+    }
+});
+</script>
 <style>
 :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 100px; }
@@ -802,7 +815,7 @@ async function deleteEntry(timestamp) {
     } catch(e) { alert("❌ Delete Error: " + e.message); }
 }
 
-// ✅ UPDATED: generatePDF with QR Codes - FIXED VERSION
+// ✅ UPDATED: generatePDF with QR Codes - WITH FALLBACK SUPPORT
 async function generatePDF(order) {
     if (!order) { alert('❌ Error: Order data is missing!'); return; }
     if (typeof order !== 'object') { alert('❌ Error: Order is not a valid object!'); return; }
@@ -810,12 +823,6 @@ async function generatePDF(order) {
     try {
         const JsPDFConstructor = getJsPDFConstructor();
         if (!JsPDFConstructor) { alert('❌ jsPDF library not loaded!'); return; }
-        
-        // ✅ Check if QRCode library is loaded
-        if (typeof QRCode === 'undefined') {
-            alert('❌ QRCode library not loaded! Please check your internet connection and refresh the page.');
-            return;
-        }
         
         const doc = new JsPDFConstructor();
         const client = order.client ? String(order.client) : 'Customer';
@@ -853,7 +860,7 @@ async function generatePDF(order) {
         if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
         else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
         
-        // ✅ QR CODES SECTION
+        // ✅ QR CODES SECTION - WITH ERROR HANDLING
         finalY += 20;
         doc.setDrawColor(243, 244, 246);
         doc.setFillColor(249, 250, 251);
@@ -864,40 +871,48 @@ async function generatePDF(order) {
         doc.setTextColor(15, 23, 42);
         doc.text("💳 SCAN TO PAY", 105, finalY + 10, { align: "center" });
         
-        // Generate QR Codes
-        const qr1Text = `Bank: ${ACCOUNT_1.bank}\nAccount Title: ${ACCOUNT_1.title}\nAccount No: ${ACCOUNT_1.accountNumber}`;
-        const qr2Text = `Bank: ${ACCOUNT_2.bank}\nAccount Title: ${ACCOUNT_2.title}\nAccount No: ${ACCOUNT_2.accountNumber}`;
-        
+        // Generate QR Codes with try-catch
         try {
-            const [qr1Img, qr2Img] = await Promise.all([
-                QRCode.toDataURL(qr1Text, { width: 200, margin: 1, color: { dark: '#000000', light: '#ffffff' } }),
-                QRCode.toDataURL(qr2Text, { width: 200, margin: 1, color: { dark: '#000000', light: '#ffffff' } })
-            ]);
-            
-            // Display QR 1 (Left)
-            if(qr1Img) {
-                doc.addImage(qr1Img, 'PNG', 20, finalY + 18, 30, 30);
+            if (typeof QRCode !== 'undefined') {
+                const qr1Text = `Bank: ${ACCOUNT_1.bank}\nAccount Title: ${ACCOUNT_1.title}\nAccount No: ${ACCOUNT_1.accountNumber}`;
+                const qr2Text = `Bank: ${ACCOUNT_2.bank}\nAccount Title: ${ACCOUNT_2.title}\nAccount No: ${ACCOUNT_2.accountNumber}`;
+                
+                const [qr1Img, qr2Img] = await Promise.all([
+                    QRCode.toDataURL(qr1Text, { width: 200, margin: 1, color: { dark: '#000000', light: '#ffffff' } }),
+                    QRCode.toDataURL(qr2Text, { width: 200, margin: 1, color: { dark: '#000000', light: '#ffffff' } })
+                ]);
+                
+                // Display QR 1 (Left)
+                if(qr1Img) {
+                    doc.addImage(qr1Img, 'PNG', 20, finalY + 18, 30, 30);
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "bold");
+                    doc.setTextColor(59, 130, 246);
+                    doc.text(ACCOUNT_1.bank, 20, finalY + 52);
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(100, 116, 139);
+                    doc.text(ACCOUNT_1.title, 20, finalY + 57);
+                    doc.text("Acc: " + ACCOUNT_1.accountNumber, 20, finalY + 62);
+                }
+                
+                // Display QR 2 (Right)
+                if(qr2Img) {
+                    doc.addImage(qr2Img, 'PNG', 160, finalY + 18, 30, 30);
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "bold");
+                    doc.setTextColor(59, 130, 246);
+                    doc.text(ACCOUNT_2.bank, 160, finalY + 52);
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(100, 116, 139);
+                    doc.text(ACCOUNT_2.title, 160, finalY + 57);
+                    doc.text("Acc: " + ACCOUNT_2.accountNumber, 160, finalY + 62);
+                }
+            } else {
+                // Fallback message if QRCode not available
                 doc.setFontSize(8);
-                doc.setFont("helvetica", "bold");
-                doc.setTextColor(59, 130, 246);
-                doc.text(ACCOUNT_1.bank, 20, finalY + 52);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(100, 116, 139);
-                doc.text(ACCOUNT_1.title, 20, finalY + 57);
-                doc.text("Acc: " + ACCOUNT_1.accountNumber, 20, finalY + 62);
-            }
-            
-            // Display QR 2 (Right)
-            if(qr2Img) {
-                doc.addImage(qr2Img, 'PNG', 160, finalY + 18, 30, 30);
-                doc.setFontSize(8);
-                doc.setFont("helvetica", "bold");
-                doc.setTextColor(59, 130, 246);
-                doc.text(ACCOUNT_2.bank, 160, finalY + 52);
-                doc.setFont("helvetica", "normal");
-                doc.setTextColor(100, 116, 139);
-                doc.text(ACCOUNT_2.title, 160, finalY + 57);
-                doc.text("Acc: " + ACCOUNT_2.accountNumber, 160, finalY + 62);
+                doc.setTextColor(239, 68, 68);
+                doc.text("⚠️ QR codes require internet", 105, finalY + 40, { align: "center" });
+                doc.text("Bank: JS Bank | SCB", 105, finalY + 47, { align: "center" });
             }
         } catch (qrError) {
             console.error('QR Code generation error:', qrError);
