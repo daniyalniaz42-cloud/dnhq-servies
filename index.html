@@ -9,20 +9,8 @@
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<!-- ✅ PDF Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-<!-- ✅ QRCode Library (Stable CDN) -->
-<script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
-<script>
-window.addEventListener('load', () => {
-    if (typeof QRCode !== 'undefined' && typeof QRCode.toDataURL === 'function') {
-        console.log('✅ QRCode library loaded successfully');
-    } else {
-        console.warn('⚠️ QRCode library not available. PDF will generate with bank details text only.');
-    }
-});
-</script>
 <style>
 :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 100px; }
@@ -83,7 +71,6 @@ footer a:hover { text-decoration: underline; }
 .badge-manual { background: #64748b; color: white; }
 .badge-discount { background: #10b981; color: white; }
 .badge-advance { background: #3b82f6; color: white; }
-.badge-pending { background: #ef4444; color: white; }
 .order-filters { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
 .order-filter-btn { padding: 10px 20px; border: 1px solid #334155; border-radius: 8px; background: #1e293b; color: #94a3b8; font-size: 14px; font-weight: 600; cursor: pointer; }
 .order-filter-btn.active { border-color: #fbbf24; color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
@@ -210,26 +197,6 @@ footer a:hover { text-decoration: underline; }
 <h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
 <input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
 </div>
-
-<!-- ✅ PENDING BALANCE CHECK -->
-<div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #10b981;margin:15px 0;">
-  <h4 style="color:#10b981;margin:0 0 10px 0;">💰 Check Pending Balance</h4>
-  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-    <input type="tel" id="pendingPhone" class="man-input" placeholder="Phone: 03XX-XXXXXXX" style="flex:2;margin:0;">
-    <button onclick="checkPendingBalance()" style="background:#10b981;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;">🔍 Check</button>
-  </div>
-  <div id="pendingResult" style="margin-top:15px;display:none;">
-    <div style="background:#0f172a;padding:12px;border-radius:8px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="color:#94a3b8;">Pending Balance:</span>
-        <span id="pendingAmount" style="color:#ef4444;font-size:18px;font-weight:bold;">Rs 0</span>
-      </div>
-      <div id="pendingOrders" style="margin-top:10px;font-size:12px;color:#94a3b8;"></div>
-      <button onclick="addPendingToBill()" id="addPendingBtn" style="margin-top:10px;width:100%;background:#fbbf24;color:black;border:none;padding:8px;border-radius:6px;font-weight:600;cursor:pointer;">➕ Add Pending to This Bill</button>
-    </div>
-  </div>
-</div>
-
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
 </div>
 
@@ -364,15 +331,11 @@ footer a:hover { text-decoration: underline; }
 
 <script>
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
-let currentPendingAmount = 0;
-let currentPendingPhone = '';
 const ADMIN_WHATSAPP = "923152458657";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoTOVZaxLxJ555XBsUtdHf9GQ6TDzXTJ3VpLi2A6eQrosp0QIk1MiM6BdUiZt-o0tUvw/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
-const ACCOUNT_1 = { bank: "JS Bank", title: "Muhammad Daniyal Niaz", accountNumber: "0002804407" };
-const ACCOUNT_2 = { bank: "SCB", title: "Hassan Qureshi", accountNumber: "01039409301" };
-
+// ✅ All functions defined BEFORE DOMContentLoaded
 function toggleDiscountInput() {
     const type = document.getElementById('discount_type').value;
     const input = document.getElementById('discount_value');
@@ -387,37 +350,60 @@ function formatDate(dateInput) {
         return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     }
     try {
-        let date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-        if (isNaN(date.getTime())) {
-            const m = String(dateInput).match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
-            if (m) date = new Date(m[3], m[2] - 1, m[1]);
+        let date;
+        if (dateInput instanceof Date) { date = dateInput; }
+        else if (typeof dateInput === 'number') { date = new Date(dateInput); }
+        else if (typeof dateInput === 'string') {
+            const str = dateInput.trim();
+            date = new Date(str);
+            if (isNaN(date.getTime())) {
+                const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+                if (ddmmyyyy) date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
+            }
         }
-        return isNaN(date.getTime()) ? 'N/A' : date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-    } catch (e) { return 'N/A'; }
+        if (!date || isNaN(date.getTime())) {
+            return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+        }
+        return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+    } catch (e) {
+        return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+    }
 }
 
 function getJsPDFConstructor() {
-    return window.jspdf?.jsPDF || window.jspdf || window.jsPDF || null;
+    if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
+    if (window.jspdf) return window.jspdf;
+    if (window.jsPDF) return window.jsPDF;
+    return null;
 }
 
 function getImageDataForPDF(imgElement) {
     return new Promise((resolve) => {
         try {
-            if (!imgElement?.src || !imgElement.complete || imgElement.naturalWidth === 0) return resolve(null);
-            const c = document.createElement('canvas'), ctx = c.getContext('2d');
-            const s = Math.min(1, 200 / imgElement.naturalWidth);
-            c.width = imgElement.naturalWidth * s; c.height = imgElement.naturalHeight * s;
-            ctx.drawImage(imgElement, 0, 0, c.width, c.height);
-            resolve(c.toDataURL('image/jpeg', 0.9));
-        } catch (e) { resolve(null); }
+            if (!imgElement || !imgElement.src || !imgElement.complete || imgElement.naturalWidth === 0) {
+                resolve(null); return;
+            }
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const maxWidth = 200;
+            const scale = Math.min(1, maxWidth / imgElement.naturalWidth);
+            canvas.width = imgElement.naturalWidth * scale;
+            canvas.height = imgElement.naturalHeight * scale;
+            ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL('image/jpeg', 0.9));
+        } catch (e) {
+            resolve(null);
+        }
     });
 }
 
 function playVid() {
     const box = document.getElementById('videoBox');
     const vid = document.getElementById('myVideo');
-    box.style.display = box.style.display === "none" ? "block" : "none";
-    box.style.display === "block" ? vid.play() : vid.pause();
+    if(box && vid) {
+        box.style.display = box.style.display === "none" ? "block" : "none";
+        box.style.display === "block" ? vid.play() : vid.pause();
+    }
 }
 
 function toggleSvc(el, name, price) {
@@ -439,336 +425,601 @@ function updateCart() {
 
 function openAdmin() {
     const pin = prompt("Enter Admin PIN:");
-    if(pin === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); } 
-    else if(pin !== null) { alert("Wrong PIN!"); }
+    if(pin === "dnhq123") {
+        document.getElementById('adminView').style.display='block';
+        loadLogs();
+    } else if(pin !== null) { alert("Wrong PIN!"); }
 }
 
 function switchAdminTab(tab) {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
-    if(tab === 'orders') { document.getElementById('ordersSection').style.display = 'block'; document.getElementById('complaintsSection').style.display = 'none'; loadLogs(); } 
-    else { document.getElementById('ordersSection').style.display = 'none'; document.getElementById('complaintsSection').style.display = 'block'; loadComplaints(); }
+    if(tab === 'orders') {
+        document.getElementById('ordersSection').style.display = 'block';
+        document.getElementById('complaintsSection').style.display = 'none';
+        loadLogs();
+    } else if(tab === 'complaints') {
+        document.getElementById('ordersSection').style.display = 'none';
+        document.getElementById('complaintsSection').style.display = 'block';
+        loadComplaints();
+    }
 }
 
 function filterOrders(type) {
     document.querySelectorAll('.order-filter-btn').forEach(btn => {
         btn.classList.remove('active');
-        if(btn.getAttribute('onclick')?.includes(`'${type}'`)) btn.classList.add('active');
+        if(btn.getAttribute('onclick').includes(`'${type}'`)) btn.classList.add('active');
     });
+
     const container = document.getElementById('logItems');
     let filteredData = allOrders;
-    if(type === 'website') filteredData = allOrders.filter(d => d.order_source === 'website');
-    else if(type === 'manual') filteredData = allOrders.filter(d => d.order_source === 'manual');
-    
-    if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
-    
+
+    console.log('🔍 Filtering:', type);
+
+    if(type === 'website') {
+        filteredData = allOrders.filter(d => d.order_source === 'website');
+        console.log('🌐 Website orders:', filteredData.length);
+    }
+    else if(type === 'manual') {
+        filteredData = allOrders.filter(d => d.order_source === 'manual');
+        console.log('📝 Manual orders:', filteredData.length);
+    }
+
+    if (filteredData.length === 0) { 
+        container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
+        return; 
+    }
+
     container.innerHTML = filteredData.map((d, index) => {
-        const oi = allOrders.indexOf(d);
-        const sub = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
-        const dis = parseFloat(d.discount_amount) || 0;
-        const adv = parseFloat(d.advance) || 0;
-        const tot = parseFloat(d.total) || (sub - dis);
-        const bal = parseFloat(d.balance_due) || (tot - adv);
-        const src = d.order_source === 'website' ? '<span class="badge badge-website">🌐 Web</span>' : '<span class="badge badge-manual">📝 Manual</span>';
-        const st = d.order_status === 'received' ? '<span class="badge badge-received">📥</span>' : d.order_status === 'pending' ? '<span class="badge badge-pending">⏳</span>' : '<span class="badge badge-completed">✅</span>';
-        let badges = src + ' ' + st;
-        if(dis>0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text||''}</span>`;
-        if(adv>0) badges += `<span class="badge badge-advance">💰 Rs ${adv}</span>`;
-        if(bal>0) badges += `<span class="badge badge-pending">⏳ Rs ${bal.toLocaleString()}</span>`;
-        
+        const originalIndex = allOrders.indexOf(d);
+        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
+        const discountAmount = parseFloat(d.discount_amount) || 0;
+        const advance = parseFloat(d.advance) || 0;
+        const total = parseFloat(d.total) || (subtotal - discountAmount);
+        const balanceDue = parseFloat(d.balance_due) || (total - advance);
+
+        let sourceBadge = d.order_source === 'website' ? 
+            '<span class="badge badge-website">🌐 Website</span>' : 
+            '<span class="badge badge-manual">📝 Manual</span>';
+
+        let badges = sourceBadge;
+        if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'}</span>`;
+        if (advance > 0) badges += `<span class="badge badge-advance">💰 Rs ${advance}</span>`;
+
+        // ✅ FIXED: Use timestamp for delete button
         return `<div class="log-card">
-            <button class="pdf-btn" data-index="${oi}">📄 PDF</button>
+            <button class="pdf-btn" data-index="${originalIndex}">📄 PDF</button>
             <b>${d.client || "Unknown"}</b> ${badges}<br>
             <small class="phone">📱 ${d.phone || "N/A"}</small><br>
             <small>${(d.work || "").substring(0, 50)}</small><br>
-            ${sub?`<small style="color:#94a3b8;">Sub: Rs ${sub.toLocaleString()}</small><br>`:''}
-            ${dis>0?`<small style="color:#10b981;">Disc: -Rs ${dis.toLocaleString()}</small><br>`:''}
-            ${adv>0?`<small style="color:#3b82f6;">Adv: -Rs ${adv.toLocaleString()}</small><br>`:''}
-            <b style="color:gold;">${bal > 0 ? 'Due: Rs ' + bal.toLocaleString() : 'Paid: Rs ' + tot.toLocaleString()}</b><br>
+            ${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}
+            ${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAmount.toLocaleString()}</small><br>` : ''}
+            ${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}
+            <b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br>
             <button class="del-btn" onclick="deleteEntry('${d.timestamp}')">🗑️ Delete</button>
         </div>`;
     }).join('');
-    
+
     container.querySelectorAll('.pdf-btn').forEach(btn => {
-        btn.onclick = function() { const order = allOrders[parseInt(this.dataset.index)]; if(order) showConfirmDialog(order); };
+        btn.onclick = function() {
+            const index = this.getAttribute('data-index');
+            const order = allOrders[parseInt(index)];
+            if (order) showConfirmDialog(order);
+        };
     });
 }
 
-function refreshOrders() { loadLogs(); alert('🔄 Refreshed'); }
+function refreshOrders() {
+    console.log('🔄 Manual refresh');
+    loadLogs();
+    alert('🔄 Refreshing orders...');
+}
+
 function addNewManualRow() {
-    const div = document.createElement('div'); div.style="display:flex;gap:10px;margin-bottom:10px;";
-    div.innerHTML='<input type="text" class="m-work man-input" placeholder="Work" style="flex:2;margin:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin:0;">';
+    const div = document.createElement('div');
+    div.style = "display:flex;gap:10px;margin-bottom:10px;";
+    div.innerHTML = '<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;">';
     document.getElementById('manual_works_container').appendChild(div);
 }
 
-async function checkPendingBalance() {
-  const phone = document.getElementById('pendingPhone').value.trim();
-  if(!phone) return alert("Enter phone!");
-  currentPendingPhone = phone;
-  document.getElementById('pendingResult').style.display = 'block';
-  document.getElementById('pendingResult').innerHTML = '<div class="loading">Checking...</div>';
-  try {
-    const res = await fetch(`${SCRIPT_URL}?getPendingBalance=true&phone=${encodeURIComponent(phone)}`);
-    const r = await res.json();
-    if(r.error) throw new Error(r.error);
-    currentPendingAmount = r.total_pending || 0;
-    if(currentPendingAmount > 0) {
-      document.getElementById('pendingResult').innerHTML = `
-        <div style="background:#0f172a;padding:12px;border-radius:8px;">
-          <div style="display:flex;justify-content:space-between;"><span style="color:#94a3b8;">Pending:</span><span style="color:#ef4444;font-size:18px;font-weight:bold;">Rs ${currentPendingAmount.toLocaleString()}</span></div>
-          <div style="margin-top:10px;font-size:12px;color:#94a3b8;">${(r.pending_orders||[]).map(o=>`• ${formatDate(o.date)}: Rs ${o.balance_due.toLocaleString()}`).join('<br>')}</div>
-          <button onclick="addPendingToBill()" style="margin-top:10px;width:100%;background:#fbbf24;color:black;border:none;padding:8px;border-radius:6px;font-weight:600;cursor:pointer;">➕ Add to Bill</button>
-        </div>`;
-    } else {
-      document.getElementById('pendingResult').innerHTML = '<div style="background:#0f172a;padding:12px;border-radius:8px;text-align:center;color:#10b981;">✅ No pending balance</div>';
-    }
-  } catch(e) { document.getElementById('pendingResult').innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
-}
-
-function addPendingToBill() {
-  if(currentPendingAmount <= 0) return;
-  document.getElementById('advance_payment').value = (parseFloat(document.getElementById('advance_payment').value)||0) + currentPendingAmount;
-  alert(`✅ Rs ${currentPendingAmount.toLocaleString()} added to advance!`);
-  document.getElementById('pendingResult').style.display = 'none'; currentPendingAmount = 0;
-}
-
 async function saveManualEntry() {
-    const name = document.getElementById('man_name').value.trim(), phone = document.getElementById('man_phone').value.trim();
-    if(!name || !phone) return alert("Name & Phone required!");
-    let work=[], sub=0;
-    document.querySelectorAll('.m-work').forEach((inp,i)=>{ if(inp.value.trim()){ const p=parseInt(document.querySelectorAll('.m-price')[i].value)||0; work.push(inp.value.trim()+` (Rs ${p})`); sub+=p; }});
-    if(!work.length) return alert("Add service!");
-    
-    const dt=document.getElementById('discount_type').value, dv=parseFloat(document.getElementById('discount_value').value)||0;
-    let da=0, dtxt="None";
-    if(dt==='percent'&&dv>0){da=(sub*dv)/100;dtxt=dv+"%";}else if(dt==='fixed'&&dv>0){da=dv;dtxt="Rs "+dv;}
-    const tot=sub-da, adv=parseFloat(document.getElementById('advance_payment').value)||0, bal=tot-adv;
-    const od=document.getElementById('man_date').value?new Date(document.getElementById('man_date').value).toISOString():new Date().toISOString();
-    
-    let pp=0; try{const r=await fetch(`${SCRIPT_URL}?getPendingBalance=true&phone=${encodeURIComponent(phone)}`);const j=await r.json();if(!j.error)pp=j.total_pending||0;}catch(e){}
-    
-    const payload={date:od,client:name.toUpperCase(),phone,work:work.join(", "),subtotal:sub,discount_type:dt,discount_value:dv,discount_amount:da,discount_text:dtxt,advance:adv,total:tot,balance_due:bal,entry_type:'order',order_status:'received',order_source:'manual',previous_pending:pp,pending_balance:currentPendingAmount>0?0:bal};
-    
-    try{
-        await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-        alert("✅ Saved!"); setTimeout(loadLogs,1500);
-        ['man_name','man_phone','man_date','discount_value','advance_payment'].forEach(id=>document.getElementById(id).value='');
-        document.getElementById('discount_type').value='none'; document.getElementById('discount_value').style.display='none';
-        document.getElementById('manual_works_container').innerHTML='<div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work" style="flex:2;margin:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin:0;"></div>';
-        document.getElementById('pendingResult').style.display='none'; currentPendingAmount=0;
-    }catch(e){alert("Error: "+e.message);}
+    const name = document.getElementById('man_name').value.trim();
+    const phone = document.getElementById('man_phone').value.trim();
+    const dateInput = document.getElementById('man_date').value;
+    const workInputs = document.querySelectorAll('.m-work');
+    const priceInputs = document.querySelectorAll('.m-price');
+
+    if(!name || !phone) return alert("Please enter Name AND Phone!");
+
+    let allWork = [], subtotal = 0;
+    workInputs.forEach((input, i) => {
+        if(input.value.trim() !== "") {
+            const p = parseInt(priceInputs[i].value) || 0;
+            allWork.push(input.value.trim() + " (Rs " + p + ")");
+            subtotal += p;
+        }
+    });
+
+    if(allWork.length === 0) return alert("Add at least one service!");
+
+    const discountType = document.getElementById('discount_type').value;
+    const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+    let discountAmount = 0, discountText = "None";
+
+    if (discountType === 'percent' && discountValue > 0) {
+        discountAmount = (subtotal * discountValue) / 100;
+        discountText = discountValue + "%";
+    } else if (discountType === 'fixed' && discountValue > 0) {
+        discountAmount = discountValue;
+        discountText = "Rs " + discountValue;
+    }
+
+    const totalAfterDiscount = subtotal - discountAmount;
+    const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
+    const balanceDue = totalAfterDiscount - advance;
+    const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();
+
+    const payload = {
+        date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "),
+        subtotal: subtotal, discount_type: discountType, discount_value: discountValue,
+        discount_amount: discountAmount, discount_text: discountText, advance: advance,
+        total: totalAfterDiscount, balance_due: balanceDue, 
+        entry_type: 'order', 
+        order_status: 'received', 
+        order_source: 'manual'
+    };
+
+    try {
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        alert("✅ Order saved successfully!");
+        setTimeout(() => { loadLogs(); }, 2000);
+
+        document.getElementById('man_name').value = '';
+        document.getElementById('man_phone').value = '';
+        document.getElementById('man_date').value = '';
+        document.getElementById('discount_type').value = 'none';
+        document.getElementById('discount_value').value = '';
+        document.getElementById('discount_value').style.display = 'none';
+        document.getElementById('advance_payment').value = '';
+        document.getElementById('manual_works_container').innerHTML = '<div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;"></div>';
+
+    } catch(e) { alert("Error: " + e.message); }
 }
 
 async function loadLogs() {
-    const con=document.getElementById('logItems'); con.innerHTML='<div class="loading">Fetching...</div>';
-    try{
-        const r=await fetch(SCRIPT_URL+"?t="+Date.now()+"&rand="+Math.random()); const d=await r.json();
-        if(d.error)throw new Error(d.error); if(!d?.length){con.innerHTML='<p style="text-align:center;color:#94a3b8;">No orders.</p>';return;}
-        allOrders=d.filter(x=>x&&(x.client||x.phone||x.work)&&x.entry_type!=='complaint').map(x=>({...x,order_status:x.order_status||'received',order_source:x.order_source||'manual'}));
-        if(!allOrders.length){con.innerHTML='<p style="text-align:center;color:#94a3b8;">No valid orders.</p>';return;}
-        document.querySelectorAll('.order-filter-btn').forEach(b=>b.classList.remove('active'));
-        document.querySelector('.order-filter-btn[onclick*="website"]').classList.add('active');
+    const container = document.getElementById('logItems');
+    container.innerHTML = '<div class="loading">Fetching...</div>';
+
+    try {
+        const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random());
+        const data = await res.json();
+
+        if(data.error) throw new Error(data.error);
+        if(!data || data.length === 0) { 
+            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
+            return; 
+        }
+
+        allOrders = data
+            .filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint')
+            .map(d => ({
+                ...d,
+                order_status: d.order_status || 'received',
+                order_source: d.order_source || 'manual'
+            }));
+
+        console.log('✅ Processed orders:', allOrders.length);
+
+        if (allOrders.length === 0) { 
+            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; 
+            return; 
+        }
+
+        document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.order-filter-btn[onclick="filterOrders(\'website\')"]').classList.add('active');
         filterOrders('website');
-    }catch(e){con.innerHTML=`<p style="color:#ef4444;">Error: ${e.message}</p>`;}
+
+    } catch(e) { 
+        console.error('❌ Load Logs Error:', e);
+        container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; 
+    }
 }
 
 async function loadComplaints() {
-    const con=document.getElementById('complaintsList'); con.innerHTML='<div class="loading">Loading...</div>';
-    try{const r=await fetch(SCRIPT_URL+"?t="+Date.now()); const d=await r.json(); if(d.error)throw d.error;
-    const c=d.filter(x=>x?.entry_type==='complaint'); allComplaints=c; document.getElementById('complaintCount').textContent=c.length;
-    if(!c.length){con.innerHTML='<p style="text-align:center;color:#94a3b8;">No complaints.</p>';return;}
-    con.innerHTML=c.slice().reverse().map(x=>`<div class="complaint-card"><b>${x.name||'?'}</b> <span class="badge badge-complaint">${x.type||''}</span><br><small>📱 ${x.phone||''}</small><p>${x.message||''}</p><button onclick="contactCustomer('${x.phone}')" style="background:#3b82f6;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">📞 Call</button></div>`).join('');
-    }catch(e){con.innerHTML=`<p style="color:#ef4444;">Error</p>`;}
-}
-function contactCustomer(p){if(p)window.open(`tel:${p}`);}
-function openComplaintModal(){document.getElementById('complaintModal').style.display='block';}
-function closeComplaintModal(){document.getElementById('complaintModal').style.display='none';}
-async function submitComplaint(){
-    const n=document.getElementById('complaintName').value.trim(),p=document.getElementById('complaintPhone').value.trim(),t=document.getElementById('complaintType').value,m=document.getElementById('complaintMessage').value.trim();
-    if(!n||!p||!t||!m)return alert("Fill all fields!");
-    try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({timestamp:Date.now(),date:new Date().toISOString(),name:n.toUpperCase(),phone:p,type:t,message:m,status:'pending',entry_type:'complaint'})});
-    alert("✅ Submitted!"); closeComplaintModal();
-    }catch(e){alert("Error: "+e.message);}
+    const container = document.getElementById('complaintsList');
+    container.innerHTML = '<div class="loading">Loading complaints...</div>';
+    try {
+        const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
+        const data = await res.json();
+        if(data.error) throw new Error(data.error);
+        const complaints = data.filter(d => d && d.entry_type === 'complaint');
+        allComplaints = complaints;
+        document.getElementById('complaintCount').textContent = complaints.length;
+        if(complaints.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No complaints yet.</p>'; return; }
+        container.innerHTML = complaints.slice().reverse().map((c, index) => `
+            <div class="complaint-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;"><div><b style="color:white;font-size:15px;">${c.name || 'Unknown'}</b><span class="badge badge-complaint">${c.type || 'General'}</span></div><small style="color:#94a3b8;">${c.date ? formatDate(c.date) : 'N/A'}</small></div><small class="phone">📱 ${c.phone || 'N/A'}</small><p style="color:#f1f5f9;margin:10px 0;font-size:14px;">${c.message || 'No message'}</p><div style="display:flex;gap:10px;margin-top:10px;"><button onclick="contactCustomer('${c.phone}')" style="background:#3b82f6;color:white;border:none;padding:8px 15px;border-radius:6px;font-weight:bold;cursor:pointer;">📞 Contact</button></div></div>`).join('');
+    } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
-function showConfirmDialog(order){
-    if(!order||typeof order!=='object')return alert('❌ Invalid data');
-    pendingOrderData=order;
-    const cl=order.client||'Customer', ph=order.phone||'N/A', dt=order.date||order.timestamp||new Date().toISOString();
-    const sub=parseFloat(order.subtotal)||parseFloat(order.total)||0, dis=parseFloat(order.discount_amount)||0, adv=parseFloat(order.advance)||0;
-    const tot=parseFloat(order.total)||(sub-dis), bal=parseFloat(order.balance_due)||(tot-adv);
-    let h=`<div class="confirm-row"><label>👤 Client:</label><span class="value">${cl}</span></div><div class="confirm-row"><label>📱 Phone:</label><span class="value">${ph}</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">${formatDate(dt)}</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label>📦 Subtotal:</label><span class="value">Rs ${sub.toLocaleString()}</span></div>`;
-    if(dis>0)h+=`<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span class="value">-Rs ${dis.toLocaleString()}</span></div>`;
-    h+=`<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ${tot.toLocaleString()}</span></div>`;
-    if(adv>0)h+=`<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ${adv.toLocaleString()}</span></div>`;
-    h+=bal>0?`<div class="confirm-row balance"><label>⚠️ Due:</label><span class="value">Rs ${bal.toLocaleString()}</span></div>`:`<div class="confirm-row balance paid"><label>✅ Status:</label><span class="value">PAID</span></div>`;
-    document.getElementById('confirmBody').innerHTML=h; document.getElementById('confirmDialog').style.display='block';
-}
-function closeConfirmDialog(){document.getElementById('confirmDialog').style.display='none';pendingOrderData=null;}
-function confirmAndGeneratePDF(){if(!pendingOrderData)return alert('❌ No data');const o=JSON.parse(JSON.stringify(pendingOrderData));closeConfirmDialog();setTimeout(()=>generatePDF(o),100);}
+function contactCustomer(phone) { if(phone) { window.open(`tel:${phone}`, '_blank'); } }
+function openComplaintModal() { document.getElementById('complaintModal').style.display = 'block'; document.getElementById('complaintError').style.display = 'none'; document.getElementById('complaintSuccess').style.display = 'none'; }
+function closeComplaintModal() { document.getElementById('complaintModal').style.display = 'none'; document.getElementById('complaintName').value = ''; document.getElementById('complaintPhone').value = ''; document.getElementById('complaintType').value = ''; document.getElementById('complaintMessage').value = ''; }
 
-async function deleteEntry(ts){
-    if(!ts)return alert("❌ No ID");
-    if(!confirm("🗑️ Delete this order?"))return;
-    const pin=prompt("🔐 Admin PIN:");
-    if(pin!=="dnhq_delete_2026")return alert("❌ Wrong PIN");
-    const reason=prompt("📝 Reason:")||"Admin";
-    try{const r=await fetch(`${SCRIPT_URL}?deleteRow=true&timestamp=${encodeURIComponent(ts)}&pin=${encodeURIComponent(pin)}&reason=${encodeURIComponent(reason)}`);const j=await r.json();if(j.error)throw j.error;alert("✅ Deleted & Backed up");loadLogs();}catch(e){alert("Error: "+e.message);}
+async function submitComplaint() {
+    const name = document.getElementById('complaintName').value.trim();
+    const phone = document.getElementById('complaintPhone').value.trim();
+    const type = document.getElementById('complaintType').value;
+    const message = document.getElementById('complaintMessage').value.trim();
+    const error = document.getElementById('complaintError');
+    const success = document.getElementById('complaintSuccess');
+    if(!name || !phone || !type || !message) { error.textContent = 'Please fill all fields!'; error.style.display = 'block'; return; }
+    const payload = { timestamp: Date.now().toString(), date: new Date().toISOString(), name: name.toUpperCase(), phone: phone, type: type, message: message, status: 'pending', entry_type: 'complaint' };
+    try {
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        success.textContent = '✅ Complaint submitted! We will contact you within 24 hours.';
+        success.style.display = 'block'; error.style.display = 'none';
+        setTimeout(() => { closeComplaintModal(); }, 3000);
+    } catch(e) { error.textContent = 'Error: ' + e.message; error.style.display = 'block'; }
 }
 
-// ✅ FIXED: 100% Error-Free PDF Generation
-async function generatePDF(order){
-    if(!order||typeof order!=='object')return alert('❌ Invalid order');
-    try{
-        const J=getJsPDFConstructor(); if(!J)return alert('❌ PDF lib missing');
-        const doc=new J();
-        const cl=order.client||'Customer', ph=order.phone||'N/A', dt=order.date||order.timestamp||new Date().toISOString(), wk=order.work||'No work';
-        
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
-        try{const img=await getImageDataForPDF(document.getElementById('brandLogo'));if(img)doc.addImage(img,'JPEG',15,8,30,30);}catch(e){}
-        doc.setTextColor(251,191,36);doc.setFontSize(24);doc.setFont("helvetica","bold");doc.text("DNHQ SERVICES",55,24);
-        doc.setFontSize(10);doc.setFont("helvetica","normal");doc.setTextColor(255,255,255);doc.text("Professional Electrical & AC Maintenance",55,31);
-        doc.setTextColor(0,0,0);doc.setFontSize(11);doc.text("INVOICE TO: "+cl,15,55);doc.text("PHONE: "+ph,15,62);doc.text("DATE: "+formatDate(dt),145,55);
-        doc.setFontSize(16);doc.setFont("helvetica","bold");doc.text("INVOICE",105,72,{align:"center"});
-        
-        const items=wk.split(", "), body=items.map(it=>{if(it.includes("(Rs ")){const p=it.split(" (Rs ");return[p[0].trim(),"Rs "+p[1].replace(")","")]}return[it.trim(),"-"]});
-        doc.autoTable({startY:78,head:[['SERVICE','AMOUNT']],body,theme:'grid',headStyles:{fillColor:[0,0,0],textColor:[251,191,36],fontSize:10},styles:{fontSize:9,cellPadding:4},columnStyles:{0:{cellWidth:125},1:{cellWidth:35,halign:'right'}}});
-        
-        let y=doc.lastAutoTable.finalY+10;
-        const sub=parseFloat(order.subtotal)||parseFloat(order.total)||0, dis=parseFloat(order.discount_amount)||0, adv=parseFloat(order.advance)||0;
-        const tot=sub-dis, bal=tot-adv;
-        
-        doc.setFontSize(10);doc.setTextColor(150,150,150);doc.text("Subtotal:",115,y);doc.text("Rs "+sub.toLocaleString(),195,y,{align:'right'});y+=7;
-        if(dis>0){doc.setTextColor(16,185,129);doc.text(order.discount_text+" Discount:",115,y);doc.text("-Rs "+dis.toLocaleString(),195,y,{align:'right'});y+=7;doc.setTextColor(150,150,150);}
-        doc.setFontSize(11);doc.setTextColor(0,0,0);doc.setFont("helvetica","bold");doc.text("Total:",115,y);doc.text("Rs "+tot.toLocaleString(),195,y,{align:'right'});y+=10;
-        if(adv>0){doc.setDrawColor(59,130,246);doc.setLineWidth(0.5);doc.line(110,y-5,195,y-5);doc.setFontSize(10);doc.setTextColor(59,130,246);doc.setFont("helvetica","bold");doc.text("Advance:",115,y);doc.text("-Rs "+adv.toLocaleString(),195,y,{align:'right'});y+=10;}
-        
-        doc.setDrawColor(251,191,36);doc.setLineWidth(1);doc.line(110,y-5,195,y-5);doc.setFontSize(14);doc.setFont("helvetica","bold");
-        if(bal>0){doc.setTextColor(239,68,68);doc.text("BALANCE DUE:",115,y);doc.text("Rs "+bal.toLocaleString(),195,y,{align:'right'});}
-        else{doc.setTextColor(16,185,129);doc.text("FULLY PAID ✓",115,y);doc.text("Rs 0",195,y,{align:'right'});}
-        
-        // ✅ QR Section with Safe Fallback
-        y+=20;
-        doc.setDrawColor(243,244,246);doc.setFillColor(249,250,251);doc.roundedRect(10,y,190,65,3,3,'FD');
-        doc.setFontSize(10);doc.setFont("helvetica","bold");doc.setTextColor(15,23,42);doc.text("💳 SCAN TO PAY",105,y+10,{align:"center"});
-        
-        try{
-            if(typeof QRCode!=='undefined'&&typeof QRCode.toDataURL==='function'){
-                const q1=await QRCode.toDataURL(`Bank: ${ACCOUNT_1.bank}\nTitle: ${ACCOUNT_1.title}\nAcc: ${ACCOUNT_1.accountNumber}`,{width:200,margin:1,color:{dark:'#000',light:'#fff'}});
-                const q2=await QRCode.toDataURL(`Bank: ${ACCOUNT_2.bank}\nTitle: ${ACCOUNT_2.title}\nAcc: ${ACCOUNT_2.accountNumber}`,{width:200,margin:1,color:{dark:'#000',light:'#fff'}});
-                doc.addImage(q1,'PNG',20,y+18,30,30);doc.addImage(q2,'PNG',160,y+18,30,30);
-                doc.setFontSize(8);doc.setFont("helvetica","bold");doc.setTextColor(59,130,246);
-                doc.text(ACCOUNT_1.bank,20,y+52);doc.text(ACCOUNT_2.bank,160,y+52);
-                doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);
-                doc.text(ACCOUNT_1.title,20,y+57);doc.text(ACCOUNT_2.title,160,y+57);
-                doc.text("Acc: "+ACCOUNT_1.accountNumber,20,y+62);doc.text("Acc: "+ACCOUNT_2.accountNumber,160,y+62);
-            }else{
-                doc.setFontSize(9);doc.setTextColor(80,80,80);
-                doc.text(`Bank: ${ACCOUNT_1.bank} | Acc: ${ACCOUNT_1.accountNumber}`,105,y+35,{align:"center"});
-                doc.text(`Bank: ${ACCOUNT_2.bank} | Acc: ${ACCOUNT_2.accountNumber}`,105,y+42,{align:"center"});
-                doc.setTextColor(239,68,68);doc.text("⚠️ Internet needed for QR",105,y+50,{align:"center"});
-            }
-        }catch(qe){console.warn("QR fallback",qe);
-            doc.setFontSize(9);doc.setTextColor(80,80,80);
-            doc.text("Bank Details: JS Bank (0002804407) | SCB (01039409301)",105,y+40,{align:"center"});
-        }
-        
-        doc.setFontSize(7);doc.setTextColor(156,163,175);doc.text("* Scan with banking app to pay",105,y+72,{align:"center"});
-        y+=80;
-        
-        doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);doc.line(20,y,190,y);
-        doc.setFontSize(8);doc.setFont("helvetica","normal");doc.setTextColor(120,120,120);
-        doc.text("Contact: "+PHONE_1,105,y+6,{align:"center"});doc.text("Contact: "+PHONE_2,105,y+11,{align:"center"});
-        doc.text("Website: dnhq-services.online",105,y+16,{align:"center"});
-        
-        doc.save(`DNHQ_${cl.replace(/[^a-z0-9]/gi,'_')}_${formatDate(dt).replace(/[^a-z0-9]/gi,'_')}.pdf`);
-    }catch(err){console.error(err);alert('❌ PDF Error: '+err.message);}
+function showConfirmDialog(order) {
+    if (!order || typeof order !== 'object') { alert('❌ Error: Invalid order data!'); return; }
+    pendingOrderData = order;
+    const client = order.client ? String(order.client) : 'Customer';
+    const phone = order.phone ? String(order.phone) : 'N/A';
+    const orderDate = order.date || order.timestamp || new Date().toISOString();
+    const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
+    const discountAmount = parseFloat(order.discount_amount) || 0;
+    const advance = parseFloat(order.advance) || 0;
+    const total = parseFloat(order.total) || (subtotal - discountAmount);
+    const balanceDue = parseFloat(order.balance_due) || (total - advance);
+
+    let html = `<div class="confirm-row"><label>👤 Customer:</label><span class="value">${client}</span></div><div class="confirm-row"><label>📱 Phone:</label><span class="value">${phone}</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">${formatDate(orderDate)}</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label>📦 Subtotal:</label><span class="value">Rs ${subtotal.toLocaleString()}</span></div>`;
+    if (discountAmount > 0) html += `<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span class="value">-Rs ${discountAmount.toLocaleString()}</span></div>`;
+    html += `<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ${total.toLocaleString()}</span></div>`;
+    if (advance > 0) html += `<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ${advance.toLocaleString()}</span></div>`;
+    if (balanceDue > 0) html += `<div class="confirm-row balance"><label>⚠️ Balance Due:</label><span class="value">Rs ${balanceDue.toLocaleString()}</span></div>`;
+    else html += `<div class="confirm-row balance paid"><label>✅ Payment Status:</label><span class="value">FULLY PAID</span></div>`;
+
+    document.getElementById('confirmBody').innerHTML = html;
+    document.getElementById('confirmDialog').style.display = 'block';
 }
 
-async function placeOrder(){
-    if(!cart.length)return alert("Select service!");
-    const n=prompt("Name:")?.trim(),p=prompt("Phone:")?.trim();
-    if(!n||!p)return alert("Name & Phone needed!");
-    const t=cart.reduce((a,b)=>a+(b.price||0),0), w=cart.map(c=>c.name+` (Rs ${c.price})`).join(", ");
-    try{
-        await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:new Date().toISOString(),client:n.toUpperCase(),phone:p,work:w,subtotal:t,discount_type:'none',discount_value:0,discount_amount:0,discount_text:'None',advance:0,total:t,balance_due:t,entry_type:'order',order_status:'received',order_source:'website'})});
-        window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=*🔔 NEW ORDER*%0A👤 ${n}%0A📱 ${p}%0A💰 Rs ${t}%0A🛠️ ${w}`,'_blank');
-        alert("✅ Order Placed!"); cart=[];updateCart();document.querySelectorAll('.svc-item').forEach(e=>e.classList.remove('selected'));
-    }catch(e){alert("Error: "+e.message);}
+function closeConfirmDialog() { document.getElementById('confirmDialog').style.display = 'none'; pendingOrderData = null; }
+function confirmAndGeneratePDF() {
+    if (!pendingOrderData) { alert('❌ Error: No order data available!'); return; }
+    const orderData = JSON.parse(JSON.stringify(pendingOrderData));
+    closeConfirmDialog();
+    setTimeout(() => { generatePDF(orderData); }, 100);
 }
 
-async function viewBackups(){
-  const pin=prompt("🔐 Backup PIN:"); if(pin!=="dnhq_backup_2026")return alert("❌ Wrong");
-  document.getElementById('backupList').innerHTML='<div class="loading">Loading...</div>';
-  document.getElementById('backupModal').style.display='block';
-  try{const r=await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);const b=await r.json();if(b.error)throw b.error;
-  if(!b.length){document.getElementById('backupList').innerHTML='<p style="text-align:center;color:#94a3b8;">Empty</p>';return;}
-  document.getElementById('backupList').innerHTML=b.map(x=>`<div class="log-card" style="border-left:4px solid #ef4444;"><b>${x.client||'?'}</b> <small>${formatDate(x.deleted_at)}</small><br>📱 ${x.phone||''}<br>💰 Rs ${(x.total||0).toLocaleString()}<br><button class="pdf-btn" onclick='generatePDF(${JSON.stringify(x).replace(/'/g,"&apos;")})'>📄 PDF</button> <button style="background:#10b981;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;" onclick="restoreBackup('${x.timestamp}')">♻️ Restore</button></div>`).join('');
-  }catch(e){document.getElementById('backupList').innerHTML=`<p style="color:#ef4444;">Error</p>`;}
-}
-function closeBackupModal(){document.getElementById('backupModal').style.display='none';}
-function refreshBackups(){viewBackups();}
-async function exportBackups(){
-  const pin=prompt("🔐 Backup PIN:"); if(pin!=="dnhq_backup_2026")return alert("❌ Wrong");
-  try{const r=await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);const b=await r.json();if(b.error)throw b.error;if(!b.length)return alert("Empty");
-  const h=['Date','Client','Phone','Work','Total','Deleted_At','By','Reason'], csv=[h.join(',')];
-  b.forEach(x=>csv.push([x.date||'',`"${(x.client||'').replace(/"/g,'""')}"`,x.phone||'',`"${(x.work||'').replace(/"/g,'""')}"`,x.total||0,x.deleted_at||'',x.deleted_by||'',`"${(x.delete_reason||'').replace(/"/g,'""')}"`].join(',')));
-  const blob=new Blob([csv.join('\n')],{type:'text/csv'}), url=URL.createObjectURL(blob), a=document.createElement('a');a.href=url;a.download=`DNHQ_Backup_${new Date().toISOString().split('T')[0]}.csv`;a.click();alert("✅ Exported");
-  }catch(e){alert("Error: "+e.message);}
-}
-async function restoreBackup(ts){
-  if(!confirm("♻️ Restore?"))return; const pin=prompt("🔐 PIN:"); if(pin!=="dnhq_backup_2026")return alert("❌ Wrong");
-  try{const r=await fetch(`${SCRIPT_URL}?restoreBackup=true&timestamp=${encodeURIComponent(ts)}&pin=${encodeURIComponent(pin)}`);const j=await r.json();if(j.error)throw j.error;alert("✅ Restored");loadLogs();viewBackups();}catch(e){alert("Error: "+e.message);}
-}
+// ✅ UPDATED: Delete by timestamp + PIN + Reason + Backup
+async function deleteEntry(timestamp) {
+    if(!timestamp) return alert("❌ Error: No order ID!");
 
-function triggerAppInstall(){if(deferredPrompt){document.getElementById('installPrompt').style.display='block';}else{alert("📲 Share > Add to Home Screen");}}
-function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;document.getElementById('installPrompt').style.display='none';}}
-function dismissInstall(){document.getElementById('installPrompt').style.display='none';}
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
+    const order = allOrders.find(o => o.timestamp === timestamp);
+    const client = order?.client || 'Unknown';
 
-function openHistoryModal(){document.getElementById('historyModal').style.display='block';}
-function closeHistoryModal(){document.getElementById('historyModal').style.display='none';resetHistoryView();}
-function resetHistoryView(){document.getElementById('verifyStep').style.display='block';document.getElementById('showStep').style.display='none';document.getElementById('histPhone').value='';currentCustData=null;}
+    const confirmMsg = `🗑️ Delete Order?\n\nClient: ${client}\n\nThis will:\n1. Save to Backup Sheet\n2. Delete from Main Sheet\n\nContinue?`;
+    if(!confirm(confirmMsg)) return;
 
-async function fetchCustomerHistory(){
-    const ph=document.getElementById('histPhone').value.trim(), err=document.getElementById('histError');
-    if(!ph){err.textContent="Enter phone";err.style.display='block';return;} err.style.display='none';
-    document.getElementById('histList').innerHTML='<div class="loading">Loading...</div>';
-    try{const r=await fetch(`${SCRIPT_URL}?getHistory=true&phone=${encodeURIComponent(ph)}`);const d=await r.json();if(d.error)throw d.error;if(!d?.length){err.textContent="❌ No records";err.style.display='block';return;}
-    currentCustData=d;document.getElementById('verifyStep').style.display='none';document.getElementById('showStep').style.display='block';
-    const ts=d.reduce((s,o)=>s+(parseFloat(o.total)||0),0);
-    document.getElementById('custInfo').innerHTML=`<b>👤 ${d[0].client||'?'}</b><br><b class="phone">📱 ${ph}</b><br><b>Orders:</b> ${d.length} | <b>Total:</b> Rs ${ts.toLocaleString()}`;
-    document.getElementById('histList').innerHTML=d.slice().reverse().map((o,i)=>`<div class="history-item"><b>#${d.length-i} • ${formatDate(o.date||o.timestamp)}</b><small>👤 ${o.client||'?'}</small><small class="phone">📱 ${o.phone||ph}</small><small>🔧 ${(o.work||"").substring(0,60)}</small><span class="amt">${(parseFloat(o.balance_due)||0)>0?'Due: Rs '+(parseFloat(o.balance_due)||0).toLocaleString():'✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 PDF</button></div>`).join('');
-    document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(b=>{b.onclick=function(){const o=JSON.parse(this.dataset.order.replace(/&apos;/g,"'"));showConfirmDialog(o);};});
-    }catch(e){err.textContent="Error";err.style.display='block';}
+    const pin = prompt("🔐 Enter Admin Delete PIN:");
+    if(pin !== "dnhq_delete_2026") {
+        alert("❌ Wrong PIN! Deletion cancelled.");
+        return;
+    }
+
+    const reason = prompt("📝 Delete Reason (optional):", "Admin request") || "No reason";
+
+    try {
+        const url = `${SCRIPT_URL}?deleteRow=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}&reason=${encodeURIComponent(reason)}`;
+        const res = await fetch(url, { method: 'GET' });
+        const result = await res.json();
+
+        if(result.error) throw new Error(result.error);
+
+        alert(`✅ Order deleted & backed up!\n\nBackup saved in "Deleted_Orders" sheet`);
+        loadLogs();
+
+    } catch(e) {
+        alert("❌ Delete Error: " + e.message);
+    }
 }
 
-function downloadCustomerHistoryPDF(){
-    if(!currentCustData?.length)return alert("No data");
-    const J=getJsPDFConstructor();if(!J)return alert('PDF lib missing');
-    const doc=new J(), c=currentCustData[0], gt=currentCustData.reduce((s,o)=>s+(parseFloat(o.total)||0),0);
-    doc.setFillColor(0,0,0);doc.rect(0,0,210,45,'F');
-    getImageDataForPDF(document.getElementById('brandLogo')).then(img=>{if(img)doc.addImage(img,'JPEG',15,8,30,30);
-    doc.setTextColor(251,191,36);doc.setFontSize(20);doc.setFont("helvetica","bold");doc.text("DNHQ SERVICES",55,22);
-    doc.setTextColor(0,0,0);doc.setFontSize(9);doc.text("HISTORY",55,28);doc.setFontSize(10);doc.text("Phone: "+c.phone,15,52);
-    const rows=currentCustData.map(o=>[formatDate(o.date||o.timestamp),(o.work||"").substring(0,30),"Rs "+(parseFloat(o.total)||0).toLocaleString()]);
-    doc.autoTable({startY:64,head:[['DATE','SERVICE','AMOUNT']],body:rows,theme:'grid',headStyles:{fillColor:[0,0,0]},styles:{fontSize:8}});
-    let y=doc.lastAutoTable.finalY+12;doc.setDrawColor(251,191,36);doc.line(110,y-4,195,y-4);doc.setFontSize(12);doc.text("TOTAL:",115,y);doc.text("Rs "+gt.toLocaleString(),195,y,{align:'right'});
-    doc.save(`DNHQ_History_${c.phone}.pdf`);});
+// ✅ NEW: View backups
+async function viewBackups() {
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") {
+    alert("❌ Wrong PIN!");
+    return;
+  }
+
+  document.getElementById('backupList').innerHTML = '<div class="loading">Loading backups...</div>';
+  document.getElementById('backupModal').style.display = 'block';
+
+  try {
+    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
+    const backups = await res.json();
+
+    if(backups.error) throw new Error(backups.error);
+    if(backups.length === 0) {
+      document.getElementById('backupList').innerHTML = '<p style="text-align:center;color:#94a3b8;">No deleted orders found.</p>';
+      return;
+    }
+
+    document.getElementById('backupList').innerHTML = backups.map(b => `
+      <div class="log-card" style="border-left:4px solid #ef4444;">
+        <div style="display:flex;justify-content:space-between;align-items:start;">
+          <div>
+            <b style="color:white;">${b.client || 'Unknown'}</b>
+            <span class="badge badge-manual">📝 ${b.order_source}</span>
+          </div>
+          <small style="color:#94a3b8;">${formatDate(b.deleted_at)}</small>
+        </div>
+        <small class="phone">📱 ${b.phone || 'N/A'}</small>
+        <small style="color:#94a3b8;display:block;margin:5px 0;">🔧 ${(b.work||"").substring(0,40)}...</small>
+        <small style="color:#ef4444;display:block;margin:5px 0;">❌ Deleted by: ${b.deleted_by}</small>
+        <small style="color:#64748b;display:block;margin:5px 0;">📝 Reason: ${b.delete_reason}</small>
+        <small style="color:#fbbf24;display:block;margin:5px 0;">💰 Total: Rs ${(b.total||0).toLocaleString()}</small>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="pdf-btn" onclick="generatePDF(${JSON.stringify(b).replace(/'/g,"&apos;")})">📄 PDF</button>
+          <button class="btn-confirm" style="padding:5px 12px;font-size:11px;" onclick="restoreBackup('${b.timestamp}')">♻️ Restore</button>
+        </div>
+      </div>
+    `).join('');
+
+  } catch(e) {
+    document.getElementById('backupList').innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
+  }
 }
 
-window.onclick=function(e){if(e.target==document.getElementById('historyModal'))closeHistoryModal();if(e.target==document.getElementById('confirmDialog'))closeConfirmDialog();if(e.target==document.getElementById('complaintModal'))closeComplaintModal();if(e.target==document.getElementById('backupModal'))closeBackupModal();}
+function closeBackupModal() {
+  document.getElementById('backupModal').style.display = 'none';
+}
 
-window.toggleSvc=toggleSvc;window.playVid=playVid;window.openAdmin=openAdmin;window.openHistoryModal=openHistoryModal;window.triggerAppInstall=triggerAppInstall;
-window.generatePDF=generatePDF;window.deleteEntry=deleteEntry;window.fetchCustomerHistory=fetchCustomerHistory;window.downloadCustomerHistoryPDF=downloadCustomerHistoryPDF;
-window.toggleDiscountInput=toggleDiscountInput;window.showConfirmDialog=showConfirmDialog;window.closeConfirmDialog=closeConfirmDialog;window.confirmAndGeneratePDF=confirmAndGeneratePDF;
-window.switchAdminTab=switchAdminTab;window.loadComplaints=loadComplaints;window.contactCustomer=contactCustomer;window.openComplaintModal=openComplaintModal;window.closeComplaintModal=closeComplaintModal;window.submitComplaint=submitComplaint;
-window.filterOrders=filterOrders;window.refreshOrders=refreshOrders;window.addNewManualRow=addNewManualRow;window.saveManualEntry=saveManualEntry;window.loadLogs=loadLogs;window.updateCart=updateCart;
-window.closeHistoryModal=closeHistoryModal;window.resetHistoryView=resetHistoryView;window.installApp=installApp;window.dismissInstall=dismissInstall;window.placeOrder=placeOrder;
-window.viewBackups=viewBackups;window.closeBackupModal=closeBackupModal;window.refreshBackups=refreshBackups;window.exportBackups=exportBackups;window.restoreBackup=restoreBackup;
-window.checkPendingBalance=checkPendingBalance;window.addPendingToBill=addPendingToBill;
+function refreshBackups() {
+  viewBackups();
+}
 
-document.addEventListener('DOMContentLoaded',()=>{console.log('✅ Ready');updateCart();});
+// ✅ NEW: Export backups to CSV
+async function exportBackups() {
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") {
+    alert("❌ Wrong PIN!");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
+    const backups = await res.json();
+
+    if(backups.error) throw new Error(backups.error);
+    if(backups.length === 0) {
+      alert("No backups to export!");
+      return;
+    }
+
+    // Create CSV
+    const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason'];
+    const csv = [headers.join(',')];
+
+    backups.forEach(b => {
+      csv.push([
+        b.date||'',
+        `"${(b.client||'').replace(/"/g,'""')}"`,
+        b.phone||'',
+        `"${(b.work||'').replace(/"/g,'""')}"`,
+        b.total||0,
+        b.deleted_at||'',
+        b.deleted_by||'',
+        `"${(b.delete_reason||'').replace(/"/g,'""')}"`
+      ].join(','));
+    });
+
+    // Download
+    const blob = new Blob([csv.join('\n')], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `DNHQ_Backups_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+
+    alert(`✅ Exported ${backups.length} backup records!`);
+
+  } catch(e) {
+    alert("Export Error: " + e.message);
+  }
+}
+
+// ✅ NEW: Restore from backup
+async function restoreBackup(timestamp) {
+  if(!confirm("♻️ Restore this deleted order?\n\nIt will be added back to your main orders.")) return;
+
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") {
+    alert("❌ Wrong PIN!");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${SCRIPT_URL}?restoreBackup=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}`);
+    const result = await res.json();
+
+    if(result.error) throw new Error(result.error);
+
+    alert("✅ Order restored successfully!");
+    loadLogs(); // Refresh main orders
+    viewBackups(); // Refresh backup list
+
+  } catch(e) {
+    alert("Restore Error: " + e.message);
+  }
+}
+
+async function generatePDF(order) {
+    if (!order) { alert('❌ Error: Order data is missing!'); return; }
+    if (typeof order !== 'object') { alert('❌ Error: Order is not a valid object!'); return; }
+
+    try {
+        const JsPDFConstructor = getJsPDFConstructor();
+        if (!JsPDFConstructor) { alert('❌ jsPDF library not loaded!'); return; }
+        const doc = new JsPDFConstructor();
+        const client = order.client ? String(order.client) : 'Customer';
+        const phone = order.phone ? String(order.phone) : 'N/A';
+        const orderDate = order.date || order.timestamp || new Date().toISOString();
+        const work = order.work ? String(order.work) : 'No work specified';
+
+        doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 45, 'F');
+        try { const imgData = await getImageDataForPDF(document.getElementById('brandLogo')); if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30); } catch (e) {}
+
+        doc.setTextColor(251, 191, 36); doc.setFontSize(24); doc.setFont("helvetica", "bold"); doc.text("DNHQ SERVICES", 55, 24);
+        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(255, 255, 255); doc.text("Professional Electrical & AC Maintenance", 55, 31);
+        doc.setTextColor(0, 0, 0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
+        doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("INVOICE", 105, 72, { align: "center" });
+
+        let items = work.split(", ");
+        let body = items.map(item => { if (item.includes("(Rs ")) { let parts = item.split(" (Rs "); return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()]; } return [item.trim(), "-"]; });
+
+        doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
+
+        let finalY = doc.lastAutoTable.finalY + 10;
+        const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
+        const discount = parseFloat(order.discount_amount) || 0;
+        const advance = parseFloat(order.advance) || 0;
+        const totalAfterDiscount = subtotal - discount;
+        const balanceDue = totalAfterDiscount - advance;
+
+        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150); doc.text("Subtotal:", 115, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7;
+        if (discount > 0) { doc.setTextColor(16, 185, 129); doc.text(order.discount_text + " Discount:", 115, finalY); doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7; doc.setTextColor(150, 150, 150); }
+        doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0); doc.text("Total:", 115, finalY); doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10;
+        if (advance > 0) { doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(10); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold"); doc.text("Advance Received:", 115, finalY); doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10; }
+
+        doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+        if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
+        else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
+
+        const footerY = 280; doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY); doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
+        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" }); doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" }); doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
+
+        const cname = client.replace(/[^a-z0-9]/gi, '_');
+        const dateStr = formatDate(orderDate).replace(/[^a-z0-9]/gi, '_');
+        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
+    } catch (error) { alert('❌ PDF Generation Failed: ' + error.message); }
+}
+
+async function placeOrder() {
+    if(cart.length === 0) return alert("Select at least one service!");
+    const name = prompt("Customer Name:")?.trim();
+    const phone = prompt("Phone (03XX-XXXXXXX):")?.trim();
+    if(!name || !phone) { alert("Name and Phone required!"); return; }
+    const total = cart.reduce((a, b) => a + (b.price || 0), 0);
+    const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
+
+    const payload = { 
+        date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, 
+        subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', 
+        advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received',
+        order_source: 'website'
+    };
+
+    try {
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+
+        const waText = `*🔔 NEW WEBSITE ORDER*%0A%0A*👤 Customer:* ${name}%0A*📱 Phone:* ${phone}%0A*🛠️ Services:* ${workFormatted}%0A*💰 Total:* Rs ${total}%0A%0A*📍 Source:* Website Order`;
+        window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${waText}`, '_blank');
+
+        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
+
+        cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
+    } catch(e) { alert("Error: " + e.message); }
+}
+
+function triggerAppInstall() { if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; } else { alert("📲 Tap Share → Add to Home Screen"); } }
+function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }
+function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+
+function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
+function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
+function resetHistoryView() { document.getElementById('verifyStep').style.display = 'block'; document.getElementById('showStep').style.display = 'none'; document.getElementById('histPhone').value = ''; document.getElementById('histError').style.display = 'none'; currentCustData = null; }
+
+async function fetchCustomerHistory() {
+    const phone = document.getElementById('histPhone').value.trim(); const err = document.getElementById('histError');
+    if (!phone) { err.textContent = "Enter phone number"; err.style.display = 'block'; return; }
+    err.style.display = 'none'; document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
+    try {
+        const url = `${SCRIPT_URL}?getHistory=true&phone=${encodeURIComponent(phone)}`;
+        const res = await fetch(url); const data = await res.json();
+        if (data.error) throw new Error(data.error); if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
+        currentCustData = data; document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block';
+        const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
+        document.getElementById('custInfo').innerHTML = `<b>👤 ${data[0].client || 'Customer'}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${o.client || 'Customer'}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${parseFloat(o.discount_amount) > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${parseFloat(o.discount_amount).toLocaleString()}</small>` : ''}${parseFloat(o.advance) > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${parseFloat(o.advance).toLocaleString()}</small>` : ''}<span class="amt">${parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 Download</button></div>`).join('');
+        document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => { btn.onclick = function() { const order = JSON.parse(this.dataset.order.replace(/&apos;/g, "'")); showConfirmDialog(order); }; });
+    } catch (e) { err.textContent = "Error"; err.style.display = 'block'; }
+}
+
+function downloadCustomerHistoryPDF() {
+    if (!currentCustData || currentCustData.length === 0) return alert("No data!");
+    const JsPDFConstructor = getJsPDFConstructor(); if (!JsPDFConstructor) return alert('jsPDF not loaded!');
+    const doc = new JsPDFConstructor(); const cust = currentCustData[0]; const grandTotal = currentCustData.reduce((s,o) => s + (parseFloat(o.total)||0), 0);
+    doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
+    getImageDataForPDF(document.getElementById('brandLogo')).then(imgData => {
+        if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
+        doc.setTextColor(251,191,36); doc.setFontSize(20); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 55, 22);
+        doc.setTextColor(0,0,0); doc.setFontSize(9); doc.text("SERVICE HISTORY", 55, 28); doc.setTextColor(0,0,0); doc.setFontSize(10); doc.text("Phone: " + cust.phone, 15, 52);
+        const rows = currentCustData.map(o => [formatDate(o.date || o.timestamp), (o.work || "").substring(0, 30), "Rs " + (parseFloat(o.total)||0).toLocaleString()]);
+        doc.autoTable({ startY: 64, head: [['DATE','SERVICE','AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0] }, styles: { fontSize: 8 } });
+        let y = doc.lastAutoTable.finalY + 12; doc.setDrawColor(251,191,36); doc.line(110, y-4, 195, y-4); doc.setFontSize(12); doc.text("GRAND TOTAL:", 115, y); doc.text("Rs " + grandTotal.toLocaleString(), 195, y, {align:'right'});
+        doc.save(`DNHQ_History_${cust.phone}.pdf`);
+    });
+}
+
+window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog(); if (e.target == document.getElementById('complaintModal')) closeComplaintModal(); if (e.target == document.getElementById('backupModal')) closeBackupModal(); }
+
+// ✅ Export ALL functions to window
+window.toggleSvc = toggleSvc;
+window.playVid = playVid;
+window.openAdmin = openAdmin;
+window.openHistoryModal = openHistoryModal;
+window.triggerAppInstall = triggerAppInstall;
+window.generatePDF = generatePDF;
+window.deleteEntry = deleteEntry;
+window.fetchCustomerHistory = fetchCustomerHistory;
+window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
+window.toggleDiscountInput = toggleDiscountInput;
+window.showConfirmDialog = showConfirmDialog;
+window.closeConfirmDialog = closeConfirmDialog;
+window.confirmAndGeneratePDF = confirmAndGeneratePDF;
+window.switchAdminTab = switchAdminTab;
+window.loadComplaints = loadComplaints;
+window.contactCustomer = contactCustomer;
+window.openComplaintModal = openComplaintModal;
+window.closeComplaintModal = closeComplaintModal;
+window.submitComplaint = submitComplaint;
+window.filterOrders = filterOrders;
+window.refreshOrders = refreshOrders;
+window.addNewManualRow = addNewManualRow;
+window.saveManualEntry = saveManualEntry;
+window.loadLogs = loadLogs;
+window.updateCart = updateCart;
+window.closeHistoryModal = closeHistoryModal;
+window.resetHistoryView = resetHistoryView;
+window.installApp = installApp;
+window.dismissInstall = dismissInstall;
+window.placeOrder = placeOrder;
+// ✅ Backup functions
+window.viewBackups = viewBackups;
+window.closeBackupModal = closeBackupModal;
+window.refreshBackups = refreshBackups;
+window.exportBackups = exportBackups;
+window.restoreBackup = restoreBackup;
+
+// ✅ Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('✅ DOM Loaded - All functions ready');
+    updateCart();
+});
 </script>
 </body>
 </html>
