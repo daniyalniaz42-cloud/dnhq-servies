@@ -11,6 +11,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<!-- ✅ QR Code Library Added -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
 :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 100px; }
@@ -45,8 +47,7 @@ footer { background: #000; color: #64748b; padding: 15px 20px; text-align: cente
 footer a { color: #fbbf24; text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 .history-btn { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; }
-.modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }
-.modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
+.modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }.modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
 .modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
 .form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
 .verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
@@ -71,6 +72,7 @@ footer a:hover { text-decoration: underline; }
 .badge-manual { background: #64748b; color: white; }
 .badge-discount { background: #10b981; color: white; }
 .badge-advance { background: #3b82f6; color: white; }
+.badge-pending { background: #ef4444; color: white; }
 .order-filters { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
 .order-filter-btn { padding: 10px 20px; border: 1px solid #334155; border-radius: 8px; background: #1e293b; color: #94a3b8; font-size: 14px; font-weight: 600; cursor: pointer; }
 .order-filter-btn.active { border-color: #fbbf24; color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
@@ -94,8 +96,7 @@ footer a:hover { text-decoration: underline; }
 .btn-confirm:hover { background: #059669; }
 .btn-cancel { flex: 1; background: #ef4444; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
 .btn-cancel:hover { background: #dc2626; }
-.admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.admin-tab { flex: 1; min-width: 120px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; }
+.admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }.admin-tab { flex: 1; min-width: 120px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; }
 .admin-tab.active { background: rgba(251, 191, 36, 0.1); border-color: #fbbf24; color: #fbbf24; }
 .admin-tab .count { background: #ef4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px; }
 .complaint-card { background: #1e293b; border: 1px solid #ef4444; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; border-left: 4px solid #ef4444; }
@@ -144,8 +145,7 @@ footer a:hover { text-decoration: underline; }
 <div class="svc-item" onclick="toggleSvc(this, 'Switch Replacement', 200)"><div class="svc-meta"><b>Switch Replacement</b><p>Per Switch</p></div><div class="svc-rate">Rs 200</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Motor Repair', 2500)"><div class="svc-meta"><b>Motor Repair</b><p>Single Phase</p></div><div class="svc-rate">Rs 2,500</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Inverter Installation', 5000)"><div class="svc-meta"><b>Inverter Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 5,000</div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 4000)"><div class="svc-meta"><b>UPS Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 4,000</div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'Circuit Breaker', 1500)"><div class="svc-meta"><b>Circuit Breaker</b><p>Per Phase</p></div><div class="svc-rate">Rs 1,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 4000)"><div class="svc-meta"><b>UPS Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 4,000</div></div><div class="svc-item" onclick="toggleSvc(this, 'Circuit Breaker', 1500)"><div class="svc-meta"><b>Circuit Breaker</b><p>Per Phase</p></div><div class="svc-rate">Rs 1,500</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Voltage Stabilizer', 2000)"><div class="svc-meta"><b>Voltage Stabilizer</b><p>Installation</p></div><div class="svc-rate">Rs 2,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Emergency Repair', 3000)"><div class="svc-meta"><b>Emergency Repair</b><p>24/7 Service</p></div><div class="svc-rate">Rs 7,000</div></div>
@@ -194,9 +194,28 @@ footer a:hover { text-decoration: underline; }
 </div>
 </div>
 <div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
-<input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
+<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5><input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
 </div>
+
+<!-- ✅ PENDING BALANCE CHECK -->
+<div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #10b981;margin:15px 0;">
+  <h4 style="color:#10b981;margin:0 0 10px 0;">💰 Check Pending Balance</h4>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+    <input type="tel" id="pendingPhone" class="man-input" placeholder="Phone: 03XX-XXXXXXX" style="flex:2;margin:0;">
+    <button onclick="checkPendingBalance()" style="background:#10b981;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;">🔍 Check</button>
+  </div>
+  <div id="pendingResult" style="margin-top:15px;display:none;">
+    <div style="background:#0f172a;padding:12px;border-radius:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="color:#94a3b8;">Pending Balance:</span>
+        <span id="pendingAmount" style="color:#ef4444;font-size:18px;font-weight:bold;">Rs 0</span>
+      </div>
+      <div id="pendingOrders" style="margin-top:10px;font-size:12px;color:#94a3b8;"></div>
+      <button onclick="addPendingToBill()" id="addPendingBtn" style="margin-top:10px;width:100%;background:#fbbf24;color:black;border:none;padding:8px;border-radius:6px;font-weight:600;cursor:pointer;">➕ Add Pending to This Bill</button>
+    </div>
+  </div>
+</div>
+
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
 </div>
 
@@ -224,8 +243,7 @@ footer a:hover { text-decoration: underline; }
 <p style="color:#94a3b8;font-size:13px;margin:0 0 15px 0;">Purpose: Track & resolve customer issues (not on WhatsApp)</p>
 <div id="complaintsList" class="loading">Loading complaints...</div>
 </div>
-</div>
-</div>
+</div></div>
 
 <!-- CHECKOUT BAR -->
 <div class="checkout-bar" id="cart">
@@ -274,8 +292,7 @@ footer a:hover { text-decoration: underline; }
 <option value="">Select Complaint Type</option>
 <option value="service">Service Quality</option>
 <option value="billing">Billing Issue</option>
-<option value="technician">Technician Behavior</option>
-<option value="delay">Service Delay</option>
+<option value="technician">Technician Behavior</option><option value="delay">Service Delay</option>
 <option value="other">Other</option>
 </select>
 <textarea id="complaintMessage" class="form-input" placeholder="Describe your complaint..." rows="4" style="background:#0f172a;color:white;resize:vertical;"></textarea>
@@ -324,18 +341,30 @@ footer a:hover { text-decoration: underline; }
 <p style="margin:3px 0;font-size:12px;">© 2026 DNHQ Services</p>
 <p style="margin:2px 0;font-size:12px;">
   📞 <a href="tel:+923152458657" style="color:#fbbf24;text-decoration:none;">+92 315 2458657</a> | 
-  📞 <a href="tel:+923128542993" style="color:#fbbf24;text-decoration:none;">+92 312 8542993</a>
-</p>
+  📞 <a href="tel:+923128542993" style="color:#fbbf24;text-decoration:none;">+92 312 8542993</a></p>
 <p style="margin:2px 0;font-size:11px;color:#64748b;">Call us for any query or complaint</p>
 </footer>
 
 <script>
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
+let currentPendingAmount = 0;
+let currentPendingPhone = '';
 const ADMIN_WHATSAPP = "923152458657";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_G6OSboX01AKPZrQO3vdruAj192MAWngKEYQWHSyjg1rbfKfMFnQnJhN09bzeWap33A/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
-// ✅ All functions defined BEFORE DOMContentLoaded
+// ✅ BANK ACCOUNT DETAILS FOR QR CODES
+const ACCOUNT_1 = { 
+    bank: "JS Bank", 
+    title: "Muhammad Daniyal Niaz", 
+    accountNumber: "0002804407"
+};
+const ACCOUNT_2 = { 
+    bank: "SCB", 
+    title: "Hassan Qureshi", 
+    accountNumber: "01039409301"
+};
+
 function toggleDiscountInput() {
     const type = document.getElementById('discount_type').value;
     const input = document.getElementById('discount_value');
@@ -361,8 +390,7 @@ function formatDate(dateInput) {
                 if (ddmmyyyy) date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
             }
         }
-        if (!date || isNaN(date.getTime())) {
-            return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+        if (!date || isNaN(date.getTime())) {            return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
         }
         return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     } catch (e) {
@@ -412,7 +440,6 @@ function toggleSvc(el, name, price) {
     else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
     updateCart();
 }
-
 function updateCart() {
     const total = cart.reduce((a, b) => a + (b.price || 0), 0);
     const bar = document.getElementById('cart');
@@ -454,19 +481,14 @@ function filterOrders(type) {
     const container = document.getElementById('logItems');
     let filteredData = allOrders;
     
-    console.log('🔍 Filtering:', type);
-    
     if(type === 'website') {
         filteredData = allOrders.filter(d => d.order_source === 'website');
-        console.log('🌐 Website orders:', filteredData.length);
     }
     else if(type === 'manual') {
         filteredData = allOrders.filter(d => d.order_source === 'manual');
-        console.log('📝 Manual orders:', filteredData.length);
     }
     
-    if (filteredData.length === 0) { 
-        container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
+    if (filteredData.length === 0) {         container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
         return; 
     }
     
@@ -485,8 +507,8 @@ function filterOrders(type) {
         let badges = sourceBadge;
         if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'}</span>`;
         if (advance > 0) badges += `<span class="badge badge-advance">💰 Rs ${advance}</span>`;
+        if (balanceDue > 0) badges += `<span class="badge badge-pending">⏳ Pending</span>`;
         
-        // ✅ FIXED: Use timestamp for delete button
         return `<div class="log-card">
             <button class="pdf-btn" data-index="${originalIndex}">📄 PDF</button>
             <b>${d.client || "Unknown"}</b> ${badges}<br>
@@ -510,16 +532,65 @@ function filterOrders(type) {
 }
 
 function refreshOrders() {
-    console.log('🔄 Manual refresh');
     loadLogs();
     alert('🔄 Refreshing orders...');
 }
 
 function addNewManualRow() {
-    const div = document.createElement('div');
-    div.style = "display:flex;gap:10px;margin-bottom:10px;";
+    const div = document.createElement('div');    div.style = "display:flex;gap:10px;margin-bottom:10px;";
     div.innerHTML = '<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;">';
     document.getElementById('manual_works_container').appendChild(div);
+}
+
+async function checkPendingBalance() {
+  const phone = document.getElementById('pendingPhone').value.trim();
+  if(!phone) return alert("Please enter phone number!");
+  
+  currentPendingPhone = phone;
+  document.getElementById('pendingResult').style.display = 'block';
+  document.getElementById('pendingResult').innerHTML = '<div class="loading">Checking...</div>';
+  
+  try {
+    const res = await fetch(`${SCRIPT_URL}?getPendingBalance=true&phone=${encodeURIComponent(phone)}`);
+    const result = await res.json();
+    
+    if(result.error) throw new Error(result.error);
+    
+    currentPendingAmount = result.total_pending || 0;
+    
+    if(currentPendingAmount > 0) {
+      document.getElementById('pendingResult').innerHTML = `
+        <div style="background:#0f172a;padding:12px;border-radius:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:#94a3b8;">Pending Balance:</span>
+            <span id="pendingAmount" style="color:#ef4444;font-size:18px;font-weight:bold;">Rs ${currentPendingAmount.toLocaleString()}</span>
+          </div>
+          <div id="pendingOrders" style="margin-top:10px;font-size:12px;color:#94a3b8;">
+            ${result.pending_orders.map(o => `• ${formatDate(o.date)}: Rs ${o.balance_due.toLocaleString()}`).join('<br>')}
+          </div>
+          <button onclick="addPendingToBill()" id="addPendingBtn" style="margin-top:10px;width:100%;background:#fbbf24;color:black;border:none;padding:8px;border-radius:6px;font-weight:600;cursor:pointer;">➕ Add Pending to This Bill</button>
+        </div>
+      `;
+    } else {
+      document.getElementById('pendingResult').innerHTML = `
+        <div style="background:#0f172a;padding:12px;border-radius:8px;text-align:center;color:#10b981;">
+          ✅ No pending balance for this customer
+        </div>
+      `;
+    }
+  } catch(e) {
+    document.getElementById('pendingResult').innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
+  }
+}
+
+function addPendingToBill() {
+  if(currentPendingAmount <= 0) return;
+  const advanceInput = document.getElementById('advance_payment');
+  const currentAdvance = parseFloat(advanceInput.value) || 0;  const newAdvance = currentAdvance + currentPendingAmount;
+  advanceInput.value = newAdvance;
+  alert(`✅ Rs ${currentPendingAmount.toLocaleString()} pending balance added to advance payment!`);
+  document.getElementById('pendingResult').style.display = 'none';
+  currentPendingAmount = 0;
 }
 
 async function saveManualEntry() {
@@ -559,14 +630,20 @@ async function saveManualEntry() {
     const balanceDue = totalAfterDiscount - advance;
     const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();
     
+    let previousPending = 0;
+    try {
+        const res = await fetch(`${SCRIPT_URL}?getPendingBalance=true&phone=${encodeURIComponent(phone)}`);
+        const result = await res.json();
+        if(!result.error) previousPending = result.total_pending || 0;
+    } catch(e) { console.log('Could not fetch previous pending:', e); }    
     const payload = {
         date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "),
         subtotal: subtotal, discount_type: discountType, discount_value: discountValue,
         discount_amount: discountAmount, discount_text: discountText, advance: advance,
         total: totalAfterDiscount, balance_due: balanceDue, 
-        entry_type: 'order', 
-        order_status: 'received', 
-        order_source: 'manual'
+        entry_type: 'order', order_status: 'received', order_source: 'manual',
+        previous_pending: previousPending,
+        pending_balance: currentPendingAmount > 0 ? 0 : balanceDue
     };
     
     try {
@@ -582,6 +659,8 @@ async function saveManualEntry() {
         document.getElementById('discount_value').style.display = 'none';
         document.getElementById('advance_payment').value = '';
         document.getElementById('manual_works_container').innerHTML = '<div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;"></div>';
+        document.getElementById('pendingResult').style.display = 'none';
+        currentPendingAmount = 0;
         
     } catch(e) { alert("Error: " + e.message); }
 }
@@ -605,10 +684,7 @@ async function loadLogs() {
             .map(d => ({
                 ...d,
                 order_status: d.order_status || 'received',
-                order_source: d.order_source || 'manual'
-            }));
-            
-        console.log('✅ Processed orders:', allOrders.length);
+                order_source: d.order_source || 'manual'            }));
             
         if (allOrders.length === 0) { 
             container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; 
@@ -620,7 +696,6 @@ async function loadLogs() {
         filterOrders('website');
         
     } catch(e) { 
-        console.error('❌ Load Logs Error:', e);
         container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; 
     }
 }
@@ -658,8 +733,7 @@ async function submitComplaint() {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         success.textContent = '✅ Complaint submitted! We will contact you within 24 hours.';
         success.style.display = 'block'; error.style.display = 'none';
-        setTimeout(() => { closeComplaintModal(); }, 3000);
-    } catch(e) { error.textContent = 'Error: ' + e.message; error.style.display = 'block'; }
+        setTimeout(() => { closeComplaintModal(); }, 3000);    } catch(e) { error.textContent = 'Error: ' + e.message; error.style.display = 'block'; }
 }
 
 function showConfirmDialog(order) {
@@ -693,169 +767,25 @@ function confirmAndGeneratePDF() {
     setTimeout(() => { generatePDF(orderData); }, 100);
 }
 
-// ✅ UPDATED: Delete by timestamp + PIN + Reason + Backup
 async function deleteEntry(timestamp) {
     if(!timestamp) return alert("❌ Error: No order ID!");
-    
     const order = allOrders.find(o => o.timestamp === timestamp);
     const client = order?.client || 'Unknown';
-    
     const confirmMsg = `🗑️ Delete Order?\n\nClient: ${client}\n\nThis will:\n1. Save to Backup Sheet\n2. Delete from Main Sheet\n\nContinue?`;
     if(!confirm(confirmMsg)) return;
-    
     const pin = prompt("🔐 Enter Admin Delete PIN:");
-    if(pin !== "dnhq_delete_2026") {
-        alert("❌ Wrong PIN! Deletion cancelled.");
-        return;
-    }
-    
+    if(pin !== "dnhq_delete_2026") { alert("❌ Wrong PIN! Deletion cancelled."); return; }
     const reason = prompt("📝 Delete Reason (optional):", "Admin request") || "No reason";
-    
     try {
         const url = `${SCRIPT_URL}?deleteRow=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}&reason=${encodeURIComponent(reason)}`;
         const res = await fetch(url, { method: 'GET' });
         const result = await res.json();
-        
         if(result.error) throw new Error(result.error);
-        
         alert(`✅ Order deleted & backed up!\n\nBackup saved in "Deleted_Orders" sheet`);
-        loadLogs();
-        
-    } catch(e) {
-        alert("❌ Delete Error: " + e.message);
-    }
+        loadLogs();    } catch(e) { alert("❌ Delete Error: " + e.message); }
 }
 
-// ✅ NEW: View backups
-async function viewBackups() {
-  const pin = prompt("🔐 Enter Backup PIN:");
-  if(pin !== "dnhq_backup_2026") {
-    alert("❌ Wrong PIN!");
-    return;
-  }
-  
-  document.getElementById('backupList').innerHTML = '<div class="loading">Loading backups...</div>';
-  document.getElementById('backupModal').style.display = 'block';
-  
-  try {
-    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
-    const backups = await res.json();
-    
-    if(backups.error) throw new Error(backups.error);
-    if(backups.length === 0) {
-      document.getElementById('backupList').innerHTML = '<p style="text-align:center;color:#94a3b8;">No deleted orders found.</p>';
-      return;
-    }
-    
-    document.getElementById('backupList').innerHTML = backups.map(b => `
-      <div class="log-card" style="border-left:4px solid #ef4444;">
-        <div style="display:flex;justify-content:space-between;align-items:start;">
-          <div>
-            <b style="color:white;">${b.client || 'Unknown'}</b>
-            <span class="badge badge-manual">📝 ${b.order_source}</span>
-          </div>
-          <small style="color:#94a3b8;">${formatDate(b.deleted_at)}</small>
-        </div>
-        <small class="phone">📱 ${b.phone || 'N/A'}</small>
-        <small style="color:#94a3b8;display:block;margin:5px 0;">🔧 ${(b.work||"").substring(0,40)}...</small>
-        <small style="color:#ef4444;display:block;margin:5px 0;">❌ Deleted by: ${b.deleted_by}</small>
-        <small style="color:#64748b;display:block;margin:5px 0;">📝 Reason: ${b.delete_reason}</small>
-        <small style="color:#fbbf24;display:block;margin:5px 0;">💰 Total: Rs ${(b.total||0).toLocaleString()}</small>
-        <div style="margin-top:10px;display:flex;gap:8px;">
-          <button class="pdf-btn" onclick="generatePDF(${JSON.stringify(b).replace(/'/g,"&apos;")})">📄 PDF</button>
-          <button class="btn-confirm" style="padding:5px 12px;font-size:11px;" onclick="restoreBackup('${b.timestamp}')">♻️ Restore</button>
-        </div>
-      </div>
-    `).join('');
-    
-  } catch(e) {
-    document.getElementById('backupList').innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
-  }
-}
-
-function closeBackupModal() {
-  document.getElementById('backupModal').style.display = 'none';
-}
-
-function refreshBackups() {
-  viewBackups();
-}
-
-// ✅ NEW: Export backups to CSV
-async function exportBackups() {
-  const pin = prompt("🔐 Enter Backup PIN:");
-  if(pin !== "dnhq_backup_2026") {
-    alert("❌ Wrong PIN!");
-    return;
-  }
-  
-  try {
-    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
-    const backups = await res.json();
-    
-    if(backups.error) throw new Error(backups.error);
-    if(backups.length === 0) {
-      alert("No backups to export!");
-      return;
-    }
-    
-    // Create CSV
-    const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason'];
-    const csv = [headers.join(',')];
-    
-    backups.forEach(b => {
-      csv.push([
-        b.date||'',
-        `"${(b.client||'').replace(/"/g,'""')}"`,
-        b.phone||'',
-        `"${(b.work||'').replace(/"/g,'""')}"`,
-        b.total||0,
-        b.deleted_at||'',
-        b.deleted_by||'',
-        `"${(b.delete_reason||'').replace(/"/g,'""')}"`
-      ].join(','));
-    });
-    
-    // Download
-    const blob = new Blob([csv.join('\n')], {type: 'text/csv'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `DNHQ_Backups_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    
-    alert(`✅ Exported ${backups.length} backup records!`);
-    
-  } catch(e) {
-    alert("Export Error: " + e.message);
-  }
-}
-
-// ✅ NEW: Restore from backup
-async function restoreBackup(timestamp) {
-  if(!confirm("♻️ Restore this deleted order?\n\nIt will be added back to your main orders.")) return;
-  
-  const pin = prompt("🔐 Enter Backup PIN:");
-  if(pin !== "dnhq_backup_2026") {
-    alert("❌ Wrong PIN!");
-    return;
-  }
-  
-  try {
-    const res = await fetch(`${SCRIPT_URL}?restoreBackup=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}`);
-    const result = await res.json();
-    
-    if(result.error) throw new Error(result.error);
-    
-    alert("✅ Order restored successfully!");
-    loadLogs(); // Refresh main orders
-    viewBackups(); // Refresh backup list
-    
-  } catch(e) {
-    alert("Restore Error: " + e.message);
-  }
-}
-
+// ✅ UPDATED: generatePDF with QR Codes
 async function generatePDF(order) {
     if (!order) { alert('❌ Error: Order data is missing!'); return; }
     if (typeof order !== 'object') { alert('❌ Error: Order is not a valid object!'); return; }
@@ -869,6 +799,7 @@ async function generatePDF(order) {
         const orderDate = order.date || order.timestamp || new Date().toISOString();
         const work = order.work ? String(order.work) : 'No work specified';
         
+        // Header
         doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 45, 'F');
         try { const imgData = await getImageDataForPDF(document.getElementById('brandLogo')); if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30); } catch (e) {}
         
@@ -877,9 +808,9 @@ async function generatePDF(order) {
         doc.setTextColor(0, 0, 0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
         doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("INVOICE", 105, 72, { align: "center" });
         
+        // Services Table
         let items = work.split(", ");
         let body = items.map(item => { if (item.includes("(Rs ")) { let parts = item.split(" (Rs "); return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()]; } return [item.trim(), "-"]; });
-        
         doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
         
         let finalY = doc.lastAutoTable.finalY + 10;
@@ -898,7 +829,61 @@ async function generatePDF(order) {
         if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
         else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
         
-        const footerY = 280; doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY); doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
+        // ✅ QR CODES SECTION
+        finalY += 20;
+        doc.setDrawColor(243, 244, 246);        doc.setFillColor(249, 250, 251);
+        doc.roundedRect(10, finalY, 190, 65, 3, 3, 'FD');
+        
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(15, 23, 42);
+        doc.text("💳 SCAN TO PAY", 105, finalY + 10, { align: "center" });
+        
+        // Generate QR Codes
+        const qr1Text = `Bank: ${ACCOUNT_1.bank}\nAccount Title: ${ACCOUNT_1.title}\nAccount No: ${ACCOUNT_1.accountNumber}`;
+        const qr2Text = `Bank: ${ACCOUNT_2.bank}\nAccount Title: ${ACCOUNT_2.title}\nAccount No: ${ACCOUNT_2.accountNumber}`;
+        
+        const [qr1Img, qr2Img] = await Promise.all([
+            QRCode.toDataURL(qr1Text, { width: 200, margin: 1, color: { dark: '#000000', light: '#ffffff' } }),
+            QRCode.toDataURL(qr2Text, { width: 200, margin: 1, color: { dark: '#000000', light: '#ffffff' } })
+        ]);
+        
+        // Display QR 1 (Left)
+        if(qr1Img) {
+            doc.addImage(qr1Img, 'PNG', 20, finalY + 18, 30, 30);
+            doc.setFontSize(8);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(59, 130, 246);
+            doc.text(ACCOUNT_1.bank, 20, finalY + 52);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(100, 116, 139);
+            doc.text(ACCOUNT_1.title, 20, finalY + 57);
+            doc.text("Acc: " + ACCOUNT_1.accountNumber, 20, finalY + 62);
+        }
+        
+        // Display QR 2 (Right)
+        if(qr2Img) {
+            doc.addImage(qr2Img, 'PNG', 160, finalY + 18, 30, 30);
+            doc.setFontSize(8);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(59, 130, 246);
+            doc.text(ACCOUNT_2.bank, 160, finalY + 52);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(100, 116, 139);
+            doc.text(ACCOUNT_2.title, 160, finalY + 57);
+            doc.text("Acc: " + ACCOUNT_2.accountNumber, 160, finalY + 62);
+        }
+        
+        // Note
+        doc.setFontSize(7);
+        doc.setTextColor(156, 163, 175);
+        doc.text("* Scan QR code with your banking app to pay instantly", 105, finalY + 72, { align: "center" });
+        
+        finalY += 80;
+                // Footer
+        const footerY = finalY;
+        doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY);
+        doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
         doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" }); doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" }); doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
         
         const cname = client.replace(/[^a-z0-9]/gi, '_');
@@ -934,6 +919,73 @@ async function placeOrder() {
     } catch(e) { alert("Error: " + e.message); }
 }
 
+async function viewBackups() {
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
+  document.getElementById('backupList').innerHTML = '<div class="loading">Loading backups...</div>';
+  document.getElementById('backupModal').style.display = 'block';
+  try {
+    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
+    const backups = await res.json();
+    if(backups.error) throw new Error(backups.error);
+    if(backups.length === 0) {
+      document.getElementById('backupList').innerHTML = '<p style="text-align:center;color:#94a3b8;">No deleted orders found.</p>';      return;
+    }
+    document.getElementById('backupList').innerHTML = backups.map(b => `
+      <div class="log-card" style="border-left:4px solid #ef4444;">
+        <div style="display:flex;justify-content:space-between;align-items:start;">
+          <div><b style="color:white;">${b.client || 'Unknown'}</b><span class="badge badge-manual">📝 ${b.order_source}</span></div>
+          <small style="color:#94a3b8;">${formatDate(b.deleted_at)}</small>
+        </div>
+        <small class="phone">📱 ${b.phone || 'N/A'}</small>
+        <small style="color:#94a3b8;display:block;margin:5px 0;">🔧 ${(b.work||"").substring(0,40)}...</small>
+        <small style="color:#ef4444;display:block;margin:5px 0;">❌ Deleted by: ${b.deleted_by}</small>
+        <small style="color:#64748b;display:block;margin:5px 0;">📝 Reason: ${b.delete_reason}</small>
+        <small style="color:#fbbf24;display:block;margin:5px 0;">💰 Total: Rs ${(b.total||0).toLocaleString()}</small>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="pdf-btn" onclick="generatePDF(${JSON.stringify(b).replace(/'/g,"'")})">📄 PDF</button>
+          <button class="btn-confirm" style="padding:5px 12px;font-size:11px;" onclick="restoreBackup('${b.timestamp}')">♻️ Restore</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) { document.getElementById('backupList').innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
+}
+
+function closeBackupModal() { document.getElementById('backupModal').style.display = 'none'; }
+function refreshBackups() { viewBackups(); }
+
+async function exportBackups() {
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
+  try {
+    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
+    const backups = await res.json();
+    if(backups.error) throw new Error(backups.error);
+    if(backups.length === 0) { alert("No backups to export!"); return; }
+    const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason'];
+    const csv = [headers.join(',')];
+    backups.forEach(b => {
+      csv.push([b.date||'', `"${(b.client||'').replace(/"/g,'""')}"`, b.phone||'', `"${(b.work||'').replace(/"/g,'""')}"`, b.total||0, b.deleted_at||'', b.deleted_by||'', `"${(b.delete_reason||'').replace(/"/g,'""')}"`].join(','));
+    });
+    const blob = new Blob([csv.join('\n')], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = `DNHQ_Backups_${new Date().toISOString().split('T')[0]}.csv`; a.click();
+    alert(`✅ Exported ${backups.length} backup records!`);
+  } catch(e) { alert("Export Error: " + e.message); }
+}
+
+async function restoreBackup(timestamp) {
+  if(!confirm("♻️ Restore this deleted order?\n\nIt will be added back to your main orders.")) return;
+  const pin = prompt("🔐 Enter Backup PIN:");
+  if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
+  try {    const res = await fetch(`${SCRIPT_URL}?restoreBackup=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}`);
+    const result = await res.json();
+    if(result.error) throw new Error(result.error);
+    alert("✅ Order restored successfully!");
+    loadLogs(); viewBackups();
+  } catch(e) { alert("Restore Error: " + e.message); }
+}
+
 function triggerAppInstall() { if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; } else { alert("📲 Tap Share → Add to Home Screen"); } }
 function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }
 function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
@@ -954,8 +1006,8 @@ async function fetchCustomerHistory() {
         currentCustData = data; document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block';
         const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
         document.getElementById('custInfo').innerHTML = `<b>👤 ${data[0].client || 'Customer'}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
-        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${o.client || 'Customer'}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${parseFloat(o.discount_amount) > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${parseFloat(o.discount_amount).toLocaleString()}</small>` : ''}${parseFloat(o.advance) > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${parseFloat(o.advance).toLocaleString()}</small>` : ''}<span class="amt">${parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 Download</button></div>`).join('');
-        document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => { btn.onclick = function() { const order = JSON.parse(this.dataset.order.replace(/&apos;/g, "'")); showConfirmDialog(order); }; });
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${o.client || 'Customer'}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${parseFloat(o.discount_amount) > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${parseFloat(o.discount_amount).toLocaleString()}</small>` : ''}${parseFloat(o.advance) > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${parseFloat(o.advance).toLocaleString()}</small>` : ''}<span class="amt">${parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"'")}'>📄 Download</button></div>`).join('');
+        document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => { btn.onclick = function() { const order = JSON.parse(this.dataset.order.replace(/'/g, "'")); showConfirmDialog(order); }; });
     } catch (e) { err.textContent = "Error"; err.style.display = 'block'; }
 }
 
@@ -976,7 +1028,6 @@ function downloadCustomerHistoryPDF() {
 }
 
 window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog(); if (e.target == document.getElementById('complaintModal')) closeComplaintModal(); if (e.target == document.getElementById('backupModal')) closeBackupModal(); }
-
 // ✅ Export ALL functions to window
 window.toggleSvc = toggleSvc;
 window.playVid = playVid;
@@ -1008,18 +1059,15 @@ window.resetHistoryView = resetHistoryView;
 window.installApp = installApp;
 window.dismissInstall = dismissInstall;
 window.placeOrder = placeOrder;
-// ✅ Backup functions
 window.viewBackups = viewBackups;
 window.closeBackupModal = closeBackupModal;
 window.refreshBackups = refreshBackups;
 window.exportBackups = exportBackups;
 window.restoreBackup = restoreBackup;
+window.checkPendingBalance = checkPendingBalance;
+window.addPendingToBill = addPendingToBill;
 
-// ✅ Initialize on load
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('✅ DOM Loaded - All functions ready');
-    updateCart();
-});
+document.addEventListener('DOMContentLoaded', () => { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });
 </script>
 </body>
 </html>
