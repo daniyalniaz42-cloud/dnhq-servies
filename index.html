@@ -2,776 +2,488 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=10">
-<meta name="theme-color" content="#fbbf24">
-<link rel="apple-touch-icon" href="1773452778552.jpeg">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<!-- PDF & QR Libraries -->
+<!-- PDF Libraries - Correct Order -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <style>
-:root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
-body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 100px; }
-.brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
-.logo-main { height: 85px; display: block; margin: 0 auto; border-radius: 10px; }
-.brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
+:root { --gold: #fbbf24; --card: #111827; }
+body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: #f1f5f9; padding-bottom: 100px; }
+.brand-header { background: #000; padding: 30px 20px; text-align: center; border-bottom: 4px solid var(--gold); }
+.logo-main { height: 85px; }
+.brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; }
 .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
-.nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; flex-wrap: wrap; }
-.nav-btn { flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
-.app-download-btn { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-.tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin: 15px 0 20px; cursor: pointer; }
-.section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
-.section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
-.section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-.svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin: 10px 0; padding: 15px; display: flex; justify-content: space-between; cursor: pointer; }
 .svc-item.selected { border: 2px solid var(--gold); background: #000; }
-.svc-meta b { display: block; font-size: 16px; color: white; }
-.svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
-.svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
-.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin: 15px 0; }
-.product-card { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; overflow: hidden; }
-.product-img { width: 100%; height: 180px; object-fit: cover; background: #1f2937; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 40px; }
-.product-info { padding: 15px; }
-.product-info h4 { color: white; margin: 0 0 5px 0; font-size: 16px; }
-.product-info .model { color: #94a3b8; font-size: 13px; margin: 0 0 8px 0; }
-.product-info .specs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-.product-info .spec { background: #1f2937; padding: 3px 8px; border-radius: 4px; font-size: 11px; color: #fbbf24; }
-.product-info .price { font-size: 18px; font-weight: 800; color: #10b981; margin: 8px 0; }
-.product-info .desc { color: #94a3b8; font-size: 12px; margin: 8px 0; line-height: 1.4; }
-.product-info .wa-btn { background: #22c55e; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
-.toggle-btn { width: 100%; background: #1e293b; color: white; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin: 10px 0 20px 0; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-.product-form { background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed var(--gold); }
-.product-form h4 { color: var(--gold); margin: 0 0 15px 0; }
-.product-form .form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-.product-form .form-row input, .product-form .form-row select { flex: 1; min-width: 120px; }
-.product-form textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; margin-bottom: 10px; min-height: 80px; }
-.product-form .btn-submit { background: var(--gold); color: black; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-.upload-section { background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #334155; }
-.upload-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.upload-controls input[type="file"] { flex: 1; min-width: 200px; background: #1e293b; color: white; padding: 8px; border-radius: 6px; border: 1px solid #333; }
-.upload-btn { background: #3b82f6; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; }
-.drive-section { margin-top: 10px; padding-top: 10px; border-top: 1px solid #334155; }
-#adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-.log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
-.del-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-.pdf-btn { background: var(--gold); color: black; border: none; border-radius: 5px; padding: 5px 15px; font-weight: bold; cursor: pointer; float: right; }
-.man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
-.discount-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-.checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 15px 20px; display: none; box-sizing: border-box; z-index: 2000; }
-.btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-footer { background: #000; color: #64748b; padding: 15px 20px; text-align: center; margin-top: 0; }
-footer a { color: #fbbf24; text-decoration: none; }
-.modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }
-.modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
-.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
-.form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
-.verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
-.error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
-.history-item { background: #1e293b; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #fbbf24; }
-.history-item b { color: white; display: block; margin-bottom: 5px; }
-.history-item small { color: #94a3b8; display: block; margin: 3px 0; }
-.history-item .amt { color: #fbbf24; font-weight: 800; font-size: 16px; display: block; margin: 8px 0; }
-.history-item .pdf-sm { background: #3b82f6; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 8px; }
-.admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.admin-tab { flex: 1; min-width: 120px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; }
-.admin-tab.active { background: rgba(251, 191, 36, 0.1); border-color: #fbbf24; color: #fbbf24; }
-.badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 5px; }
+.checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 15px; display: none; }
+.btn-wa { background: #22c55e; color: white; padding: 15px 30px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+.modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); }
+.modal-content { background: #111827; margin: 10% auto; padding: 20px; border: 2px solid var(--gold); border-radius: 15px; width: 90%; max-width: 500px; }
+.modal-close { float: right; font-size: 24px; cursor: pointer; color: #94a3b8; }
+.form-input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; }
+.verify-btn { width: 100%; background: var(--gold); color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; }
+.history-item { background: #1e293b; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid var(--gold); }
+.pdf-sm { background: #3b82f6; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; margin-top: 8px; }
+#adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; padding: 20px; overflow-y: auto; }
+.man-input { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: white; }
+.log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin: 10px 0; }
+.del-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+.pdf-btn { background: var(--gold); color: black; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; float: right; }
+.loading { text-align: center; padding: 20px; color: var(--gold); }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; margin-left: 5px; }
 .badge-website { background: #8b5cf6; color: white; }
 .badge-manual { background: #64748b; color: white; }
-.loading { text-align: center; padding: 20px; color: #fbbf24; }
-@media (max-width: 480px) { .brand-title { font-size: 20px; } .logo-main { height: 70px; } body { padding-bottom: 90px; } }
 </style>
 </head>
 <body>
 
 <header class="brand-header">
-    <img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ">
-    <div class="brand-title">DNHQ SERVICES</div>
+<img src="1773452778552.jpeg" class="logo-main" id="brandLogo">
+<div class="brand-title">DNHQ SERVICES</div>
 </header>
 
 <div class="wrapper">
-    <div class="nav-container">
-        <a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
-        <a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
-    </div>
-    <button class="app-download-btn" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Download App</button>
-    <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
-    <div id="videoBox" style="display:none; margin-bottom:20px;">
-        <video id="myVideo" controls style="width:100%; border-radius:15px;"><source src="tutorial.mp4" type="video/mp4"></video>
-    </div>
-    <button class="history-btn" onclick="openHistoryModal()"><i class="fas fa-clock-rotate-left"></i> Check Service History</button>
+<button onclick="openHistoryModal()" style="width:100%;padding:15px;background:var(--gold);border:none;border-radius:12px;font-weight:800;cursor:pointer;margin:20px 0;">
+<i class="fas fa-clock-rotate-left"></i> Check Service History
+</button>
 
-    <!-- Services -->
-    <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 4000)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 4,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 3000)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 3,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 7000)"><div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 7,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 9000)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 9,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4500)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,500</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, '1 Ton AC Leakage Repair', 6000)"><div class="svc-meta"><b>1 Ton Leakage Repair</b><p>Leak detection</p></div><div class="svc-rate">Rs 6,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, '1.5 Ton AC Leakage Repair', 7000)"><div class="svc-meta"><b>1.5 Ton Leakage Repair</b><p>Leak detection</p></div><div class="svc-rate">Rs 7,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, '2 Ton Gas Charging', 12000)"><div class="svc-meta"><b>2 Ton Gas Charging</b><p>Heavy duty refill</p></div><div class="svc-rate">Rs 12,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, '2 Ton AC Leakage Repair', 8500)"><div class="svc-meta"><b>2 Ton Leakage Repair</b><p>Leak detection</p></div><div class="svc-rate">Rs 8,500</div></div>
-
-    <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Short Circuit Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'DB Dressing', 3000)"><div class="svc-meta"><b>DB Dressing</b><p>Panel Organizing</p></div><div class="svc-rate">Rs 3,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, '1 Room Wiring', 1500)"><div class="svc-meta"><b>1 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 1,500</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, '2 Room Wiring', 2500)"><div class="svc-meta"><b>2 Room Wiring</b><p>Complete Fitting</p></div><div class="svc-rate">Rs 2,500</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Fan Installation', 800)"><div class="svc-meta"><b>Fan Installation</b><p>Per Fan</p></div><div class="svc-rate">Rs 800</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Light Installation', 500)"><div class="svc-meta"><b>Light Installation</b><p>Per Point</p></div><div class="svc-rate">Rs 500</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Socket Replacement', 300)"><div class="svc-meta"><b>Socket Replacement</b><p>Per Socket</p></div><div class="svc-rate">Rs 300</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Switch Replacement', 200)"><div class="svc-meta"><b>Switch Replacement</b><p>Per Switch</p></div><div class="svc-rate">Rs 200</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Motor Repair', 2500)"><div class="svc-meta"><b>Motor Repair</b><p>Single Phase</p></div><div class="svc-rate">Rs 2,500</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Inverter Installation', 5000)"><div class="svc-meta"><b>Inverter Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 5,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 4000)"><div class="svc-meta"><b>UPS Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 4,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Circuit Breaker', 1500)"><div class="svc-meta"><b>Circuit Breaker</b><p>Per Phase</p></div><div class="svc-rate">Rs 1,500</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Voltage Stabilizer', 2000)"><div class="svc-meta"><b>Voltage Stabilizer</b><p>Installation</p></div><div class="svc-rate">Rs 2,000</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Complete Home Wiring', 0)"><div class="svc-meta"><b>Complete Wiring</b><p>Area Based</p></div><div class="svc-rate">Rate/Sq.Ft</div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Emergency Repair', 3000)"><div class="svc-meta"><b>Emergency Repair</b><p>24/7 Service</p></div><div class="svc-rate">Rs 7,000</div></div>
-
-    <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
-    <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Full Charging</p></div><div class="svc-rate">Rs 5,500</div></div>
-
-    <!-- Products Section -->
-    <div class="section-tag"><h2>🔥 Second Hand AC Sale</h2><div class="section-line"></div></div>
-    <div id="productsContainer" class="loading">Loading products...</div>
-    <button onclick="loadProducts()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:10px;border-radius:8px;margin:15px 0;">🔄 Refresh Products</button>
-    <button class="toggle-btn" onclick="toggleProductsSection()" id="toggleProductsBtn">👁️ Hide Products Section</button>
+<!-- Services -->
+<div class="svc-item" onclick="toggleSvc(this, 'AC Service', 4000)">
+<div><b>AC Master Service</b><p style="color:#94a3b8;margin:5px 0 0 0;">Chemical Wash</p></div>
+<div style="font-weight:800;color:var(--gold);">Rs 4,000</div>
 </div>
-
-<!-- Admin Panel -->
-<div id="adminView">
-    <div style="display:flex;justify-content:space-between;margin-bottom:20px;">
-        <h2 style="color:gold;margin:0;">DNHQ DASHBOARD</h2>
-        <button onclick="document.getElementById('adminView').style.display='none'" style="background:red;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;">CLOSE</button>
-    </div>
-    <div class="admin-tabs">
-        <div class="admin-tab active" onclick="switchAdminTab('orders')" id="tab-orders">📄 Orders</div>
-        <div class="admin-tab" onclick="switchAdminTab('products')" id="tab-products">🛒 Products</div>
-        <div class="admin-tab" onclick="switchAdminTab('complaints')" id="tab-complaints">⚠️ Complaints</div>
-    </div>
-
-    <!-- Orders Section -->
-    <div id="ordersSection">
-        <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px dashed var(--gold);margin-bottom:25px;">
-            <h4 style="color:var(--gold);margin:0 0 10px 0;">💵 CREATE MANUAL BILL</h4>
-            <input type="date" id="man_date" class="man-input" placeholder="Date (Optional)">
-            <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
-            <input type="tel" id="man_phone" class="man-input" placeholder="Phone: 03XX-XXXXXXX">
-            <div id="manual_works_container"><div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;"></div></div>
-            <button onclick="addNewManualRow()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:8px;border-radius:8px;margin-bottom:15px;">+ Add More Work</button>
-            <div class="discount-row"><select id="discount_type" onchange="toggleDiscountInput()"><option value="none">No Discount</option><option value="percent">% Percentage</option><option value="fixed">Rs Fixed</option></select><input type="number" id="discount_value" class="man-input" placeholder="Value" style="display:none;"></div>
-            <input type="number" id="advance_payment" class="man-input" placeholder="Advance Payment (Optional)">
-            <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
-        </div>
-        <div class="order-filters">
-            <button class="admin-tab active" onclick="filterOrders('website')">🌐 Website Orders</button>
-            <button class="admin-tab" onclick="filterOrders('manual')">📝 Manual Orders</button>
-            <button class="admin-tab" onclick="refreshOrders()">🔄 Refresh</button>
-        </div>
-        <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #3b82f6;margin:15px 0;">
-            <h4 style="color:#3b82f6;margin:0 0 10px 0;">🗂️ Backup Controls</h4>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <button class="admin-tab" onclick="viewBackups()">🗂️ View Backups</button>
-                <button class="admin-tab" onclick="exportBackups()">📥 Export Backups</button>
-            </div>
-        </div>
-        <div id="logItems" class="loading">Loading...</div>
-    </div>
-
-    <!-- Products Section -->
-    <div id="productsSection" style="display:none;">
-        <div class="product-form">
-            <h4>➕ Add New Second Hand AC</h4>
-            <div class="form-row"><input type="text" id="prod_name" class="man-input" placeholder="Product Name*" style="flex:2;"><input type="text" id="prod_model" class="man-input" placeholder="Model" style="flex:2;"><input type="text" id="prod_ton" class="man-input" placeholder="Ton" style="flex:1;"></div>
-            <div class="form-row"><select id="prod_condition" class="man-input"><option value="">Condition</option><option value="Excellent">⭐ Excellent</option><option value="Good">✅ Good</option><option value="Fair">🔧 Fair</option></select><input type="number" id="prod_price" class="man-input" placeholder="Price (Rs)*" style="flex:1;"></div>
-            <div class="upload-section">
-                <label>📸 Product Image</label>
-                <div class="upload-controls">
-                    <input type="file" id="prod_file" accept="image/*">
-                    <button onclick="uploadImage()" id="uploadBtn" class="upload-btn">📤 Upload</button>
-                </div>
-                <div id="uploadStatus" style="margin-top:8px;font-size:12px;color:#94a3b8;"></div>
-                <input type="hidden" id="prod_image_url">
-                <div class="drive-section">
-                    <small>📁 <b>50MB+ Image?</b> Google Drive link paste karein:</small>
-                    <input type="text" id="prod_drive_link" class="man-input" placeholder="https://drive.google.com/...">
-                </div>
-            </div>
-            <textarea id="prod_desc" placeholder="Description"></textarea>
-            <button onclick="saveProduct()" class="btn-submit">💾 Add Product</button>
-        </div>
-        <h4 style="color:#94a3b8;margin:20px 0 10px;">📦 Existing Products</h4>
-        <div id="adminProductsList" class="loading">Loading...</div>
-    </div>
-
-    <!-- Complaints Section -->
-    <div id="complaintsSection" style="display:none;">
-        <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #ef4444;margin-bottom:25px;">
-            <h4 style="color:#ef4444;margin:0 0 10px 0;">⚠️ Customer Complaints</h4>
-            <div id="complaintsList" class="loading">Loading...</div>
-        </div>
-    </div>
+<div class="svc-item" onclick="toggleSvc(this, 'AC Gas', 7000)">
+<div><b>AC Gas (1 Ton)</b><p style="color:#94a3b8;margin:5px 0 0 0;">Full Refill</p></div>
+<div style="font-weight:800;color:var(--gold);">Rs 7,000</div>
+</div>
 </div>
 
 <!-- Checkout Bar -->
 <div class="checkout-bar" id="cart">
-    <div style="display:flex;justify-content:space-between;align-items:center;max-width:600px;margin:0 auto;">
-        <div><small style="color:#94a3b8;">Total Bill</small><div style="font-size:20px;font-weight:900;">Rs <span id="billTotal">0</span></div></div>
-        <button class="btn-wa" onclick="placeOrder()"><i class="fab fa-whatsapp"></i> PLACE ORDER</button>
-    </div>
+<div style="display:flex;justify-content:space-between;max-width:600px;margin:0 auto;">
+<div><small style="color:#94a3b8;">Total Bill</small><div style="font-size:20px;font-weight:900;">Rs <span id="billTotal">0</span></div></div>
+<button class="btn-wa" onclick="placeOrder()"><i class="fab fa-whatsapp"></i> PLACE ORDER</button>
+</div>
 </div>
 
 <!-- History Modal -->
 <div id="historyModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeHistoryModal()">&times;</span>
-        <div id="verifyStep">
-            <h3 style="text-align:center;color:#fbbf24;">🔐 Check Service History</h3>
-            <input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
-            <button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
-            <div id="histError" class="error-msg"></div>
-        </div>
-        <div id="showStep" style="display:none;">
-            <h3 style="text-align:center;color:#fbbf24;">📜 Service History</h3>
-            <div id="custInfo" style="background:#0f172a;padding:12px;border-radius:8px;margin-bottom:15px;"></div>
-            <div id="histList" style="max-height:300px;overflow-y:auto;"></div>
-            <div class="action-row">
-                <button class="admin-tab" onclick="downloadCustomerHistoryPDF()">📥 Download PDF</button>
-                <button class="admin-tab" onclick="resetHistoryView()">🔍 New Search</button>
-            </div>
-        </div>
-    </div>
+<div class="modal-content">
+<span class="modal-close" onclick="closeHistoryModal()">&times;</span>
+<div id="verifyStep">
+<h3 style="text-align:center;color:var(--gold);">🔐 Check Service History</h3>
+<input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
+<button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
+<div id="histError" style="color:#ef4444;text-align:center;margin:10px 0;display:none;"></div>
+</div>
+<div id="showStep" style="display:none;">
+<h3 style="text-align:center;color:var(--gold);">📜 Service History</h3>
+<div id="custInfo" style="background:#0f172a;padding:12px;border-radius:8px;margin:15px 0;"></div>
+<div id="histList" style="max-height:300px;overflow-y:auto;"></div>
+<button onclick="downloadCustomerHistoryPDF()" style="width:100%;background:#22c55e;color:white;border:none;padding:12px;border-radius:8px;margin-top:15px;font-weight:bold;">📥 Download All (PDF)</button>
+</div>
+</div>
 </div>
 
-<!-- Complaint Modal -->
-<div id="complaintModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeComplaintModal()">&times;</span>
-        <h3 style="text-align:center;color:#ef4444;">⚠️ Submit Complaint</h3>
-        <input type="text" id="complaintName" class="form-input" placeholder="Your Name">
-        <input type="tel" id="complaintPhone" class="form-input" placeholder="Phone">
-        <select id="complaintType" class="form-input"><option value="">Select Type</option><option value="service">Service Quality</option><option value="billing">Billing Issue</option><option value="technician">Technician Behavior</option><option value="delay">Service Delay</option></select>
-        <textarea id="complaintMessage" class="form-input" placeholder="Describe complaint..." rows="4"></textarea>
-        <button onclick="submitComplaint()" style="width:100%;background:#ef4444;color:white;font-weight:bold;border:none;padding:14px;border-radius:10px;">📤 Submit</button>
-        <div id="complaintError" class="error-msg"></div>
-    </div>
-</div>
-
-<!-- Confirm Modal -->
+<!-- Confirm Dialog -->
 <div id="confirmDialog" class="modal">
-    <div class="modal-content">
-        <div class="confirm-header"><h3>📋 CONFIRM BILL DETAILS</h3></div>
-        <div class="confirm-body" id="confirmBody"></div>
-        <div class="confirm-footer"><button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button><button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & PDF</button></div>
-    </div>
+<div class="modal-content">
+<h3 style="color:var(--gold);margin:0 0 20px 0;">📋 CONFIRM BILL</h3>
+<div id="confirmBody"></div>
+<div style="display:flex;gap:10px;margin-top:20px;">
+<button onclick="closeConfirmDialog()" style="flex:1;background:#ef4444;color:white;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">❌ Cancel</button>
+<button onclick="confirmAndGeneratePDF()" style="flex:1;background:#10b981;color:white;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">✅ Confirm & PDF</button>
+</div>
+</div>
 </div>
 
-<!-- Backup Modal -->
-<div id="backupModal" class="modal">
-    <div class="modal-content" style="max-width:700px;">
-        <span class="modal-close" onclick="closeBackupModal()">&times;</span>
-        <h3 style="text-align:center;color:#3b82f6;">🗂️ Deleted Orders Backup</h3>
-        <div id="backupList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
-        <div style="display:flex;gap:10px;"><button class="admin-tab" onclick="closeBackupModal()">Close</button><button class="admin-tab" onclick="refreshBackups()">🔄 Refresh</button></div>
-    </div>
+<!-- Admin Panel -->
+<div id="adminView">
+<h2 style="color:var(--gold);">DNHQ DASHBOARD</h2>
+<button onclick="document.getElementById('adminView').style.display='none'" style="background:red;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;float:right;">CLOSE</button>
+<div style="clear:both;margin:20px 0;">
+<input type="text" id="man_name" class="man-input" placeholder="Customer Name">
+<input type="tel" id="man_phone" class="man-input" placeholder="Phone">
+<input type="text" class="man-input" placeholder="Work Description" id="man_work">
+<input type="number" class="man-input" placeholder="Amount (Rs)" id="man_amount">
+<button onclick="saveManualOrder()" style="width:100%;background:var(--gold);color:black;border:none;padding:12px;border-radius:8px;font-weight:bold;margin-top:10px;">💾 SAVE ORDER</button>
+</div>
+<div id="logItems" class="loading">Loading...</div>
 </div>
 
-<footer>
-    <div onclick="openAdmin()" style="cursor:pointer;font-size:11px;opacity:0.5;">Admin Access</div>
-    <p style="margin:3px 0;font-size:12px;">© 2026 DNHQ Services</p>
-    <p style="margin:2px 0;font-size:12px;">📞 <a href="tel:+923152458657">+92 315 2458657</a> | 📞 <a href="tel:+923128542993">+92 312 8542993</a></p>
+<footer style="text-align:center;padding:20px;color:#64748b;">
+<div onclick="openAdmin()" style="cursor:pointer;font-size:11px;opacity:0.5;">Admin Access</div>
+<p>© 2026 DNHQ Services | 📞 +92 315 2458657</p>
 </footer>
 
 <script>
-// ✅ CONFIGURATION
-let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
-const ADMIN_WHATSAPP = "923152458657";
-// 👇👇 YAHAN APNA WEB APP URL PASTE KAREIN 👇👇👇
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcUhOOO6Pn4QlSr2eMeTv3y-iKlUGOSsJLRCr1yZnvSHJZjFUyItyiItGQr8tJV_3mJw/exec"; 
-const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
-const ACCOUNT_1 = { bank: "JS Bank", title: "Muhammad Daniyal Niaz", accountNumber: "0002804407" };
-const ACCOUNT_2 = { bank: "SCB", title: "Hassan Qureshi", accountNumber: "01039409301" };
+// ✅ CONFIG
+let cart = [], currentCustData = null, pendingOrderData = null, allOrders = [];
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzaKx8K_lExSVwpk5TaH2HUFoZ_DkAll3wRxTVnG1pX5E7p7ThMJ3-r4kwpcoPGMIyJ7A/exec"; // 👈 Yahan apna URL paste karein
+const PHONE = "+92 315 2458657";
 
-// ✅ UTILITY FUNCTIONS
-function toggleDiscountInput() { document.getElementById('discount_value').style.display = document.getElementById('discount_type').value === 'none' ? 'none' : 'block'; }
-function formatDate(d) { if(!d) return 'N/A'; try { return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-'); } catch(e) { return d; } }
-function getJsPDFConstructor() { return window.jspdf?.jsPDF || window.jspdf || window.jsPDF || null; }
-function getImageDataForPDF(imgElement) { return new Promise((resolve) => { try { if (!imgElement?.src || !imgElement.complete || imgElement.naturalWidth === 0) return resolve(null); const c = document.createElement('canvas'), ctx = c.getContext('2d'), s = Math.min(1, 200 / imgElement.naturalWidth); c.width = imgElement.naturalWidth * s; c.height = imgElement.naturalHeight * s; ctx.drawImage(imgElement, 0, 0, c.width, c.height); resolve(c.toDataURL('image/jpeg', 0.9)); } catch (e) { resolve(null); } }); }
-function playVid() { const b=document.getElementById('videoBox'), v=document.getElementById('myVideo'); b.style.display=b.style.display==="none"?"block":"none"; b.style.display==="block"?v.play():v.pause(); }
-
-// ✅ SERVICES & CART
-function toggleSvc(el, name, price) { const idx = cart.findIndex(c => c.name === name); if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); } updateCart(); }
-function updateCart() { const total = cart.reduce((a, b) => a + (b.price || 0), 0); const bar = document.getElementById('cart'); if(bar) { bar.style.display = cart.length > 0 ? 'block' : 'none'; document.getElementById('billTotal').innerText = total.toLocaleString(); } }
-
-// ✅ ADMIN UI
-function openAdmin() { const pin = prompt("Enter Admin PIN:"); if(pin === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); } else if(pin) alert("Wrong PIN!"); }
-function switchAdminTab(tab) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.getElementById('tab-' + tab).classList.add('active'); ['ordersSection', 'productsSection', 'complaintsSection'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; }); if(tab === 'orders') { document.getElementById('ordersSection').style.display = 'block'; loadLogs(); } else if(tab === 'products') { document.getElementById('productsSection').style.display = 'block'; loadAdminProducts(); } else if(tab === 'complaints') { document.getElementById('complaintsSection').style.display = 'block'; loadComplaints(); } }
-
-function filterOrders(type) { 
-    document.querySelectorAll('.order-filters .admin-tab').forEach(btn => btn.classList.remove('active')); 
-    event.target.classList.add('active'); 
-    const container = document.getElementById('logItems'); 
-    let filteredData = allOrders; 
-    if(type === 'website') filteredData = allOrders.filter(d => d.order_source === 'website'); 
-    else if(type === 'manual') filteredData = allOrders.filter(d => d.order_source === 'manual'); 
-    
-    if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; } 
-    
-    container.innerHTML = filteredData.map((d, index) => { 
-        const oi = allOrders.indexOf(d); 
-        const sub = parseFloat(d.subtotal)||parseFloat(d.total)||0, dis = parseFloat(d.discount_amount)||0, adv = parseFloat(d.advance)||0, tot = parseFloat(d.total)||(sub-dis), bal = parseFloat(d.balance_due)||(tot-adv); 
-        const src = d.order_source === 'website' ? '<span class="badge badge-website">🌐 Web</span>' : '<span class="badge badge-manual">📝 Manual</span>'; 
-        const st = d.order_status === 'received' ? '<span class="badge badge-received">📥</span>' : d.order_status === 'pending' ? '<span class="badge badge-pending">⏳</span>' : '<span class="badge badge-completed">✅</span>'; 
-        let badges = src + ' ' + st; 
-        if(dis>0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text||''}</span>`; 
-        if(adv>0) badges += `<span class="badge badge-advance">💰 Rs ${adv}</span>`; 
-        if(bal>0) badges += `<span class="badge badge-pending">⏳ Rs ${bal.toLocaleString()}</span>`; 
-        
-        return `<div class="log-card">
-            <button class="pdf-btn" data-index="${oi}">📄 PDF</button>
-            <b>${d.client || "Unknown"}</b> ${badges}<br>
-            <small class="phone">📱 ${d.phone || "N/A"}</small><br>
-            <small>${(d.work || "").substring(0, 50)}</small><br>
-            ${sub?`<small style="color:#94a3b8;">Sub: Rs ${sub.toLocaleString()}</small><br>`:''}
-            ${dis>0?`<small style="color:#10b981;">Disc: -Rs ${dis.toLocaleString()}</small><br>`:''}
-            ${adv>0?`<small style="color:#3b82f6;">Adv: -Rs ${adv.toLocaleString()}</small><br>`:''}
-            <b style="color:gold;">${bal > 0 ? 'Due: Rs ' + bal.toLocaleString() : 'Paid: Rs ' + tot.toLocaleString()}</b><br>
-            <button class="del-btn" onclick="deleteEntry('${d.timestamp}')">🗑️ Delete</button>
-        </div>`; 
-    }).join(''); 
-    
-    container.querySelectorAll('.pdf-btn').forEach(btn => { 
-        btn.onclick = function() { const order = allOrders[parseInt(this.dataset.index)]; if(order) showConfirmDialog(order); }; 
-    }); 
+// ✅ UTILS
+function toggleSvc(el, name, price) {
+    const idx = cart.findIndex(c => c.name === name);
+    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); }
+    else { cart.push({name, price}); el.classList.add('selected'); }
+    updateCart();
 }
 
-function refreshOrders() { loadLogs(); alert('🔄 Refreshed'); }
-function addNewManualRow() { const div = document.createElement('div'); div.style="display:flex;gap:10px;margin-bottom:10px;"; div.innerHTML='<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin:0;">'; document.getElementById('manual_works_container').appendChild(div); }
-
-// ✅ ORDERS LOGIC
-async function saveManualEntry() { 
-    const name = document.getElementById('man_name').value.trim(); 
-    const phone = document.getElementById('man_phone').value.trim(); 
-    const dateInput = document.getElementById('man_date').value; 
-    const workInputs = document.querySelectorAll('.m-work'); 
-    const priceInputs = document.querySelectorAll('.m-price'); 
-    if(!name || !phone) return alert("Name & Phone required!"); 
-    
-    let allWork = [], subtotal = 0; 
-    workInputs.forEach((input, i) => { 
-        if(input.value.trim() !== "") { 
-            const p = parseInt(priceInputs[i].value) || 0; 
-            allWork.push(input.value.trim() + " (Rs " + p + ")"); 
-            subtotal += p; 
-        }
-    }); 
-    if(allWork.length === 0) return alert("Add service!"); 
-    
-    const discountType = document.getElementById('discount_type').value; 
-    const discountValue = parseFloat(document.getElementById('discount_value').value) || 0; 
-    let discountAmount = 0, discountText = "None"; 
-    if (discountType === 'percent' && discountValue > 0) { discountAmount = (subtotal * discountValue) / 100; discountText = discountValue + "%"; } 
-    else if (discountType === 'fixed' && discountValue > 0) { discountAmount = discountValue; discountText = "Rs " + discountValue; } 
-    
-    const totalAfterDiscount = subtotal - discountAmount; 
-    const advance = parseFloat(document.getElementById('advance_payment').value) || 0; 
-    const balanceDue = totalAfterDiscount - advance; 
-    const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString(); 
-    
-    const payload = { 
-        date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "), 
-        subtotal: subtotal, discount_type: discountType, discount_value: discountValue, 
-        discount_amount: discountAmount, discount_text: discountText, advance: advance, 
-        total: totalAfterDiscount, balance_due: balanceDue, 
-        entry_type: 'order', order_status: 'received', order_source: 'manual' 
-    }; 
-    
-    try { 
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) }); 
-        alert("✅ Saved!"); setTimeout(() => { loadLogs(); }, 2000); 
-        ['man_name','man_phone','man_date','discount_value','advance_payment'].forEach(id=>document.getElementById(id).value=''); 
-        document.getElementById('discount_type').value='none'; 
-        document.getElementById('discount_value').style.display='none'; 
-        document.getElementById('manual_works_container').innerHTML='<div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin:0;"></div>'; 
-    } catch(e) { alert("Error: " + e.message); } 
+function updateCart() {
+    const total = cart.reduce((a, b) => a + b.price, 0);
+    const bar = document.getElementById('cart');
+    bar.style.display = cart.length > 0 ? 'block' : 'none';
+    document.getElementById('billTotal').innerText = total.toLocaleString();
 }
 
-async function loadLogs() { 
-    const container = document.getElementById('logItems'); 
-    container.innerHTML = '<div class="loading">Fetching...</div>'; 
-    try { 
-        const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random()); 
-        const data = await res.json(); 
-        if(data.error) throw new Error(data.error); 
-        if(!data || data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; return; } 
-        
-        allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint').map(d => ({...d, order_status: d.order_status || 'received', order_source: d.order_source || 'manual'})); 
-        if (allOrders.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders.</p>'; return; } 
-        
-        document.querySelectorAll('.order-filters .admin-tab').forEach(b=>b.classList.remove('active')); 
-        document.querySelector('.order-filters .admin-tab:first-child').classList.add('active'); 
-        filterOrders('website'); 
-    } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; } 
+function openAdmin() {
+    const pin = prompt("Admin PIN:");
+    if(pin === "dnhq123") {
+        document.getElementById('adminView').style.display = 'block';
+        loadOrders();
+    } else if(pin) alert("Wrong PIN!");
 }
 
-async function loadComplaints() { 
-    const container = document.getElementById('complaintsList'); 
-    container.innerHTML = '<div class="loading">Loading...</div>'; 
-    try { 
-        const res = await fetch(SCRIPT_URL + "?t=" + Date.now()); 
-        const data = await res.json(); 
-        if(data.error) throw new Error(data.error); 
-        const complaints = data.filter(d => d && d.entry_type === 'complaint'); 
-        allComplaints = complaints; 
-        if(complaints.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No complaints.</p>'; return; } 
-        
-        container.innerHTML = complaints.slice().reverse().map((c, index) => `
-            <div class="log-card" style="border-left:4px solid #ef4444;">
-                <b>${c.name||'?'}</b> <span class="badge badge-manual">${c.type||''}</span><br>
-                <small>📱 ${c.phone||''}</small><p>${c.message||''}</p>
-                <button onclick="contactCustomer('${c.phone}')" style="background:#3b82f6;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">📞 Call</button>
-            </div>`).join(''); 
-    } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error</p>`; } 
-}
-function contactCustomer(p){if(p)window.open(`tel:${p}`);}
-function openComplaintModal(){document.getElementById('complaintModal').style.display='block';}
-function closeComplaintModal(){document.getElementById('complaintModal').style.display='none';}
-async function submitComplaint(){
-    const n=document.getElementById('complaintName').value.trim(),p=document.getElementById('complaintPhone').value.trim(),t=document.getElementById('complaintType').value,m=document.getElementById('complaintMessage').value.trim();
-    if(!n||!p||!t||!m)return alert("Fill all fields!");
-    try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({timestamp:Date.now(),date:new Date().toISOString(),name:n.toUpperCase(),phone:p,type:t,message:m,status:'pending',entry_type:'complaint'})});alert("✅ Submitted!");closeComplaintModal();}catch(e){alert("Error: "+e.message);}
-}
-
-// ✅ PDF & CONFIRM
-function showConfirmDialog(order){
-    if(!order||typeof order!=='object')return alert('❌ Invalid');
-    pendingOrderData=order;
-    const cl=order.client||'Customer',ph=order.phone||'N/A',dt=order.date||order.timestamp||new Date().toISOString(),sub=parseFloat(order.subtotal)||parseFloat(order.total)||0,dis=parseFloat(order.discount_amount)||0,adv=parseFloat(order.advance)||0,tot=parseFloat(order.total)||(sub-dis),bal=parseFloat(order.balance_due)||(tot-adv);
-    let h=`<div class="confirm-row"><label>👤 Client:</label><span class="value">${cl}</span></div><div class="confirm-row"><label>📱 Phone:</label><span class="value">${ph}</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">${formatDate(dt)}</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label>📦 Subtotal:</label><span class="value">Rs ${sub.toLocaleString()}</span></div>`;
-    if(dis>0)h+=`<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span class="value">-Rs ${dis.toLocaleString()}</span></div>`;
-    h+=`<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ${tot.toLocaleString()}</span></div>`;
-    if(adv>0)h+=`<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ${adv.toLocaleString()}</span></div>`;
-    h+=bal>0?`<div class="confirm-row balance"><label>⚠️ Due:</label><span class="value">Rs ${bal.toLocaleString()}</span></div>`:`<div class="confirm-row balance paid"><label>✅ Status:</label><span class="value">PAID</span></div>`;
-    document.getElementById('confirmBody').innerHTML=h;document.getElementById('confirmDialog').style.display='block';
-}
-function closeConfirmDialog(){document.getElementById('confirmDialog').style.display='none';pendingOrderData=null;}
-function confirmAndGeneratePDF(){if(!pendingOrderData)return alert('❌ No data');const o=JSON.parse(JSON.stringify(pendingOrderData));closeConfirmDialog();setTimeout(()=>generatePDF(o),100);}
-
-// ✅ FIXED: Robust PDF Generation
-async function generatePDF(order) {
-    if (!order) return alert('❌ Order data missing!');
+// ✅ ORDER FUNCTIONS
+async function saveManualOrder() {
+    const name = document.getElementById('man_name').value.trim();
+    const phone = document.getElementById('man_phone').value.trim();
+    const work = document.getElementById('man_work').value.trim();
+    const amount = parseFloat(document.getElementById('man_amount').value) || 0;
     
-    // ✅ FIX: Handle undefined/null work field safely
-    const work = order.work || ""; 
-    const client = order.client || "Customer";
-    const phone = order.phone || "N/A";
-    const orderDate = order.date || order.timestamp || new Date().toISOString();
+    if(!name || !phone || !work) return alert("Fill all fields!");
+    
+    const payload = {
+        date: new Date().toISOString(),
+        client: name.toUpperCase(),
+        phone: phone,
+        work: work + " (Rs " + amount + ")",
+        subtotal: amount,
+        total: amount,
+        balance_due: amount,
+        entry_type: 'order',
+        order_status: 'received',
+        order_source: 'manual'
+    };
     
     try {
-        const JsPDFConstructor = getJsPDFConstructor();
-        if (!JsPDFConstructor) { alert('❌ PDF library missing!'); return; }
-        const doc = new JsPDFConstructor();
-        
-        doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 45, 'F');
-        try { const img = await getImageDataForPDF(document.getElementById('brandLogo')); if(img) doc.addImage(img, 'JPEG', 15, 8, 30, 30); } catch(e){}
-        
-        doc.setTextColor(251, 191, 36); doc.setFontSize(24); doc.setFont("helvetica", "bold"); doc.text("DNHQ SERVICES", 55, 24);
-        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(255, 255, 255); doc.text("Professional Electrical & AC Maintenance", 55, 31);
-        doc.setTextColor(0, 0, 0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
-        doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("INVOICE", 105, 72, { align: "center" });
-
-        // ✅ FIX: Safe table generation
-        let items = [];
-        if (typeof work === 'string' && work.length > 0) {
-            items = work.split(", "); 
-        } else {
-            items = ["Service"]; 
-        }
-        
-        let body = items.map(it => {
-            const str = String(it);
-            if (str.includes("(Rs ")) { const p = str.split(" (Rs "); return [p[0].trim(), "Rs " + p[1].replace(")", "").trim()]; }
-            return [str.trim(), "-"];
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
         });
+        alert("✅ Saved!");
+        loadOrders();
+    } catch(e) { alert("Error: " + e.message); }
+}
 
-        doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
-
-        let finalY = doc.lastAutoTable.finalY + 10;
-        const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
-        const discount = parseFloat(order.discount_amount) || 0;
-        const advance = parseFloat(order.advance) || 0;
-        const totalAfterDiscount = subtotal - discount;
-        const balanceDue = totalAfterDiscount - advance;
-
-        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150); doc.text("Subtotal:", 115, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7;
-        if (discount > 0) { doc.setTextColor(16, 185, 129); doc.text((order.discount_text || "") + " Discount:", 115, finalY); doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7; doc.setTextColor(150, 150, 150); }
-        doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0); doc.text("Total:", 115, finalY); doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10;
-        if (advance > 0) { doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(10); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold"); doc.text("Advance:", 115, finalY); doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10; }
+async function loadOrders() {
+    const container = document.getElementById('logItems');
+    container.innerHTML = '<div class="loading">Loading...</div>';
+    
+    try {
+        const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
+        const data = await res.json();
+        if(data.error) throw new Error(data.error);
         
-        doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-        if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
-        else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
-
-        finalY += 20;
-        doc.setDrawColor(243, 244, 246); doc.setFillColor(249, 250, 251); doc.roundedRect(10, finalY, 190, 65, 3, 3, 'FD');
-        doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(15, 23, 42); doc.text("💳 SCAN TO PAY", 105, finalY + 10, { align: "center" });
-        try {
-            if (typeof QRCode !== 'undefined' && typeof QRCode.CorrectLevel !== 'undefined') {
-                const createQR = (text) => { const c = document.createElement('canvas'); new QRCode(c, { text: text, width: 128, height: 128, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M }); return c.toDataURL('image/png'); };
-                const qr1 = createQR(`${ACCOUNT_1.bank}\n${ACCOUNT_1.title}\nAcc: ${ACCOUNT_1.accountNumber}`);
-                const qr2 = createQR(`${ACCOUNT_2.bank}\n${ACCOUNT_2.title}\nAcc: ${ACCOUNT_2.accountNumber}`);
-                doc.addImage(qr1, 'PNG', 20, finalY + 18, 30, 30); doc.addImage(qr2, 'PNG', 160, finalY + 18, 30, 30);
-                doc.setFontSize(8); doc.setFont("helvetica", "bold"); doc.setTextColor(59, 130, 246);
-                doc.text(ACCOUNT_1.bank, 20, finalY + 52); doc.text(ACCOUNT_2.bank, 160, finalY + 52);
-                doc.setFont("helvetica", "normal"); doc.setTextColor(100, 116, 139);
-                doc.text(ACCOUNT_1.title.substring(0, 20), 20, finalY + 57); doc.text(ACCOUNT_2.title.substring(0, 20), 160, finalY + 57);
-                doc.text("Acc: " + ACCOUNT_1.accountNumber, 20, finalY + 62); doc.text("Acc: " + ACCOUNT_2.accountNumber, 160, finalY + 62);
-            }
-        } catch (e) { console.log("QR Error", e); }
-
-        doc.setFontSize(7); doc.setTextColor(156, 163, 175); doc.text("* Scan QR code with banking app", 105, finalY + 72, { align: "center" });
-        finalY += 80;
-        const footerY = finalY; doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY);
-        doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
-        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" }); doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" });
-        
-        const cname = client.replace(/[^a-z0-9]/gi, '_');
-        const dateStr = formatDate(orderDate).replace(/[^a-z0-9]/gi, '_');
-        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
-    } catch (error) {
-        alert('❌ PDF Generation Failed: ' + error.message);
-        console.error(error);
+        allOrders = data;
+        container.innerHTML = data.map((d, i) => `
+            <div class="log-card">
+                <button class="pdf-btn" onclick='showConfirmDialog(${JSON.stringify(d).replace(/'/g,"&apos;")})'>📄 PDF</button>
+                <b>${d.client||'Unknown'}</b> 
+                <span class="badge badge-${d.order_source==='website'?'website':'manual'}">${d.order_source||'manual'}</span><br>
+                <small style="color:#94a3b8;">📱 ${d.phone||'N/A'}</small><br>
+                <small>${(d.work||"").substring(0,40)}...</small><br>
+                <b style="color:var(--gold);">Rs ${(parseFloat(d.total)||0).toLocaleString()}</b><br>
+                <button class="del-btn" onclick="deleteOrder('${d.timestamp}')">🗑️ Delete</button>
+            </div>
+        `).join('');
+    } catch(e) {
+        container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
     }
 }
 
-// ✅ PLACED ORDER FUNCTION (Fixed Export)
-async function placeOrder() {
-    if(cart.length === 0) return alert("Select at least one service!");
-    const name = prompt("Customer Name:")?.trim();
-    const phone = prompt("Phone (03XX-XXXXXXX):")?.trim();
-    if(!name || !phone) { alert("Name and Phone required!"); return; }
-    const total = cart.reduce((a, b) => a + (b.price || 0), 0);
-    const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
+async function deleteOrder(ts) {
+    if(!confirm("Delete this order?")) return;
+    const pin = prompt("Admin PIN:");
+    if(pin !== "dnhq_delete_2026") return alert("Wrong PIN");
     
-    const payload = { 
-        date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, 
-        subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', 
-        advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received',
+    try {
+        await fetch(`${SCRIPT_URL}?deleteRow=true&timestamp=${ts}&pin=${pin}`);
+        alert("✅ Deleted");
+        loadOrders();
+    } catch(e) { alert("Error: " + e.message); }
+}
+
+// ✅ PLACE ORDER (Website)
+async function placeOrder() {
+    if(cart.length === 0) return alert("Select a service!");
+    const name = prompt("Your Name:");
+    const phone = prompt("Your Phone:");
+    if(!name || !phone) return alert("Name & Phone required!");
+    
+    const total = cart.reduce((a, b) => a + b.price, 0);
+    const work = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
+    
+    const payload = {
+        date: new Date().toISOString(),
+        client: name.toUpperCase(),
+        phone: phone,
+        work: work,
+        subtotal: total,
+        total: total,
+        balance_due: total,
+        entry_type: 'order',
+        order_status: 'received',
         order_source: 'website'
     };
     
     try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
         
-        const waText = `*🔔 NEW WEBSITE ORDER*%0A%0A*👤 Customer:* ${name}%0A*📱 Phone:* ${phone}%0A*🛠️ Services:* ${workFormatted}%0A*💰 Total:* Rs ${total}%0A%0A*📍 Source:* Website Order`;
-        window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${waText}`, '_blank');
+        const msg = `*NEW ORDER*%0A👤 ${name}%0A📱 ${phone}%0A💰 Rs ${total}%0A🛠️ ${work}`;
+        window.open(`https://wa.me/923152458657?text=${msg}`, '_blank');
         
-        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
-        
-        cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
+        alert("✅ Order Placed!");
+        cart = [];
+        updateCart();
+        document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
     } catch(e) { alert("Error: " + e.message); }
 }
 
-async function deleteEntry(ts){
-    if(!ts)return alert("❌ No ID");
-    const order=allOrders.find(o=>o.timestamp===ts),cl=order?.client||'Unknown';
-    if(!confirm(`🗑️ Delete ${cl}?`))return;
-    const pin=prompt("🔐 Admin PIN:");
-    if(pin!=="dnhq_delete_2026")return alert("❌ Wrong PIN");
-    const reason=prompt("📝 Reason:")||"Admin";
-    try{
-        const r=await fetch(`${SCRIPT_URL}?deleteRow=true&timestamp=${encodeURIComponent(ts)}&pin=${encodeURIComponent(pin)}&reason=${encodeURIComponent(reason)}`),j=await r.json();
-        if(j.error)throw j.error;
-        alert("✅ Deleted & Backed up");loadLogs();
-    }catch(e){alert("Error: "+e.message);}
+// ✅ PDF GENERATION (FIXED)
+function getJsPDF() {
+    if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
+    if (window.jsPDF) return window.jsPDF;
+    return null;
 }
 
-// ✅ PRODUCTS LOGIC
-async function uploadImage(){
-    const fileInput=document.getElementById('prod_file'),statusEl=document.getElementById('uploadStatus'),urlInput=document.getElementById('prod_image_url'),uploadBtn=document.getElementById('uploadBtn');
-    if(!fileInput.files||!fileInput.files.length){statusEl.innerHTML='<span style="color:#ef4444;">⚠️ Select image</span>';return;}
-    const file=fileInput.files[0];
-    if(file.size>32*1024*1024){statusEl.innerHTML='<span style="color:#f59e0b;">⚠️ Limit 32MB. Use Drive link below for larger files.</span>';return;}
-    let apiKey=localStorage.getItem('imgbb_api_key');
-    if(!apiKey){apiKey=prompt('🔑 Enter FREE ImgBB API Key (get from api.imgbb.com):');if(!apiKey)return;localStorage.setItem('imgbb_api_key',apiKey);}
-    statusEl.innerHTML='⏳ Uploading...';uploadBtn.disabled=true;
-    try{
-        const base64=await new Promise(resolve=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.readAsDataURL(file);}),
-        formData=new FormData();
-        formData.append('key',apiKey);formData.append('image',base64);
-        const res=await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:formData}),data=await res.json();
-        if(data.success){urlInput.value=data.data.url;statusEl.innerHTML='<span style="color:#10b981;">✅ Uploaded!</span>';uploadBtn.innerHTML='📤 Re-Upload';}
-        else throw new Error(data.error?.message||'Failed');
-    }catch(err){statusEl.innerHTML=`<span style="color:#ef4444;">❌ ${err.message}</span>`;}
-    finally{uploadBtn.disabled=false;}
+async function generatePDF(order) {
+    try {
+        const jsPDF = getJsPDF();
+        if (!jsPDF) {
+            alert('❌ PDF library not loaded! Please check internet connection.');
+            return;
+        }
+        
+        const doc = new jsPDF();
+        const client = order.client || "Customer";
+        const phone = order.phone || "N/A";
+        const date = order.date ? new Date(order.date).toLocaleDateString() : "N/A";
+        const total = parseFloat(order.total) || 0;
+        const balance = parseFloat(order.balance_due) || total;
+        
+        // Header
+        doc.setFillColor(0, 0, 0);
+        doc.rect(0, 0, 210, 40, 'F');
+        doc.setTextColor(251, 191, 36);
+        doc.setFontSize(24);
+        doc.text("DNHQ SERVICES", 105, 25, { align: "center" });
+        
+        // Info
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(12);
+        doc.text(`Client: ${client}`, 20, 60);
+        doc.text(`Phone: ${phone}`, 20, 70);
+        doc.text(`Date: ${date}`, 20, 80);
+        
+        // Work Details
+        doc.setFontSize(14);
+        doc.text("SERVICE DETAILS:", 20, 100);
+        const work = order.work || "No work specified";
+        const splitWork = doc.splitTextToSize(work, 170);
+        doc.setFontSize(11);
+        doc.text(splitWork, 20, 110);
+        
+        // Amount
+        doc.setFontSize(16);
+        doc.text(`Total Amount: Rs ${total.toLocaleString()}`, 20, 140);
+        if (balance > 0 && balance !== total) {
+            doc.text(`Balance Due: Rs ${balance.toLocaleString()}`, 20, 150);
+        }
+        
+        // Footer
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text("Contact: +92 315 2458657", 105, 280, { align: "center" });
+        doc.text("DNHQ Services - Professional AC & Electrical Work", 105, 285, { align: "center" });
+        
+        // Save
+        const fname = `DNHQ_${client.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}.pdf`;
+        doc.save(fname);
+        
+    } catch (error) {
+        console.error("PDF Error:", error);
+        alert('❌ PDF Generation Failed: ' + error.message);
+    }
 }
 
-async function saveProduct(){
-    const name=document.getElementById('prod_name').value.trim(),model=document.getElementById('prod_model').value.trim(),ton=document.getElementById('prod_ton').value,condition=document.getElementById('prod_condition').value,price=document.getElementById('prod_price').value,desc=document.getElementById('prod_desc').value.trim(),uploadedUrl=document.getElementById('prod_image_url').value,driveLink=document.getElementById('prod_drive_link').value.trim();
-    if(!name||!price)return alert("Name & Price required!");
-    let finalImageUrl='';
-    if(driveLink){const match=driveLink.match(/\/d\/(.+?)\/|id=(.+?)&/);if(match)finalImageUrl=`https://drive.google.com/uc?export=view&id=${match[1]||match[2]}`;else finalImageUrl=driveLink;}
-    else if(uploadedUrl)finalImageUrl=uploadedUrl;
-    const payload={name,model,ton,condition,price,description:desc,image_url:finalImageUrl};
-    try{
-        await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,addProduct:true,pin:"dnhq123"})});
-        alert("✅ Product added!");
-        ['prod_name','prod_model','prod_ton','prod_condition','prod_price','prod_desc','prod_file','prod_image_url','prod_drive_link'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-        document.getElementById('uploadStatus').innerHTML='';document.getElementById('uploadBtn').innerHTML='📤 Upload';
-        loadAdminProducts();loadProducts();
-    }catch(e){alert("Error: "+e.message);}
+function showConfirmDialog(order) {
+    pendingOrderData = order;
+    const total = parseFloat(order.total) || 0;
+    const balance = parseFloat(order.balance_due) || total;
+    
+    document.getElementById('confirmBody').innerHTML = `
+        <p><b>Client:</b> ${order.client||'N/A'}</p>
+        <p><b>Phone:</b> ${order.phone||'N/A'}</p>
+        <p><b>Work:</b> ${order.work||'N/A'}</p>
+        <p style="font-size:18px;color:var(--gold);"><b>Total: Rs ${total.toLocaleString()}</b></p>
+        ${balance !== total ? `<p style="color:#ef4444;"><b>Balance: Rs ${balance.toLocaleString()}</b></p>` : ''}
+    `;
+    document.getElementById('confirmDialog').style.display = 'block';
 }
 
-async function loadProducts(){
-    const container=document.getElementById('productsContainer');if(!container)return;
-    container.innerHTML='<div class="loading">Loading...</div>';
-    try{
-        const res=await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`),products=await res.json();
-        if(products.error)throw new Error(products.error);
-        if(!products.length){container.innerHTML='<p style="text-align:center;color:#94a3b8;">No products yet.</p>';return;}
-        container.innerHTML=`<div class="product-grid">${products.map(p=>`<div class="product-card">${p.image_url?`<img src="${p.image_url}" class="product-img" alt="${p.name}" onerror="this.parentElement.innerHTML='<div class=\\'product-img\\'>📷</div>'">`:'<div class="product-img">📷</div>'}<div class="product-info"><h4>${p.name}</h4><p class="model">${p.model||''} • ${p.ton||''} Ton</p><div class="specs"><span class="spec">🔧 ${p.condition||'Good'}</span>${p.ton?`<span class="spec">❄️ ${p.ton} Ton</span>`:''}</div><p class="price">Rs ${parseFloat(p.price).toLocaleString()}</p><p class="desc">${(p.description||'No description').substring(0,80)}${(p.description?.length>80)?'...':''}</p><button class="wa-btn" onclick="contactForProduct('${encodeURIComponent(p.name)}','${encodeURIComponent(p.price)}','${encodeURIComponent(p.description||'')}')"><i class="fab fa-whatsapp"></i> Contact</button></div></div>`).join('')}</div>`;
-    }catch(e){container.innerHTML=`<p style="color:#ef4444;text-align:center;">Error</p>`;}
+function closeConfirmDialog() {
+    document.getElementById('confirmDialog').style.display = 'none';
+    pendingOrderData = null;
 }
-function contactForProduct(name,price,desc){const msg=`*🔥 Interested in AC*%0A%0A*Product:* ${decodeURIComponent(name)}%0A*Price:* Rs ${decodeURIComponent(price)}%0A*Details:* ${decodeURIComponent(desc)}%0A%0APlease share details.`;window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${msg}`,'_blank');}
 
-async function loadAdminProducts(){
-    const container=document.getElementById('adminProductsList');if(!container)return;
-    container.innerHTML='<div class="loading">Loading...</div>';
-    try{
-        const res=await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`),products=await res.json();
-        if(!products?.length){container.innerHTML='<p style="color:#94a3b8;text-align:center;">No products</p>';return;}
-        container.innerHTML=products.map(p=>`<div class="log-card" style="display:flex;justify-content:space-between;align-items:start;"><div><b style="color:white;">${p.name}</b><br><small style="color:#94a3b8;">${p.model||''} • ${p.ton||''} Ton • ${p.condition||''}</small><br><small style="color:#10b981;font-weight:bold;">Rs ${parseFloat(p.price).toLocaleString()}</small></div><button class="del-btn" onclick="deleteProduct('${p.id}')">🗑️</button></div>`).join('');
-    }catch(e){container.innerHTML=`<p style="color:#ef4444;">Error</p>`;}
+function confirmAndGeneratePDF() {
+    if (!pendingOrderData) return alert("No order selected!");
+    generatePDF(pendingOrderData);
+    closeConfirmDialog();
 }
-async function deleteProduct(id){
-    if(!confirm("🗑️ Delete?"))return;const pin=prompt("🔐 Admin PIN:");if(pin!=="dnhq_delete_2026")return alert("❌ Wrong PIN");
-    try{const res=await fetch(`${SCRIPT_URL}?deleteProduct=true&id=${id}&pin=${pin}`),result=await res.json();if(result.error)throw new Error(result.error);alert("✅ Deleted");loadAdminProducts();loadProducts();}catch(e){alert("Error: "+e.message);}
-}
-function toggleProductsSection(){const container=document.getElementById('productsContainer'),btn=document.getElementById('toggleProductsBtn');if(container.style.display==='none'){container.style.display='block';btn.innerHTML='👁️ Hide Products Section';btn.style.background='#1e293b';}else{container.style.display='none';btn.innerHTML='👁️ Show Products Section';btn.style.background='#334155';}}
 
-// ✅ BACKUP & HISTORY
-async function viewBackups(){
-    const pin=prompt("🔐 Backup PIN:");if(pin!=="dnhq_backup_2026"){alert("❌ Wrong PIN!");return;}
-    document.getElementById('backupList').innerHTML='<div class="loading">Loading...</div>';document.getElementById('backupModal').style.display='block';
-    try{
-        const res=await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`),backups=await res.json();
-        if(backups.error)throw new Error(backups.error);
-        if(!backups.length){document.getElementById('backupList').innerHTML='<p style="text-align:center;color:#94a3b8;">Empty</p>';return;}
-        document.getElementById('backupList').innerHTML=backups.map(b=>`<div class="log-card" style="border-left:4px solid #ef4444;"><b>${b.client||'?'}</b> <small>${formatDate(b.deleted_at)}</small><br>📱 ${b.phone||''}<br>💰 Rs ${(b.total||0).toLocaleString()}<br><button class="pdf-btn" onclick='generatePDF(${JSON.stringify(b).replace(/'/g,"&apos;")})'>📄 PDF</button> <button style="background:#10b981;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;" onclick="restoreBackup('${b.timestamp}')">♻️ Restore</button></div>`).join('');
-    }catch(e){document.getElementById('backupList').innerHTML=`<p style="color:#ef4444;">Error</p>`;}
+// ✅ HISTORY FUNCTIONS
+function openHistoryModal() {
+    document.getElementById('historyModal').style.display = 'block';
+    document.getElementById('verifyStep').style.display = 'block';
+    document.getElementById('showStep').style.display = 'none';
+    document.getElementById('histPhone').value = '';
+    document.getElementById('histError').style.display = 'none';
 }
-function closeBackupModal(){document.getElementById('backupModal').style.display='none';}
-function refreshBackups(){viewBackups();}
-async function exportBackups(){
-    const pin=prompt("🔐 Backup PIN:");if(pin!=="dnhq_backup_2026"){alert("❌ Wrong PIN!");return;}
-    try{
-        const res=await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`),backups=await res.json();
-        if(backups.error)throw new Error(backups.error);if(!backups.length)return alert("Empty");
-        const h=['Date','Client','Phone','Work','Total','Deleted_At','By','Reason'],csv=[h.join(',')];
-        backups.forEach(b=>csv.push([b.date||'',`"${(b.client||'').replace(/"/g,'""')}"`,b.phone||'',`"${(b.work||'').replace(/"/g,'""')}"`,b.total||0,b.deleted_at||'',b.deleted_by||'',`"${(b.delete_reason||'').replace(/"/g,'""')}"`].join(',')));
-        const blob=new Blob([csv.join('\n')],{type:'text/csv'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`DNHQ_Backup_${new Date().toISOString().split('T')[0]}.csv`;a.click();alert("✅ Exported");
-    }catch(e){alert("Error: "+e.message);}
-}
-async function restoreBackup(ts){if(!confirm("♻️ Restore?"))return;const pin=prompt("🔐 PIN:");if(pin!=="dnhq_backup_2026")return alert("❌ Wrong");try{const res=await fetch(`${SCRIPT_URL}?restoreBackup=true&timestamp=${encodeURIComponent(ts)}&pin=${encodeURIComponent(pin)}`),j=await res.json();if(j.error)throw j.error;alert("✅ Restored");loadLogs();viewBackups();}catch(e){alert("Error: "+e.message);}}
-function triggerAppInstall(){if(deferredPrompt){document.getElementById('installPrompt').style.display='block';}else{alert("📲 Share > Add to Home Screen");}}
-function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;document.getElementById('installPrompt').style.display='none';}}
-function dismissInstall(){document.getElementById('installPrompt').style.display='none';}
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
-function openHistoryModal(){document.getElementById('historyModal').style.display='block';}
-function closeHistoryModal(){document.getElementById('historyModal').style.display='none';resetHistoryView();}
-function resetHistoryView(){document.getElementById('verifyStep').style.display='block';document.getElementById('showStep').style.display='none';document.getElementById('histPhone').value='';currentCustData=null;}
 
-// ✅ FIXED: Safe History Loading
+function closeHistoryModal() {
+    document.getElementById('historyModal').style.display = 'none';
+}
+
 async function fetchCustomerHistory() {
     const phone = document.getElementById('histPhone').value.trim();
     const err = document.getElementById('histError');
-    if (!phone) { err.textContent = "Enter phone number"; err.style.display = 'block'; return; }
-    err.style.display = 'none';
-    document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
+    
+    if (!phone) {
+        err.textContent = "Enter phone number";
+        err.style.display = 'block';
+        return;
+    }
+    
     try {
-        const url = `${SCRIPT_URL}?getHistory=true&phone=${encodeURIComponent(phone)}`;
-        const res = await fetch(url);
+        const res = await fetch(`${SCRIPT_URL}?getHistory=true&phone=${encodeURIComponent(phone)}`);
         const data = await res.json();
+        
         if (data.error) throw new Error(data.error);
-        if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
-
+        if (!data || data.length === 0) {
+            err.textContent = "❌ No records found";
+            err.style.display = 'block';
+            return;
+        }
+        
         currentCustData = data;
         document.getElementById('verifyStep').style.display = 'none';
         document.getElementById('showStep').style.display = 'block';
-
-        const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
-        document.getElementById('custInfo').innerHTML = `<b>👤 ${data[0].client || 'Customer'}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
-
-        const histList = document.getElementById('histList');
-        histList.innerHTML = data.slice().reverse().map((o, i) => {
-            const originalIndex = data.length - 1 - i;
-            return `<div class="history-item">
-                <b>#${i + 1} • ${formatDate(o.date || o.timestamp)}</b>
-                <small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${o.client || 'Customer'}</small>
-                <small class="phone">📱 ${o.phone || phone}</small>
-                <small>🔧 ${(o.work || "").substring(0, 60)}</small>
-                <span class="amt">${(parseFloat(o.balance_due) || 0) > 0 ? 'Balance: Rs ' + (parseFloat(o.balance_due)||0).toLocaleString() : '✓ Paid'}</span>
-                <button class="pdf-sm" data-idx="${originalIndex}">📄 Download</button>
-            </div>`;
-        }).join('');
-
-        histList.querySelectorAll('.pdf-sm').forEach(btn => {
-            btn.onclick = function() {
-                const idx = parseInt(this.getAttribute('data-idx'));
-                if (!isNaN(idx) && currentCustData[idx]) {
-                    showConfirmDialog(currentCustData[idx]);
-                }
-            };
-        });
+        
+        const total = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
+        document.getElementById('custInfo').innerHTML = `
+            <b>👤 ${data[0].client||'Customer'}</b><br>
+            <b>📱 ${phone}</b><br>
+            <b>Orders: ${data.length} | Total: Rs ${total.toLocaleString()}</b>
+        `;
+        
+        document.getElementById('histList').innerHTML = data.map((o, i) => `
+            <div class="history-item">
+                <b>#${i+1} - ${o.date ? new Date(o.date).toLocaleDateString() : 'N/A'}</b><br>
+                <small style="color:#94a3b8;">${(o.work||"").substring(0,60)}</small><br>
+                <span style="color:var(--gold);font-weight:bold;">Rs ${(parseFloat(o.total)||0).toLocaleString()}</span>
+                <br><button class="pdf-sm" onclick='generatePDF(${JSON.stringify(o).replace(/'/g,"&apos;")})'>📄 Download PDF</button>
+            </div>
+        `).join('');
+        
     } catch (e) {
         err.textContent = "Error: " + e.message;
         err.style.display = 'block';
     }
 }
 
-function downloadCustomerHistoryPDF(){
-    if(!currentCustData||!currentCustData.length)return alert("No data!");
-    const J=getJsPDFConstructor();if(!J)return alert('PDF lib missing');
-    const doc=new J(),cust=currentCustData[0],grandTotal=currentCustData.reduce((s,o)=>s+(parseFloat(o.total)||0),0);
-    doc.setFillColor(0,0,0);doc.rect(0,0,210,45,'F');
-    getImageDataForPDF(document.getElementById('brandLogo')).then(imgData=>{
-        if(imgData)doc.addImage(imgData,'JPEG',15,8,30,30);
-        doc.setTextColor(251,191,36);doc.setFontSize(20);doc.setFont("helvetica","bold");doc.text("DNHQ SERVICES",55,22);
-        doc.setTextColor(0,0,0);doc.setFontSize(9);doc.text("SERVICE HISTORY",55,28);
-        doc.setTextColor(0,0,0);doc.setFontSize(10);doc.text("Phone: "+cust.phone,15,52);
-        const rows=currentCustData.map(o=>[formatDate(o.date||o.timestamp),(o.work||"").substring(0,30),"Rs "+(parseFloat(o.total)||0).toLocaleString()]);
-        doc.autoTable({startY:64,head:[['DATE','SERVICE','AMOUNT']],body:rows,theme:'grid',headStyles:{fillColor:[0,0,0]},styles:{fontSize:8}});
-        let y=doc.lastAutoTable.finalY+12;doc.setDrawColor(251,191,36);doc.line(110,y-4,195,y-4);
-        doc.setFontSize(12);doc.text("GRAND TOTAL:",115,y);doc.text("Rs "+grandTotal.toLocaleString(),195,y,{align:'right'});
-        doc.save(`DNHQ_History_${cust.phone}.pdf`);
-    });
+async function downloadCustomerHistoryPDF() {
+    if (!currentCustData || currentCustData.length === 0) return alert("No data!");
+    
+    try {
+        const jsPDF = getJsPDF();
+        if (!jsPDF) return alert('PDF library not loaded!');
+        
+        const doc = new jsPDF();
+        const cust = currentCustData[0];
+        const grandTotal = currentCustData.reduce((s, o) => s + (parseFloat(o.total)||0), 0);
+        
+        doc.setFillColor(0, 0, 0);
+        doc.rect(0, 0, 210, 40, 'F');
+        doc.setTextColor(251, 191, 36);
+        doc.setFontSize(24);
+        doc.text("DNHQ SERVICES", 105, 25, { align: "center" });
+        doc.setFontSize(14);
+        doc.text("SERVICE HISTORY", 105, 35, { align: "center" });
+        
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(12);
+        doc.text(`Client: ${cust.client||'N/A'}`, 20, 60);
+        doc.text(`Phone: ${cust.phone||'N/A'}`, 20, 70);
+        
+        const rows = currentCustData.map(o => [
+            o.date ? new Date(o.date).toLocaleDateString() : 'N/A',
+            (o.work||"").substring(0, 40),
+            "Rs " + (parseFloat(o.total)||0).toLocaleString()
+        ]);
+        
+        doc.autoTable({
+            startY: 90,
+            head: [['DATE', 'SERVICE', 'AMOUNT']],
+            body: rows,
+            theme: 'grid'
+        });
+        
+        const finalY = doc.lastAutoTable.finalY + 20;
+        doc.setFontSize(16);
+        doc.text(`GRAND TOTAL: Rs ${grandTotal.toLocaleString()}`, 20, finalY);
+        
+        doc.save(`DNHQ_History_${cust.phone||'customer'}.pdf`);
+        
+    } catch (e) {
+        alert("PDF Error: " + e.message);
+    }
 }
 
-window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog(); if (e.target == document.getElementById('complaintModal')) closeComplaintModal(); if (e.target == document.getElementById('backupModal')) closeBackupModal(); }
+// ✅ EXPORTS TO WINDOW
+window.toggleSvc = toggleSvc;
+window.updateCart = updateCart;
+window.openAdmin = openAdmin;
+window.saveManualOrder = saveManualOrder;
+window.loadOrders = loadOrders;
+window.deleteOrder = deleteOrder;
+window.placeOrder = placeOrder;
+window.generatePDF = generatePDF;
+window.showConfirmDialog = showConfirmDialog;
+window.closeConfirmDialog = closeConfirmDialog;
+window.confirmAndGeneratePDF = confirmAndGeneratePDF;
+window.openHistoryModal = openHistoryModal;
+window.closeHistoryModal = closeHistoryModal;
+window.fetchCustomerHistory = fetchCustomerHistory;
+window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
 
-// ✅ EXPORTS TO WINDOW (Important!)
-window.toggleSvc=toggleSvc;window.playVid=playVid;window.openAdmin=openAdmin;window.openHistoryModal=openHistoryModal;window.triggerAppInstall=triggerAppInstall;
-window.generatePDF=generatePDF;window.deleteEntry=deleteEntry;window.fetchCustomerHistory=fetchCustomerHistory;window.downloadCustomerHistoryPDF=downloadCustomerHistoryPDF;
-window.toggleDiscountInput=toggleDiscountInput;window.showConfirmDialog=showConfirmDialog;window.closeConfirmDialog=closeConfirmDialog;window.confirmAndGeneratePDF=confirmAndGeneratePDF;
-window.switchAdminTab=switchAdminTab;window.loadComplaints=loadComplaints;window.contactCustomer=contactCustomer;window.openComplaintModal=openComplaintModal;
-window.closeComplaintModal=closeComplaintModal;window.submitComplaint=submitComplaint;window.filterOrders=filterOrders;window.refreshOrders=refreshOrders;
-window.addNewManualRow=addNewManualRow;window.saveManualEntry=saveManualEntry;window.loadLogs=loadLogs;window.updateCart=updateCart;
-window.closeHistoryModal=closeHistoryModal;window.resetHistoryView=resetHistoryView;window.installApp=installApp;window.dismissInstall=dismissInstall;
-
-// ✅ THIS WAS THE MISSING LINE
-window.placeOrder = placeOrder; 
-
-window.viewBackups=viewBackups;window.closeBackupModal=closeBackupModal;window.refreshBackups=refreshBackups;window.exportBackups=exportBackups;window.restoreBackup=restoreBackup;
-window.loadProducts=loadProducts;window.contactForProduct=contactForProduct;window.saveProduct=saveProduct;window.deleteProduct=deleteProduct;window.loadAdminProducts=loadAdminProducts;window.toggleProductsSection=toggleProductsSection;window.uploadImage=uploadImage;
-
-document.addEventListener('DOMContentLoaded',()=>{console.log('✅ Ready');updateCart();loadProducts();});
+// ✅ INIT
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ DNHQ Services Loaded');
+    updateCart();
+});
 </script>
 </body>
 </html>
