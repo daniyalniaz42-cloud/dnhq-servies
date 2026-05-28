@@ -11,7 +11,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
+/* CSS Same as before */
 :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 100px; }
 .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
@@ -21,8 +23,7 @@ body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; colo
 .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; flex-wrap: wrap; }
 .nav-btn { flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
 .app-download-btn { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-.app-download-btn:hover { transform: translateY(-2px); }
-.tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin: 15px 0 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin: 15px 0 20px; cursor: pointer; }
 .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
 .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
 .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
@@ -31,85 +32,63 @@ body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; colo
 .svc-meta b { display: block; font-size: 16px; color: white; }
 .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
 .svc-rate { font-weight: 800; color: var(--gold); text-align: right; }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin: 15px 0; }
+.product-card { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; overflow: hidden; }
+.product-img { width: 100%; height: 180px; object-fit: cover; background: #1f2937; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 40px; }
+.product-info { padding: 15px; }
+.product-info h4 { color: white; margin: 0 0 5px 0; font-size: 16px; }
+.product-info .model { color: #94a3b8; font-size: 13px; margin: 0 0 8px 0; }
+.product-info .specs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.product-info .spec { background: #1f2937; padding: 3px 8px; border-radius: 4px; font-size: 11px; color: #fbbf24; }
+.product-info .price { font-size: 18px; font-weight: 800; color: #10b981; margin: 8px 0; }
+.product-info .desc { color: #94a3b8; font-size: 12px; margin: 8px 0; line-height: 1.4; }
+.product-info .wa-btn { background: #22c55e; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+.toggle-btn { width: 100%; background: #1e293b; color: white; border: 1px solid #334155; padding: 12px; border-radius: 8px; margin: 10px 0 20px 0; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+.product-form { background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed var(--gold); }
+.product-form h4 { color: var(--gold); margin: 0 0 15px 0; }
+.product-form .form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.product-form .form-row input, .product-form .form-row select { flex: 1; min-width: 120px; }
+.product-form textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; margin-bottom: 10px; min-height: 80px; }
+.product-form .btn-submit { background: var(--gold); color: black; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+.upload-section { background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #334155; }
+.upload-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.upload-controls input[type="file"] { flex: 1; min-width: 200px; background: #1e293b; color: white; padding: 8px; border-radius: 6px; border: 1px solid #333; }
+.upload-btn { background: #3b82f6; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.drive-section { margin-top: 10px; padding-top: 10px; border-top: 1px solid #334155; }
 #adminView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #070a13; z-index: 9999; overflow-y: auto; padding: 20px; box-sizing: border-box; }
 .log-card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; }
 .del-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
 .pdf-btn { background: var(--gold); color: black; border: none; border-radius: 5px; padding: 5px 15px; font-weight: bold; cursor: pointer; float: right; }
 .man-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
 .discount-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-.discount-row select { padding: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: white; }
-.discount-row input { flex: 1; }
 .checkout-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold); padding: 15px 20px; display: none; box-sizing: border-box; z-index: 2000; }
 .btn-wa { background: #22c55e; color: white; padding: 15px 30px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
 footer { background: #000; color: #64748b; padding: 15px 20px; text-align: center; margin-top: 0; }
 footer a { color: #fbbf24; text-decoration: none; }
-footer a:hover { text-decoration: underline; }
-.history-btn { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; }
 .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }
 .modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
 .modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
 .form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
 .verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
 .error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
-.success-msg { color: #22c55e; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
 .history-item { background: #1e293b; border-radius: 10px; padding: 12px; margin: 10px 0; border-left: 3px solid #fbbf24; }
 .history-item b { color: white; display: block; margin-bottom: 5px; }
 .history-item small { color: #94a3b8; display: block; margin: 3px 0; }
-.history-item .phone { color: #60a5fa; font-size: 12px; }
 .history-item .amt { color: #fbbf24; font-weight: 800; font-size: 16px; display: block; margin: 8px 0; }
 .history-item .pdf-sm { background: #3b82f6; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 8px; }
-.action-row { display: flex; gap: 10px; margin-top: 15px; }
-.action-row button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
-.btn-download-all { background: #22c55e; color: white; }
-.btn-back { background: #64748b; color: white; }
-#installPrompt { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 2px solid #3b82f6; border-radius: 12px; padding: 15px 20px; z-index: 2500; }
-#installPrompt p { margin: 0 0 10px 0; font-size: 14px; color: white; }
-#installPrompt button { background: #3b82f6; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 8px; }
-.loading { text-align: center; padding: 20px; color: #fbbf24; }
-.badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 5px; }
-.badge-website { background: #8b5cf6; color: white; }
-.badge-manual { background: #64748b; color: white; }
-.badge-discount { background: #10b981; color: white; }
-.badge-advance { background: #3b82f6; color: white; }
-.order-filters { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
-.order-filter-btn { padding: 10px 20px; border: 1px solid #334155; border-radius: 8px; background: #1e293b; color: #94a3b8; font-size: 14px; font-weight: 600; cursor: pointer; }
-.order-filter-btn.active { border-color: #fbbf24; color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
-.confirm-dialog { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
-.confirm-box { background: #1e293b; margin: 5% auto; padding: 25px; border: 3px solid #fbbf24; border-radius: 20px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 10px 40px rgba(251, 191, 36, 0.3); }
-.confirm-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #334155; }
-.confirm-header h3 { color: #fbbf24; margin: 0; font-size: 22px; }
-.confirm-header p { color: #94a3b8; margin: 5px 0 0 0; font-size: 13px; }
-.confirm-body { background: #0f172a; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
-.confirm-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #334155; }
-.confirm-row:last-child { border-bottom: none; }
-.confirm-row label { color: #94a3b8; font-size: 14px; }
-.confirm-row .value { color: white; font-weight: bold; font-size: 14px; }
-.confirm-row.highlight { background: rgba(251, 191, 36, 0.1); padding: 12px; border-radius: 8px; margin: 10px 0; }
-.confirm-row.discount { color: #10b981; }
-.confirm-row.advance { color: #3b82f6; }
-.confirm-row.balance { font-size: 18px; font-weight: bold; color: #ef4444; border-top: 2px solid #fbbf24; padding-top: 15px; margin-top: 15px; }
-.confirm-row.balance.paid { color: #10b981; }
-.confirm-footer { display: flex; gap: 15px; }
-.btn-confirm { flex: 1; background: #10b981; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
-.btn-confirm:hover { background: #059669; }
-.btn-cancel { flex: 1; background: #ef4444; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
-.btn-cancel:hover { background: #dc2626; }
 .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
 .admin-tab { flex: 1; min-width: 120px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; }
 .admin-tab.active { background: rgba(251, 191, 36, 0.1); border-color: #fbbf24; color: #fbbf24; }
-.admin-tab .count { background: #ef4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px; }
-.complaint-card { background: #1e293b; border: 1px solid #ef4444; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; border-left: 4px solid #ef4444; }
-@media (max-width: 480px) { 
-    .brand-title { font-size: 20px; } 
-    .logo-main { height: 70px; }
-    body { padding-bottom: 90px; }
-    footer { padding: 12px 15px; }
-}
+.badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 5px; }
+.badge-website { background: #8b5cf6; color: white; }
+.badge-manual { background: #64748b; color: white; }
+.loading { text-align: center; padding: 20px; color: #fbbf24; }
+@media (max-width: 480px) { .brand-title { font-size: 20px; } .logo-main { height: 70px; } body { padding-bottom: 90px; } }
 </style>
 </head>
 <body>
 <header class="brand-header">
-<img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ" crossorigin="anonymous">
+<img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ">
 <div class="brand-title">DNHQ SERVICES</div>
 </header>
 <div class="wrapper">
@@ -117,21 +96,22 @@ footer a:hover { text-decoration: underline; }
 <a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
 <a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
 </div>
-<button class="app-download-btn" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Download Our App</button>
+<button class="app-download-btn" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Download App</button>
 <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
-<div id="videoBox" style="display:none; margin-bottom:20px;"><video id="myVideo" controls style="width:100%; border-radius:15px; border:2px solid var(--gold);"><source src="tutorial.mp4" type="video/mp4"></video></div>
+<div id="videoBox" style="display:none; margin-bottom:20px;"><video id="myVideo" controls style="width:100%; border-radius:15px;"><source src="tutorial.mp4" type="video/mp4"></video></div>
 <button class="history-btn" onclick="openHistoryModal()"><i class="fas fa-clock-rotate-left"></i> Check Service History</button>
 
 <div class="section-tag"><h2>Air Conditioning</h2><div class="section-line"></div></div>
+<!-- Services List -->
 <div class="svc-item" onclick="toggleSvc(this, 'AC Master Service', 4000)"><div class="svc-meta"><b>Master Service</b><p>Chemical Wash</p></div><div class="svc-rate">Rs 4,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Normal Service', 3000)"><div class="svc-meta"><b>Normal Service</b><p>Filter Cleaning</p></div><div class="svc-rate">Rs 3,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1 Ton)', 7000)"><div class="svc-meta"><b>Gas (1 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 7,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Gas (1.5 Ton)', 9000)"><div class="svc-meta"><b>Gas (1.5 Ton)</b><p>Full Refill</p></div><div class="svc-rate">Rs 9,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'AC Installation', 4500)"><div class="svc-meta"><b>Installation</b><p>Indoor & Outdoor</p></div><div class="svc-rate">Rs 4,500</div></div>
-<div class="svc-item" onclick="toggleSvc(this, '1 Ton AC Leakage Repair', 6000)"><div class="svc-meta"><b>1 Ton Leakage Repair</b><p>Leak detection & fixing</p></div><div class="svc-rate">Rs 6,000</div></div>
-<div class="svc-item" onclick="toggleSvc(this, '1.5 Ton AC Leakage Repair', 7000)"><div class="svc-meta"><b>1.5 Ton Leakage Repair</b><p>Leak detection & fixing</p></div><div class="svc-rate">Rs 7,000</div></div>
+<div class="svc-item" onclick="toggleSvc(this, '1 Ton AC Leakage Repair', 6000)"><div class="svc-meta"><b>1 Ton Leakage Repair</b><p>Leak detection</p></div><div class="svc-rate">Rs 6,000</div></div>
+<div class="svc-item" onclick="toggleSvc(this, '1.5 Ton AC Leakage Repair', 7000)"><div class="svc-meta"><b>1.5 Ton Leakage Repair</b><p>Leak detection</p></div><div class="svc-rate">Rs 7,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, '2 Ton Gas Charging', 12000)"><div class="svc-meta"><b>2 Ton Gas Charging</b><p>Heavy duty refill</p></div><div class="svc-rate">Rs 12,000</div></div>
-<div class="svc-item" onclick="toggleSvc(this, '2 Ton AC Leakage Repair', 8500)"><div class="svc-meta"><b>2 Ton Leakage Repair</b><p>Leak detection & fixing</p></div><div class="svc-rate">Rs 8,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, '2 Ton AC Leakage Repair', 8500)"><div class="svc-meta"><b>2 Ton Leakage Repair</b><p>Leak detection</p></div><div class="svc-rate">Rs 8,500</div></div>
 
 <div class="section-tag"><h2>Electrical Work</h2><div class="section-line"></div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Short Circuit Repair', 1000)"><div class="svc-meta"><b>Fault Finding</b><p>Short Circuit Fixing</p></div><div class="svc-rate">Rs 1,000</div></div>
@@ -152,6 +132,12 @@ footer a:hover { text-decoration: underline; }
 
 <div class="section-tag"><h2>Refrigerator</h2><div class="section-line"></div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Fridge Gas Refill', 7500)"><div class="svc-meta"><b>Gas Refill</b><p>Full Charging</p></div><div class="svc-rate">Rs 5,500</div></div>
+
+<!-- ✅ SECOND HAND AC SECTION -->
+<div class="section-tag"><h2>🔥 Second Hand AC Sale</h2><div class="section-line"></div></div>
+<div id="productsContainer" class="loading">Loading products...</div>
+<button onclick="loadProducts()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:10px;border-radius:8px;margin:15px 0;">🔄 Refresh Products</button>
+<button class="toggle-btn" onclick="toggleProductsSection()" id="toggleProductsBtn">👁️ Hide Products Section</button>
 </div>
 
 <!-- ADMIN PANEL -->
@@ -160,69 +146,71 @@ footer a:hover { text-decoration: underline; }
 <h2 style="color:gold;margin:0;">DNHQ DASHBOARD</h2>
 <button onclick="document.getElementById('adminView').style.display='none'" style="background:red;color:white;border:none;padding:5px 15px;border-radius:5px;cursor:pointer;">CLOSE</button>
 </div>
-
 <div class="admin-tabs">
 <div class="admin-tab active" onclick="switchAdminTab('orders')" id="tab-orders">📄 Orders</div>
-<div class="admin-tab" onclick="switchAdminTab('complaints')" id="tab-complaints">⚠️ Complaints <span class="count" id="complaintCount">0</span></div>
+<div class="admin-tab" onclick="switchAdminTab('products')" id="tab-products">🛒 Products</div>
+<div class="admin-tab" onclick="switchAdminTab('complaints')" id="tab-complaints">⚠️ Complaints</div>
 </div>
 
 <div id="ordersSection">
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px dashed var(--gold);margin-bottom:25px;">
 <h4 style="color:var(--gold);margin:0 0 10px 0;">💵 CREATE MANUAL BILL</h4>
-<div style="margin-bottom:15px;">
-<label style="color:#94a3b8;font-size:13px;">📅 Invoice Date (Optional)</label>
-<input type="date" id="man_date" class="man-input" style="margin-top:5px;">
-</div>
+<input type="date" id="man_date" class="man-input" placeholder="Date (Optional)">
 <input type="text" id="man_name" class="man-input" placeholder="Customer Name">
 <input type="tel" id="man_phone" class="man-input" placeholder="Phone: 03XX-XXXXXXX">
-<div id="manual_works_container">
-<div style="display:flex;gap:10px;margin-bottom:10px;">
-<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;">
-<input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;">
-</div>
-</div>
-<button onclick="addNewManualRow()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:8px;margin-bottom:15px;border-radius:8px;">+ Add More Work</button>
-<div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-<h5 style="color:#fbbf24;margin:0 0 10px 0;">🎁 Discount (Optional)</h5>
-<div class="discount-row">
-<select id="discount_type" onchange="toggleDiscountInput()">
-<option value="none">No Discount</option>
-<option value="percent">% Percentage</option>
-<option value="fixed">Rs Fixed Amount</option>
-</select>
-<input type="number" id="discount_value" class="man-input" placeholder="Enter value" style="display:none;margin-bottom:0;">
-</div>
-</div>
-<div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
-<input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
-</div>
+<div id="manual_works_container"><div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;"></div></div>
+<button onclick="addNewManualRow()" style="width:100%;background:transparent;border:1px dashed gold;color:gold;padding:8px;border-radius:8px;margin-bottom:15px;">+ Add More Work</button>
+<div class="discount-row"><select id="discount_type" onchange="toggleDiscountInput()"><option value="none">No Discount</option><option value="percent">% Percentage</option><option value="fixed">Rs Fixed</option></select><input type="number" id="discount_value" class="man-input" placeholder="Value" style="display:none;"></div>
+<input type="number" id="advance_payment" class="man-input" placeholder="Advance Payment (Optional)">
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE BILL</button>
 </div>
-
 <div class="order-filters">
-<button class="order-filter-btn active" onclick="filterOrders('website')">🌐 Website Orders</button>
-<button class="order-filter-btn" onclick="filterOrders('manual')">📝 Manual Orders</button>
-<button class="order-filter-btn" onclick="refreshOrders()" style="background:#3b82f6;color:white;border:none;">🔄 Refresh</button>
+<button class="admin-tab active" onclick="filterOrders('website')">🌐 Website Orders</button>
+<button class="admin-tab" onclick="filterOrders('manual')">📝 Manual Orders</button>
+<button class="admin-tab" onclick="refreshOrders()">🔄 Refresh</button>
 </div>
-
-<!-- ✅ BACKUP CONTROLS -->
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #3b82f6;margin:15px 0;">
   <h4 style="color:#3b82f6;margin:0 0 10px 0;">🗂️ Backup Controls</h4>
   <div style="display:flex;gap:10px;flex-wrap:wrap;">
-    <button class="order-filter-btn" onclick="viewBackups()" style="background:#3b82f6;color:white;border:none;">🗂️ View Backups</button>
-    <button class="order-filter-btn" onclick="exportBackups()" style="background:#10b981;color:white;border:none;">📥 Export Backups</button>
+    <button class="admin-tab" onclick="viewBackups()">🗂️ View Backups</button>
+    <button class="admin-tab" onclick="exportBackups()">📥 Export Backups</button>
   </div>
 </div>
-
 <div id="logItems" class="loading">Loading...</div>
+</div>
+
+<div id="productsSection" style="display:none;">
+  <div class="product-form">
+    <h4>➕ Add New Second Hand AC</h4>
+    <div class="form-row"><input type="text" id="prod_name" class="man-input" placeholder="Product Name*" style="flex:2;"><input type="text" id="prod_model" class="man-input" placeholder="Model" style="flex:2;"><input type="text" id="prod_ton" class="man-input" placeholder="Ton" style="flex:1;"></div>
+    <div class="form-row"><select id="prod_condition" class="man-input"><option value="">Condition</option><option value="Excellent">⭐ Excellent</option><option value="Good">✅ Good</option><option value="Fair">🔧 Fair</option></select><input type="number" id="prod_price" class="man-input" placeholder="Price (Rs)*" style="flex:1;"></div>
+    
+    <!-- ✅ IMAGE UPLOAD -->
+    <div class="upload-section">
+      <label>📸 Product Image</label>
+      <div class="upload-controls">
+        <input type="file" id="prod_file" accept="image/*">
+        <button onclick="uploadImage()" id="uploadBtn" class="upload-btn">📤 Upload</button>
+      </div>
+      <div id="uploadStatus" style="margin-top:8px;font-size:12px;color:#94a3b8;"></div>
+      <input type="hidden" id="prod_image_url">
+      <div class="drive-section">
+        <small>📁 <b>50MB+ Image?</b> Google Drive link paste karein:</small>
+        <input type="text" id="prod_drive_link" class="man-input" placeholder="https://drive.google.com/...">
+      </div>
+    </div>
+    
+    <textarea id="prod_desc" placeholder="Description"></textarea>
+    <button onclick="saveProduct()" class="btn-submit">💾 Add Product</button>
+  </div>
+  <h4 style="color:#94a3b8;margin:20px 0 10px;">📦 Existing Products</h4>
+  <div id="adminProductsList" class="loading">Loading...</div>
 </div>
 
 <div id="complaintsSection" style="display:none;">
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #ef4444;margin-bottom:25px;">
 <h4 style="color:#ef4444;margin:0 0 10px 0;">⚠️ Customer Complaints</h4>
-<p style="color:#94a3b8;font-size:13px;margin:0 0 15px 0;">Purpose: Track & resolve customer issues (not on WhatsApp)</p>
-<div id="complaintsList" class="loading">Loading complaints...</div>
+<div id="complaintsList" class="loading">Loading...</div>
 </div>
 </div>
 </div>
@@ -230,10 +218,7 @@ footer a:hover { text-decoration: underline; }
 <!-- CHECKOUT BAR -->
 <div class="checkout-bar" id="cart">
 <div style="display:flex;justify-content:space-between;align-items:center;max-width:600px;margin:0 auto;">
-<div>
-<small style="color:#94a3b8;">Total Bill</small>
-<div style="font-size:20px;font-weight:900;">Rs <span id="billTotal">0</span></div>
-</div>
+<div><small style="color:#94a3b8;">Total Bill</small><div style="font-size:20px;font-weight:900;">Rs <span id="billTotal">0</span></div></div>
 <button class="btn-wa" onclick="placeOrder()"><i class="fab fa-whatsapp"></i> PLACE ORDER</button>
 </div>
 </div>
@@ -244,20 +229,15 @@ footer a:hover { text-decoration: underline; }
 <span class="modal-close" onclick="closeHistoryModal()">&times;</span>
 <div id="verifyStep">
 <h3 style="text-align:center;color:#fbbf24;">🔐 Check Service History</h3>
-<p style="text-align:center;color:#94a3b8;font-size:13px;">Enter your phone number to view history</p>
 <input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
 <button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
 <div id="histError" class="error-msg"></div>
-<div id="histSuccess" class="success-msg"></div>
 </div>
 <div id="showStep" style="display:none;">
 <h3 style="text-align:center;color:#fbbf24;">📜 Service History</h3>
 <div id="custInfo" style="background:#0f172a;padding:12px;border-radius:8px;margin-bottom:15px;"></div>
 <div id="histList" style="max-height:300px;overflow-y:auto;"></div>
-<div class="action-row">
-<button class="btn-download-all" onclick="downloadCustomerHistoryPDF()">📥 Download All (PDF)</button>
-<button class="btn-back" onclick="resetHistoryView()">🔍 New Search</button>
-</div>
+<div class="action-row"><button class="admin-tab" onclick="downloadCustomerHistoryPDF()">📥 Download PDF</button><button class="admin-tab" onclick="resetHistoryView()">🔍 New Search</button></div>
 </div>
 </div>
 </div>
@@ -267,759 +247,112 @@ footer a:hover { text-decoration: underline; }
 <div class="modal-content">
 <span class="modal-close" onclick="closeComplaintModal()">&times;</span>
 <h3 style="text-align:center;color:#ef4444;">⚠️ Submit Complaint</h3>
-<p style="text-align:center;color:#94a3b8;font-size:13px;">We'll resolve your issue within 24 hours</p>
 <input type="text" id="complaintName" class="form-input" placeholder="Your Name">
-<input type="tel" id="complaintPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
-<select id="complaintType" class="form-input" style="background:#0f172a;color:white;">
-<option value="">Select Complaint Type</option>
-<option value="service">Service Quality</option>
-<option value="billing">Billing Issue</option>
-<option value="technician">Technician Behavior</option>
-<option value="delay">Service Delay</option>
-<option value="other">Other</option>
-</select>
-<textarea id="complaintMessage" class="form-input" placeholder="Describe your complaint..." rows="4" style="background:#0f172a;color:white;resize:vertical;"></textarea>
-<button onclick="submitComplaint()" style="width:100%;background:#ef4444;color:white;font-weight:bold;border:none;padding:14px;border-radius:10px;font-size:15px;cursor:pointer;">📤 Submit Complaint</button>
+<input type="tel" id="complaintPhone" class="form-input" placeholder="Phone">
+<select id="complaintType" class="form-input"><option value="">Select Type</option><option value="service">Service Quality</option><option value="billing">Billing Issue</option><option value="technician">Technician Behavior</option><option value="delay">Service Delay</option></select>
+<textarea id="complaintMessage" class="form-input" placeholder="Describe complaint..." rows="4"></textarea>
+<button onclick="submitComplaint()" style="width:100%;background:#ef4444;color:white;font-weight:bold;border:none;padding:14px;border-radius:10px;">📤 Submit</button>
 <div id="complaintError" class="error-msg"></div>
-<div id="complaintSuccess" class="success-msg"></div>
 </div>
 </div>
 
 <!-- CONFIRMATION DIALOG -->
-<div id="confirmDialog" class="confirm-dialog">
-<div class="confirm-box">
-<div class="confirm-header">
-<h3>📋 CONFIRM BILL DETAILS</h3>
-<p>Please review before generating PDF</p>
-</div>
+<div id="confirmDialog" class="modal">
+<div class="modal-content">
+<div class="confirm-header"><h3>📋 CONFIRM BILL DETAILS</h3></div>
 <div class="confirm-body" id="confirmBody"></div>
-<div class="confirm-footer">
-<button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button>
-<button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
-</div>
+<div class="confirm-footer"><button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button><button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & PDF</button></div>
 </div>
 </div>
 
-<!-- ✅ BACKUP MODAL -->
+<!-- BACKUP MODAL -->
 <div id="backupModal" class="modal">
   <div class="modal-content" style="max-width:700px;">
     <span class="modal-close" onclick="closeBackupModal()">&times;</span>
     <h3 style="text-align:center;color:#3b82f6;">🗂️ Deleted Orders Backup</h3>
     <div id="backupList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
-    <div style="display:flex;gap:10px;">
-      <button class="btn-back" onclick="closeBackupModal()" style="flex:1;">Close</button>
-      <button class="btn-confirm" onclick="refreshBackups()" style="flex:1;">🔄 Refresh</button>
-    </div>
+    <div style="display:flex;gap:10px;"><button class="admin-tab" onclick="closeBackupModal()">Close</button><button class="admin-tab" onclick="refreshBackups()">🔄 Refresh</button></div>
   </div>
-</div>
-
-<div id="installPrompt">
-<p>📱 Install DNHQ App!</p>
-<button onclick="installApp()">Install</button>
-<button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;">✕</button>
 </div>
 
 <footer>
 <div onclick="openAdmin()" style="cursor:pointer;font-size:11px;opacity:0.5;">Admin Access</div>
 <p style="margin:3px 0;font-size:12px;">© 2026 DNHQ Services</p>
-<p style="margin:2px 0;font-size:12px;">
-  📞 <a href="tel:+923152458657" style="color:#fbbf24;text-decoration:none;">+92 315 2458657</a> | 
-  📞 <a href="tel:+923128542993" style="color:#fbbf24;text-decoration:none;">+92 312 8542993</a>
-</p>
-<p style="margin:2px 0;font-size:11px;color:#64748b;">Call us for any query or complaint</p>
+<p style="margin:2px 0;font-size:12px;">📞 <a href="tel:+923152458657">+92 315 2458657</a> | 📞 <a href="tel:+923128542993">+92 312 8542993</a></p>
 </footer>
 
 <script>
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
 const ADMIN_WHATSAPP = "923152458657";
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoTOVZaxLxJ555XBsUtdHf9GQ6TDzXTJ3VpLi2A6eQrosp0QIk1MiM6BdUiZt-o0tUvw/exec";
+// ✅ REPLACE THIS WITH YOUR WEB APP URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCqK_ZguZKZViOBR9zpBPo3Mr2GFbUb4KeIeWRdDYEPwhzbYa9B-tdU2cPbcN_MCrblA/exec"; 
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
-
-// ✅ All functions defined BEFORE DOMContentLoaded
-function toggleDiscountInput() {
-    const type = document.getElementById('discount_type').value;
-    const input = document.getElementById('discount_value');
-    if(input) {
-        input.style.display = type === 'none' ? 'none' : 'block';
-        if (type === 'none') input.value = '';
-    }
-}
-
-function formatDate(dateInput) {
-    if (!dateInput || dateInput === '' || dateInput === 'null' || dateInput === 'undefined') {
-        return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-    }
-    try {
-        let date;
-        if (dateInput instanceof Date) { date = dateInput; }
-        else if (typeof dateInput === 'number') { date = new Date(dateInput); }
-        else if (typeof dateInput === 'string') {
-            const str = dateInput.trim();
-            date = new Date(str);
-            if (isNaN(date.getTime())) {
-                const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
-                if (ddmmyyyy) date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
-            }
-        }
-        if (!date || isNaN(date.getTime())) {
-            return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-        }
-        return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-    } catch (e) {
-        return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
-    }
-}
-
-function getJsPDFConstructor() {
-    if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
-    if (window.jspdf) return window.jspdf;
-    if (window.jsPDF) return window.jsPDF;
-    return null;
-}
-
-function getImageDataForPDF(imgElement) {
-    return new Promise((resolve) => {
-        try {
-            if (!imgElement || !imgElement.src || !imgElement.complete || imgElement.naturalWidth === 0) {
-                resolve(null); return;
-            }
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const maxWidth = 200;
-            const scale = Math.min(1, maxWidth / imgElement.naturalWidth);
-            canvas.width = imgElement.naturalWidth * scale;
-            canvas.height = imgElement.naturalHeight * scale;
-            ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
-            resolve(canvas.toDataURL('image/jpeg', 0.9));
-        } catch (e) {
-            resolve(null);
-        }
-    });
-}
-
-function playVid() {
-    const box = document.getElementById('videoBox');
-    const vid = document.getElementById('myVideo');
-    if(box && vid) {
-        box.style.display = box.style.display === "none" ? "block" : "none";
-        box.style.display === "block" ? vid.play() : vid.pause();
-    }
-}
-
-function toggleSvc(el, name, price) {
-    const idx = cart.findIndex(c => c.name === name);
-    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
-    else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
-    updateCart();
-}
-
-function updateCart() {
-    const total = cart.reduce((a, b) => a + (b.price || 0), 0);
-    const bar = document.getElementById('cart');
-    const billTotal = document.getElementById('billTotal');
-    if(bar && billTotal) {
-        bar.style.display = cart.length > 0 ? 'block' : 'none';
-        billTotal.innerText = total.toLocaleString();
-    }
-}
-
-function openAdmin() {
-    const pin = prompt("Enter Admin PIN:");
-    if(pin === "dnhq123") {
-        document.getElementById('adminView').style.display='block';
-        loadLogs();
-    } else if(pin !== null) { alert("Wrong PIN!"); }
-}
-
-function switchAdminTab(tab) {
-    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + tab).classList.add('active');
-    if(tab === 'orders') {
-        document.getElementById('ordersSection').style.display = 'block';
-        document.getElementById('complaintsSection').style.display = 'none';
-        loadLogs();
-    } else if(tab === 'complaints') {
-        document.getElementById('ordersSection').style.display = 'none';
-        document.getElementById('complaintsSection').style.display = 'block';
-        loadComplaints();
-    }
-}
-
-function filterOrders(type) {
-    document.querySelectorAll('.order-filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if(btn.getAttribute('onclick').includes(`'${type}'`)) btn.classList.add('active');
-    });
-
-    const container = document.getElementById('logItems');
-    let filteredData = allOrders;
-
-    console.log('🔍 Filtering:', type);
-
-    if(type === 'website') {
-        filteredData = allOrders.filter(d => d.order_source === 'website');
-        console.log('🌐 Website orders:', filteredData.length);
-    }
-    else if(type === 'manual') {
-        filteredData = allOrders.filter(d => d.order_source === 'manual');
-        console.log('📝 Manual orders:', filteredData.length);
-    }
-
-    if (filteredData.length === 0) { 
-        container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
-        return; 
-    }
-
-    container.innerHTML = filteredData.map((d, index) => {
-        const originalIndex = allOrders.indexOf(d);
-        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
-        const discountAmount = parseFloat(d.discount_amount) || 0;
-        const advance = parseFloat(d.advance) || 0;
-        const total = parseFloat(d.total) || (subtotal - discountAmount);
-        const balanceDue = parseFloat(d.balance_due) || (total - advance);
-
-        let sourceBadge = d.order_source === 'website' ? 
-            '<span class="badge badge-website">🌐 Website</span>' : 
-            '<span class="badge badge-manual">📝 Manual</span>';
-
-        let badges = sourceBadge;
-        if (discountAmount > 0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text || 'Discount'}</span>`;
-        if (advance > 0) badges += `<span class="badge badge-advance">💰 Rs ${advance}</span>`;
-
-        // ✅ FIXED: Use timestamp for delete button
-        return `<div class="log-card">
-            <button class="pdf-btn" data-index="${originalIndex}">📄 PDF</button>
-            <b>${d.client || "Unknown"}</b> ${badges}<br>
-            <small class="phone">📱 ${d.phone || "N/A"}</small><br>
-            <small>${(d.work || "").substring(0, 50)}</small><br>
-            ${subtotal ? `<small style="color:#94a3b8;">Subtotal: Rs ${subtotal.toLocaleString()}</small><br>` : ''}
-            ${discountAmount > 0 ? `<small style="color:#10b981;">Discount: -Rs ${discountAmount.toLocaleString()}</small><br>` : ''}
-            ${advance > 0 ? `<small style="color:#3b82f6;">Advance: -Rs ${advance.toLocaleString()}</small><br>` : ''}
-            <b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()}</b><br>
-            <button class="del-btn" onclick="deleteEntry('${d.timestamp}')">🗑️ Delete</button>
-        </div>`;
-    }).join('');
-
-    container.querySelectorAll('.pdf-btn').forEach(btn => {
-        btn.onclick = function() {
-            const index = this.getAttribute('data-index');
-            const order = allOrders[parseInt(index)];
-            if (order) showConfirmDialog(order);
-        };
-    });
-}
-
-function refreshOrders() {
-    console.log('🔄 Manual refresh');
-    loadLogs();
-    alert('🔄 Refreshing orders...');
-}
-
-function addNewManualRow() {
-    const div = document.createElement('div');
-    div.style = "display:flex;gap:10px;margin-bottom:10px;";
-    div.innerHTML = '<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;">';
-    document.getElementById('manual_works_container').appendChild(div);
-}
-
-async function saveManualEntry() {
-    const name = document.getElementById('man_name').value.trim();
-    const phone = document.getElementById('man_phone').value.trim();
-    const dateInput = document.getElementById('man_date').value;
-    const workInputs = document.querySelectorAll('.m-work');
-    const priceInputs = document.querySelectorAll('.m-price');
-
-    if(!name || !phone) return alert("Please enter Name AND Phone!");
-
-    let allWork = [], subtotal = 0;
-    workInputs.forEach((input, i) => {
-        if(input.value.trim() !== "") {
-            const p = parseInt(priceInputs[i].value) || 0;
-            allWork.push(input.value.trim() + " (Rs " + p + ")");
-            subtotal += p;
-        }
-    });
-
-    if(allWork.length === 0) return alert("Add at least one service!");
-
-    const discountType = document.getElementById('discount_type').value;
-    const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
-    let discountAmount = 0, discountText = "None";
-
-    if (discountType === 'percent' && discountValue > 0) {
-        discountAmount = (subtotal * discountValue) / 100;
-        discountText = discountValue + "%";
-    } else if (discountType === 'fixed' && discountValue > 0) {
-        discountAmount = discountValue;
-        discountText = "Rs " + discountValue;
-    }
-
-    const totalAfterDiscount = subtotal - discountAmount;
-    const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
-    const balanceDue = totalAfterDiscount - advance;
-    const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();
-
-    const payload = {
-        date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "),
-        subtotal: subtotal, discount_type: discountType, discount_value: discountValue,
-        discount_amount: discountAmount, discount_text: discountText, advance: advance,
-        total: totalAfterDiscount, balance_due: balanceDue, 
-        entry_type: 'order', 
-        order_status: 'received', 
-        order_source: 'manual'
-    };
-
-    try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        alert("✅ Order saved successfully!");
-        setTimeout(() => { loadLogs(); }, 2000);
-
-        document.getElementById('man_name').value = '';
-        document.getElementById('man_phone').value = '';
-        document.getElementById('man_date').value = '';
-        document.getElementById('discount_type').value = 'none';
-        document.getElementById('discount_value').value = '';
-        document.getElementById('discount_value').style.display = 'none';
-        document.getElementById('advance_payment').value = '';
-        document.getElementById('manual_works_container').innerHTML = '<div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin-bottom:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin-bottom:0;"></div>';
-
-    } catch(e) { alert("Error: " + e.message); }
-}
-
-async function loadLogs() {
-    const container = document.getElementById('logItems');
-    container.innerHTML = '<div class="loading">Fetching...</div>';
-
-    try {
-        const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random());
-        const data = await res.json();
-
-        if(data.error) throw new Error(data.error);
-        if(!data || data.length === 0) { 
-            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; 
-            return; 
-        }
-
-        allOrders = data
-            .filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint')
-            .map(d => ({
-                ...d,
-                order_status: d.order_status || 'received',
-                order_source: d.order_source || 'manual'
-            }));
-
-        console.log('✅ Processed orders:', allOrders.length);
-
-        if (allOrders.length === 0) { 
-            container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; 
-            return; 
-        }
-
-        document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector('.order-filter-btn[onclick="filterOrders(\'website\')"]').classList.add('active');
-        filterOrders('website');
-
-    } catch(e) { 
-        console.error('❌ Load Logs Error:', e);
-        container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; 
-    }
-}
-
-async function loadComplaints() {
-    const container = document.getElementById('complaintsList');
-    container.innerHTML = '<div class="loading">Loading complaints...</div>';
-    try {
-        const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
-        const data = await res.json();
-        if(data.error) throw new Error(data.error);
-        const complaints = data.filter(d => d && d.entry_type === 'complaint');
-        allComplaints = complaints;
-        document.getElementById('complaintCount').textContent = complaints.length;
-        if(complaints.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No complaints yet.</p>'; return; }
-        container.innerHTML = complaints.slice().reverse().map((c, index) => `
-            <div class="complaint-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;"><div><b style="color:white;font-size:15px;">${c.name || 'Unknown'}</b><span class="badge badge-complaint">${c.type || 'General'}</span></div><small style="color:#94a3b8;">${c.date ? formatDate(c.date) : 'N/A'}</small></div><small class="phone">📱 ${c.phone || 'N/A'}</small><p style="color:#f1f5f9;margin:10px 0;font-size:14px;">${c.message || 'No message'}</p><div style="display:flex;gap:10px;margin-top:10px;"><button onclick="contactCustomer('${c.phone}')" style="background:#3b82f6;color:white;border:none;padding:8px 15px;border-radius:6px;font-weight:bold;cursor:pointer;">📞 Contact</button></div></div>`).join('');
-    } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
-}
-
-function contactCustomer(phone) { if(phone) { window.open(`tel:${phone}`, '_blank'); } }
-function openComplaintModal() { document.getElementById('complaintModal').style.display = 'block'; document.getElementById('complaintError').style.display = 'none'; document.getElementById('complaintSuccess').style.display = 'none'; }
-function closeComplaintModal() { document.getElementById('complaintModal').style.display = 'none'; document.getElementById('complaintName').value = ''; document.getElementById('complaintPhone').value = ''; document.getElementById('complaintType').value = ''; document.getElementById('complaintMessage').value = ''; }
-
-async function submitComplaint() {
-    const name = document.getElementById('complaintName').value.trim();
-    const phone = document.getElementById('complaintPhone').value.trim();
-    const type = document.getElementById('complaintType').value;
-    const message = document.getElementById('complaintMessage').value.trim();
-    const error = document.getElementById('complaintError');
-    const success = document.getElementById('complaintSuccess');
-    if(!name || !phone || !type || !message) { error.textContent = 'Please fill all fields!'; error.style.display = 'block'; return; }
-    const payload = { timestamp: Date.now().toString(), date: new Date().toISOString(), name: name.toUpperCase(), phone: phone, type: type, message: message, status: 'pending', entry_type: 'complaint' };
-    try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        success.textContent = '✅ Complaint submitted! We will contact you within 24 hours.';
-        success.style.display = 'block'; error.style.display = 'none';
-        setTimeout(() => { closeComplaintModal(); }, 3000);
-    } catch(e) { error.textContent = 'Error: ' + e.message; error.style.display = 'block'; }
-}
-
-function showConfirmDialog(order) {
-    if (!order || typeof order !== 'object') { alert('❌ Error: Invalid order data!'); return; }
-    pendingOrderData = order;
-    const client = order.client ? String(order.client) : 'Customer';
-    const phone = order.phone ? String(order.phone) : 'N/A';
-    const orderDate = order.date || order.timestamp || new Date().toISOString();
-    const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
-    const discountAmount = parseFloat(order.discount_amount) || 0;
-    const advance = parseFloat(order.advance) || 0;
-    const total = parseFloat(order.total) || (subtotal - discountAmount);
-    const balanceDue = parseFloat(order.balance_due) || (total - advance);
-
-    let html = `<div class="confirm-row"><label>👤 Customer:</label><span class="value">${client}</span></div><div class="confirm-row"><label>📱 Phone:</label><span class="value">${phone}</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">${formatDate(orderDate)}</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label>📦 Subtotal:</label><span class="value">Rs ${subtotal.toLocaleString()}</span></div>`;
-    if (discountAmount > 0) html += `<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span class="value">-Rs ${discountAmount.toLocaleString()}</span></div>`;
-    html += `<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ${total.toLocaleString()}</span></div>`;
-    if (advance > 0) html += `<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ${advance.toLocaleString()}</span></div>`;
-    if (balanceDue > 0) html += `<div class="confirm-row balance"><label>⚠️ Balance Due:</label><span class="value">Rs ${balanceDue.toLocaleString()}</span></div>`;
-    else html += `<div class="confirm-row balance paid"><label>✅ Payment Status:</label><span class="value">FULLY PAID</span></div>`;
-
-    document.getElementById('confirmBody').innerHTML = html;
-    document.getElementById('confirmDialog').style.display = 'block';
-}
-
-function closeConfirmDialog() { document.getElementById('confirmDialog').style.display = 'none'; pendingOrderData = null; }
-function confirmAndGeneratePDF() {
-    if (!pendingOrderData) { alert('❌ Error: No order data available!'); return; }
-    const orderData = JSON.parse(JSON.stringify(pendingOrderData));
-    closeConfirmDialog();
-    setTimeout(() => { generatePDF(orderData); }, 100);
-}
-
-// ✅ UPDATED: Delete by timestamp + PIN + Reason + Backup
-async function deleteEntry(timestamp) {
-    if(!timestamp) return alert("❌ Error: No order ID!");
-
-    const order = allOrders.find(o => o.timestamp === timestamp);
-    const client = order?.client || 'Unknown';
-
-    const confirmMsg = `🗑️ Delete Order?\n\nClient: ${client}\n\nThis will:\n1. Save to Backup Sheet\n2. Delete from Main Sheet\n\nContinue?`;
-    if(!confirm(confirmMsg)) return;
-
-    const pin = prompt("🔐 Enter Admin Delete PIN:");
-    if(pin !== "dnhq_delete_2026") {
-        alert("❌ Wrong PIN! Deletion cancelled.");
-        return;
-    }
-
-    const reason = prompt("📝 Delete Reason (optional):", "Admin request") || "No reason";
-
-    try {
-        const url = `${SCRIPT_URL}?deleteRow=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}&reason=${encodeURIComponent(reason)}`;
-        const res = await fetch(url, { method: 'GET' });
-        const result = await res.json();
-
-        if(result.error) throw new Error(result.error);
-
-        alert(`✅ Order deleted & backed up!\n\nBackup saved in "Deleted_Orders" sheet`);
-        loadLogs();
-
-    } catch(e) {
-        alert("❌ Delete Error: " + e.message);
-    }
-}
-
-// ✅ NEW: View backups
-async function viewBackups() {
-  const pin = prompt("🔐 Enter Backup PIN:");
-  if(pin !== "dnhq_backup_2026") {
-    alert("❌ Wrong PIN!");
-    return;
-  }
-
-  document.getElementById('backupList').innerHTML = '<div class="loading">Loading backups...</div>';
-  document.getElementById('backupModal').style.display = 'block';
-
-  try {
-    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
-    const backups = await res.json();
-
-    if(backups.error) throw new Error(backups.error);
-    if(backups.length === 0) {
-      document.getElementById('backupList').innerHTML = '<p style="text-align:center;color:#94a3b8;">No deleted orders found.</p>';
-      return;
-    }
-
-    document.getElementById('backupList').innerHTML = backups.map(b => `
-      <div class="log-card" style="border-left:4px solid #ef4444;">
-        <div style="display:flex;justify-content:space-between;align-items:start;">
-          <div>
-            <b style="color:white;">${b.client || 'Unknown'}</b>
-            <span class="badge badge-manual">📝 ${b.order_source}</span>
-          </div>
-          <small style="color:#94a3b8;">${formatDate(b.deleted_at)}</small>
-        </div>
-        <small class="phone">📱 ${b.phone || 'N/A'}</small>
-        <small style="color:#94a3b8;display:block;margin:5px 0;">🔧 ${(b.work||"").substring(0,40)}...</small>
-        <small style="color:#ef4444;display:block;margin:5px 0;">❌ Deleted by: ${b.deleted_by}</small>
-        <small style="color:#64748b;display:block;margin:5px 0;">📝 Reason: ${b.delete_reason}</small>
-        <small style="color:#fbbf24;display:block;margin:5px 0;">💰 Total: Rs ${(b.total||0).toLocaleString()}</small>
-        <div style="margin-top:10px;display:flex;gap:8px;">
-          <button class="pdf-btn" onclick="generatePDF(${JSON.stringify(b).replace(/'/g,"&apos;")})">📄 PDF</button>
-          <button class="btn-confirm" style="padding:5px 12px;font-size:11px;" onclick="restoreBackup('${b.timestamp}')">♻️ Restore</button>
-        </div>
-      </div>
-    `).join('');
-
-  } catch(e) {
-    document.getElementById('backupList').innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
-  }
-}
-
-function closeBackupModal() {
-  document.getElementById('backupModal').style.display = 'none';
-}
-
-function refreshBackups() {
-  viewBackups();
-}
-
-// ✅ NEW: Export backups to CSV
-async function exportBackups() {
-  const pin = prompt("🔐 Enter Backup PIN:");
-  if(pin !== "dnhq_backup_2026") {
-    alert("❌ Wrong PIN!");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
-    const backups = await res.json();
-
-    if(backups.error) throw new Error(backups.error);
-    if(backups.length === 0) {
-      alert("No backups to export!");
-      return;
-    }
-
-    // Create CSV
-    const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason'];
-    const csv = [headers.join(',')];
-
-    backups.forEach(b => {
-      csv.push([
-        b.date||'',
-        `"${(b.client||'').replace(/"/g,'""')}"`,
-        b.phone||'',
-        `"${(b.work||'').replace(/"/g,'""')}"`,
-        b.total||0,
-        b.deleted_at||'',
-        b.deleted_by||'',
-        `"${(b.delete_reason||'').replace(/"/g,'""')}"`
-      ].join(','));
-    });
-
-    // Download
-    const blob = new Blob([csv.join('\n')], {type: 'text/csv'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `DNHQ_Backups_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-
-    alert(`✅ Exported ${backups.length} backup records!`);
-
-  } catch(e) {
-    alert("Export Error: " + e.message);
-  }
-}
-
-// ✅ NEW: Restore from backup
-async function restoreBackup(timestamp) {
-  if(!confirm("♻️ Restore this deleted order?\n\nIt will be added back to your main orders.")) return;
-
-  const pin = prompt("🔐 Enter Backup PIN:");
-  if(pin !== "dnhq_backup_2026") {
-    alert("❌ Wrong PIN!");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${SCRIPT_URL}?restoreBackup=true&timestamp=${encodeURIComponent(timestamp)}&pin=${encodeURIComponent(pin)}`);
-    const result = await res.json();
-
-    if(result.error) throw new Error(result.error);
-
-    alert("✅ Order restored successfully!");
-    loadLogs(); // Refresh main orders
-    viewBackups(); // Refresh backup list
-
-  } catch(e) {
-    alert("Restore Error: " + e.message);
-  }
-}
-
-async function generatePDF(order) {
-    if (!order) { alert('❌ Error: Order data is missing!'); return; }
-    if (typeof order !== 'object') { alert('❌ Error: Order is not a valid object!'); return; }
-
-    try {
-        const JsPDFConstructor = getJsPDFConstructor();
-        if (!JsPDFConstructor) { alert('❌ jsPDF library not loaded!'); return; }
-        const doc = new JsPDFConstructor();
-        const client = order.client ? String(order.client) : 'Customer';
-        const phone = order.phone ? String(order.phone) : 'N/A';
-        const orderDate = order.date || order.timestamp || new Date().toISOString();
-        const work = order.work ? String(order.work) : 'No work specified';
-
-        doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 45, 'F');
-        try { const imgData = await getImageDataForPDF(document.getElementById('brandLogo')); if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30); } catch (e) {}
-
-        doc.setTextColor(251, 191, 36); doc.setFontSize(24); doc.setFont("helvetica", "bold"); doc.text("DNHQ SERVICES", 55, 24);
-        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(255, 255, 255); doc.text("Professional Electrical & AC Maintenance", 55, 31);
-        doc.setTextColor(0, 0, 0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
-        doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("INVOICE", 105, 72, { align: "center" });
-
-        let items = work.split(", ");
-        let body = items.map(item => { if (item.includes("(Rs ")) { let parts = item.split(" (Rs "); return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()]; } return [item.trim(), "-"]; });
-
-        doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
-
-        let finalY = doc.lastAutoTable.finalY + 10;
-        const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
-        const discount = parseFloat(order.discount_amount) || 0;
-        const advance = parseFloat(order.advance) || 0;
-        const totalAfterDiscount = subtotal - discount;
-        const balanceDue = totalAfterDiscount - advance;
-
-        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150); doc.text("Subtotal:", 115, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7;
-        if (discount > 0) { doc.setTextColor(16, 185, 129); doc.text(order.discount_text + " Discount:", 115, finalY); doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7; doc.setTextColor(150, 150, 150); }
-        doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0); doc.text("Total:", 115, finalY); doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10;
-        if (advance > 0) { doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(10); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold"); doc.text("Advance Received:", 115, finalY); doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10; }
-
-        doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-        if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
-        else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
-
-        const footerY = 280; doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY); doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
-        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" }); doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" }); doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
-
-        const cname = client.replace(/[^a-z0-9]/gi, '_');
-        const dateStr = formatDate(orderDate).replace(/[^a-z0-9]/gi, '_');
-        doc.save(`DNHQ_${cname}_${dateStr}.pdf`);
-    } catch (error) { alert('❌ PDF Generation Failed: ' + error.message); }
-}
-
-async function placeOrder() {
-    if(cart.length === 0) return alert("Select at least one service!");
-    const name = prompt("Customer Name:")?.trim();
-    const phone = prompt("Phone (03XX-XXXXXXX):")?.trim();
-    if(!name || !phone) { alert("Name and Phone required!"); return; }
-    const total = cart.reduce((a, b) => a + (b.price || 0), 0);
-    const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
-
-    const payload = { 
-        date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, 
-        subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', 
-        advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received',
-        order_source: 'website'
-    };
-
-    try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-
-        const waText = `*🔔 NEW WEBSITE ORDER*%0A%0A*👤 Customer:* ${name}%0A*📱 Phone:* ${phone}%0A*🛠️ Services:* ${workFormatted}%0A*💰 Total:* Rs ${total}%0A%0A*📍 Source:* Website Order`;
-        window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${waText}`, '_blank');
-
-        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
-
-        cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
-    } catch(e) { alert("Error: " + e.message); }
-}
-
-function triggerAppInstall() { if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; } else { alert("📲 Tap Share → Add to Home Screen"); } }
-function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }
-function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-
-function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
-function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
-function resetHistoryView() { document.getElementById('verifyStep').style.display = 'block'; document.getElementById('showStep').style.display = 'none'; document.getElementById('histPhone').value = ''; document.getElementById('histError').style.display = 'none'; currentCustData = null; }
-
-async function fetchCustomerHistory() {
-    const phone = document.getElementById('histPhone').value.trim(); const err = document.getElementById('histError');
-    if (!phone) { err.textContent = "Enter phone number"; err.style.display = 'block'; return; }
-    err.style.display = 'none'; document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
-    try {
-        const url = `${SCRIPT_URL}?getHistory=true&phone=${encodeURIComponent(phone)}`;
-        const res = await fetch(url); const data = await res.json();
-        if (data.error) throw new Error(data.error); if (!data || data.length === 0) { err.textContent = "❌ No records found"; err.style.display = 'block'; return; }
-        currentCustData = data; document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block';
-        const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
-        document.getElementById('custInfo').innerHTML = `<b>👤 ${data[0].client || 'Customer'}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;
-        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => `<div class="history-item"><b>#${data.length - i} • ${formatDate(o.date || o.timestamp)}</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ${o.client || 'Customer'}</small><small class="phone">📱 ${o.phone || phone}</small><small>🔧 ${(o.work || "").substring(0, 60)}</small>${parseFloat(o.discount_amount) > 0 ? `<small style="color:#10b981;">🎁 Discount: Rs ${parseFloat(o.discount_amount).toLocaleString()}</small>` : ''}${parseFloat(o.advance) > 0 ? `<small style="color:#3b82f6;">💰 Advance: Rs ${parseFloat(o.advance).toLocaleString()}</small>` : ''}<span class="amt">${parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 Download</button></div>`).join('');
-        document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => { btn.onclick = function() { const order = JSON.parse(this.dataset.order.replace(/&apos;/g, "'")); showConfirmDialog(order); }; });
-    } catch (e) { err.textContent = "Error"; err.style.display = 'block'; }
-}
-
-function downloadCustomerHistoryPDF() {
-    if (!currentCustData || currentCustData.length === 0) return alert("No data!");
-    const JsPDFConstructor = getJsPDFConstructor(); if (!JsPDFConstructor) return alert('jsPDF not loaded!');
-    const doc = new JsPDFConstructor(); const cust = currentCustData[0]; const grandTotal = currentCustData.reduce((s,o) => s + (parseFloat(o.total)||0), 0);
-    doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
-    getImageDataForPDF(document.getElementById('brandLogo')).then(imgData => {
-        if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
-        doc.setTextColor(251,191,36); doc.setFontSize(20); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 55, 22);
-        doc.setTextColor(0,0,0); doc.setFontSize(9); doc.text("SERVICE HISTORY", 55, 28); doc.setTextColor(0,0,0); doc.setFontSize(10); doc.text("Phone: " + cust.phone, 15, 52);
-        const rows = currentCustData.map(o => [formatDate(o.date || o.timestamp), (o.work || "").substring(0, 30), "Rs " + (parseFloat(o.total)||0).toLocaleString()]);
-        doc.autoTable({ startY: 64, head: [['DATE','SERVICE','AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0] }, styles: { fontSize: 8 } });
-        let y = doc.lastAutoTable.finalY + 12; doc.setDrawColor(251,191,36); doc.line(110, y-4, 195, y-4); doc.setFontSize(12); doc.text("GRAND TOTAL:", 115, y); doc.text("Rs " + grandTotal.toLocaleString(), 195, y, {align:'right'});
-        doc.save(`DNHQ_History_${cust.phone}.pdf`);
-    });
-}
-
-window.onclick = function(e) { if (e.target == document.getElementById('historyModal')) closeHistoryModal(); if (e.target == document.getElementById('confirmDialog')) closeConfirmDialog(); if (e.target == document.getElementById('complaintModal')) closeComplaintModal(); if (e.target == document.getElementById('backupModal')) closeBackupModal(); }
-
-// ✅ Export ALL functions to window
-window.toggleSvc = toggleSvc;
-window.playVid = playVid;
-window.openAdmin = openAdmin;
-window.openHistoryModal = openHistoryModal;
-window.triggerAppInstall = triggerAppInstall;
-window.generatePDF = generatePDF;
-window.deleteEntry = deleteEntry;
-window.fetchCustomerHistory = fetchCustomerHistory;
-window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
-window.toggleDiscountInput = toggleDiscountInput;
-window.showConfirmDialog = showConfirmDialog;
-window.closeConfirmDialog = closeConfirmDialog;
-window.confirmAndGeneratePDF = confirmAndGeneratePDF;
-window.switchAdminTab = switchAdminTab;
-window.loadComplaints = loadComplaints;
-window.contactCustomer = contactCustomer;
-window.openComplaintModal = openComplaintModal;
-window.closeComplaintModal = closeComplaintModal;
-window.submitComplaint = submitComplaint;
-window.filterOrders = filterOrders;
-window.refreshOrders = refreshOrders;
-window.addNewManualRow = addNewManualRow;
-window.saveManualEntry = saveManualEntry;
-window.loadLogs = loadLogs;
-window.updateCart = updateCart;
-window.closeHistoryModal = closeHistoryModal;
-window.resetHistoryView = resetHistoryView;
-window.installApp = installApp;
-window.dismissInstall = dismissInstall;
-window.placeOrder = placeOrder;
-// ✅ Backup functions
-window.viewBackups = viewBackups;
-window.closeBackupModal = closeBackupModal;
-window.refreshBackups = refreshBackups;
-window.exportBackups = exportBackups;
-window.restoreBackup = restoreBackup;
-
-// ✅ Initialize on load
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('✅ DOM Loaded - All functions ready');
-    updateCart();
-});
+const ACCOUNT_1 = { bank: "JS Bank", title: "Muhammad Daniyal Niaz", accountNumber: "0002804407" };
+const ACCOUNT_2 = { bank: "SCB", title: "Hassan Qureshi", accountNumber: "01039409301" };
+
+// ✅ UTILS
+function toggleDiscountInput() { document.getElementById('discount_value').style.display = document.getElementById('discount_type').value === 'none' ? 'none' : 'block'; }
+function formatDate(d) { if(!d) return 'N/A'; try { return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-'); } catch(e) { return d; } }
+function getJsPDFConstructor() { return window.jspdf?.jsPDF || window.jspdf || window.jsPDF || null; }
+function getImageDataForPDF(imgElement) { return new Promise((resolve) => { try { if (!imgElement?.src || !imgElement.complete || imgElement.naturalWidth === 0) return resolve(null); const c = document.createElement('canvas'), ctx = c.getContext('2d'), s = Math.min(1, 200 / imgElement.naturalWidth); c.width = imgElement.naturalWidth * s; c.height = imgElement.naturalHeight * s; ctx.drawImage(imgElement, 0, 0, c.width, c.height); resolve(c.toDataURL('image/jpeg', 0.9)); } catch (e) { resolve(null); } }); }
+function playVid() { const b=document.getElementById('videoBox'), v=document.getElementById('myVideo'); b.style.display=b.style.display==="none"?"block":"none"; b.style.display==="block"?v.play():v.pause(); }
+
+// ✅ SERVICES & CART
+function toggleSvc(el, name, price) { const idx = cart.findIndex(c => c.name === name); if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); } updateCart(); }
+function updateCart() { const total = cart.reduce((a, b) => a + (b.price || 0), 0); const bar = document.getElementById('cart'); if(bar) { bar.style.display = cart.length > 0 ? 'block' : 'none'; document.getElementById('billTotal').innerText = total.toLocaleString(); } }
+
+// ✅ ADMIN UI
+function openAdmin() { const pin = prompt("Enter Admin PIN:"); if(pin === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); } else if(pin) alert("Wrong PIN!"); }
+function switchAdminTab(tab) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.getElementById('tab-' + tab).classList.add('active'); ['ordersSection', 'productsSection', 'complaintsSection'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; }); if(tab === 'orders') { document.getElementById('ordersSection').style.display = 'block'; loadLogs(); } else if(tab === 'products') { document.getElementById('productsSection').style.display = 'block'; loadAdminProducts(); } else if(tab === 'complaints') { document.getElementById('complaintsSection').style.display = 'block'; loadComplaints(); } }
+function filterOrders(type) { document.querySelectorAll('.order-filters .admin-tab').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); const container = document.getElementById('logItems'); let filteredData = allOrders; if(type === 'website') filteredData = allOrders.filter(d => d.order_source === 'website'); else if(type === 'manual') filteredData = allOrders.filter(d => d.order_source === 'manual'); if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; } container.innerHTML = filteredData.map((d, index) => { const oi = allOrders.indexOf(d); const sub = parseFloat(d.subtotal)||parseFloat(d.total)||0, dis = parseFloat(d.discount_amount)||0, adv = parseFloat(d.advance)||0, tot = parseFloat(d.total)||(sub-dis), bal = parseFloat(d.balance_due)||(tot-adv); const src = d.order_source === 'website' ? '<span class="badge badge-website">🌐 Web</span>' : '<span class="badge badge-manual">📝 Manual</span>'; const st = d.order_status === 'received' ? '<span class="badge badge-received">📥</span>' : d.order_status === 'pending' ? '<span class="badge badge-pending">⏳</span>' : '<span class="badge badge-completed">✅</span>'; let badges = src + ' ' + st; if(dis>0) badges += `<span class="badge badge-discount">🎁 ${d.discount_text||''}</span>`; if(adv>0) badges += `<span class="badge badge-advance">💰 Rs ${adv}</span>`; if(bal>0) badges += `<span class="badge badge-pending">⏳ Rs ${bal.toLocaleString()}</span>`; return `<div class="log-card"><button class="pdf-btn" data-index="${oi}">📄 PDF</button><b>${d.client || "Unknown"}</b> ${badges}<br><small class="phone">📱 ${d.phone || "N/A"}</small><br><small>${(d.work || "").substring(0, 50)}</small><br>${sub?`<small style="color:#94a3b8;">Sub: Rs ${sub.toLocaleString()}</small><br>`:''}${dis>0?`<small style="color:#10b981;">Disc: -Rs ${dis.toLocaleString()}</small><br>`:''}${adv>0?`<small style="color:#3b82f6;">Adv: -Rs ${adv.toLocaleString()}</small><br>`:''}<b style="color:gold;">${bal > 0 ? 'Due: Rs ' + bal.toLocaleString() : 'Paid: Rs ' + tot.toLocaleString()}</b><br><button class="del-btn" onclick="deleteEntry('${d.timestamp}')">🗑️ Delete</button></div>`; }).join(''); container.querySelectorAll('.pdf-btn').forEach(btn => { btn.onclick = function() { const order = allOrders[parseInt(this.dataset.index)]; if(order) showConfirmDialog(order); }; }); }
+function refreshOrders() { loadLogs(); alert('🔄 Refreshed'); }
+function addNewManualRow() { const div = document.createElement('div'); div.style="display:flex;gap:10px;margin-bottom:10px;"; div.innerHTML='<input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin:0;">'; document.getElementById('manual_works_container').appendChild(div); }
+
+// ✅ ORDERS LOGIC
+async function saveManualEntry() { const name = document.getElementById('man_name').value.trim(); const phone = document.getElementById('man_phone').value.trim(); const dateInput = document.getElementById('man_date').value; const workInputs = document.querySelectorAll('.m-work'); const priceInputs = document.querySelectorAll('.m-price'); if(!name || !phone) return alert("Name & Phone required!"); let allWork = [], subtotal = 0; workInputs.forEach((input, i) => { if(input.value.trim() !== "") { const p = parseInt(priceInputs[i].value) || 0; allWork.push(input.value.trim() + " (Rs " + p + ")"); subtotal += p; }}); if(allWork.length === 0) return alert("Add service!"); const discountType = document.getElementById('discount_type').value; const discountValue = parseFloat(document.getElementById('discount_value').value) || 0; let discountAmount = 0, discountText = "None"; if (discountType === 'percent' && discountValue > 0) { discountAmount = (subtotal * discountValue) / 100; discountText = discountValue + "%"; } else if (discountType === 'fixed' && discountValue > 0) { discountAmount = discountValue; discountText = "Rs " + discountValue; } const totalAfterDiscount = subtotal - discountAmount; const advance = parseFloat(document.getElementById('advance_payment').value) || 0; const balanceDue = totalAfterDiscount - advance; const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString(); const payload = { date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "), subtotal: subtotal, discount_type: discountType, discount_value: discountValue, discount_amount: discountAmount, discount_text: discountText, advance: advance, total: totalAfterDiscount, balance_due: balanceDue, entry_type: 'order', order_status: 'received', order_source: 'manual' }; try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) }); alert("✅ Saved!"); setTimeout(() => { loadLogs(); }, 2000); ['man_name','man_phone','man_date','discount_value','advance_payment'].forEach(id=>document.getElementById(id).value=''); document.getElementById('discount_type').value='none'; document.getElementById('discount_value').style.display='none'; document.getElementById('manual_works_container').innerHTML='<div style="display:flex;gap:10px;margin-bottom:10px;"><input type="text" class="m-work man-input" placeholder="Work Name" style="flex:2;margin:0;"><input type="number" class="m-price man-input" placeholder="Rs" style="flex:1;margin:0;"></div>'; } catch(e) { alert("Error: " + e.message); } }
+async function loadLogs() { const container = document.getElementById('logItems'); container.innerHTML = '<div class="loading">Fetching...</div>'; try { const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random()); const data = await res.json(); if(data.error) throw new Error(data.error); if(!data || data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; return; } allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint').map(d => ({...d, order_status: d.order_status || 'received', order_source: d.order_source || 'manual'})); if (allOrders.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders.</p>'; return; } document.querySelectorAll('.order-filters .admin-tab').forEach(b=>b.classList.remove('active')); document.querySelector('.order-filters .admin-tab:first-child').classList.add('active'); filterOrders('website'); } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; } }
+async function loadComplaints() { const container = document.getElementById('complaintsList'); container.innerHTML = '<div class="loading">Loading...</div>'; try { const res = await fetch(SCRIPT_URL + "?t=" + Date.now()); const data = await res.json(); if(data.error) throw new Error(data.error); const complaints = data.filter(d => d && d.entry_type === 'complaint'); allComplaints = complaints; if(complaints.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No complaints.</p>'; return; } container.innerHTML = complaints.slice().reverse().map((c, index) => `<div class="log-card" style="border-left:4px solid #ef4444;"><b>${c.name||'?'}</b> <span class="badge badge-manual">${c.type||''}</span><br><small>📱 ${c.phone||''}</small><p>${c.message||''}</p><button onclick="contactCustomer('${c.phone}')" style="background:#3b82f6;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">📞 Call</button></div>`).join(''); } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error</p>`; } }
+function contactCustomer(p){if(p)window.open(`tel:${p}`);}
+function openComplaintModal(){document.getElementById('complaintModal').style.display='block';}
+function closeComplaintModal(){document.getElementById('complaintModal').style.display='none';}
+async function submitComplaint(){const n=document.getElementById('complaintName').value.trim(),p=document.getElementById('complaintPhone').value.trim(),t=document.getElementById('complaintType').value,m=document.getElementById('complaintMessage').value.trim();if(!n||!p||!t||!m)return alert("Fill all fields!");try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({timestamp:Date.now(),date:new Date().toISOString(),name:n.toUpperCase(),phone:p,type:t,message:m,status:'pending',entry_type:'complaint'})});alert("✅ Submitted!");closeComplaintModal();}catch(e){alert("Error: "+e.message);}}
+
+// ✅ PDF & CONFIRM
+function showConfirmDialog(order){if(!order||typeof order!=='object')return alert('❌ Invalid');pendingOrderData=order;const cl=order.client||'Customer',ph=order.phone||'N/A',dt=order.date||order.timestamp||new Date().toISOString(),sub=parseFloat(order.subtotal)||parseFloat(order.total)||0,dis=parseFloat(order.discount_amount)||0,adv=parseFloat(order.advance)||0,tot=parseFloat(order.total)||(sub-dis),bal=parseFloat(order.balance_due)||(tot-adv);let h=`<div class="confirm-row"><label>👤 Client:</label><span class="value">${cl}</span></div><div class="confirm-row"><label>📱 Phone:</label><span class="value">${ph}</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">${formatDate(dt)}</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label>📦 Subtotal:</label><span class="value">Rs ${sub.toLocaleString()}</span></div>`;if(dis>0)h+=`<div class="confirm-row discount highlight"><label>🎁 Discount:</label><span class="value">-Rs ${dis.toLocaleString()}</span></div>`;h+=`<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ${tot.toLocaleString()}</span></div>`;if(adv>0)h+=`<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ${adv.toLocaleString()}</span></div>`;h+=bal>0?`<div class="confirm-row balance"><label>⚠️ Due:</label><span class="value">Rs ${bal.toLocaleString()}</span></div>`:`<div class="confirm-row balance paid"><label>✅ Status:</label><span class="value">PAID</span></div>`;document.getElementById('confirmBody').innerHTML=h;document.getElementById('confirmDialog').style.display='block';}
+function closeConfirmDialog(){document.getElementById('confirmDialog').style.display='none';pendingOrderData=null;}
+function confirmAndGeneratePDF(){if(!pendingOrderData)return alert('❌ No data');const o=JSON.parse(JSON.stringify(pendingOrderData));closeConfirmDialog();setTimeout(()=>generatePDF(o),100);}
+async function generatePDF(order){if(!order)return alert('❌ Missing');if(typeof order!=='object')return alert('❌ Invalid');try{const J=getJsPDFConstructor();if(!J)return alert('❌ PDF lib missing');const doc=new J(),cl=order.client||'Customer',ph=order.phone||'N/A',dt=order.date||order.timestamp||new Date().toISOString(),wk=order.work||'No work';doc.setFillColor(0,0,0);doc.rect(0,0,210,45,'F');try{const img=await getImageDataForPDF(document.getElementById('brandLogo'));if(img)doc.addImage(img,'JPEG',15,8,30,30);}catch(e){}doc.setTextColor(251,191,36);doc.setFontSize(24);doc.setFont("helvetica","bold");doc.text("DNHQ SERVICES",55,24);doc.setFontSize(10);doc.setFont("helvetica","normal");doc.setTextColor(255,255,255);doc.text("Professional Electrical & AC Maintenance",55,31);doc.setTextColor(0,0,0);doc.setFontSize(11);doc.text("INVOICE TO: "+cl,15,55);doc.text("PHONE: "+ph,15,62);doc.text("DATE: "+formatDate(dt),145,55);doc.setFontSize(16);doc.setFont("helvetica","bold");doc.text("INVOICE",105,72,{align:"center"});let items=wk.split(", "),body=items.map(it=>{if(it.includes("(Rs ")){const p=it.split(" (Rs ");return[p[0].trim(),"Rs "+p[1].replace(")","")]}return[it.trim(),"-"]});doc.autoTable({startY:78,head:[['SERVICE','AMOUNT']],body,body,theme:'grid',headStyles:{fillColor:[0,0,0],textColor:[251,191,36],fontSize:10},styles:{fontSize:9,cellPadding:4},columnStyles:{0:{cellWidth:135},1:{cellWidth:45,halign:'right'}}});let finalY=doc.lastAutoTable.finalY+10,sub=parseFloat(order.subtotal)||parseFloat(order.total)||0,dis=parseFloat(order.discount_amount)||0,adv=parseFloat(order.advance)||0,tot=sub-dis,bal=tot-adv;doc.setFontSize(10);doc.setFont("helvetica","normal");doc.setTextColor(150,150,150);doc.text("Subtotal:",115,finalY);doc.text("Rs "+sub.toLocaleString(),195,finalY,{align:'right'});finalY+=7;if(dis>0){doc.setTextColor(16,185,129);doc.text(order.discount_text+" Discount:",115,finalY);doc.text("-Rs "+dis.toLocaleString(),195,finalY,{align:'right'});finalY+=7;doc.setTextColor(150,150,150);}doc.setFontSize(11);doc.setFont("helvetica","bold");doc.setTextColor(0,0,0);doc.text("Total:",115,finalY);doc.text("Rs "+tot.toLocaleString(),195,finalY,{align:'right'});finalY+=10;if(adv>0){doc.setDrawColor(59,130,246);doc.setLineWidth(0.5);doc.line(110,finalY-5,195,finalY-5);doc.setFontSize(10);doc.setTextColor(59,130,246);doc.setFont("helvetica","bold");doc.text("Advance:",115,finalY);doc.text("-Rs "+adv.toLocaleString(),195,finalY,{align:'right'});finalY+=10;}doc.setDrawColor(251,191,36);doc.setLineWidth(1);doc.line(110,finalY-5,195,finalY-5);doc.setFontSize(14);doc.setFont("helvetica","bold");if(bal>0){doc.setTextColor(239,68,68);doc.text("BALANCE DUE:",115,finalY);doc.text("Rs "+bal.toLocaleString(),195,finalY,{align:'right'});}else{doc.setTextColor(16,185,129);doc.text("FULLY PAID ✓",115,finalY);doc.text("Rs 0",195,finalY,{align:'right'});}finalY+=20;doc.setDrawColor(243,244,246);doc.setFillColor(249,250,251);doc.roundedRect(10,finalY,190,65,3,3,'FD');doc.setFontSize(10);doc.setFont("helvetica","bold");doc.setTextColor(15,23,42);doc.text("💳 SCAN TO PAY",105,finalY+10,{align:"center"});try{if(typeof QRCode!=='undefined'&&typeof QRCode.CorrectLevel!=='undefined'){const createQR=(text)=>{const canvas=document.createElement('canvas');new QRCode(canvas,{text:text,width:128,height:128,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});return canvas.toDataURL('image/png');};const qr1=createQR(`${ACCOUNT_1.bank}\n${ACCOUNT_1.title}\nAcc: ${ACCOUNT_1.accountNumber}`),qr2=createQR(`${ACCOUNT_2.bank}\n${ACCOUNT_2.title}\nAcc: ${ACCOUNT_2.accountNumber}`);doc.addImage(qr1,'PNG',20,finalY+18,30,30);doc.addImage(qr2,'PNG',160,finalY+18,30,30);doc.setFontSize(8);doc.setFont("helvetica","bold");doc.setTextColor(59,130,246);doc.text(ACCOUNT_1.bank,20,finalY+52);doc.text(ACCOUNT_2.bank,160,finalY+52);doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);doc.text(ACCOUNT_1.title.substring(0,20),20,finalY+57);doc.text(ACCOUNT_2.title.substring(0,20),160,finalY+57);doc.text("Acc: "+ACCOUNT_1.accountNumber,20,finalY+62);doc.text("Acc: "+ACCOUNT_2.accountNumber,160,finalY+62);}else{doc.setFontSize(9);doc.setTextColor(80,80,80);doc.text(`Bank: ${ACCOUNT_1.bank} | ${ACCOUNT_1.accountNumber}`,105,finalY+35,{align:"center"});doc.text(`Bank: ${ACCOUNT_2.bank} | ${ACCOUNT_2.accountNumber}`,105,finalY+42,{align:"center"});doc.setTextColor(239,68,68);doc.text("⚠️ Internet needed for QR",105,finalY+50,{align:"center"});}}catch(qrError){console.warn("QR fallback",qrError);}doc.setFontSize(7);doc.setTextColor(156,163,175);doc.text("* Scan QR code with banking app to pay instantly",105,finalY+72,{align:"center"});finalY+=80;const footerY=finalY;doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);doc.line(20,footerY,190,footerY);doc.setFontSize(8);doc.setFont("helvetica","normal");doc.setTextColor(120,120,120);doc.text("Contact: "+PHONE_1,105,footerY+6,{align:"center"});doc.text("Contact: "+PHONE_2,105,footerY+11,{align:"center"});doc.text("Website: dnhq-services.online",105,footerY+16,{align:"center"});const cname=cl.replace(/[^a-z0-9]/gi,'_'),dateStr=formatDate(dt).replace(/[^a-z0-9]/gi,'_');doc.save(`DNHQ_${cname}_${dateStr}.pdf`);}catch(error){alert('❌ PDF Error: '+error.message);}}
+async function deleteEntry(ts){if(!ts)return alert("❌ No ID");const order=allOrders.find(o=>o.timestamp===ts),cl=order?.client||'Unknown';if(!confirm(`🗑️ Delete ${cl}?`))return;const pin=prompt("🔐 Admin PIN:");if(pin!=="dnhq_delete_2026")return alert("❌ Wrong PIN");const reason=prompt("📝 Reason:")||"Admin";try{const r=await fetch(`${SCRIPT_URL}?deleteRow=true&timestamp=${encodeURIComponent(ts)}&pin=${encodeURIComponent(pin)}&reason=${encodeURIComponent(reason)}`),j=await r.json();if(j.error)throw j.error;alert("✅ Deleted & Backed up");loadLogs();}catch(e){alert("Error: "+e.message);}}
+
+// ✅ PRODUCTS LOGIC
+async function uploadImage(){const fileInput=document.getElementById('prod_file'),statusEl=document.getElementById('uploadStatus'),urlInput=document.getElementById('prod_image_url'),uploadBtn=document.getElementById('uploadBtn');if(!fileInput.files||!fileInput.files.length){statusEl.innerHTML='<span style="color:#ef4444;">⚠️ Select image</span>';return;}const file=fileInput.files[0];if(file.size>32*1024*1024){statusEl.innerHTML='<span style="color:#f59e0b;">⚠️ Limit 32MB. Use Drive link below for larger files.</span>';return;}let apiKey=localStorage.getItem('imgbb_api_key');if(!apiKey){apiKey=prompt('🔑 Enter FREE ImgBB API Key (get from api.imgbb.com):');if(!apiKey)return;localStorage.setItem('imgbb_api_key',apiKey);}statusEl.innerHTML='⏳ Uploading...';uploadBtn.disabled=true;try{const base64=await new Promise(resolve=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.readAsDataURL(file);}),formData=new FormData();formData.append('key',apiKey);formData.append('image',base64);const res=await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:formData}),data=await res.json();if(data.success){urlInput.value=data.data.url;statusEl.innerHTML='<span style="color:#10b981;">✅ Uploaded!</span>';uploadBtn.innerHTML='📤 Re-Upload';}else throw new Error(data.error?.message||'Failed');}catch(err){statusEl.innerHTML=`<span style="color:#ef4444;">❌ ${err.message}</span>`;}finally{uploadBtn.disabled=false;}}
+async function saveProduct(){const name=document.getElementById('prod_name').value.trim(),model=document.getElementById('prod_model').value.trim(),ton=document.getElementById('prod_ton').value,condition=document.getElementById('prod_condition').value,price=document.getElementById('prod_price').value,desc=document.getElementById('prod_desc').value.trim(),uploadedUrl=document.getElementById('prod_image_url').value,driveLink=document.getElementById('prod_drive_link').value.trim();if(!name||!price)return alert("Name & Price required!");let finalImageUrl='';if(driveLink){const match=driveLink.match(/\/d\/(.+?)\/|id=(.+?)&/);if(match)finalImageUrl=`https://drive.google.com/uc?export=view&id=${match[1]||match[2]}`;else finalImageUrl=driveLink;}else if(uploadedUrl)finalImageUrl=uploadedUrl;const payload={name,model,ton,condition,price,description:desc,image_url:finalImageUrl};try{await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,addProduct:true,pin:"dnhq123"})});alert("✅ Product added!");['prod_name','prod_model','prod_ton','prod_condition','prod_price','prod_desc','prod_file','prod_image_url','prod_drive_link'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('uploadStatus').innerHTML='';document.getElementById('uploadBtn').innerHTML='📤 Upload';loadAdminProducts();loadProducts();}catch(e){alert("Error: "+e.message);}}
+async function loadProducts(){const container=document.getElementById('productsContainer');if(!container)return;container.innerHTML='<div class="loading">Loading...</div>';try{const res=await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`),products=await res.json();if(products.error)throw new Error(products.error);if(!products.length){container.innerHTML='<p style="text-align:center;color:#94a3b8;">No products yet.</p>';return;}container.innerHTML=`<div class="product-grid">${products.map(p=>`<div class="product-card">${p.image_url?`<img src="${p.image_url}" class="product-img" alt="${p.name}" onerror="this.parentElement.innerHTML='<div class=\\'product-img\\'>📷</div>'">`:'<div class="product-img">📷</div>'}<div class="product-info"><h4>${p.name}</h4><p class="model">${p.model||''} • ${p.ton||''} Ton</p><div class="specs"><span class="spec">🔧 ${p.condition||'Good'}</span>${p.ton?`<span class="spec">❄️ ${p.ton} Ton</span>`:''}</div><p class="price">Rs ${parseFloat(p.price).toLocaleString()}</p><p class="desc">${(p.description||'No description').substring(0,80)}${(p.description?.length>80)?'...':''}</p><button class="wa-btn" onclick="contactForProduct('${encodeURIComponent(p.name)}','${encodeURIComponent(p.price)}','${encodeURIComponent(p.description||'')}')"><i class="fab fa-whatsapp"></i> Contact</button></div></div>`).join('')}</div>`;}catch(e){container.innerHTML=`<p style="color:#ef4444;text-align:center;">Error</p>`;}}
+function contactForProduct(name,price,desc){const msg=`*🔥 Interested in AC*%0A%0A*Product:* ${decodeURIComponent(name)}%0A*Price:* Rs ${decodeURIComponent(price)}%0A*Details:* ${decodeURIComponent(desc)}%0A%0APlease share details.`;window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${msg}`,'_blank');}
+async function loadAdminProducts(){const container=document.getElementById('adminProductsList');if(!container)return;container.innerHTML='<div class="loading">Loading...</div>';try{const res=await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`),products=await res.json();if(!products?.length){container.innerHTML='<p style="color:#94a3b8;text-align:center;">No products</p>';return;}container.innerHTML=products.map(p=>`<div class="log-card" style="display:flex;justify-content:space-between;align-items:start;"><div><b style="color:white;">${p.name}</b><br><small style="color:#94a3b8;">${p.model||''} • ${p.ton||''} Ton • ${p.condition||''}</small><br><small style="color:#10b981;font-weight:bold;">Rs ${parseFloat(p.price).toLocaleString()}</small></div><button class="del-btn" onclick="deleteProduct('${p.id}')">🗑️</button></div>`).join('');}catch(e){container.innerHTML=`<p style="color:#ef4444;">Error</p>`;}}
+async function deleteProduct(id){if(!confirm("🗑️ Delete?"))return;const pin=prompt("🔐 Admin PIN:");if(pin!=="dnhq_delete_2026")return alert("❌ Wrong PIN");try{const res=await fetch(`${SCRIPT_URL}?deleteProduct=true&id=${id}&pin=${pin}`),result=await res.json();if(result.error)throw new Error(result.error);alert("✅ Deleted");loadAdminProducts();loadProducts();}catch(e){alert("Error: "+e.message);}}
+function toggleProductsSection(){const container=document.getElementById('productsContainer'),btn=document.getElementById('toggleProductsBtn');if(container.style.display==='none'){container.style.display='block';btn.innerHTML='👁️ Hide Products Section';btn.style.background='#1e293b';}else{container.style.display='none';btn.innerHTML='👁️ Show Products Section';btn.style.background='#334155';}}
+
+// ✅ BACKUP & HISTORY
+async function viewBackups(){const pin=prompt("🔐 Backup PIN:");if(pin!=="dnhq_backup_2026"){alert("❌ Wrong PIN!");return;}document.getElementById('backupList').innerHTML='<div class="loading">Loading...</div>';document.getElementById('backupModal').style.display='block';try{const res=await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`),backups=await res.json();if(backups.error)throw new Error(backups.error);if(!backups.length){document.getElementById('backupList').innerHTML='<p style="text-align:center;color:#94a3b8;">Empty</p>';return;}document.getElementById('backupList').innerHTML=backups.map(b=>`<div class="log-card" style="border-left:4px solid #ef4444;"><b>${b.client||'?'}</b> <small>${formatDate(b.deleted_at)}</small><br>📱 ${b.phone||''}<br>💰 Rs ${(b.total||0).toLocaleString()}<br><button class="pdf-btn" onclick='generatePDF(${JSON.stringify(b).replace(/'/g,"&apos;")})'>📄 PDF</button> <button style="background:#10b981;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;" onclick="restoreBackup('${b.timestamp}')">♻️ Restore</button></div>`).join('');}catch(e){document.getElementById('backupList').innerHTML=`<p style="color:#ef4444;">Error</p>`;}}
+function closeBackupModal(){document.getElementById('backupModal').style.display='none';}
+function refreshBackups(){viewBackups();}
+async function exportBackups(){const pin=prompt("🔐 Backup PIN:");if(pin!=="dnhq_backup_2026"){alert("❌ Wrong PIN!");return;}try{const res=await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`),backups=await res.json();if(backups.error)throw new Error(backups.error);if(!backups.length)return alert("Empty");const h=['Date','Client','Phone','Work','Total','Deleted_At','By','Reason'],csv=[h.join(',')];backups.forEach(b=>csv.push([b.date||'',`"${(b.client||'').replace(/"/g,'""')}"`,b.phone||'',`"${(b.work||'').replace(/"/g,'""')}"`,b.total||0,b.deleted_at||'',b.deleted_by||'',`"${(b.delete_reason||'').replace(/"/g,'""')}"`].join(',')));const blob=new Blob([csv.join('\n')],{type:'text/csv'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`DNHQ_Backup_${new Date().toISOString().split('T')[0]}.csv`;a.click();alert("✅ Exported");}catch(e){alert("Error: "+e.message);}}
+async function restoreBackup(ts){if(!confirm("♻️ Restore?"))return;const pin=prompt("🔐 PIN:");if(pin!=="dnhq_backup_2026")return alert("❌ Wrong");try{const res=await fetch(`${SCRIPT_URL}?restoreBackup=true&timestamp=${encodeURIComponent(ts)}&pin=${encodeURIComponent(pin)}`),j=await res.json();if(j.error)throw j.error;alert("✅ Restored");loadLogs();viewBackups();}catch(e){alert("Error: "+e.message);}}
+function triggerAppInstall(){if(deferredPrompt){document.getElementById('installPrompt').style.display='block';}else{alert("📲 Share > Add to Home Screen");}}
+function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;document.getElementById('installPrompt').style.display='none';}}
+function dismissInstall(){document.getElementById('installPrompt').style.display='none';}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
+function openHistoryModal(){document.getElementById('historyModal').style.display='block';}
+function closeHistoryModal(){document.getElementById('historyModal').style.display='none';resetHistoryView();}
+function resetHistoryView(){document.getElementById('verifyStep').style.display='block';document.getElementById('showStep').style.display='none';document.getElementById('histPhone').value='';currentCustData=null;}
+async function fetchCustomerHistory(){const phone=document.getElementById('histPhone').value.trim(),err=document.getElementById('histError');if(!phone){err.textContent="Enter phone";err.style.display='block';return;}err.style.display='none';document.getElementById('histList').innerHTML='<div class="loading">Loading...</div>';try{const url=`${SCRIPT_URL}?getHistory=true&phone=${encodeURIComponent(phone)}`,res=await fetch(url),data=await res.json();if(data.error)throw new Error(data.error);if(!data||!data.length){err.textContent="❌ No records";err.style.display='block';return;}currentCustData=data;document.getElementById('verifyStep').style.display='none';document.getElementById('showStep').style.display='block';const totalSpent=data.reduce((sum,o)=>sum+(parseFloat(o.total)||0),0);document.getElementById('custInfo').innerHTML=`<b>👤 ${data[0].client||'?'}</b><br><b class="phone">📱 ${phone}</b><br><b>Orders:</b> ${data.length} | <b>Total:</b> Rs ${totalSpent.toLocaleString()}`;document.getElementById('histList').innerHTML=data.slice().reverse().map((o,i)=>`<div class="history-item"><b>#${data.length-i} • ${formatDate(o.date||o.timestamp)}</b><small>👤 ${o.client||'?'}</small><small class="phone">📱 ${o.phone||phone}</small><small>🔧 ${(o.work||"").substring(0,60)}</small><span class="amt">${(parseFloat(o.balance_due)||0)>0?'Due: Rs '+(parseFloat(o.balance_due)||0).toLocaleString():'✓ Paid'}</span><button class="pdf-sm" data-order='${JSON.stringify(o).replace(/'/g,"&apos;")}'>📄 PDF</button></div>`).join('');document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn=>{btn.onclick=function(){const o=JSON.parse(this.dataset.order.replace(/&apos;/g,"'"));showConfirmDialog(o);};});}catch(e){err.textContent="Error";err.style.display='block';}}
+function downloadCustomerHistoryPDF(){if(!currentCustData||!currentCustData.length)return alert("No data!");const J=getJsPDFConstructor();if(!J)return alert('PDF lib missing');const doc=new J(),cust=currentCustData[0],grandTotal=currentCustData.reduce((s,o)=>s+(parseFloat(o.total)||0),0);doc.setFillColor(0,0,0);doc.rect(0,0,210,45,'F');getImageDataForPDF(document.getElementById('brandLogo')).then(imgData=>{if(imgData)doc.addImage(imgData,'JPEG',15,8,30,30);doc.setTextColor(251,191,36);doc.setFontSize(20);doc.setFont("helvetica","bold");doc.text("DNHQ SERVICES",55,22);doc.setTextColor(0,0,0);doc.setFontSize(9);doc.text("SERVICE HISTORY",55,28);doc.setTextColor(0,0,0);doc.setFontSize(10);doc.text("Phone: "+cust.phone,15,52);const rows=currentCustData.map(o=>[formatDate(o.date||o.timestamp),(o.work||"").substring(0,30),"Rs "+(parseFloat(o.total)||0).toLocaleString()]);doc.autoTable({startY:64,head:[['DATE','SERVICE','AMOUNT']],body:rows,theme:'grid',headStyles:{fillColor:[0,0,0]},styles:{fontSize:8}});let y=doc.lastAutoTable.finalY+12;doc.setDrawColor(251,191,36);doc.line(110,y-4,195,y-4);doc.setFontSize(12);doc.text("GRAND TOTAL:",115,y);doc.text("Rs "+grandTotal.toLocaleString(),195,y,{align:'right'});doc.save(`DNHQ_History_${cust.phone}.pdf`);});}
+
+// ✅ EXPORTS
+window.toggleSvc=toggleSvc;window.playVid=playVid;window.openAdmin=openAdmin;window.openHistoryModal=openHistoryModal;window.triggerAppInstall=triggerAppInstall;window.generatePDF=generatePDF;window.deleteEntry=deleteEntry;window.fetchCustomerHistory=fetchCustomerHistory;window.downloadCustomerHistoryPDF=downloadCustomerHistoryPDF;window.toggleDiscountInput=toggleDiscountInput;window.showConfirmDialog=showConfirmDialog;window.closeConfirmDialog=closeConfirmDialog;window.confirmAndGeneratePDF=confirmAndGeneratePDF;window.switchAdminTab=switchAdminTab;window.loadComplaints=loadComplaints;window.contactCustomer=contactCustomer;window.openComplaintModal=openComplaintModal;window.closeComplaintModal=closeComplaintModal;window.submitComplaint=submitComplaint;window.filterOrders=filterOrders;window.refreshOrders=refreshOrders;window.addNewManualRow=addNewManualRow;window.saveManualEntry=saveManualEntry;window.loadLogs=loadLogs;window.updateCart=updateCart;window.closeHistoryModal=closeHistoryModal;window.resetHistoryView=resetHistoryView;window.installApp=installApp;window.dismissInstall=dismissInstall;window.placeOrder=placeOrder;window.viewBackups=viewBackups;window.closeBackupModal=closeBackupModal;window.refreshBackups=refreshBackups;window.exportBackups=exportBackups;window.restoreBackup=restoreBackup;window.loadProducts=loadProducts;window.contactForProduct=contactForProduct;window.saveProduct=saveProduct;window.deleteProduct=deleteProduct;window.loadAdminProducts=loadAdminProducts;window.toggleProductsSection=toggleProductsSection;window.uploadImage=uploadImage;
+
+document.addEventListener('DOMContentLoaded',()=>{console.log('✅ Ready');updateCart();loadProducts();});
 </script>
 </body>
 </html>
