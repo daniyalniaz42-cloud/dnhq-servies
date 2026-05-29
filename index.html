@@ -404,7 +404,7 @@ footer a:hover { text-decoration: underline; }
 <script>
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [], allProducts = [];
 const ADMIN_WHATSAPP = "923152458657";
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxOcf958tWPdYCBOYCmdYxsj_jvbyFVX39PdR9mSF0DRJ360SuGuEMUVDN29_cyt78_/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_G3KqHENeoYlYvomeZ-2VkNBgtOO8Pl9sj5QN0FCEllv26xzx9aFQqI4SKTu_JHirew/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
 // ... (ALL YOUR EXISTING FUNCTIONS REMAIN UNCHANGED) ...
@@ -773,7 +773,6 @@ function buyProduct(name, price, desc) {
         window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${msg}`, '_blank');
     }
 }
-
 async function saveProduct() {
     const name = document.getElementById('prod_name').value.trim();
     const category = document.getElementById('prod_category').value;
@@ -783,32 +782,72 @@ async function saveProduct() {
     const image = document.getElementById('prod_image').value.trim();
     const desc = document.getElementById('prod_desc').value.trim();
     
-    if (!name || !price) return alert("Name and Price are required!");
+    console.log('📦 Uploading product:', {name, category, price});
+    
+    if (!name || !price) {
+        alert("❌ Name and Price are required!");
+        return;
+    }
     
     const btn = document.querySelector('#productsSection .btn');
-    btn.textContent = "Uploading...";
+    const originalText = btn.textContent;
+    btn.textContent = "⏳ Uploading...";
     btn.disabled = true;
     
     try {
-        await fetch(SCRIPT_URL, {
+        const payload = {
+            type: 'addProduct',
+            name: name,
+            category: category,
+            model: model,
+            condition: condition,
+            price: parseFloat(price),
+            image: image,
+            desc: desc
+        };
+        
+        console.log('📡 Sending to:', SCRIPT_URL);
+        console.log('📦 Payload:', payload);
+        
+        const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                type: 'addProduct',
-                name, category, model, condition, price, image, desc
-            })
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
         });
         
-        alert("✅ Product uploaded to market!");
-        // Clear form
-        ['prod_name','prod_model','prod_condition','prod_price','prod_image','prod_desc'].forEach(id => document.getElementById(id).value = '');
-        loadAdminProducts();
+        console.log('📥 Response status:', response.status);
         
-    } catch (e) {
-        alert("Error: " + e.message);
+        // Try to parse response
+        let result;
+        try {
+            result = await response.json();
+            console.log('📥 Response JSON:', result);
+        } catch (e) {
+            const text = await response.text();
+            console.log('📥 Response text:', text);
+            throw new Error('Invalid JSON response: ' + text);
+        }
+        
+        if (result && result.status === 'success') {
+            alert("✅ Product uploaded successfully!");
+            // Clear form
+            ['prod_name','prod_model','prod_condition','prod_price','prod_image','prod_desc'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.value = '';
+            });
+            loadAdminProducts();
+            loadProducts();
+        } else {
+            throw new Error(result?.message || 'Unknown error');
+        }
+        
+    } catch (error) {
+        console.error('❌ Upload error:', error);
+        alert("❌ Upload Failed: " + error.message + "\n\nCheck console (F12) for details.");
     } finally {
-        btn.textContent = "💾 Upload to Market";
+        btn.textContent = originalText;
         btn.disabled = false;
     }
 }
