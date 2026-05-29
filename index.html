@@ -782,12 +782,13 @@ async function saveProduct() {
     const image = document.getElementById('prod_image').value.trim();
     const desc = document.getElementById('prod_desc').value.trim();
 
+    console.log('📦 Product Data:', {name, category, model, price});
+
     if (!name || !price) {
         alert("❌ Name and Price are required!");
         return;
     }
 
-    // ✅ Fix: Button ko ID se dhoondna
     const btn = document.getElementById('uploadBtn');
     if (btn) {
         btn.disabled = true;
@@ -806,41 +807,65 @@ async function saveProduct() {
     };
 
     try {
-        // ✅ Fetch request bhejna
+        console.log('📡 Sending to:', SCRIPT_URL);
+        
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(payload)
         });
 
-        const result = await response.json();
+        console.log('📥 Response Status:', response.status);
+        console.log('📥 Response OK:', response.ok);
 
-        if (result.status === 'success') {
-            alert("✅ Product uploaded successfully!");
-            // Form clear karna
-            document.getElementById('prod_name').value = '';
-            document.getElementById('prod_model').value = '';
-            document.getElementById('prod_price').value = '';
-            document.getElementById('prod_image').value = '';
-            document.getElementById('prod_desc').value = '';
-            
-            // Lists refresh karna
-            loadAdminProducts();
-            loadProducts();
-        } else {
-            alert("❌ Upload Failed: " + (result.error || "Unknown error"));
+        // Response text pehle read karein
+        const responseText = await response.text();
+        console.log('📥 Raw Response:', responseText);
+
+        // Phir JSON parse karein
+        let result;
+        try {
+            result = JSON.parse(responseText);
+            console.log('✅ Parsed Result:', result);
+        } catch (parseError) {
+            console.error('❌ JSON Parse Error:', parseError);
+            console.error('Response was:', responseText);
+            throw new Error('Server ne invalid response bheja. Check console.');
         }
+
+        if (result && result.status === 'success') {
+            alert("✅ Product uploaded successfully!");
+            
+            // Form clear karein
+            ['prod_name','prod_model','prod_condition','prod_price','prod_image','prod_desc'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.value = '';
+            });
+            
+            // Refresh lists
+            if (typeof loadAdminProducts === 'function') loadAdminProducts();
+            if (typeof loadProducts === 'function') loadProducts();
+            
+        } else if (result && result.error) {
+            alert("❌ Upload Failed: " + result.error);
+        } else {
+            alert("❌ Upload Failed: Unknown response from server\n\nCheck browser console (F12) for details");
+        }
+
     } catch (error) {
-        console.error(error);
-        alert("❌ Network Error: Check console (F12) for details.");
+        console.error('❌ Upload Error:', error);
+        alert("❌ Network Error: " + error.message + "\n\n1. Check internet connection\n2. Check SCRIPT_URL\n3. Check browser console (F12)");
     } finally {
-        // Button wapis normal karna
         if (btn) {
             btn.disabled = false;
             btn.textContent = "💾 Upload to Market";
         }
     }
 }
-async function loadAdminProducts() {
+    
+    async function loadAdminProducts() {
     const container = document.getElementById('adminProductsList');
     container.innerHTML = '<div class="loading">Loading...</div>';
     
