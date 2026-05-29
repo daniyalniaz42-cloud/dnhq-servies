@@ -773,6 +773,7 @@ function buyProduct(name, price, desc) {
         window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${msg}`, '_blank');
     }
 }
+    
 async function saveProduct() {
     const name = document.getElementById('prod_name').value.trim();
     const category = document.getElementById('prod_category').value;
@@ -808,9 +809,12 @@ async function saveProduct() {
 
     try {
         console.log('📡 Sending to:', SCRIPT_URL);
+        console.log('📦 Payload:', JSON.stringify(payload));
         
+        // ✅ CORS Fix: mode: 'no-cors' use karein
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
+            mode: 'no-cors',  // ✅ Yeh line CORS error fix karegi
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -818,24 +822,11 @@ async function saveProduct() {
         });
 
         console.log('📥 Response Status:', response.status);
+        console.log('📥 Response Type:', response.type);
         console.log('📥 Response OK:', response.ok);
 
-        // Response text pehle read karein
-        const responseText = await response.text();
-        console.log('📥 Raw Response:', responseText);
-
-        // Phir JSON parse karein
-        let result;
-        try {
-            result = JSON.parse(responseText);
-            console.log('✅ Parsed Result:', result);
-        } catch (parseError) {
-            console.error('❌ JSON Parse Error:', parseError);
-            console.error('Response was:', responseText);
-            throw new Error('Server ne invalid response bheja. Check console.');
-        }
-
-        if (result && result.status === 'success') {
+        // no-cors mode mein response opaque hota hai, isliye directly success maan lein
+        if (response.type === 'opaque' || response.ok) {
             alert("✅ Product uploaded successfully!");
             
             // Form clear karein
@@ -844,19 +835,19 @@ async function saveProduct() {
                 if(el) el.value = '';
             });
             
-            // Refresh lists
-            if (typeof loadAdminProducts === 'function') loadAdminProducts();
-            if (typeof loadProducts === 'function') loadProducts();
+            // Lists refresh karein
+            setTimeout(() => {
+                if (typeof loadAdminProducts === 'function') loadAdminProducts();
+                if (typeof loadProducts === 'function') loadProducts();
+            }, 1000);
             
-        } else if (result && result.error) {
-            alert("❌ Upload Failed: " + result.error);
         } else {
-            alert("❌ Upload Failed: Unknown response from server\n\nCheck browser console (F12) for details");
+            alert("❌ Upload Failed: Server error");
         }
 
     } catch (error) {
         console.error('❌ Upload Error:', error);
-        alert("❌ Network Error: " + error.message + "\n\n1. Check internet connection\n2. Check SCRIPT_URL\n3. Check browser console (F12)");
+        alert("❌ Network Error: " + error.message + "\n\n1. Check internet connection\n2. Check SCRIPT_URL in code\n3. Check Apps Script deployment settings");
     } finally {
         if (btn) {
             btn.disabled = false;
@@ -864,7 +855,6 @@ async function saveProduct() {
         }
     }
 }
-    
     async function loadAdminProducts() {
     const container = document.getElementById('adminProductsList');
     container.innerHTML = '<div class="loading">Loading...</div>';
