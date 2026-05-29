@@ -781,77 +781,65 @@ async function saveProduct() {
     const price = document.getElementById('prod_price').value;
     const image = document.getElementById('prod_image').value.trim();
     const desc = document.getElementById('prod_desc').value.trim();
-    
-    console.log('📦 Uploading product:', {name, category, price});
-    
+
     if (!name || !price) {
         alert("❌ Name and Price are required!");
         return;
     }
-    
-    const btn = document.querySelector('#productsSection .btn');
-    const originalText = btn.textContent;
-    btn.textContent = "⏳ Uploading...";
-    btn.disabled = true;
-    
+
+    // ✅ Fix: Button ko ID se dhoondna
+    const btn = document.getElementById('uploadBtn');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = "⏳ Uploading...";
+    }
+
+    const payload = {
+        type: 'addProduct',
+        name: name,
+        category: category,
+        model: model,
+        condition: condition,
+        price: parseFloat(price),
+        image: image,
+        desc: desc
+    };
+
     try {
-        const payload = {
-            type: 'addProduct',
-            name: name,
-            category: category,
-            model: model,
-            condition: condition,
-            price: parseFloat(price),
-            image: image,
-            desc: desc
-        };
-        
-        console.log('📡 Sending to:', SCRIPT_URL);
-        console.log('📦 Payload:', payload);
-        
+        // ✅ Fetch request bhejna
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             body: JSON.stringify(payload)
         });
-        
-        console.log('📥 Response status:', response.status);
-        
-        // Try to parse response
-        let result;
-        try {
-            result = await response.json();
-            console.log('📥 Response JSON:', result);
-        } catch (e) {
-            const text = await response.text();
-            console.log('📥 Response text:', text);
-            throw new Error('Invalid JSON response: ' + text);
-        }
-        
-        if (result && result.status === 'success') {
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
             alert("✅ Product uploaded successfully!");
-            // Clear form
-            ['prod_name','prod_model','prod_condition','prod_price','prod_image','prod_desc'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.value = '';
-            });
+            // Form clear karna
+            document.getElementById('prod_name').value = '';
+            document.getElementById('prod_model').value = '';
+            document.getElementById('prod_price').value = '';
+            document.getElementById('prod_image').value = '';
+            document.getElementById('prod_desc').value = '';
+            
+            // Lists refresh karna
             loadAdminProducts();
             loadProducts();
         } else {
-            throw new Error(result?.message || 'Unknown error');
+            alert("❌ Upload Failed: " + (result.error || "Unknown error"));
         }
-        
     } catch (error) {
-        console.error('❌ Upload error:', error);
-        alert("❌ Upload Failed: " + error.message + "\n\nCheck console (F12) for details.");
+        console.error(error);
+        alert("❌ Network Error: Check console (F12) for details.");
     } finally {
-        btn.textContent = originalText;
-        btn.disabled = false;
+        // Button wapis normal karna
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = "💾 Upload to Market";
+        }
     }
 }
-
 async function loadAdminProducts() {
     const container = document.getElementById('adminProductsList');
     container.innerHTML = '<div class="loading">Loading...</div>';
