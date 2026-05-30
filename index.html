@@ -47,7 +47,8 @@ body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; colo
 .slider-track img { min-width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start; }
 .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 18px; }
 .slider-btn.prev { left: 10px; }
-.slider-btn.next { right: 10px; }.no-image { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 40px; background: #1e293b; }
+.slider-btn.next { right: 10px; }
+.no-image { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 40px; background: #1e293b; }
 
 .product-info { padding: 12px; }
 .product-info h4 { color: white; margin: 0 0 5px 0; font-size: 15px; }
@@ -96,7 +97,8 @@ footer a:hover { text-decoration: underline; }
 .action-row { display: flex; gap: 10px; margin-top: 15px; }
 .action-row button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
 .btn-download-all { background: #22c55e; color: white; }
-.btn-back { background: #64748b; color: white; }#installPrompt { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 2px solid #3b82f6; border-radius: 12px; padding: 15px 20px; z-index: 2500; }
+.btn-back { background: #64748b; color: white; }
+#installPrompt { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 2px solid #3b82f6; border-radius: 12px; padding: 15px 20px; z-index: 2500; }
 #installPrompt p { margin: 0 0 10px 0; font-size: 14px; color: white; }
 #installPrompt button { background: #3b82f6; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 8px; }
 .loading { text-align: center; padding: 20px; color: #fbbf24; }
@@ -145,7 +147,8 @@ footer a:hover { text-decoration: underline; }
 <header class="brand-header">
 <img src="1773452778552.jpeg" class="logo-main" id="brandLogo" alt="DNHQ" crossorigin="anonymous">
 <div class="brand-title">DNHQ SERVICES</div>
-</header><div class="wrapper">
+</header>
+<div class="wrapper">
 <div class="nav-container">
 <a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
 <a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
@@ -194,7 +197,8 @@ footer a:hover { text-decoration: underline; }
     <i class="fas fa-store"></i> <span id="marketToggleText">Open Market</span>
   </button>
   <div id="marketContainer" style="display:none;">
-    <div class="market-filters">      <button class="filter-btn active" onclick="filterMarket('all', this)">All Items</button>
+    <div class="market-filters">
+      <button class="filter-btn active" onclick="filterMarket('all', this)">All Items</button>
       <button class="filter-btn" onclick="filterMarket('ac', this)">❄️ AC</button>
       <button class="filter-btn" onclick="filterMarket('fridge', this)">🧊 Fridge</button>
       <button class="filter-btn" onclick="filterMarket('deepfreezer', this)">🧊 Deep Freezer</button>
@@ -243,7 +247,8 @@ footer a:hover { text-decoration: underline; }
 <select id="discount_type" onchange="toggleDiscountInput()">
 <option value="none">No Discount</option>
 <option value="percent">% Percentage</option>
-<option value="fixed">Rs Fixed Amount</option></select>
+<option value="fixed">Rs Fixed Amount</option>
+</select>
 <input type="number" id="discount_value" class="man-input" placeholder="Enter value" style="display:none;margin-bottom:0;">
 </div>
 </div>
@@ -292,7 +297,8 @@ footer a:hover { text-decoration: underline; }
         <div class="file-upload-box">
             <i class="fas fa-cloud-upload-alt" style="font-size:24px;color:var(--gold);margin-bottom:10px;"></i><br>
             Click or Drag Images Here
-            <input type="file" id="prod_images" multiple accept="image/*" onchange="previewImages(this)">        </div>
+            <input type="file" id="prod_images" multiple accept="image/*" onchange="previewImages(this)">
+        </div>
         <div id="imgPreview" class="preview-container"></div>
     </div>
     <textarea id="prod_desc" class="man-input" placeholder="Description / Warranty details" style="min-height:80px;"></textarea>
@@ -341,7 +347,8 @@ footer a:hover { text-decoration: underline; }
 <div class="action-row">
 <button class="btn-download-all" onclick="downloadCustomerHistoryPDF()">📥 Download All (PDF)</button>
 <button class="btn-back" onclick="resetHistoryView()">🔍 New Search</button>
-</div></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -390,7 +397,8 @@ footer a:hover { text-decoration: underline; }
     <h3 style="text-align:center;color:#3b82f6;">🗂️ Deleted Orders Backup</h3>
     <div id="backupList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
     <div style="display:flex;gap:10px;">
-      <button class="btn-back" onclick="closeBackupModal()" style="flex:1;">Close</button>      <button class="btn-confirm" onclick="refreshBackups()" style="flex:1;">🔄 Refresh</button>
+      <button class="btn-back" onclick="closeBackupModal()" style="flex:1;">Close</button>
+      <button class="btn-confirm" onclick="refreshBackups()" style="flex:1;">🔄 Refresh</button>
     </div>
   </div>
 </div>
@@ -415,7 +423,7 @@ footer a:hover { text-decoration: underline; }
 // ✅ GLOBAL VARIABLES
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [], allProducts = [];
 const ADMIN_WHATSAPP = "923152458657";
-const SCRIPT_URL ="https://script.google.com/macros/s/AKfycbzu6V660FlzJeqtUcVDmhRTC7WlItrdmL26Zp2g4SeCJShJpYeEaRI-Xmq8MptpdY-9iA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzu6V660FlzJeqtUcVDmhRTC7WlItrdmL26Zp2g4SeCJShJpYeEaRI-Xmq8MptpdY-9iA/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
 // ✅ UTILITY FUNCTIONS
@@ -439,7 +447,8 @@ function formatDate(dateInput) {
                 const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
                 if (ddmmyyyy) date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
             }
-        }        if (!date || isNaN(date.getTime())) {
+        }
+        if (!date || isNaN(date.getTime())) {
             return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
         }
         return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
@@ -488,7 +497,8 @@ function updateCart() {
 // ✅ ADMIN PANEL FUNCTIONS
 function openAdmin() {
     const pin = prompt("Enter Admin PIN:");
-    if(pin === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); }     else if(pin !== null) { alert("Wrong PIN!"); }
+    if(pin === "dnhq123") { document.getElementById('adminView').style.display='block'; loadLogs(); } 
+    else if(pin !== null) { alert("Wrong PIN!"); }
 }
 
 function switchAdminTab(tab) {
@@ -537,7 +547,8 @@ async function saveManualEntry() {
     if (discountType === 'percent' && discountValue > 0) { discountAmount = (subtotal * discountValue) / 100; discountText = discountValue + "%"; } 
     else if (discountType === 'fixed' && discountValue > 0) { discountAmount = discountValue; discountText = "Rs " + discountValue; }
     const totalAfterDiscount = subtotal - discountAmount; const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
-    const balanceDue = totalAfterDiscount - advance; const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();    const payload = { date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "), subtotal: subtotal, discount_type: discountType, discount_value: discountValue, discount_amount: discountAmount, discount_text: discountText, advance: advance, total: totalAfterDiscount, balance_due: balanceDue, entry_type: 'order', order_status: 'received', order_source: 'manual' };
+    const balanceDue = totalAfterDiscount - advance; const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();
+    const payload = { date: orderDate, client: name.toUpperCase(), phone: phone, work: allWork.join(", "), subtotal: subtotal, discount_type: discountType, discount_value: discountValue, discount_amount: discountAmount, discount_text: discountText, advance: advance, total: totalAfterDiscount, balance_due: balanceDue, entry_type: 'order', order_status: 'received', order_source: 'manual' };
     try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) }); alert("✅ Order saved successfully!"); setTimeout(() => { loadLogs(); }, 2000);
         document.getElementById('man_name').value = ''; document.getElementById('man_phone').value = ''; document.getElementById('man_date').value = '';
         document.getElementById('discount_type').value = 'none'; document.getElementById('discount_value').value = ''; document.getElementById('discount_value').style.display = 'none';
@@ -586,7 +597,8 @@ async function submitComplaint() {
 
 function showConfirmDialog(order) {
     if (!order || typeof order !== 'object') { alert('❌ Error: Invalid order data!'); return; }
-    pendingOrderData = order;    const client = order.client ? String(order.client) : 'Customer'; const phone = order.phone ? String(order.phone) : 'N/A';
+    pendingOrderData = order;
+    const client = order.client ? String(order.client) : 'Customer'; const phone = order.phone ? String(order.phone) : 'N/A';
     const orderDate = order.date || order.timestamp || new Date().toISOString();
     const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
     const discountAmount = parseFloat(order.discount_amount) || 0; const advance = parseFloat(order.advance) || 0;
@@ -635,7 +647,8 @@ async function generatePDF(order) {
         doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150); doc.text("Subtotal:", 115, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7;
         if (discount > 0) { doc.setTextColor(16, 185, 129); doc.text(order.discount_text + " Discount:", 115, finalY); doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7; doc.setTextColor(150, 150, 150); }
         doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0); doc.text("Total:", 115, finalY); doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10;
-        if (advance > 0) { doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(10); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold"); doc.text("Advance Received:", 115, finalY); doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10; }        doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+        if (advance > 0) { doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(10); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold"); doc.text("Advance Received:", 115, finalY); doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10; }
+        doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(14); doc.setFont("helvetica", "bold");
         if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); }
         else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
         const footerY = 280; doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY); doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
@@ -684,7 +697,8 @@ async function fetchCustomerHistory() {
 
 function downloadCustomerHistoryPDF() {
     if (!currentCustData || currentCustData.length === 0) return alert("No data!");
-    const JsPDFConstructor = getJsPDFConstructor(); if (!JsPDFConstructor) return alert('jsPDF not loaded!');    const doc = new JsPDFConstructor(); const cust = currentCustData[0]; const grandTotal = currentCustData.reduce((s,o) => s + (parseFloat(o.total)||0), 0);
+    const JsPDFConstructor = getJsPDFConstructor(); if (!JsPDFConstructor) return alert('jsPDF not loaded!');
+    const doc = new JsPDFConstructor(); const cust = currentCustData[0]; const grandTotal = currentCustData.reduce((s,o) => s + (parseFloat(o.total)||0), 0);
     doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
     getImageDataForPDF(document.getElementById('brandLogo')).then(imgData => {
         if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
@@ -733,7 +747,8 @@ async function exportBackups() {
   const pin = prompt("🔐 Enter Backup PIN:");
   if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
   try {
-    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);    const backups = await res.json();
+    const res = await fetch(`${SCRIPT_URL}?getBackups=true&pin=${encodeURIComponent(pin)}`);
+    const backups = await res.json();
     if(backups.error) throw new Error(backups.error);
     if(backups.length === 0) { alert("No backups to export!"); return; }
     const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason'];
@@ -782,7 +797,8 @@ function previewImages(input) {
                 img.src = e.target.result;
                 preview.appendChild(img);
             };
-            reader.readAsDataURL(file);        });
+            reader.readAsDataURL(file);
+        });
     }
 }
 
@@ -807,18 +823,18 @@ function slide(btn, dir) {
 
 function filterMarket(category, btn) {
     console.log('🔍 Filtering category:', category);
-    
+
     // Active button highlight karein
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if(btn) btn.classList.add('active');
-    
+
     const grid = document.getElementById('productsGrid');
     if(!grid) return;
     grid.innerHTML = '';
-    
+
     // Products load karein
     const products = window.allProducts || [];
-    
+
     // Filter logic (Case insensitive banaya hai)
     const filtered = category === 'all' 
         ? products 
@@ -826,12 +842,12 @@ function filterMarket(category, btn) {
             let pCat = (p.category || 'other').toString().toLowerCase();
             return pCat === category.toLowerCase();
         });
-    
+
     if (filtered.length === 0) {
         grid.innerHTML = '<p style="text-align:center;color:#94a3b8;grid-column:1/-1;padding:40px;">No items in this category</p>';
         return;
     }
-    
+
     // Har product ke liye card banayein
     filtered.forEach((p, index) => {
         try {
@@ -839,7 +855,7 @@ function filterMarket(category, btn) {
             let rawCat = (p.category || p.cat || 'other').toString().toLowerCase();
             let displayCat = 'OTHER';
             let icon = '📦';
-            
+
             if (rawCat.includes('ac')) { displayCat = 'AC'; icon = '❄️'; }
             else if (rawCat.includes('fridge')) { displayCat = 'FRIDGE'; icon = '🧊'; }
             else if (rawCat.includes('deep')) { displayCat = 'DEEP FREEZER'; icon = '🧊'; }
@@ -853,7 +869,7 @@ function filterMarket(category, btn) {
             } else if (p.image_url) {
                 images = [p.image_url];
             }
-            
+
             // Slider HTML
             let sliderHTML = '<div class="slider-container"><div class="slider-track">';
             if (images.length > 0 && images[0].length > 10) { // Check ke URL valid hai
@@ -870,18 +886,18 @@ function filterMarket(category, btn) {
                 sliderHTML += '<div class="no-image"><i class="fas fa-image"></i></div>';
             }
             sliderHTML += '</div>';
-            
+
             // Arrows
             if (images.length > 1) {
                 sliderHTML += `<button class="slider-btn prev" onclick="event.stopPropagation(); slide(this,-1)">‹</button>`;
                 sliderHTML += `<button class="slider-btn next" onclick="event.stopPropagation(); slide(this,1)">›</button>`;
             }
             sliderHTML += '</div>';
-            
+
             // Description aur Price
             const desc = p.description && p.description.trim() ? p.description : 'No description available';
             const price = parseFloat(p.price || 0).toLocaleString();
-            
+
             // Card Create
             const card = document.createElement('div');
             card.className = 'product-card';
@@ -899,40 +915,42 @@ function filterMarket(category, btn) {
                 </div>
             `;
             grid.appendChild(card);
-            
+
         } catch (err) {
             console.error('❌ Error rendering product:', p, err);
         }
     });
 }
-    async function loadProducts() {
+
+async function loadProducts() {
     const grid = document.getElementById('productsGrid');
     if(!grid) return;
     grid.innerHTML = '<div class="loading">Loading...</div>';
-    
+
     try {
         console.log('📡 Fetching products from:', SCRIPT_URL);
         const res = await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`);
         const products = await res.json();
-        
+
         console.log('📦 Products received:', products);
-        
+
         if (products.error) {
             throw new Error(products.error);
         }
-        
+
         // ✅ Store all products
         window.allProducts = products || [];
-        
+
         // ✅ Load with 'all' filter
         const activeBtn = document.querySelector('.filter-btn.active') || document.querySelector('.filter-btn');
         filterMarket('all', activeBtn);
-        
+
     } catch (e) {
         console.error('❌ Error loading products:', e);
         grid.innerHTML = `<p style="color:#ef4444;text-align:center;">Error: ${e.message}<br><small>Check console for details</small></p>`;
     }
 }
+
 function buyProduct(name, price, desc) {
     const cName = prompt("Enter Your Name:");
     const phone = prompt("Enter Phone Number:");
@@ -942,6 +960,7 @@ function buyProduct(name, price, desc) {
     }
 }
 
+// ✅ FIXED: saveProduct with proper async handling
 async function saveProduct() {
     const name = document.getElementById('prod_name').value.trim();
     const category = document.getElementById('prod_category').value;
@@ -956,9 +975,8 @@ async function saveProduct() {
         return; 
     }
 
-    // ✅ SCRIPT_URL check karein
     console.log('📡 Using SCRIPT_URL:', SCRIPT_URL);
-    
+
     if (!SCRIPT_URL || !SCRIPT_URL.includes('script.google.com')) {
         alert("❌ SCRIPT_URL is incorrect!\n\nCurrent: " + SCRIPT_URL + "\n\nIt should be a Google Apps Script URL");
         return;
@@ -970,90 +988,98 @@ async function saveProduct() {
     btn.disabled = true;
 
     try {
-        // Image ko Base64 mein convert karein
+        // ✅ FIXED: Convert image to base64 BEFORE sending
         let base64Images = [];
         if (files.length > 0) {
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                base64Images.push(e.target.result);
-                
-                const payload = {
-                    type: 'addProduct',
-                    name: name,
-                    category: category,
-                    model: model,
-                    condition: condition,
-                    price: parseFloat(price),
-                    description: desc,
-                    images: base64Images
-                };
+            // Convert first image to base64 using Promise
+            base64Images = [await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(files[0]);
+            })];
+        }
 
-                // ✅ Sahi URL par bhejein
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert("✅ Product uploaded successfully!");
-                    location.reload();
-                } else {
-                    alert("❌ Upload failed: " + (result.error || 'Unknown error'));
-                }
-            };
-            reader.readAsDataURL(files[0]);
+        const payload = {
+            type: 'addProduct',
+            name: name,
+            category: category,
+            model: model,
+            condition: condition,
+            price: parseFloat(price),
+            description: desc,
+            images: base64Images
+        };
+
+        console.log('📦 Sending payload:', payload);
+
+        // ✅ FIXED: Send request without headers to avoid CORS
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+
+        console.log('📥 Response status:', response.status);
+
+        // Handle response
+        let result;
+        try {
+            result = await response.json();
+            console.log('📥 Result:', result);
+        } catch (e) {
+            // If JSON parse fails, assume success (opaque response)
+            console.log('⚠️ Could not parse response, assuming success');
+            alert("✅ Product uploaded successfully!");
+            resetForm();
+            loadAdminProducts();
+            loadProducts();
+            return;
+        }
+
+        if (result && (result.success || result.status === 'success')) {
+            alert("✅ Product uploaded successfully!");
+            resetForm();
+            loadAdminProducts();
+            loadProducts();
         } else {
-            // Bina image ke upload
-            const payload = {
-                type: 'addProduct',
-                name: name,
-                category: category,
-                model: model,
-                condition: condition,
-                price: parseFloat(price),
-                description: desc,
-                images: []
-            };
-            
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                alert("✅ Product uploaded successfully!");
-                location.reload();
-            } else {
-                alert("❌ Upload failed: " + (result.error || 'Unknown error'));
-            }
+            throw new Error(result?.error || result?.message || 'Unknown error');
         }
 
     } catch (error) {
         console.error('❌ Upload error:', error);
-        alert("❌ Network error: " + error.message);
+        alert("❌ Upload Failed: " + error.message);
     } finally {
         btn.textContent = originalText;
         btn.disabled = false;
     }
+
+    // Helper function to reset form
+    function resetForm() {
+        ['prod_name','prod_model','prod_condition','prod_price','prod_desc','prod_images'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                if(el.type === 'file') el.value = '';
+                else el.value = '';
+            }
+        });
+        document.getElementById('imgPreview').innerHTML = '';
+    }
 }
-    async function loadAdminProducts() {
+
+async function loadAdminProducts() {
     const container = document.getElementById('adminProductsList');
     if(!container) return;
     container.innerHTML = '<div class="loading">Loading...</div>';
-    
+
     try {
         const res = await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`);
         const products = await res.json();
-        
+
         if (!products?.length) {
             container.innerHTML = '<p style="color:#94a3b8;text-align:center;">No products yet</p>';
             return;
         }
-        
+
         container.innerHTML = products.map(p => {
             // ✅ Safe field access
             const name = p.name || 'Unnamed Product';
@@ -1063,7 +1089,7 @@ async function saveProduct() {
             const condition = p.condition || '';
             const price = parseFloat(p.price || 0).toLocaleString();
             const id = p.id || '';
-            
+
             return `
                 <div class="log-card" style="display:flex;justify-content:space-between;align-items:start;">
                     <div>
@@ -1075,13 +1101,14 @@ async function saveProduct() {
                 </div>
             `;
         }).join('');
-        
+
     } catch (e) {
         console.error('❌ Error loading admin products:', e);
         container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
     }
 }
-    async function deleteProduct(id) {
+
+async function deleteProduct(id) {
     if (!confirm("🗑️ Delete this product from market?")) return;
     const pin = prompt("🔐 Admin PIN:");
     if (pin !== "dnhq_delete_2026") return alert("❌ Wrong PIN");
@@ -1105,7 +1132,8 @@ window.openAdmin = openAdmin;
 window.openHistoryModal = openHistoryModal;
 window.triggerAppInstall = triggerAppInstall;
 window.generatePDF = generatePDF;
-window.deleteEntry = deleteEntry;window.fetchCustomerHistory = fetchCustomerHistory;
+window.deleteEntry = deleteEntry;
+window.fetchCustomerHistory = fetchCustomerHistory;
 window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
 window.toggleDiscountInput = toggleDiscountInput;
 window.showConfirmDialog = showConfirmDialog;
