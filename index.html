@@ -937,23 +937,33 @@ async function loadAdminProducts() {
     try {
         const res = await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`);
         const products = await res.json();
-        if (!products?.length) { container.innerHTML = '<p style="color:#94a3b8;text-align:center;">No products yet</p>'; return; }
-        container.innerHTML = products.map(p => `
-            <div class="log-card" style="display:flex;justify-content:space-between;align-items:start;">
-                <div>
-                    <b style="color:white;">${p.name}</b><br>
-                    <small style="color:#94a3b8;">${p.category.toUpperCase()} • ${p.model || ''} • ${p.condition || ''}</small><br>
-                    <small style="color:#10b981;font-weight:bold;">Rs ${parseFloat(p.price).toLocaleString()}</small>
+        if (!products?.length) { 
+            container.innerHTML = '<p style="color:#94a3b8;text-align:center;">No products yet</p>'; 
+            return; 
+        }
+        container.innerHTML = products.map(p => {
+            // ✅ Safe category handling
+            const cat = (p.category || 'other').toString().toUpperCase();
+            const modelName = p.model || '';
+            const condition = p.condition || '';
+            const price = parseFloat(p.price || 0).toLocaleString();
+            
+            return `
+                <div class="log-card" style="display:flex;justify-content:space-between;align-items:start;">
+                    <div>
+                        <b style="color:white;">${p.name || 'Unnamed Product'}</b><br>
+                        <small style="color:#94a3b8;">${cat} • ${modelName} • ${condition}</small><br>
+                        <small style="color:#10b981;font-weight:bold;">Rs ${price}</small>
+                    </div>
+                    <button class="del-btn" onclick="deleteProduct('${p.id || ''}')">🗑️</button>
                 </div>
-                <button class="del-btn" onclick="deleteProduct('${p.id}')">🗑️</button>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     } catch (e) {
         console.error('❌ Error loading admin products:', e);
-        container.innerHTML = `<p style="color:#ef4444;">Error</p>`;
+        container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
     }
 }
-
 async function deleteProduct(id) {
     if (!confirm("🗑️ Delete this product from market?")) return;
     const pin = prompt("🔐 Admin PIN:");
