@@ -808,7 +808,7 @@ function slide(btn, dir) {
 function filterMarket(category, btn) {
     console.log('🔍 Filtering category:', category);
     
-    // Update active button
+    // Active button highlight karein
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if(btn) btn.classList.add('active');
     
@@ -816,16 +816,15 @@ function filterMarket(category, btn) {
     if(!grid) return;
     grid.innerHTML = '';
     
-    // Safe array handling
+    // Products load karein
     const products = window.allProducts || [];
     
-    // Filter products
+    // Filter logic (Case insensitive banaya hai)
     const filtered = category === 'all' 
         ? products 
         : products.filter(p => {
-            // Fallback to 'other' if category is missing
-            const prodCat = (p.category || 'other').toString().toLowerCase();
-            return prodCat === category;
+            let pCat = (p.category || 'other').toString().toLowerCase();
+            return pCat === category.toLowerCase();
         });
     
     if (filtered.length === 0) {
@@ -833,48 +832,57 @@ function filterMarket(category, btn) {
         return;
     }
     
-    // Render each product
+    // Har product ke liye card banayein
     filtered.forEach((p, index) => {
         try {
-            const icons = {ac:'❄️', fridge:'🧊', deepfreezer:'🧊', washing:'🧺', other:'📦'};
+            // ✅ CATEGORY FIX: AC, Fridge, etc. ko pehchanein
+            let rawCat = (p.category || p.cat || 'other').toString().toLowerCase();
+            let displayCat = 'OTHER';
+            let icon = '📦';
             
-            // ✅ Safe category handling (Default to 'other' if missing)
-            const rawCat = (p.category || 'other').toString().toLowerCase();
-            const icon = icons[rawCat] || '📦';
-            const displayCat = (p.category || 'Other').toString().toUpperCase();
-            
-            // ✅ FIX: Check BOTH image_url (singular) and image_urls (plural)
+            if (rawCat.includes('ac')) { displayCat = 'AC'; icon = '❄️'; }
+            else if (rawCat.includes('fridge')) { displayCat = 'FRIDGE'; icon = '🧊'; }
+            else if (rawCat.includes('deep')) { displayCat = 'DEEP FREEZER'; icon = '🧊'; }
+            else if (rawCat.includes('wash')) { displayCat = 'WASHING MACHINE'; icon = '🧺'; }
+            else { displayCat = rawCat.toUpperCase(); }
+
+            // ✅ IMAGE FIX: image_urls (plural) aur image_url (singular) dono check karein
             let images = [];
             if (p.image_urls) {
                 images = p.image_urls.split(',').map(u => u.trim()).filter(u => u);
             } else if (p.image_url) {
-                // Fallback for singular field name found in your sheet
                 images = [p.image_url];
             }
             
-            // Build slider HTML
+            // Slider HTML
             let sliderHTML = '<div class="slider-container"><div class="slider-track">';
-            if (images.length > 0) {
+            if (images.length > 0 && images[0].length > 10) { // Check ke URL valid hai
                 images.forEach(url => {
-                    sliderHTML += `<img src="${url}" onerror="this.style.display='none'" loading="lazy">`;
+                    // Google Drive link fix agar zaroorat ho
+                    let finalUrl = url;
+                    if(url.includes('drive.google.com') && !url.includes('uc?export=view')) {
+                         // Purane format ko new format mein badalna
+                         // (Optional: usually sheet se sahi link aata hai)
+                    }
+                    sliderHTML += `<img src="${finalUrl}" onerror="this.style.display='none'" loading="lazy">`;
                 });
             } else {
                 sliderHTML += '<div class="no-image"><i class="fas fa-image"></i></div>';
             }
             sliderHTML += '</div>';
             
-            // Add arrows if multiple images
+            // Arrows
             if (images.length > 1) {
                 sliderHTML += `<button class="slider-btn prev" onclick="event.stopPropagation(); slide(this,-1)">‹</button>`;
                 sliderHTML += `<button class="slider-btn next" onclick="event.stopPropagation(); slide(this,1)">›</button>`;
             }
             sliderHTML += '</div>';
             
-            // Safe description
+            // Description aur Price
             const desc = p.description && p.description.trim() ? p.description : 'No description available';
             const price = parseFloat(p.price || 0).toLocaleString();
             
-            // Create card
+            // Card Create
             const card = document.createElement('div');
             card.className = 'product-card';
             card.innerHTML = `
@@ -882,7 +890,7 @@ function filterMarket(category, btn) {
                 <div class="product-info">
                     <span class="category">${icon} ${displayCat}</span>
                     <h4>${p.name || 'Unnamed Product'}</h4>
-                    <p class="model">${p.model || ''} • ${p.condition || 'Used'}</p>
+                    <p class="model">${p.model || ''}</p>
                     <p class="price">Rs ${price}</p>
                     <p class="desc">${desc.substring(0, 100)}${desc.length > 100 ? '...' : ''}</p>
                     <button class="buy-btn" onclick="buyProduct('${(p.name || '').replace(/'/g, "\\'")}', ${p.price || 0}, '${desc.replace(/'/g, "\\'")}')">
@@ -890,15 +898,14 @@ function filterMarket(category, btn) {
                     </button>
                 </div>
             `;
-            
             grid.appendChild(card);
             
         } catch (err) {
-            console.error(`❌ Error rendering product ${index}:`, p, err);
+            console.error('❌ Error rendering product:', p, err);
         }
     });
-}    
-async function loadProducts() {
+}
+    async function loadProducts() {
     const grid = document.getElementById('productsGrid');
     if(!grid) return;
     grid.innerHTML = '<div class="loading">Loading...</div>';
