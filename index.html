@@ -808,56 +808,51 @@ function slide(btn, dir) {
 function filterMarket(category, btn) {
     console.log('🔍 Filtering category:', category);
     
-    // ✅ Update active button
+    // Update active button
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if(btn) btn.classList.add('active');
     
     const grid = document.getElementById('productsGrid');
-    if(!grid) {
-        console.error('❌ productsGrid not found');
-        return;
-    }
-    
+    if(!grid) return;
     grid.innerHTML = '';
     
-    // ✅ Safe array handling
+    // Safe array handling
     const products = window.allProducts || [];
-    console.log('📦 Total products:', products.length);
     
-    // ✅ Filter products
+    // Filter products
     const filtered = category === 'all' 
         ? products 
         : products.filter(p => {
-            const prodCat = (p.category || '').toString().toLowerCase();
+            // Fallback to 'other' if category is missing
+            const prodCat = (p.category || 'other').toString().toLowerCase();
             return prodCat === category;
         });
-    
-    console.log(' Filtered products:', filtered.length);
     
     if (filtered.length === 0) {
         grid.innerHTML = '<p style="text-align:center;color:#94a3b8;grid-column:1/-1;padding:40px;">No items in this category</p>';
         return;
     }
     
-    // ✅ Render each product safely
+    // Render each product
     filtered.forEach((p, index) => {
         try {
             const icons = {ac:'❄️', fridge:'🧊', deepfreezer:'🧊', washing:'🧺', other:'📦'};
             
-            // ✅ Safe category handling
+            // ✅ Safe category handling (Default to 'other' if missing)
             const rawCat = (p.category || 'other').toString().toLowerCase();
             const icon = icons[rawCat] || '📦';
-            const displayCat = (p.category || 'OTHER').toString().toUpperCase();
+            const displayCat = (p.category || 'Other').toString().toUpperCase();
             
-            // ✅ Safe image handling
+            // ✅ FIX: Check BOTH image_url (singular) and image_urls (plural)
             let images = [];
             if (p.image_urls) {
                 images = p.image_urls.split(',').map(u => u.trim()).filter(u => u);
             } else if (p.image_url) {
-                // Fallback for old field name                images = [p.image_url];
+                // Fallback for singular field name found in your sheet
+                images = [p.image_url];
             }
             
-            // ✅ Build slider HTML
+            // Build slider HTML
             let sliderHTML = '<div class="slider-container"><div class="slider-track">';
             if (images.length > 0) {
                 images.forEach(url => {
@@ -868,20 +863,18 @@ function filterMarket(category, btn) {
             }
             sliderHTML += '</div>';
             
-            // ✅ Add navigation arrows if multiple images
+            // Add arrows if multiple images
             if (images.length > 1) {
                 sliderHTML += `<button class="slider-btn prev" onclick="event.stopPropagation(); slide(this,-1)">‹</button>`;
                 sliderHTML += `<button class="slider-btn next" onclick="event.stopPropagation(); slide(this,1)">›</button>`;
             }
             sliderHTML += '</div>';
             
-            // ✅ Safe description handling
+            // Safe description
             const desc = p.description && p.description.trim() ? p.description : 'No description available';
-            
-            // ✅ Safe price handling
             const price = parseFloat(p.price || 0).toLocaleString();
             
-            // ✅ Create card
+            // Create card
             const card = document.createElement('div');
             card.className = 'product-card';
             card.innerHTML = `
@@ -903,8 +896,8 @@ function filterMarket(category, btn) {
         } catch (err) {
             console.error(`❌ Error rendering product ${index}:`, p, err);
         }
-    });}
-    
+    });
+}    
 async function loadProducts() {
     const grid = document.getElementById('productsGrid');
     if(!grid) return;
@@ -1001,11 +994,8 @@ async function loadAdminProducts() {
     container.innerHTML = '<div class="loading">Loading...</div>';
     
     try {
-        console.log('📡 Fetching admin products...');
         const res = await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`);
         const products = await res.json();
-        
-        console.log('📦 Admin products:', products);
         
         if (!products?.length) {
             container.innerHTML = '<p style="color:#94a3b8;text-align:center;">No products yet</p>';
@@ -1015,7 +1005,8 @@ async function loadAdminProducts() {
         container.innerHTML = products.map(p => {
             // ✅ Safe field access
             const name = p.name || 'Unnamed Product';
-            const cat = (p.category || 'other').toString().toUpperCase();
+            // Default to 'OTHER' if category is missing
+            const cat = (p.category || 'OTHER').toString().toUpperCase();
             const model = p.model || '';
             const condition = p.condition || '';
             const price = parseFloat(p.price || 0).toLocaleString();
