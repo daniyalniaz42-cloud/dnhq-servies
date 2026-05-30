@@ -837,12 +837,13 @@ function filterMarket(category, btn) {
 
     // Filter logic (Case insensitive banaya hai)
     const filtered = category === 'all' 
-        ? products 
-        : products.filter(p => {
-            let pCat = (p.category || 'other').toString().toLowerCase();
-            return pCat === category.toLowerCase();
-        });
-
+    ? products 
+    : products.filter(p => {
+        let pCat = (p.category || p.cat || 'other').toString().toLowerCase().trim();
+        const filterCat = category.toLowerCase().trim();
+        console.log('Comparing:', pCat, 'with', filterCat);
+        return pCat === filterCat || pCat.includes(filterCat) || filterCat.includes(pCat);
+    });
     if (filtered.length === 0) {
         grid.innerHTML = '<p style="text-align:center;color:#94a3b8;grid-column:1/-1;padding:40px;">No items in this category</p>';
         return;
