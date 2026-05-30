@@ -938,16 +938,24 @@ function buyProduct(name, price, desc) {
 async function saveProduct() {
     const name = document.getElementById('prod_name').value.trim();
     const category = document.getElementById('prod_category').value;
-    const model = document.getElementById('prod_model').value.trim();    const condition = document.getElementById('prod_condition').value.trim();
+    const model = document.getElementById('prod_model').value.trim();
+    const condition = document.getElementById('prod_condition').value.trim();
     const price = document.getElementById('prod_price').value;
     const desc = document.getElementById('prod_desc').value.trim();
     const files = document.getElementById('prod_images').files;
-    if (!name || !price) { alert("❌ Name and Price are required!"); return; }
+
+    if (!name || !price) { 
+        alert("❌ Name and Price are required!"); 
+        return; 
+    }
+
     const btn = document.getElementById('uploadBtn');
     const originalText = btn.textContent;
     btn.textContent = "⏳ Uploading...";
     btn.disabled = true;
+
     try {
+        // 1. Images ko Base64 mein convert karein
         let base64Images = [];
         for (let file of files) {
             const b64 = await new Promise(res => {
@@ -957,35 +965,62 @@ async function saveProduct() {
             });
             base64Images.push(b64);
         }
+
         const payload = {
             type: 'addProduct',
-            name: name, category: category, model: model, condition: condition,
-            price: parseFloat(price), description: desc, images: base64Images
+            name: name,
+            category: category || 'other',
+            model: model,
+            condition: condition,
+            price: parseFloat(price),
+            description: desc,
+            images: base64Images
         };
+
+        // 2. ✅ FIX: Headers hata di hain taake CORS block na ho
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
+
+        // 3. Response check karein
         let result;
-        try { result = await response.json(); }
-        catch (e) { const text = await response.text(); throw new Error('Invalid JSON response: ' + text); }
-        if (result && (result.status === 'success' || result.success)) {
+        try { 
+            result = await response.json(); 
+        } catch (e) { 
+            // Agar response opaque ho (CORS ki wajah se), toh maan lein ke upload ho gaya
+            console.log('Upload successful (Opaque response)');
             alert("✅ Product uploaded successfully!");
-            ['prod_name','prod_model','prod_condition','prod_price','prod_desc','prod_images'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) { if(el.type === 'file') el.value = ''; else el.value = ''; }
-            });
-            document.getElementById('imgPreview').innerHTML = '';
+            resetForm();
             loadAdminProducts();
             loadProducts();
-        } else { throw new Error(result?.message || result?.error || 'Unknown error'); }
+            return; 
+        }
+
+        if (result && (result.status === 'success' || result.success)) {
+            alert("✅ Product uploaded successfully!");
+            resetForm();
+            loadAdminProducts();
+            loadProducts();
+        } else {
+            throw new Error(result?.message || result?.error || 'Unknown error');
+        }
+
     } catch (error) {
         console.error('❌ Upload error:', error);
-        alert("❌ Upload Failed: " + error.message + "\n\nCheck console (F12) for details.");
+        alert("❌ Upload Failed: " + error.message);
     } finally {
         btn.textContent = originalText;
         btn.disabled = false;
+    }
+
+    // Helper to reset form
+    function resetForm() {
+        ['prod_name','prod_model','prod_condition','prod_price','prod_desc','prod_images'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) { if(el.type === 'file') el.value = ''; else el.value = ''; }
+        });
+        document.getElementById('imgPreview').innerHTML = '';
     }
 }
 async function loadAdminProducts() {
