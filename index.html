@@ -806,68 +806,133 @@ function slide(btn, dir) {
 }
 
 function filterMarket(category, btn) {
+    console.log('🔍 Filtering category:', category);
+    
+    // ✅ Update active button
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if(btn) btn.classList.add('active');
+    
     const grid = document.getElementById('productsGrid');
-    if(!grid) return;
-    grid.innerHTML = '';
-    const filtered = category === 'all' ? allProducts : allProducts.filter(p => p.category === category);
-    if (filtered.length === 0) {
-        grid.innerHTML = '<p style="text-align:center;color:#94a3b8;grid-column:1/-1;">No items in this category</p>';
+    if(!grid) {
+        console.error('❌ productsGrid not found');
         return;
     }
-    filtered.forEach(p => {
-        const icons = {ac:'❄️', fridge:'🧊', deepfreezer:'🧊', washing:'🧺', other:'📦'};
-        const icon = icons[p.category] || '📦';
-        let images = [];
-        if (p.image_urls) images = p.image_urls.split(',').map(u => u.trim()).filter(u => u);
-        let sliderHTML = '<div class="slider-container"><div class="slider-track">';
-        if (images.length > 0) {
-            images.forEach(url => sliderHTML += `<img src="${url}" onerror="this.style.display='none'">`);
-        } else {
-            sliderHTML += '<div class="no-image"><i class="fas fa-image"></i></div>';
-        }
-        sliderHTML += '</div>';
-        if (images.length > 1) {
-            sliderHTML += `<button class="slider-btn prev" onclick="slide(this,-1)">‹</button>`;
-            sliderHTML += `<button class="slider-btn next" onclick="slide(this,1)">›</button>`;
-        }        sliderHTML += '</div>';
-        const desc = p.description && p.description.trim() ? p.description : 'No description available';
-        grid.innerHTML += `
-            <div class="product-card">
+    
+    grid.innerHTML = '';
+    
+    // ✅ Safe array handling
+    const products = window.allProducts || [];
+    console.log('📦 Total products:', products.length);
+    
+    // ✅ Filter products
+    const filtered = category === 'all' 
+        ? products 
+        : products.filter(p => {
+            const prodCat = (p.category || '').toString().toLowerCase();
+            return prodCat === category;
+        });
+    
+    console.log(' Filtered products:', filtered.length);
+    
+    if (filtered.length === 0) {
+        grid.innerHTML = '<p style="text-align:center;color:#94a3b8;grid-column:1/-1;padding:40px;">No items in this category</p>';
+        return;
+    }
+    
+    // ✅ Render each product safely
+    filtered.forEach((p, index) => {
+        try {
+            const icons = {ac:'❄️', fridge:'🧊', deepfreezer:'🧊', washing:'🧺', other:'📦'};
+            
+            // ✅ Safe category handling
+            const rawCat = (p.category || 'other').toString().toLowerCase();
+            const icon = icons[rawCat] || '📦';
+            const displayCat = (p.category || 'OTHER').toString().toUpperCase();
+            
+            // ✅ Safe image handling
+            let images = [];
+            if (p.image_urls) {
+                images = p.image_urls.split(',').map(u => u.trim()).filter(u => u);
+            } else if (p.image_url) {
+                // Fallback for old field name                images = [p.image_url];
+            }
+            
+            // ✅ Build slider HTML
+            let sliderHTML = '<div class="slider-container"><div class="slider-track">';
+            if (images.length > 0) {
+                images.forEach(url => {
+                    sliderHTML += `<img src="${url}" onerror="this.style.display='none'" loading="lazy">`;
+                });
+            } else {
+                sliderHTML += '<div class="no-image"><i class="fas fa-image"></i></div>';
+            }
+            sliderHTML += '</div>';
+            
+            // ✅ Add navigation arrows if multiple images
+            if (images.length > 1) {
+                sliderHTML += `<button class="slider-btn prev" onclick="event.stopPropagation(); slide(this,-1)">‹</button>`;
+                sliderHTML += `<button class="slider-btn next" onclick="event.stopPropagation(); slide(this,1)">›</button>`;
+            }
+            sliderHTML += '</div>';
+            
+            // ✅ Safe description handling
+            const desc = p.description && p.description.trim() ? p.description : 'No description available';
+            
+            // ✅ Safe price handling
+            const price = parseFloat(p.price || 0).toLocaleString();
+            
+            // ✅ Create card
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
                 ${sliderHTML}
                 <div class="product-info">
-                    <span class="category">${icon} ${p.category.toUpperCase()}</span>
-                    <h4>${p.name}</h4>
+                    <span class="category">${icon} ${displayCat}</span>
+                    <h4>${p.name || 'Unnamed Product'}</h4>
                     <p class="model">${p.model || ''} • ${p.condition || 'Used'}</p>
-                    <p class="price">Rs ${parseFloat(p.price).toLocaleString()}</p>
-                    <p class="desc">${desc}</p>
-                    <button class="buy-btn" onclick="buyProduct('${p.name.replace(/'/g, "\\'")}', ${p.price}, '${(p.description || '').replace(/'/g, "\\'")}')">
+                    <p class="price">Rs ${price}</p>
+                    <p class="desc">${desc.substring(0, 100)}${desc.length > 100 ? '...' : ''}</p>
+                    <button class="buy-btn" onclick="buyProduct('${(p.name || '').replace(/'/g, "\\'")}', ${p.price || 0}, '${desc.replace(/'/g, "\\'")}')">
                         <i class="fab fa-whatsapp"></i> Buy Now
                     </button>
                 </div>
-            </div>
-        `;
-    });
-}
-
+            `;
+            
+            grid.appendChild(card);
+            
+        } catch (err) {
+            console.error(`❌ Error rendering product ${index}:`, p, err);
+        }
+    });}
+    
 async function loadProducts() {
     const grid = document.getElementById('productsGrid');
     if(!grid) return;
     grid.innerHTML = '<div class="loading">Loading...</div>';
+    
     try {
+        console.log('📡 Fetching products from:', SCRIPT_URL);
         const res = await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`);
         const products = await res.json();
-        if (products.error) throw new Error(products.error);
-        allProducts = products;
+        
+        console.log('📦 Products received:', products);
+        
+        if (products.error) {
+            throw new Error(products.error);
+        }
+        
+        // ✅ Store all products
+        window.allProducts = products || [];
+        
+        // ✅ Load with 'all' filter
         const activeBtn = document.querySelector('.filter-btn.active') || document.querySelector('.filter-btn');
         filterMarket('all', activeBtn);
+        
     } catch (e) {
         console.error('❌ Error loading products:', e);
-        grid.innerHTML = `<p style="color:#ef4444;text-align:center;">Error loading products</p>`;
+        grid.innerHTML = `<p style="color:#ef4444;text-align:center;">Error: ${e.message}<br><small>Check console for details</small></p>`;
     }
 }
-
 function buyProduct(name, price, desc) {
     const cName = prompt("Enter Your Name:");
     const phone = prompt("Enter Phone Number:");
@@ -934,37 +999,46 @@ async function loadAdminProducts() {
     const container = document.getElementById('adminProductsList');
     if(!container) return;
     container.innerHTML = '<div class="loading">Loading...</div>';
+    
     try {
+        console.log('📡 Fetching admin products...');
         const res = await fetch(`${SCRIPT_URL}?getProducts=true&t=${Date.now()}`);
         const products = await res.json();
-        if (!products?.length) { 
-            container.innerHTML = '<p style="color:#94a3b8;text-align:center;">No products yet</p>'; 
-            return; 
+        
+        console.log('📦 Admin products:', products);
+        
+        if (!products?.length) {
+            container.innerHTML = '<p style="color:#94a3b8;text-align:center;">No products yet</p>';
+            return;
         }
+        
         container.innerHTML = products.map(p => {
-            // ✅ Safe category handling
+            // ✅ Safe field access
+            const name = p.name || 'Unnamed Product';
             const cat = (p.category || 'other').toString().toUpperCase();
-            const modelName = p.model || '';
+            const model = p.model || '';
             const condition = p.condition || '';
             const price = parseFloat(p.price || 0).toLocaleString();
+            const id = p.id || '';
             
             return `
                 <div class="log-card" style="display:flex;justify-content:space-between;align-items:start;">
                     <div>
-                        <b style="color:white;">${p.name || 'Unnamed Product'}</b><br>
-                        <small style="color:#94a3b8;">${cat} • ${modelName} • ${condition}</small><br>
+                        <b style="color:white;">${name}</b><br>
+                        <small style="color:#94a3b8;">${cat} • ${model} • ${condition}</small><br>
                         <small style="color:#10b981;font-weight:bold;">Rs ${price}</small>
                     </div>
-                    <button class="del-btn" onclick="deleteProduct('${p.id || ''}')">🗑️</button>
+                    <button class="del-btn" onclick="deleteProduct('${id}')">🗑️</button>
                 </div>
             `;
         }).join('');
+        
     } catch (e) {
         console.error('❌ Error loading admin products:', e);
         container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
     }
 }
-async function deleteProduct(id) {
+    async function deleteProduct(id) {
     if (!confirm("🗑️ Delete this product from market?")) return;
     const pin = prompt("🔐 Admin PIN:");
     if (pin !== "dnhq_delete_2026") return alert("❌ Wrong PIN");
