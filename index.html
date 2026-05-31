@@ -558,17 +558,42 @@ async function saveManualEntry() {
 }
 
 async function loadLogs() {
-    const container = document.getElementById('logItems'); container.innerHTML = '<div class="loading">Fetching...</div>';
-    try { const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random()); const data = await res.json();
-        if(data.error) throw new Error(data.error); if(!data || data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
-        allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint').map(d => ({...d, order_status: d.order_status || 'received', order_source: d.order_source || 'manual'}));
-        if (allOrders.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; return; }
-        document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector('.order-filter-btn[onclick="filterOrders(\'website\')"]').classList.add('active');
-        filterOrders('website');
-    } catch(e) { console.error('❌ Load Logs Error:', e); container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
+  const container = document.getElementById('logItems');
+  container.innerHTML = '<div class="loading">Fetching...</div>';
+  
+  try {
+    const res = await fetch(SCRIPT_URL + "?t=" + Date.now());
+    const data = await res.json();
+    
+    // ✅ Check if data is array
+    if (!Array.isArray(data)) {
+      container.innerHTML = '<p style="color:#ef4444;">Error: Invalid data format</p>';
+      return;
+    }
+    
+    if (data.error) throw new Error(data.error);
+    if (!data || data.length === 0) {
+      container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>';
+      return;
+    }
+    
+    allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint')
+      .map(d => ({...d, order_status: d.order_status || 'received', order_source: d.order_source || 'manual'}));
+    
+    if (allOrders.length === 0) {
+      container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>';
+      return;
+    }
+    
+    document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.order-filter-btn[onclick="filterOrders(\'website\')"]').classList.add('active');
+    filterOrders('website');
+    
+  } catch(e) {
+    console.error('❌ Load Logs Error:', e);
+    container.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`;
+  }
 }
-
 async function loadComplaints() {
     const container = document.getElementById('complaintsList'); container.innerHTML = '<div class="loading">Loading complaints...</div>';
     try { const res = await fetch(SCRIPT_URL + "?t=" + Date.now()); const data = await res.json();
