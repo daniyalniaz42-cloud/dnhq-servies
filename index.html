@@ -580,126 +580,222 @@ async function saveManualEntry() {
     }
 }
 
-// ✅ GENERATE PDF WITH DIFFERENT COLORS
+// ✅ GENERATE PDF WITH DIFFERENT COLORS + LOGO
 function generateManualPDF(data, docType) {
     try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        const headerColor = docType === 'invoice' ? [251, 191, 36] : [16, 185, 129];
+        // ✅ Different colors: Invoice = Gold, Quotation = Blue
+        const headerColor = docType === 'invoice' ? [251, 191, 36] : [59, 130, 246];
         const titleText = docType === 'invoice' ? 'INVOICE' : 'QUOTATION';
         
-        // Header
+        // Header Background
         doc.setFillColor(0, 0, 0);
-        doc.rect(0, 0, 210, 45, 'F');
+        doc.rect(0, 0, 210, 55, 'F');
         
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
-        doc.setFontSize(24);
-        doc.setFont("helvetica", "bold");
-        doc.text("DNHQ SERVICES", 55, 24);
-        
-        doc.setFontSize(16);
-        doc.text(titleText, 55, 34);
-        
-        // Customer Info
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(11);
-        doc.text("CUSTOMER: " + data.client, 15, 55);
-        doc.text("PHONE: " + data.phone, 15, 62);
-        doc.text("DATE: " + formatDate(data.date), 145, 55);
-        
-        // Work Items
-        let items = data.work.split(", ");
-        let body = items.map(item => {
-            if (item.includes("(Rs ")) {
-                let parts = item.split(" (Rs ");
-                return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
+        // ✅ Add Logo
+        const logoImg = document.getElementById('brandLogo');
+        if (logoImg && logoImg.src) {
+            try {
+                // Convert logo to data URL if it's an image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 40;
+                canvas.height = 40;
+                
+                // Draw logo on canvas
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0, 40, 40);
+                    const logoData = canvas.toDataURL('image/png');
+                    doc.addImage(logoData, 'PNG', 15, 10, 30, 30);
+                    
+                    // Continue with rest of PDF
+                    finalizePDF(doc, data, docType, titleText, headerColor);
+                };
+                img.onerror = function() {
+                    // If logo fails, continue without it
+                    finalizePDF(doc, data, docType, titleText, headerColor);
+                };
+                img.src = logoImg.src;
+                
+            } catch (logoErr) {
+                console.log('Logo error:', logoErr);
+                finalizePDF(doc, data, docType, titleText, headerColor);
             }
-            return [item.trim(), "-"];
-        });
-        
-        doc.autoTable({
-            startY: 78,
-            head: [['SERVICE', 'AMOUNT']],
-            body: body,
-            theme: 'grid',
-            headStyles: { fillColor: headerColor, textColor: [0,0,0], fontSize: 10 },
-            styles: { fontSize: 9, cellPadding: 4 },
-            columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } }
-        });
-        
-        // Totals
-        let finalY = doc.lastAutoTable.finalY + 10;
-        
-        doc.setFontSize(10);
-        doc.setTextColor(150, 150, 150);
-        doc.text("Subtotal:", 115, finalY);
-        doc.text("Rs " + data.subtotal.toLocaleString(), 195, finalY, { align: 'right' });
-        finalY += 7;
-        
-        if (data.discount_amount > 0) {
-            doc.setTextColor(16, 185, 129);
-            doc.text(data.discount_text + " Discount:", 115, finalY);
-            doc.text("-Rs " + data.discount_amount.toLocaleString(), 195, finalY, { align: 'right' });
-            finalY += 7;
-            doc.setTextColor(150, 150, 150);
-        }
-        
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "bold");
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
-        doc.text("Total:", 115, finalY);
-        doc.text("Rs " + data.total.toLocaleString(), 195, finalY, { align: 'right' });
-        finalY += 10;
-        
-        if (data.advance > 0) {
-            doc.setDrawColor(59, 130, 246);
-            doc.setLineWidth(0.5);
-            doc.line(110, finalY - 5, 195, finalY - 5);
-            doc.setFontSize(10);
-            doc.setTextColor(59, 130, 246);
-            doc.setFont("helvetica", "bold");
-            doc.text("Advance Received:", 115, finalY);
-            doc.text("-Rs " + data.advance.toLocaleString(), 195, finalY, { align: 'right' });
-            finalY += 10;
-        }
-        
-        doc.setDrawColor(headerColor[0], headerColor[1], headerColor[2]);
-        doc.setLineWidth(1);
-        doc.line(110, finalY - 5, 195, finalY - 5);
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        
-        if (data.balance_due > 0) {
-            doc.setTextColor(239, 68, 68);
-            doc.text("BALANCE DUE:", 115, finalY);
-            doc.text("Rs " + data.balance_due.toLocaleString(), 195, finalY, { align: 'right' });
         } else {
-            doc.setTextColor(16, 185, 129);
-            doc.text("FULLY PAID ✓", 115, finalY);
-            doc.text("Rs 0", 195, finalY, { align: 'right' });
+            finalizePDF(doc, data, docType, titleText, headerColor);
         }
-        
-        // Footer
-        const footerY = 280;
-        doc.setDrawColor(200, 200, 200);
-        doc.setLineWidth(0.3);
-        doc.line(20, footerY, 190, footerY);
-        doc.setFontSize(8);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(120, 120, 120);
-        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" });
-        doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" });
-        
-        // Save with different filename
-        const docPrefix = docType === 'invoice' ? 'INV' : 'QUO';
-        const cname = data.client.replace(/[^a-z0-9]/gi, '_');
-        const dateStr = formatDate(data.date).replace(/[^a-z0-9]/gi, '_');
-        doc.save(`DNHQ_${docPrefix}_${cname}_${dateStr}.pdf`);
         
     } catch (error) {
         alert('PDF Generation Failed: ' + error.message);
     }
+}
+
+// ✅ Helper function to finalize PDF
+function finalizePDF(doc, data, docType, titleText, headerColor) {
+    // Company Name & Title
+    doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
+    doc.setFontSize(24);
+    doc.setFont("helvetica", "bold");
+    doc.text("DNHQ SERVICES", 55, 24);
+    
+    doc.setFontSize(16);
+    doc.text(titleText, 55, 36);
+    
+    // Contact Info
+    doc.setFontSize(9);
+    doc.setTextColor(200, 200, 200);
+    doc.text("Professional Electrical & AC Maintenance", 55, 44);
+    doc.text("📞 +92 315 2458657 | +92 312 8542993", 55, 50);
+    
+    // Customer Info Box
+    doc.setDrawColor(headerColor[0], headerColor[1], headerColor[2]);
+    doc.setLineWidth(0.5);
+    doc.rect(15, 60, 180, 30);
+    
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.text("CUSTOMER:", 20, 68);
+    doc.setFont("helvetica", "normal");
+    doc.text(data.client, 50, 68);
+    
+    doc.setFont("helvetica", "bold");
+    doc.text("PHONE:", 20, 76);
+    doc.setFont("helvetica", "normal");
+    doc.text(data.phone, 50, 76);
+    
+    doc.setFont("helvetica", "bold");
+    doc.text("DATE:", 120, 68);
+    doc.setFont("helvetica", "normal");
+    doc.text(formatDate(data.date), 145, 68);
+    
+    doc.setFont("helvetica", "bold");
+    doc.text("TYPE:", 120, 76);
+    doc.setFont("helvetica", "normal");
+    const typeText = docType === 'invoice' ? 'INVOICE' : 'QUOTATION';
+    doc.text(typeText, 145, 76);
+    
+    // Work Items Table
+    let items = data.work.split(", ");
+    let body = items.map(item => {
+        if (item.includes("(Rs ")) {
+            let parts = item.split(" (Rs ");
+            return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()];
+        }
+        return [item.trim(), "-"];
+    });
+    
+    doc.autoTable({
+        startY: 98,
+        head: [['SERVICE DESCRIPTION', 'AMOUNT']],
+        body: body,
+        theme: 'grid',
+        headStyles: { 
+            fillColor: headerColor, 
+            textColor: [255, 255, 255], 
+            fontSize: 11,
+            fontStyle: 'bold'
+        },
+        styles: { 
+            fontSize: 10, 
+            cellPadding: 5,
+            font: "helvetica"
+        },
+        columnStyles: { 
+            0: { cellWidth: 120 }, 
+            1: { cellWidth: 55, halign: 'right' } 
+        },
+        margin: { left: 15, right: 15 }
+    });
+    
+    // Totals Section
+    let finalY = doc.lastAutoTable.finalY + 10;
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text("Subtotal:", 140, finalY);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Rs " + data.subtotal.toLocaleString(), 180, finalY, { align: 'right' });
+    finalY += 7;
+    
+    if (data.discount_amount > 0) {
+        doc.setTextColor(239, 68, 68);
+        doc.text(data.discount_text + " Discount:", 140, finalY);
+        doc.text("-Rs " + data.discount_amount.toLocaleString(), 180, finalY, { align: 'right' });
+        finalY += 7;
+        doc.setTextColor(100, 100, 100);
+    }
+    
+    // Total Line
+    doc.setDrawColor(headerColor[0], headerColor[1], headerColor[2]);
+    doc.setLineWidth(1);
+    doc.line(135, finalY - 3, 195, finalY - 3);
+    
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
+    doc.text("TOTAL:", 140, finalY + 3);
+    doc.text("Rs " + data.total.toLocaleString(), 180, finalY + 3, { align: 'right' });
+    finalY += 12;
+    
+    if (data.advance > 0) {
+        doc.setDrawColor(59, 130, 246);
+        doc.setLineWidth(0.5);
+        doc.line(135, finalY - 3, 195, finalY - 3);
+        doc.setFontSize(10);
+        doc.setTextColor(59, 130, 246);
+        doc.setFont("helvetica", "bold");
+        doc.text("Advance Received:", 140, finalY + 3);
+        doc.text("-Rs " + data.advance.toLocaleString(), 180, finalY + 3, { align: 'right' });
+        finalY += 12;
+    }
+    
+    // Balance Due or Paid
+    doc.setDrawColor(headerColor[0], headerColor[1], headerColor[2]);
+    doc.setLineWidth(1.5);
+    doc.line(135, finalY - 3, 195, finalY - 3);
+    doc.setFontSize(15);
+    doc.setFont("helvetica", "bold");
+    
+    if (data.balance_due > 0) {
+        doc.setTextColor(239, 68, 68);
+        doc.text("BALANCE DUE:", 140, finalY + 4);
+        doc.text("Rs " + data.balance_due.toLocaleString(), 180, finalY + 4, { align: 'right' });
+    } else {
+        doc.setTextColor(16, 185, 129);
+        doc.text("FULLY PAID ✓", 140, finalY + 4);
+        doc.text("Rs 0", 180, finalY + 4, { align: 'right' });
+    }
+    
+    // Footer
+    const footerY = 280;
+    doc.setDrawColor(200, 200, 200);
+    doc.setLineWidth(0.5);
+    doc.line(15, footerY, 195, footerY);
+    
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(120, 120, 120);
+    doc.text("DNHQ Services - Professional Electrical & AC Maintenance", 105, footerY + 6, { align: "center" });
+    doc.text("Contact: +92 315 2458657 | +92 312 8542993 | dnhq-services.online", 105, footerY + 11, { align: "center" });
+    
+    // Terms & Conditions for Quotation
+    if (docType === 'quotation') {
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text("This quotation is valid for 7 days from the date of issue.", 105, footerY + 18, { align: "center" });
+        doc.text("Prices are subject to change without prior notice.", 105, footerY + 22, { align: "center" });
+    }
+    
+    // Save with different filename
+    const docPrefix = docType === 'invoice' ? 'INV' : 'QUO';
+    const cname = data.client.replace(/[^a-z0-9]/gi, '_');
+    const dateStr = formatDate(data.date).replace(/[^a-z0-9]/gi, '_');
+    doc.save(`DNHQ_${docPrefix}_${cname}_${dateStr}.pdf`);
 }
 
 async function loadLogs() {
