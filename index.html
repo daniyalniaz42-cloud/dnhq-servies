@@ -1,10 +1,10 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=14">
+<link rel="manifest" href="manifest.json?v=15">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -224,6 +224,7 @@ footer a:hover { text-decoration: underline; }
 <input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
 <input type="number" class="m-qty man-input" placeholder="Qty" value="1" min="1" style="flex:0.5;margin-bottom:0;min-width:45px;">
 <select class="m-quality man-input" style="flex:1;margin-bottom:0;min-width:80px;padding:8px;font-size:12px;">
+<option value="-">-</option>
 <option value="New">New</option>
 <option value="Used">Used</option>
 <option value="Refurbished">Refurb</option>
@@ -242,8 +243,8 @@ footer a:hover { text-decoration: underline; }
 </select>
 <input type="number" id="discount_value" class="man-input" placeholder="Enter value" style="display:none;margin-bottom:0;">
 </div>
-</div>
-<div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;"><h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
+</div><div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
+<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
 <input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
 </div>
 <button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE PDF</button>
@@ -291,8 +292,8 @@ footer a:hover { text-decoration: underline; }
 <span class="modal-close" onclick="closeHistoryModal()">&times;</span>
 <div id="verifyStep">
 <h3 style="text-align:center;color:#fbbf24;">🔐 Check Service History</h3>
-<p style="text-align:center;color:#94a3b8;font-size:13px;">Enter your phone number to view history</p>
-<input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX"><button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
+<p style="text-align:center;color:#94a3b8;font-size:13px;">Enter your phone number to view history</p><input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
+<button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
 <div id="histError" class="error-msg"></div>
 <div id="histSuccess" class="success-msg"></div>
 </div>
@@ -340,8 +341,8 @@ footer a:hover { text-decoration: underline; }
 </div>
 <div class="confirm-body" id="confirmBody"></div>
 <div class="confirm-footer">
-<button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button>
-<button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button></div>
+<button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button><button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
+</div>
 </div>
 </div>
 
@@ -378,7 +379,6 @@ footer a:hover { text-decoration: underline; }
 // ✅ GLOBAL VARIABLES
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
 const ADMIN_WHATSAPP = "923152458657";
-// ✅ YOUR GOOGLE APPS SCRIPT WEB APP URL
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzs3e_cQKvxXK5At1CydBGWsBkM48tkjpnhe9r6CwiVspIqhpPghlM7bvdKIY6LUI6jbQ/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
@@ -423,9 +423,7 @@ function getImageDataForPDF(imgElement) {
             if (!imgElement || !imgElement.src || !imgElement.complete || imgElement.naturalWidth === 0) { resolve(null); return; }
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            // ✅ Higher resolution for logo (200x200)
-            canvas.width = 200;
-            canvas.height = 200;
+            canvas.width = 200; canvas.height = 200;
             ctx.drawImage(imgElement, 0, 0, 200, 200);
             resolve(canvas.toDataURL('image/png', 1.0));
         } catch (e) { resolve(null); }
@@ -439,9 +437,9 @@ function playVid() {
 }
 
 function toggleSvc(el, name, price) {
-    const idx = cart.findIndex(c => c.name === name);    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
-    else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
-    updateCart();
+    const idx = cart.findIndex(c => c.name === name);
+    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
+    else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }    updateCart();
 }
 
 function updateCart() {
@@ -488,12 +486,12 @@ function setDocType(type) {
   } else {
     btnQuotation.style.background = '#10b981';
     btnQuotation.style.color = 'white';
-    btnInvoice.style.background = '#1e293b';    btnInvoice.style.color = '#94a3b8';
-    docTypeInput.value = 'quotation';
-  }
+    btnInvoice.style.background = '#1e293b';
+    btnInvoice.style.color = '#94a3b8';
+    docTypeInput.value = 'quotation';  }
 }
 
-// ✅ ADD NEW ROW (WITH QTY, QUALITY, PRICE)
+// ✅ ADD NEW ROW (WITH QTY, QUALITY "-", PRICE)
 function addNewManualRow() {
     const div = document.createElement('div');
     div.style = "display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;";
@@ -501,6 +499,7 @@ function addNewManualRow() {
         <input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
         <input type="number" class="m-qty man-input" placeholder="Qty" value="1" min="1" style="flex:0.5;margin-bottom:0;min-width:45px;">
         <select class="m-quality man-input" style="flex:1;margin-bottom:0;min-width:80px;padding:8px;font-size:12px;">
+            <option value="-">-</option>
             <option value="New">New</option>
             <option value="Used">Used</option>
             <option value="Refurbished">Refurb</option>
@@ -510,7 +509,7 @@ function addNewManualRow() {
     document.getElementById('manual_works_container').appendChild(div);
 }
 
-// ✅ SAVE MANUAL ENTRY (WITH QTY, QUALITY, PRICE, TOTAL)
+// ✅ SAVE MANUAL ENTRY (WITH QTY, QUALITY "-", PRICE, TOTAL)
 async function saveManualEntry() {
     const name = document.getElementById('man_name').value.trim();
     const phone = document.getElementById('man_phone').value.trim();
@@ -533,11 +532,13 @@ async function saveManualEntry() {
             const lineTotal = qty * price;
             subtotal += lineTotal;
             // Format: "Item x Qty [Quality] @ Rs Price = Rs Total"
-            allWork.push(`${input.value.trim()} x ${qty} [${quality}] @ Rs ${price} = Rs ${lineTotal}`);
+            // If quality is "-", show just "Item x Qty @ Rs Price = Rs Total"
+            const qualityPart = quality !== '-' ? `[${quality}]` : '';
+            allWork.push(`${input.value.trim()} x ${qty} ${qualityPart} @ Rs ${price} = Rs ${lineTotal}`.trim());
         }
     });
+        if(allWork.length === 0) return alert("Add at least one item!");
     
-    if(allWork.length === 0) return alert("Add at least one item!");    
     const discountType = document.getElementById('discount_type').value;
     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
     let discountAmount = 0, discountText = "None";
@@ -585,8 +586,8 @@ async function saveManualEntry() {
         alert("✅ " + (docType === 'invoice' ? 'Invoice' : 'Quotation') + " saved successfully!");
         generateManualPDF(payload, docType);
         setTimeout(() => { loadLogs(); }, 2000);
-        
-        // Reset Form        document.getElementById('man_name').value = '';
+                // Reset Form
+        document.getElementById('man_name').value = '';
         document.getElementById('man_phone').value = '';
         document.getElementById('man_date').value = '';
         document.getElementById('discount_type').value = 'none';
@@ -598,6 +599,7 @@ async function saveManualEntry() {
                 <input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
                 <input type="number" class="m-qty man-input" placeholder="Qty" value="1" min="1" style="flex:0.5;margin-bottom:0;min-width:45px;">
                 <select class="m-quality man-input" style="flex:1;margin-bottom:0;min-width:80px;padding:8px;font-size:12px;">
+                    <option value="-">-</option>
                     <option value="New">New</option>
                     <option value="Used">Used</option>
                     <option value="Refurbished">Refurb</option>
@@ -611,7 +613,7 @@ async function saveManualEntry() {
     }
 }
 
-// ✅ GENERATE PDF (With Logo Fix + New Table Format)
+// ✅ GENERATE PDF (With Logo Fix + New Table Format + Quality "-" Handling)
 function generateManualPDF(data, docType) {
     try {
         const { jsPDF } = window.jspdf;
@@ -633,9 +635,9 @@ function generateManualPDF(data, docType) {
             } catch(e) {}
         }
 
-        // Title & Company Name
-        doc.setTextColor(251, 191, 36);
-        doc.setFontSize(24);        doc.setFont("helvetica", "bold");
+        // Title & Company Name        doc.setTextColor(251, 191, 36);
+        doc.setFontSize(24);
+        doc.setFont("helvetica", "bold");
         doc.text("DNHQ SERVICES", 60, 26);
 
         doc.setFontSize(10);
@@ -658,15 +660,21 @@ function generateManualPDF(data, docType) {
         // ✅ Table with 5 Columns: Item | Qty | Quality | Unit Price | Total
         let items = data.work.split(", ");
         let body = items.map(item => {
-            // Parse: "Item x Qty [Quality] @ Rs Price = Rs Total"
-            if (item.includes(" x ") && item.includes("[")) {
+            // Parse: "Item x Qty [Quality] @ Rs Price = Rs Total" OR "Item x Qty @ Rs Price = Rs Total"
+            if (item.includes(" x ") && item.includes("@ Rs")) {
                 let parts = item.split(" x ");
                 let itemName = parts[0].trim();
                 let rest = parts[1];
                 let qtyMatch = rest.match(/^(\d+)/);
                 let qty = qtyMatch ? qtyMatch[1] : '1';
-                let qualityMatch = rest.match(/\[(\w+)\]/);
-                let quality = qualityMatch ? qualityMatch[1] : '';
+                
+                // Check for [Quality]
+                let quality = '-';
+                let qualityMatch = rest.match(/\[([^\]]+)\]/);
+                if (qualityMatch) {
+                    quality = qualityMatch[1];
+                }
+                
                 let priceMatch = rest.match(/@ Rs (\d+)/);
                 let price = priceMatch ? priceMatch[1] : '0';
                 let totalMatch = rest.match(/= Rs (\d+)/);
@@ -676,15 +684,15 @@ function generateManualPDF(data, docType) {
             return [item.trim(), '1', '-', '-', '-'];
         });
 
-        doc.autoTable({
-            startY: 86,
+        doc.autoTable({            startY: 86,
             head: [['ITEM', 'QTY', 'QUALITY', 'UNIT PRICE', 'TOTAL']],
             body: body,
             theme: 'grid',
             headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 },
             styles: { fontSize: 8, cellPadding: 3 },
             columnStyles: { 
-                0: { cellWidth: 70 },                 1: { cellWidth: 20, halign: 'center' },
+                0: { cellWidth: 70 }, 
+                1: { cellWidth: 20, halign: 'center' },
                 2: { cellWidth: 25, halign: 'center' },
                 3: { cellWidth: 35, halign: 'right' },
                 4: { cellWidth: 40, halign: 'right', fontStyle: 'bold' }
@@ -725,15 +733,15 @@ function generateManualPDF(data, docType) {
             doc.setTextColor(239, 68, 68);
             doc.text("BALANCE DUE:", 130, finalY + 3); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY + 3, { align: 'right' });
         } else {
-            doc.setTextColor(16, 185, 129);
-            doc.text("FULLY PAID ✓", 130, finalY + 3); doc.text("Rs 0", 195, finalY + 3, { align: 'right' });
+            doc.setTextColor(16, 185, 129);            doc.text("FULLY PAID ✓", 130, finalY + 3); doc.text("Rs 0", 195, finalY + 3, { align: 'right' });
         }
 
         // Footer
         const footerY = 280;
         doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY);
         doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
-        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" });        doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" });
+        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" });
+        doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" });
         doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
 
         // Save PDF
@@ -774,15 +782,15 @@ function calculateTotalRevenue() {
     document.getElementById('totalOrdersCount').innerText = orderCount + ' Orders';
     document.getElementById('invoiceTotal').innerText = 'Rs ' + invoiceTotal.toLocaleString();
     document.getElementById('quotationTotal').innerText = 'Rs ' + quotationTotal.toLocaleString();
-    document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();
-}
+    document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();}
 
 // ✅ CONVERT QUOTATION TO INVOICE
 async function convertToInvoice(originalTimestamp) {
     const originalOrder = allOrders.find(o => o.timestamp === originalTimestamp);
     if (!originalOrder) { alert('❌ Order not found!'); return; }
     const confirmMsg = ' Convert Quotation to Invoice?\n\nCustomer: ' + originalOrder.client + '\nAmount: Rs ' + (parseFloat(originalOrder.total) || 0).toLocaleString();
-    if (!confirm(confirmMsg)) return;    try {
+    if (!confirm(confirmMsg)) return;
+    try {
         const invoicePayload = {
             date: new Date().toISOString(), client: originalOrder.client, phone: originalOrder.phone, work: originalOrder.work,
             subtotal: parseFloat(originalOrder.subtotal) || 0, discount_type: originalOrder.discount_type || 'none',
@@ -823,15 +831,15 @@ function filterOrders(type) {
     if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
     container.innerHTML = filteredData.map((d, index) => {
         const originalIndex = allOrders.indexOf(d);
-        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
-        const discountAmount = parseFloat(d.discount_amount) || 0;
+        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;        const discountAmount = parseFloat(d.discount_amount) || 0;
         const advance = parseFloat(d.advance) || 0;
         const total = parseFloat(d.total) || (subtotal - discountAmount);
         const balanceDue = parseFloat(d.balance_due) || (total - advance);
         const docType = d.doc_type || 'invoice';
         const docBadge = docType === 'invoice' ? '<span class="badge badge-invoice">📄 INV</span>' : '<span class="badge badge-quotation">📋 QUO</span>';
         let sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website">🌐 Web</span>' : '<span class="badge badge-manual">📝 Manual</span>';
-        const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')">📄 Convert</button>' : '';        return '<div class="log-card">' + convertBtn + '<button class="pdf-btn" data-index="' + originalIndex + '">📄 PDF</button><b>' + (d.client || "Unknown") + '</b> ' + docBadge + sourceBadge + '<br><small class="phone">📱 ' + (d.phone || "N/A") + '</small><br><small>' + (d.work || "").substring(0, 50) + '</small><br><b style="color:gold;">' + (balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()) + '</b><br><button class="del-btn" onclick="deleteEntry(\'' + d.timestamp + '\')">🗑️ Delete</button></div>';
+        const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')">📄 Convert</button>' : '';
+        return '<div class="log-card">' + convertBtn + '<button class="pdf-btn" data-index="' + originalIndex + '">📄 PDF</button><b>' + (d.client || "Unknown") + '</b> ' + docBadge + sourceBadge + '<br><small class="phone">📱 ' + (d.phone || "N/A") + '</small><br><small>' + (d.work || "").substring(0, 50) + '</small><br><b style="color:gold;">' + (balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()) + '</b><br><button class="del-btn" onclick="deleteEntry(\'' + d.timestamp + '\')">🗑️ Delete</button></div>';
     }).join('');
     container.querySelectorAll('.pdf-btn').forEach(btn => { if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('convertToInvoice')) return; btn.onclick = function() { const index = this.getAttribute('data-index'); const order = allOrders[parseInt(index)]; if (order) showConfirmDialog(order); }; });
     calculateTotalRevenue();
@@ -872,15 +880,15 @@ async function exportBackups() {
         backups.forEach(b => { csv.push([b.date||'', '"' + (b.client||'').replace(/"/g,'""') + '"', b.phone||'', '"' + (b.work||'').replace(/"/g,'""') + '"', b.total||0, b.deleted_at||'', b.deleted_by||'', '"' + (b.delete_reason||'').replace(/"/g,'""') + '"'].join(',')); });
         const blob = new Blob([csv.join('\n')], {type: 'text/csv'}); const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href = url; a.download = 'DNHQ_Backups_' + new Date().toISOString().split('T')[0] + '.csv'; a.click();
-        alert('✅ Exported ' + backups.length + ' backup records!');
-    } catch(e) { alert("Export Error: " + e.message); }
+        alert('✅ Exported ' + backups.length + ' backup records!');    } catch(e) { alert("Export Error: " + e.message); }
 }
 async function restoreBackup(timestamp) {
     if(!confirm("♻️ Restore this deleted order?")) return;
     const pin = prompt("🔐 Enter Backup PIN:"); if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
     try {
         const res = await fetch(SCRIPT_URL + '?restoreBackup=true&timestamp=' + encodeURIComponent(timestamp) + '&pin=' + encodeURIComponent(pin)); const result = await res.json();
-        if(result.error) throw new Error(result.error);        alert("✅ Order restored successfully!"); loadLogs(); viewBackups();
+        if(result.error) throw new Error(result.error);
+        alert("✅ Order restored successfully!"); loadLogs(); viewBackups();
     } catch(e) { alert("Restore Error: " + e.message); }
 }
 
@@ -921,15 +929,15 @@ function confirmAndGeneratePDF() {
     if (!pendingOrderData) { alert('❌ Error: No order data available!'); return; }
     const orderData = JSON.parse(JSON.stringify(pendingOrderData)); closeConfirmDialog();
     setTimeout(() => { generateManualPDF(orderData, 'invoice'); }, 100);
-}
-async function deleteEntry(timestamp) {
+}async function deleteEntry(timestamp) {
     if(!timestamp) return alert("❌ Error: No order ID!");
     const order = allOrders.find(o => o.timestamp === timestamp); const client = order?.client || 'Unknown';
     const confirmMsg = '️ Delete Order?\n\nClient: ' + client + '\n\nThis will:\n1. Save to Backup Sheet\n2. Delete from Main Sheet\n\nContinue?';
     if(!confirm(confirmMsg)) return;
     const pin = prompt("🔐 Enter Admin Delete PIN:"); if(pin !== "dnhq_delete_2026") { alert("❌ Wrong PIN! Deletion cancelled."); return; }
     const reason = prompt("📝 Delete Reason (optional):", "Admin request") || "No reason";
-    try {        const url = SCRIPT_URL + '?deleteRow=true&timestamp=' + encodeURIComponent(timestamp) + '&pin=' + encodeURIComponent(pin) + '&reason=' + encodeURIComponent(reason);
+    try {
+        const url = SCRIPT_URL + '?deleteRow=true&timestamp=' + encodeURIComponent(timestamp) + '&pin=' + encodeURIComponent(pin) + '&reason=' + encodeURIComponent(reason);
         const res = await fetch(url, { method: 'GET' }); const result = await res.json();
         if(result.error) throw new Error(result.error);
         alert('✅ Order deleted & backed up!\n\nBackup saved in "Deleted_Orders" sheet'); loadLogs();
@@ -970,15 +978,15 @@ async function placeOrder() {
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
         const waText = '*🔔 NEW WEBSITE ORDER*%0A%0A*👤 Customer:* ' + name + '%0A*📱 Phone:* ' + phone + '%0A*🛠️ Services:* ' + workFormatted + '%0A*💰 Total:* Rs ' + total + '%0A%0A*📍 Source:* Website Order';
-        window.open('https://wa.me/' + ADMIN_WHATSAPP + '?text=' + waText, '_blank');
-        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
+        window.open('https://wa.me/' + ADMIN_WHATSAPP + '?text=' + waText, '_blank');        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
         cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
     } catch(e) { alert("Error: " + e.message); }
 }
 function triggerAppInstall() { if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; } else { alert("📲 Tap Share → Add to Home Screen"); } }
 function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }
 function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
 function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
 function resetHistoryView() { document.getElementById('verifyStep').style.display = 'block'; document.getElementById('showStep').style.display = 'none'; document.getElementById('histPhone').value = ''; document.getElementById('histError').style.display = 'none'; currentCustData = null; }
 async function fetchCustomerHistory() {
@@ -1019,7 +1027,6 @@ document.addEventListener('click', function(e) {
 window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.openHistoryModal = openHistoryModal; window.triggerAppInstall = triggerAppInstall; window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF; window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF; window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal; window.closeComplaintModal = closeComplaintModal; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry; window.loadLogs = loadLogs; window.updateCart = updateCart; window.closeHistoryModal = closeHistoryModal; window.resetHistoryView = resetHistoryView; window.installApp = installApp; window.dismissInstall = dismissInstall; window.placeOrder = placeOrder; window.viewBackups = viewBackups; window.closeBackupModal = closeBackupModal; window.refreshBackups = refreshBackups; window.exportBackups = exportBackups; window.restoreBackup = restoreBackup; window.setDocType = setDocType; window.generateManualPDF = generateManualPDF; window.convertToInvoice = convertToInvoice; window.calculateTotalRevenue = calculateTotalRevenue;
 
 // ✅ INITIALIZE
-document.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });
-</script>
+document.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });</script>
 </body>
 </html>
