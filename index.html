@@ -208,7 +208,7 @@ footer a:hover { text-decoration: underline; }
   <label style="color:#94a3b8;font-size:13px;display:block;margin-bottom:5px;">📄 Document Type:</label>
   <div style="display:flex;gap:10px;">
     <button type="button" id="btnInvoice" onclick="setDocType('invoice')" style="flex:1;padding:10px;background:var(--gold);color:black;border:none;border-radius:8px;font-weight:bold;cursor:pointer;">📄 INVOICE</button>
-    <button type="button" id="btnQuotation" onclick="setDocType('quotation')" style="flex:1;padding:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;font-weight:bold;cursor:pointer;">📋 QUOTATION</button>
+    <button type="button" id="btnQuotation" onclick="setDocType('quotation')" style="flex:1;padding:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;font-weight:bold;cursor:pointer;"> QUOTATION</button>
   </div>
   <input type="hidden" id="doc_type" value="invoice">
 </div>
@@ -268,7 +268,7 @@ footer a:hover { text-decoration: underline; }
 
 <div id="complaintsSection" style="display:none;">
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #ef4444;margin-bottom:25px;">
-<h4 style="color:#ef4444;margin:0 0 10px 0;">⚠️ Customer Complaints</h4>
+<h4 style="color:#ef4444;margin:0 0 10px 0;">️ Customer Complaints</h4>
 <p style="color:#94a3b8;font-size:13px;margin:0 0 15px 0;">Purpose: Track & resolve customer issues</p>
 <div id="complaintsList" class="loading">Loading complaints...</div>
 </div>
@@ -360,7 +360,7 @@ footer a:hover { text-decoration: underline; }
 </div>
 
 <div id="installPrompt">
-<p>📱 Install DNHQ App!</p>
+<p> Install DNHQ App!</p>
 <button onclick="installApp()">Install</button>
 <button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;">✕</button>
 </div>
@@ -613,7 +613,7 @@ async function saveManualEntry() {
     }
 }
 
-// ✅ GENERATE PDF (With Logo Fix + New Table Format + Quality "-" Handling)
+// ✅ GENERATE PDF (With Logo Fix + New Table Format + Company Name Fix)
 function generateManualPDF(data, docType) {
     try {
         const { jsPDF } = window.jspdf;
@@ -635,15 +635,16 @@ function generateManualPDF(data, docType) {
             } catch(e) {}
         }
 
-        // Title & Company Name        doc.setTextColor(251, 191, 36);
-        doc.setFontSize(24);
+        // ✅ Company Name - Logo ke baad        doc.setTextColor(251, 191, 36); // Gold color
+        doc.setFontSize(22);
         doc.setFont("helvetica", "bold");
-        doc.text("DNHQ SERVICES", 60, 26);
+        doc.text("DNHQ SERVICES", 60, 28);
 
-        doc.setFontSize(10);
+        // Tagline
+        doc.setFontSize(9);
         doc.setFont("helvetica", "normal");
-        doc.setTextColor(255, 255, 255);
-        doc.text("Professional Electrical & AC Maintenance", 60, 33);
+        doc.setTextColor(200, 200, 200);
+        doc.text("Professional Electrical & AC Maintenance", 60, 35);
 
         // Customer Info
         doc.setTextColor(0, 0, 0);
@@ -683,8 +684,8 @@ function generateManualPDF(data, docType) {
             }
             return [item.trim(), '1', '-', '-', '-'];
         });
-
-        doc.autoTable({            startY: 86,
+        doc.autoTable({
+            startY: 86,
             head: [['ITEM', 'QTY', 'QUALITY', 'UNIT PRICE', 'TOTAL']],
             body: body,
             theme: 'grid',
@@ -732,8 +733,8 @@ function generateManualPDF(data, docType) {
         if (balanceDue > 0) {
             doc.setTextColor(239, 68, 68);
             doc.text("BALANCE DUE:", 130, finalY + 3); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY + 3, { align: 'right' });
-        } else {
-            doc.setTextColor(16, 185, 129);            doc.text("FULLY PAID ✓", 130, finalY + 3); doc.text("Rs 0", 195, finalY + 3, { align: 'right' });
+        } else {            doc.setTextColor(16, 185, 129);
+            doc.text("FULLY PAID ✓", 130, finalY + 3); doc.text("Rs 0", 195, finalY + 3, { align: 'right' });
         }
 
         // Footer
@@ -781,8 +782,8 @@ function calculateTotalRevenue() {
     document.getElementById('totalRevenueAmount').innerText = 'Rs ' + totalRevenue.toLocaleString();
     document.getElementById('totalOrdersCount').innerText = orderCount + ' Orders';
     document.getElementById('invoiceTotal').innerText = 'Rs ' + invoiceTotal.toLocaleString();
-    document.getElementById('quotationTotal').innerText = 'Rs ' + quotationTotal.toLocaleString();
-    document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();}
+    document.getElementById('quotationTotal').innerText = 'Rs ' + quotationTotal.toLocaleString();    document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();
+}
 
 // ✅ CONVERT QUOTATION TO INVOICE
 async function convertToInvoice(originalTimestamp) {
@@ -830,22 +831,22 @@ function filterOrders(type) {
     else if(type === 'manual') filteredData = allOrders.filter(d => d.order_source === 'manual');
     if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
     container.innerHTML = filteredData.map((d, index) => {
-        const originalIndex = allOrders.indexOf(d);
-        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;        const discountAmount = parseFloat(d.discount_amount) || 0;
+        const originalIndex = allOrders.indexOf(d);        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
+        const discountAmount = parseFloat(d.discount_amount) || 0;
         const advance = parseFloat(d.advance) || 0;
         const total = parseFloat(d.total) || (subtotal - discountAmount);
         const balanceDue = parseFloat(d.balance_due) || (total - advance);
         const docType = d.doc_type || 'invoice';
         const docBadge = docType === 'invoice' ? '<span class="badge badge-invoice">📄 INV</span>' : '<span class="badge badge-quotation">📋 QUO</span>';
-        let sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website">🌐 Web</span>' : '<span class="badge badge-manual">📝 Manual</span>';
+        let sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website"> Web</span>' : '<span class="badge badge-manual">📝 Manual</span>';
         const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')">📄 Convert</button>' : '';
-        return '<div class="log-card">' + convertBtn + '<button class="pdf-btn" data-index="' + originalIndex + '">📄 PDF</button><b>' + (d.client || "Unknown") + '</b> ' + docBadge + sourceBadge + '<br><small class="phone">📱 ' + (d.phone || "N/A") + '</small><br><small>' + (d.work || "").substring(0, 50) + '</small><br><b style="color:gold;">' + (balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()) + '</b><br><button class="del-btn" onclick="deleteEntry(\'' + d.timestamp + '\')">🗑️ Delete</button></div>';
+        return '<div class="log-card">' + convertBtn + '<button class="pdf-btn" data-index="' + originalIndex + '"> PDF</button><b>' + (d.client || "Unknown") + '</b> ' + docBadge + sourceBadge + '<br><small class="phone">📱 ' + (d.phone || "N/A") + '</small><br><small>' + (d.work || "").substring(0, 50) + '</small><br><b style="color:gold;">' + (balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()) + '</b><br><button class="del-btn" onclick="deleteEntry(\'' + d.timestamp + '\')">🗑️ Delete</button></div>';
     }).join('');
     container.querySelectorAll('.pdf-btn').forEach(btn => { if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('convertToInvoice')) return; btn.onclick = function() { const index = this.getAttribute('data-index'); const order = allOrders[parseInt(index)]; if (order) showConfirmDialog(order); }; });
     calculateTotalRevenue();
 }
 
-function refreshOrders() { console.log('🔄 Manual refresh'); loadLogs(); alert('🔄 Refreshing orders...'); }
+function refreshOrders() { console.log('🔄 Manual refresh'); loadLogs(); alert(' Refreshing orders...'); }
 async function loadComplaints() {
     const container = document.getElementById('complaintsList'); container.innerHTML = '<div class="loading">Loading complaints...</div>';
     try {
@@ -872,15 +873,15 @@ async function viewBackups() {
 function closeBackupModal() { document.getElementById('backupModal').style.display = 'none'; }
 function refreshBackups() { viewBackups(); }
 async function exportBackups() {
-    const pin = prompt("🔐 Enter Backup PIN:"); if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
+    const pin = prompt(" Enter Backup PIN:"); if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
     try {
         const res = await fetch(SCRIPT_URL + '?getBackups=true&pin=' + encodeURIComponent(pin)); const backups = await res.json();
         if(backups.error) throw new Error(backups.error);
         const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason']; const csv = [headers.join(',')];
         backups.forEach(b => { csv.push([b.date||'', '"' + (b.client||'').replace(/"/g,'""') + '"', b.phone||'', '"' + (b.work||'').replace(/"/g,'""') + '"', b.total||0, b.deleted_at||'', b.deleted_by||'', '"' + (b.delete_reason||'').replace(/"/g,'""') + '"'].join(',')); });
         const blob = new Blob([csv.join('\n')], {type: 'text/csv'}); const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = 'DNHQ_Backups_' + new Date().toISOString().split('T')[0] + '.csv'; a.click();
-        alert('✅ Exported ' + backups.length + ' backup records!');    } catch(e) { alert("Export Error: " + e.message); }
+        const a = document.createElement('a'); a.href = url; a.download = 'DNHQ_Backups_' + new Date().toISOString().split('T')[0] + '.csv'; a.click();        alert('✅ Exported ' + backups.length + ' backup records!');
+    } catch(e) { alert("Export Error: " + e.message); }
 }
 async function restoreBackup(timestamp) {
     if(!confirm("♻️ Restore this deleted order?")) return;
@@ -916,7 +917,7 @@ function showConfirmDialog(order) {
     const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
     const discountAmount = parseFloat(order.discount_amount) || 0; const advance = parseFloat(order.advance) || 0;
     const total = parseFloat(order.total) || (subtotal - discountAmount); const balanceDue = parseFloat(order.balance_due) || (total - advance);
-    let html = '<div class="confirm-row"><label>👤 Customer:</label><span class="value">' + client + '</span></div><div class="confirm-row"><label>📱 Phone:</label><span class="value">' + phone + '</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">' + formatDate(orderDate) + '</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label> Subtotal:</label><span class="value">Rs ' + subtotal.toLocaleString() + '</span></div>';
+    let html = '<div class="confirm-row"><label>👤 Customer:</label><span class="value">' + client + '</span></div><div class="confirm-row"><label> Phone:</label><span class="value">' + phone + '</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">' + formatDate(orderDate) + '</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label> Subtotal:</label><span class="value">Rs ' + subtotal.toLocaleString() + '</span></div>';
     if (discountAmount > 0) html += '<div class="confirm-row discount highlight"><label> Discount:</label><span class="value">-Rs ' + discountAmount.toLocaleString() + '</span></div>';
     html += '<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ' + total.toLocaleString() + '</span></div>';
     if (advance > 0) html += '<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ' + advance.toLocaleString() + '</span></div>';
@@ -926,11 +927,11 @@ function showConfirmDialog(order) {
 }
 function closeConfirmDialog() { document.getElementById('confirmDialog').style.display = 'none'; pendingOrderData = null; }
 function confirmAndGeneratePDF() {
-    if (!pendingOrderData) { alert('❌ Error: No order data available!'); return; }
+    if (!pendingOrderData) { alert(' Error: No order data available!'); return; }
     const orderData = JSON.parse(JSON.stringify(pendingOrderData)); closeConfirmDialog();
-    setTimeout(() => { generateManualPDF(orderData, 'invoice'); }, 100);
-}async function deleteEntry(timestamp) {
-    if(!timestamp) return alert("❌ Error: No order ID!");
+    setTimeout(() => { generateManualPDF(orderData, 'invoice'); }, 100);}
+async function deleteEntry(timestamp) {
+    if(!timestamp) return alert(" Error: No order ID!");
     const order = allOrders.find(o => o.timestamp === timestamp); const client = order?.client || 'Unknown';
     const confirmMsg = '️ Delete Order?\n\nClient: ' + client + '\n\nThis will:\n1. Save to Backup Sheet\n2. Delete from Main Sheet\n\nContinue?';
     if(!confirm(confirmMsg)) return;
@@ -977,8 +978,8 @@ async function placeOrder() {
     const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received', order_source: 'website' };
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        const waText = '*🔔 NEW WEBSITE ORDER*%0A%0A*👤 Customer:* ' + name + '%0A*📱 Phone:* ' + phone + '%0A*🛠️ Services:* ' + workFormatted + '%0A*💰 Total:* Rs ' + total + '%0A%0A*📍 Source:* Website Order';
-        window.open('https://wa.me/' + ADMIN_WHATSAPP + '?text=' + waText, '_blank');        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
+        const waText = '*🔔 NEW WEBSITE ORDER*%0A%0A*👤 Customer:* ' + name + '%0A*📱 Phone:* ' + phone + '%0A*🛠️ Services:* ' + workFormatted + '%0A*💰 Total:* Rs ' + total + '%0A%0A* Source:* Website Order';        window.open('https://wa.me/' + ADMIN_WHATSAPP + '?text=' + waText, '_blank');
+        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
         cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
     } catch(e) { alert("Error: " + e.message); }
 }
@@ -1026,7 +1027,7 @@ document.addEventListener('click', function(e) {
 // ✅ EXPORT ALL FUNCTIONS
 window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.openHistoryModal = openHistoryModal; window.triggerAppInstall = triggerAppInstall; window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF; window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF; window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal; window.closeComplaintModal = closeComplaintModal; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry; window.loadLogs = loadLogs; window.updateCart = updateCart; window.closeHistoryModal = closeHistoryModal; window.resetHistoryView = resetHistoryView; window.installApp = installApp; window.dismissInstall = dismissInstall; window.placeOrder = placeOrder; window.viewBackups = viewBackups; window.closeBackupModal = closeBackupModal; window.refreshBackups = refreshBackups; window.exportBackups = exportBackups; window.restoreBackup = restoreBackup; window.setDocType = setDocType; window.generateManualPDF = generateManualPDF; window.convertToInvoice = convertToInvoice; window.calculateTotalRevenue = calculateTotalRevenue;
 
-// ✅ INITIALIZE
-document.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });</script>
+// ✅ INITIALIZEdocument.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });
+</script>
 </body>
 </html>
