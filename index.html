@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=15">
+<link rel="manifest" href="manifest.json?v=16">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -189,14 +189,14 @@ footer a:hover { text-decoration: underline; }
             <b style="color:white;font-size:16px;" id="quotationTotal">Rs 0</b>
         </div>
         <div style="flex:1;">
-            <small style="color:rgba(255,255,255,0.7);display:block;">⏳ Pending</small>
+            <small style="color:rgba(255,255,255,0.7);display:block;"> Pending</small>
             <b style="color:#fbbf24;font-size:16px;" id="pendingTotal">Rs 0</b>
         </div>
     </div>
 </div>
 <div class="admin-tabs">
 <div class="admin-tab active" onclick="switchAdminTab('orders')" id="tab-orders"> Orders</div>
-<div class="admin-tab" onclick="switchAdminTab('complaints')" id="tab-complaints">⚠️ Complaints <span class="count" id="complaintCount">0</span></div>
+<div class="admin-tab" onclick="switchAdminTab('complaints')" id="tab-complaints">️ Complaints <span class="count" id="complaintCount">0</span></div>
 </div>
 
 <div id="ordersSection">
@@ -207,8 +207,8 @@ footer a:hover { text-decoration: underline; }
 <div style="margin-bottom:15px;">
   <label style="color:#94a3b8;font-size:13px;display:block;margin-bottom:5px;">📄 Document Type:</label>
   <div style="display:flex;gap:10px;">
-    <button type="button" id="btnInvoice" onclick="setDocType('invoice')" style="flex:1;padding:10px;background:var(--gold);color:black;border:none;border-radius:8px;font-weight:bold;cursor:pointer;">📄 INVOICE</button>
-    <button type="button" id="btnQuotation" onclick="setDocType('quotation')" style="flex:1;padding:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;font-weight:bold;cursor:pointer;"> QUOTATION</button>
+    <button type="button" id="btnInvoice" onclick="setDocType('invoice')" style="flex:1;padding:10px;background:var(--gold);color:black;border:none;border-radius:8px;font-weight:bold;cursor:pointer;"> INVOICE</button>
+    <button type="button" id="btnQuotation" onclick="setDocType('quotation')" style="flex:1;padding:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;font-weight:bold;cursor:pointer;">📋 QUOTATION</button>
   </div>
   <input type="hidden" id="doc_type" value="invoice">
 </div>
@@ -260,7 +260,7 @@ footer a:hover { text-decoration: underline; }
   <h4 style="color:#3b82f6;margin:0 0 10px 0;">️ Backup Controls</h4>
   <div style="display:flex;gap:10px;flex-wrap:wrap;">
     <button class="order-filter-btn" onclick="viewBackups()" style="background:#3b82f6;color:white;border:none;">️ View Backups</button>
-    <button class="order-filter-btn" onclick="exportBackups()" style="background:#10b981;color:white;border:none;">📥 Export Backups</button>
+    <button class="order-filter-btn" onclick="exportBackups()" style="background:#10b981;color:white;border:none;"> Export Backups</button>
   </div>
 </div>
 <div id="logItems" class="loading">Loading...</div>
@@ -268,7 +268,7 @@ footer a:hover { text-decoration: underline; }
 
 <div id="complaintsSection" style="display:none;">
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #ef4444;margin-bottom:25px;">
-<h4 style="color:#ef4444;margin:0 0 10px 0;">️ Customer Complaints</h4>
+<h4 style="color:#ef4444;margin:0 0 10px 0;">⚠️ Customer Complaints</h4>
 <p style="color:#94a3b8;font-size:13px;margin:0 0 15px 0;">Purpose: Track & resolve customer issues</p>
 <div id="complaintsList" class="loading">Loading complaints...</div>
 </div>
@@ -298,7 +298,7 @@ footer a:hover { text-decoration: underline; }
 <div id="histSuccess" class="success-msg"></div>
 </div>
 <div id="showStep" style="display:none;">
-<h3 style="text-align:center;color:#fbbf24;">📜 Service History</h3>
+<h3 style="text-align:center;color:#fbbf24;"> Service History</h3>
 <div id="custInfo" style="background:#0f172a;padding:12px;border-radius:8px;margin-bottom:15px;"></div>
 <div id="histList" style="max-height:300px;overflow-y:auto;"></div>
 <div class="action-row">
@@ -613,7 +613,7 @@ async function saveManualEntry() {
     }
 }
 
-// ✅ GENERATE PDF (With Logo Fix + New Table Format + Company Name Fix)
+// ✅ GENERATE PDF (With Logo Fix + Company Name Fixed)
 function generateManualPDF(data, docType) {
     try {
         const { jsPDF } = window.jspdf;
@@ -635,16 +635,16 @@ function generateManualPDF(data, docType) {
             } catch(e) {}
         }
 
-        // ✅ Company Name - Logo ke baad        doc.setTextColor(251, 191, 36); // Gold color
+        // ✅ Company Name - Logo ke saath (Fixed Position)        doc.setTextColor(251, 191, 36); // Gold color
         doc.setFontSize(22);
         doc.setFont("helvetica", "bold");
-        doc.text("DNHQ SERVICES", 60, 28);
+        doc.text("DNHQ SERVICES", 55, 26); // Y-coordinate adjust kiya hai taake saaf nazar aaye
 
         // Tagline
         doc.setFontSize(9);
         doc.setFont("helvetica", "normal");
         doc.setTextColor(200, 200, 200);
-        doc.text("Professional Electrical & AC Maintenance", 60, 35);
+        doc.text("Professional Electrical & AC Maintenance", 55, 34);
 
         // Customer Info
         doc.setTextColor(0, 0, 0);
@@ -839,8 +839,8 @@ function filterOrders(type) {
         const docType = d.doc_type || 'invoice';
         const docBadge = docType === 'invoice' ? '<span class="badge badge-invoice">📄 INV</span>' : '<span class="badge badge-quotation">📋 QUO</span>';
         let sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website"> Web</span>' : '<span class="badge badge-manual">📝 Manual</span>';
-        const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')">📄 Convert</button>' : '';
-        return '<div class="log-card">' + convertBtn + '<button class="pdf-btn" data-index="' + originalIndex + '"> PDF</button><b>' + (d.client || "Unknown") + '</b> ' + docBadge + sourceBadge + '<br><small class="phone">📱 ' + (d.phone || "N/A") + '</small><br><small>' + (d.work || "").substring(0, 50) + '</small><br><b style="color:gold;">' + (balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()) + '</b><br><button class="del-btn" onclick="deleteEntry(\'' + d.timestamp + '\')">🗑️ Delete</button></div>';
+        const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')"> Convert</button>' : '';
+        return '<div class="log-card">' + convertBtn + '<button class="pdf-btn" data-index="' + originalIndex + '"> PDF</button><b>' + (d.client || "Unknown") + '</b> ' + docBadge + sourceBadge + '<br><small class="phone"> ' + (d.phone || "N/A") + '</small><br><small>' + (d.work || "").substring(0, 50) + '</small><br><b style="color:gold;">' + (balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()) + '</b><br><button class="del-btn" onclick="deleteEntry(\'' + d.timestamp + '\')">🗑️ Delete</button></div>';
     }).join('');
     container.querySelectorAll('.pdf-btn').forEach(btn => { if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('convertToInvoice')) return; btn.onclick = function() { const index = this.getAttribute('data-index'); const order = allOrders[parseInt(index)]; if (order) showConfirmDialog(order); }; });
     calculateTotalRevenue();
@@ -861,7 +861,7 @@ async function loadComplaints() {
 
 // ✅ BACKUP FUNCTIONS
 async function viewBackups() {
-    const pin = prompt("🔐 Enter Backup PIN:"); if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
+    const pin = prompt(" Enter Backup PIN:"); if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
     document.getElementById('backupList').innerHTML = '<div class="loading">Loading backups...</div>'; document.getElementById('backupModal').style.display = 'block';
     try {
         const res = await fetch(SCRIPT_URL + '?getBackups=true&pin=' + encodeURIComponent(pin)); const backups = await res.json();
@@ -921,7 +921,7 @@ function showConfirmDialog(order) {
     if (discountAmount > 0) html += '<div class="confirm-row discount highlight"><label> Discount:</label><span class="value">-Rs ' + discountAmount.toLocaleString() + '</span></div>';
     html += '<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ' + total.toLocaleString() + '</span></div>';
     if (advance > 0) html += '<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ' + advance.toLocaleString() + '</span></div>';
-    if (balanceDue > 0) html += '<div class="confirm-row balance"><label>⚠️ Balance Due:</label><span class="value">Rs ' + balanceDue.toLocaleString() + '</span></div>';
+    if (balanceDue > 0) html += '<div class="confirm-row balance"><label>️ Balance Due:</label><span class="value">Rs ' + balanceDue.toLocaleString() + '</span></div>';
     else html += '<div class="confirm-row balance paid"><label>✅ Payment Status:</label><span class="value">FULLY PAID</span></div>';
     document.getElementById('confirmBody').innerHTML = html; document.getElementById('confirmDialog').style.display = 'block';
 }
@@ -1000,7 +1000,7 @@ async function fetchCustomerHistory() {
         currentCustData = data; document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block';
         const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
         document.getElementById('custInfo').innerHTML = '<b>👤 ' + (data[0].client || 'Customer') + '</b><br><b class="phone"> ' + phone + '</b><br><b>Orders:</b> ' + data.length + ' | <b>Total:</b> Rs ' + totalSpent.toLocaleString();
-        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => '<div class="history-item"><b>#' + (data.length - i) + ' • ' + formatDate(o.date || o.timestamp) + '</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ' + (o.client || 'Customer') + '</small><small class="phone">📱 ' + (o.phone || phone) + '</small><small>🔧 ' + (o.work || "").substring(0, 60) + '</small><span class="amt">' + (parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid') + '</span><button class="pdf-sm" data-order=\'' + JSON.stringify(o).replace(/'/g,"'") + '\'>📄 Download</button></div>').join('');
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => '<div class="history-item"><b>#' + (data.length - i) + ' • ' + formatDate(o.date || o.timestamp) + '</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ' + (o.client || 'Customer') + '</small><small class="phone"> ' + (o.phone || phone) + '</small><small>🔧 ' + (o.work || "").substring(0, 60) + '</small><span class="amt">' + (parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid') + '</span><button class="pdf-sm" data-order=\'' + JSON.stringify(o).replace(/'/g,"'") + '\'>📄 Download</button></div>').join('');
         document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => { btn.onclick = function() { const order = JSON.parse(this.dataset.order.replace(/'/g, "'")); showConfirmDialog(order); }; });
     } catch (e) { err.textContent = "Error"; err.style.display = 'block'; }
 }
