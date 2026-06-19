@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=16">
+<link rel="manifest" href="manifest.json?v=18">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -47,7 +47,8 @@ footer a { color: #fbbf24; text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 .history-btn { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; }
 .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; }
-.modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
+.modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
+.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
 .form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
 .verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
 .error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
@@ -96,7 +97,8 @@ footer a:hover { text-decoration: underline; }
 .btn-confirm:hover { background: #059669; }
 .btn-cancel { flex: 1; background: #ef4444; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; }
 .btn-cancel:hover { background: #dc2626; }
-.admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }.admin-tab { flex: 1; min-width: 120px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; }
+.admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.admin-tab { flex: 1; min-width: 120px; padding: 12px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; }
 .admin-tab.active { background: rgba(251, 191, 36, 0.1); border-color: #fbbf24; color: #fbbf24; }
 .admin-tab .count { background: #ef4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px; }
 .complaint-card { background: #1e293b; border: 1px solid #ef4444; border-radius: 12px; padding: 15px; margin-bottom: 15px; color: white; border-left: 4px solid #ef4444; }
@@ -145,7 +147,8 @@ footer a:hover { text-decoration: underline; }
 <div class="svc-item" onclick="toggleSvc(this, 'Fan Installation', 800)"><div class="svc-meta"><b>Fan Installation</b><p>Per Fan</p></div><div class="svc-rate">Rs 800</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Light Installation', 500)"><div class="svc-meta"><b>Light Installation</b><p>Per Point</p></div><div class="svc-rate">Rs 500</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Socket Replacement', 300)"><div class="svc-meta"><b>Socket Replacement</b><p>Per Socket</p></div><div class="svc-rate">Rs 300</div></div>
-<div class="svc-item" onclick="toggleSvc(this, 'Switch Replacement', 200)"><div class="svc-meta"><b>Switch Replacement</b><p>Per Switch</p></div><div class="svc-rate">Rs 200</div></div><div class="svc-item" onclick="toggleSvc(this, 'Motor Repair', 2500)"><div class="svc-meta"><b>Motor Repair</b><p>Single Phase</p></div><div class="svc-rate">Rs 2,500</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Switch Replacement', 200)"><div class="svc-meta"><b>Switch Replacement</b><p>Per Switch</p></div><div class="svc-rate">Rs 200</div></div>
+<div class="svc-item" onclick="toggleSvc(this, 'Motor Repair', 2500)"><div class="svc-meta"><b>Motor Repair</b><p>Single Phase</p></div><div class="svc-rate">Rs 2,500</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Inverter Installation', 5000)"><div class="svc-meta"><b>Inverter Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 5,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'UPS Installation', 4000)"><div class="svc-meta"><b>UPS Installation</b><p>Complete Setup</p></div><div class="svc-rate">Rs 4,000</div></div>
 <div class="svc-item" onclick="toggleSvc(this, 'Circuit Breaker', 1500)"><div class="svc-meta"><b>Circuit Breaker</b><p>Per Phase</p></div><div class="svc-rate">Rs 1,500</div></div>
@@ -194,6 +197,7 @@ footer a:hover { text-decoration: underline; }
         </div>
     </div>
 </div>
+
 <div class="admin-tabs">
 <div class="admin-tab active" onclick="switchAdminTab('orders')" id="tab-orders"> Orders</div>
 <div class="admin-tab" onclick="switchAdminTab('complaints')" id="tab-complaints">️ Complaints <span class="count" id="complaintCount">0</span></div>
@@ -243,7 +247,8 @@ footer a:hover { text-decoration: underline; }
 </select>
 <input type="number" id="discount_value" class="man-input" placeholder="Enter value" style="display:none;margin-bottom:0;">
 </div>
-</div><div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
+</div>
+<div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
 <h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
 <input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
 </div>
@@ -268,7 +273,7 @@ footer a:hover { text-decoration: underline; }
 
 <div id="complaintsSection" style="display:none;">
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #ef4444;margin-bottom:25px;">
-<h4 style="color:#ef4444;margin:0 0 10px 0;">⚠️ Customer Complaints</h4>
+<h4 style="color:#ef4444;margin:0 0 10px 0;">️ Customer Complaints</h4>
 <p style="color:#94a3b8;font-size:13px;margin:0 0 15px 0;">Purpose: Track & resolve customer issues</p>
 <div id="complaintsList" class="loading">Loading complaints...</div>
 </div>
@@ -292,7 +297,8 @@ footer a:hover { text-decoration: underline; }
 <span class="modal-close" onclick="closeHistoryModal()">&times;</span>
 <div id="verifyStep">
 <h3 style="text-align:center;color:#fbbf24;">🔐 Check Service History</h3>
-<p style="text-align:center;color:#94a3b8;font-size:13px;">Enter your phone number to view history</p><input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
+<p style="text-align:center;color:#94a3b8;font-size:13px;">Enter your phone number to view history</p>
+<input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
 <button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
 <div id="histError" class="error-msg"></div>
 <div id="histSuccess" class="success-msg"></div>
@@ -313,7 +319,7 @@ footer a:hover { text-decoration: underline; }
 <div id="complaintModal" class="modal">
 <div class="modal-content">
 <span class="modal-close" onclick="closeComplaintModal()">&times;</span>
-<h3 style="text-align:center;color:#ef4444;">⚠️ Submit Complaint</h3>
+<h3 style="text-align:center;color:#ef4444;">️ Submit Complaint</h3>
 <p style="text-align:center;color:#94a3b8;font-size:13px;">We'll resolve your issue within 24 hours</p>
 <input type="text" id="complaintName" class="form-input" placeholder="Your Name">
 <input type="tel" id="complaintPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
@@ -341,7 +347,8 @@ footer a:hover { text-decoration: underline; }
 </div>
 <div class="confirm-body" id="confirmBody"></div>
 <div class="confirm-footer">
-<button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button><button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
+<button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button>
+<button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
 </div>
 </div>
 </div>
@@ -354,7 +361,7 @@ footer a:hover { text-decoration: underline; }
     <div id="backupList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
     <div style="display:flex;gap:10px;">
       <button class="btn-back" onclick="closeBackupModal()" style="flex:1;">Close</button>
-      <button class="btn-confirm" onclick="refreshBackups()" style="flex:1;">🔄 Refresh</button>
+      <button class="btn-confirm" onclick="refreshBackups()" style="flex:1;"> Refresh</button>
     </div>
   </div>
 </div>
@@ -362,7 +369,7 @@ footer a:hover { text-decoration: underline; }
 <div id="installPrompt">
 <p> Install DNHQ App!</p>
 <button onclick="installApp()">Install</button>
-<button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;">✕</button>
+<button onclick="dismissInstall()" style="background:transparent;color:#94a3b8;border:1px solid #94a3b8;"></button>
 </div>
 
 <footer>
@@ -390,7 +397,8 @@ function toggleDiscountInput() {
 }
 
 function formatDate(dateInput) {
-    if (!dateInput || dateInput === '' || dateInput === 'null' || dateInput === 'undefined') {        return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+    if (!dateInput || dateInput === '' || dateInput === 'null' || dateInput === 'undefined') {
+        return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     }
     try {
         let date;
@@ -439,7 +447,8 @@ function playVid() {
 function toggleSvc(el, name, price) {
     const idx = cart.findIndex(c => c.name === name);
     if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
-    else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }    updateCart();
+    else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
+    updateCart();
 }
 
 function updateCart() {
@@ -488,7 +497,8 @@ function setDocType(type) {
     btnQuotation.style.color = 'white';
     btnInvoice.style.background = '#1e293b';
     btnInvoice.style.color = '#94a3b8';
-    docTypeInput.value = 'quotation';  }
+    docTypeInput.value = 'quotation';
+  }
 }
 
 // ✅ ADD NEW ROW (WITH QTY, QUALITY "-", PRICE)
@@ -537,7 +547,8 @@ async function saveManualEntry() {
             allWork.push(`${input.value.trim()} x ${qty} ${qualityPart} @ Rs ${price} = Rs ${lineTotal}`.trim());
         }
     });
-        if(allWork.length === 0) return alert("Add at least one item!");
+    
+    if(allWork.length === 0) return alert("Add at least one item!");
     
     const discountType = document.getElementById('discount_type').value;
     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
@@ -586,7 +597,8 @@ async function saveManualEntry() {
         alert("✅ " + (docType === 'invoice' ? 'Invoice' : 'Quotation') + " saved successfully!");
         generateManualPDF(payload, docType);
         setTimeout(() => { loadLogs(); }, 2000);
-                // Reset Form
+        
+        // Reset Form
         document.getElementById('man_name').value = '';
         document.getElementById('man_phone').value = '';
         document.getElementById('man_date').value = '';
@@ -613,7 +625,7 @@ async function saveManualEntry() {
     }
 }
 
-// ✅ GENERATE PDF (With Logo Fix + Company Name Fixed)
+// ✅ GENERATE PDF - FIXED LOGO & TEXT
 function generateManualPDF(data, docType) {
     try {
         const { jsPDF } = window.jspdf;
@@ -635,16 +647,17 @@ function generateManualPDF(data, docType) {
             } catch(e) {}
         }
 
-        // ✅ Company Name - Logo ke saath (Fixed Position)        doc.setTextColor(251, 191, 36); // Gold color
-        doc.setFontSize(22);
+        // ✅ FIXED: Company Name - Logo ke RIGHT side par
+        doc.setTextColor(251, 191, 36); // Gold color
+        doc.setFontSize(20);
         doc.setFont("helvetica", "bold");
-        doc.text("DNHQ SERVICES", 55, 26); // Y-coordinate adjust kiya hai taake saaf nazar aaye
+        doc.text("DNHQ SERVICES", 55, 22); // X=55 (logo ke baad), Y=22 (upper position)
 
-        // Tagline
-        doc.setFontSize(9);
+        // Tagline - Company name ke neeche
+        doc.setFontSize(8);
         doc.setFont("helvetica", "normal");
-        doc.setTextColor(200, 200, 200);
-        doc.text("Professional Electrical & AC Maintenance", 55, 34);
+        doc.setTextColor(200, 200, 200); // Light gray
+        doc.text("Professional Electrical & AC Maintenance", 55, 30);
 
         // Customer Info
         doc.setTextColor(0, 0, 0);
@@ -658,10 +671,9 @@ function generateManualPDF(data, docType) {
         doc.setFont("helvetica", "bold");
         doc.text(titleText, 105, 78, { align: "center" });
 
-        // ✅ Table with 5 Columns: Item | Qty | Quality | Unit Price | Total
+        // Table with 5 Columns
         let items = data.work.split(", ");
         let body = items.map(item => {
-            // Parse: "Item x Qty [Quality] @ Rs Price = Rs Total" OR "Item x Qty @ Rs Price = Rs Total"
             if (item.includes(" x ") && item.includes("@ Rs")) {
                 let parts = item.split(" x ");
                 let itemName = parts[0].trim();
@@ -669,7 +681,6 @@ function generateManualPDF(data, docType) {
                 let qtyMatch = rest.match(/^(\d+)/);
                 let qty = qtyMatch ? qtyMatch[1] : '1';
                 
-                // Check for [Quality]
                 let quality = '-';
                 let qualityMatch = rest.match(/\[([^\]]+)\]/);
                 if (qualityMatch) {
@@ -684,6 +695,7 @@ function generateManualPDF(data, docType) {
             }
             return [item.trim(), '1', '-', '-', '-'];
         });
+
         doc.autoTable({
             startY: 86,
             head: [['ITEM', 'QTY', 'QUALITY', 'UNIT PRICE', 'TOTAL']],
@@ -733,7 +745,8 @@ function generateManualPDF(data, docType) {
         if (balanceDue > 0) {
             doc.setTextColor(239, 68, 68);
             doc.text("BALANCE DUE:", 130, finalY + 3); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY + 3, { align: 'right' });
-        } else {            doc.setTextColor(16, 185, 129);
+        } else {
+            doc.setTextColor(16, 185, 129);
             doc.text("FULLY PAID ✓", 130, finalY + 3); doc.text("Rs 0", 195, finalY + 3, { align: 'right' });
         }
 
@@ -782,7 +795,8 @@ function calculateTotalRevenue() {
     document.getElementById('totalRevenueAmount').innerText = 'Rs ' + totalRevenue.toLocaleString();
     document.getElementById('totalOrdersCount').innerText = orderCount + ' Orders';
     document.getElementById('invoiceTotal').innerText = 'Rs ' + invoiceTotal.toLocaleString();
-    document.getElementById('quotationTotal').innerText = 'Rs ' + quotationTotal.toLocaleString();    document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();
+    document.getElementById('quotationTotal').innerText = 'Rs ' + quotationTotal.toLocaleString();
+    document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();
 }
 
 // ✅ CONVERT QUOTATION TO INVOICE
@@ -831,13 +845,14 @@ function filterOrders(type) {
     else if(type === 'manual') filteredData = allOrders.filter(d => d.order_source === 'manual');
     if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
     container.innerHTML = filteredData.map((d, index) => {
-        const originalIndex = allOrders.indexOf(d);        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
+        const originalIndex = allOrders.indexOf(d);
+        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
         const discountAmount = parseFloat(d.discount_amount) || 0;
         const advance = parseFloat(d.advance) || 0;
         const total = parseFloat(d.total) || (subtotal - discountAmount);
         const balanceDue = parseFloat(d.balance_due) || (total - advance);
         const docType = d.doc_type || 'invoice';
-        const docBadge = docType === 'invoice' ? '<span class="badge badge-invoice">📄 INV</span>' : '<span class="badge badge-quotation">📋 QUO</span>';
+        const docBadge = docType === 'invoice' ? '<span class="badge badge-invoice"> INV</span>' : '<span class="badge badge-quotation">📋 QUO</span>';
         let sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website"> Web</span>' : '<span class="badge badge-manual">📝 Manual</span>';
         const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')"> Convert</button>' : '';
         return '<div class="log-card">' + convertBtn + '<button class="pdf-btn" data-index="' + originalIndex + '"> PDF</button><b>' + (d.client || "Unknown") + '</b> ' + docBadge + sourceBadge + '<br><small class="phone"> ' + (d.phone || "N/A") + '</small><br><small>' + (d.work || "").substring(0, 50) + '</small><br><b style="color:gold;">' + (balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()) + '</b><br><button class="del-btn" onclick="deleteEntry(\'' + d.timestamp + '\')">🗑️ Delete</button></div>';
@@ -867,7 +882,7 @@ async function viewBackups() {
         const res = await fetch(SCRIPT_URL + '?getBackups=true&pin=' + encodeURIComponent(pin)); const backups = await res.json();
         if(backups.error) throw new Error(backups.error);
         if(backups.length === 0) { document.getElementById('backupList').innerHTML = '<p style="text-align:center;color:#94a3b8;">No deleted orders found.</p>'; return; }
-        document.getElementById('backupList').innerHTML = backups.map(b => '<div class="log-card" style="border-left:4px solid #ef4444;"><div style="display:flex;justify-content:space-between;align-items:start;"><div><b style="color:white;">' + (b.client || 'Unknown') + '</b></div><small style="color:#94a3b8;">' + formatDate(b.deleted_at) + '</small></div><small class="phone"> ' + (b.phone || 'N/A') + '</small><small style="color:#fbbf24;display:block;margin:5px 0;"> Total: Rs ' + ((b.total||0)).toLocaleString() + '</small><div style="margin-top:10px;display:flex;gap:8px;"><button class="pdf-btn" onclick="generatePDF(' + JSON.stringify(b).replace(/'/g,"'") + ')">📄 PDF</button><button class="btn-confirm" style="padding:5px 12px;font-size:11px;" onclick="restoreBackup(\'' + b.timestamp + '\')">♻️ Restore</button></div></div>').join('');
+        document.getElementById('backupList').innerHTML = backups.map(b => '<div class="log-card" style="border-left:4px solid #ef4444;"><div style="display:flex;justify-content:space-between;align-items:start;"><div><b style="color:white;">' + (b.client || 'Unknown') + '</b></div><small style="color:#94a3b8;">' + formatDate(b.deleted_at) + '</small></div><small class="phone"> ' + (b.phone || 'N/A') + '</small><small style="color:#fbbf24;display:block;margin:5px 0;"> Total: Rs ' + ((b.total||0)).toLocaleString() + '</small><div style="margin-top:10px;display:flex;gap:8px;"><button class="pdf-btn" onclick="generatePDF(' + JSON.stringify(b).replace(/'/g,"'") + ')">📄 PDF</button><button class="btn-confirm" style="padding:5px 12px;font-size:11px;" onclick="restoreBackup(\'' + b.timestamp + '\')">️ Restore</button></div></div>').join('');
     } catch(e) { document.getElementById('backupList').innerHTML = '<p style="color:#ef4444;">Error: ' + e.message + '</p>'; }
 }
 function closeBackupModal() { document.getElementById('backupModal').style.display = 'none'; }
@@ -880,7 +895,8 @@ async function exportBackups() {
         const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason']; const csv = [headers.join(',')];
         backups.forEach(b => { csv.push([b.date||'', '"' + (b.client||'').replace(/"/g,'""') + '"', b.phone||'', '"' + (b.work||'').replace(/"/g,'""') + '"', b.total||0, b.deleted_at||'', b.deleted_by||'', '"' + (b.delete_reason||'').replace(/"/g,'""') + '"'].join(',')); });
         const blob = new Blob([csv.join('\n')], {type: 'text/csv'}); const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = 'DNHQ_Backups_' + new Date().toISOString().split('T')[0] + '.csv'; a.click();        alert('✅ Exported ' + backups.length + ' backup records!');
+        const a = document.createElement('a'); a.href = url; a.download = 'DNHQ_Backups_' + new Date().toISOString().split('T')[0] + '.csv'; a.click();
+        alert('✅ Exported ' + backups.length + ' backup records!');
     } catch(e) { alert("Export Error: " + e.message); }
 }
 async function restoreBackup(timestamp) {
@@ -917,7 +933,7 @@ function showConfirmDialog(order) {
     const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
     const discountAmount = parseFloat(order.discount_amount) || 0; const advance = parseFloat(order.advance) || 0;
     const total = parseFloat(order.total) || (subtotal - discountAmount); const balanceDue = parseFloat(order.balance_due) || (total - advance);
-    let html = '<div class="confirm-row"><label>👤 Customer:</label><span class="value">' + client + '</span></div><div class="confirm-row"><label> Phone:</label><span class="value">' + phone + '</span></div><div class="confirm-row"><label>📅 Date:</label><span class="value">' + formatDate(orderDate) + '</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label> Subtotal:</label><span class="value">Rs ' + subtotal.toLocaleString() + '</span></div>';
+    let html = '<div class="confirm-row"><label>👤 Customer:</label><span class="value">' + client + '</span></div><div class="confirm-row"><label> Phone:</label><span class="value">' + phone + '</span></div><div class="confirm-row"><label> Date:</label><span class="value">' + formatDate(orderDate) + '</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label> Subtotal:</label><span class="value">Rs ' + subtotal.toLocaleString() + '</span></div>';
     if (discountAmount > 0) html += '<div class="confirm-row discount highlight"><label> Discount:</label><span class="value">-Rs ' + discountAmount.toLocaleString() + '</span></div>';
     html += '<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ' + total.toLocaleString() + '</span></div>';
     if (advance > 0) html += '<div class="confirm-row advance highlight"><label>💰 Advance:</label><span class="value">-Rs ' + advance.toLocaleString() + '</span></div>';
@@ -929,7 +945,8 @@ function closeConfirmDialog() { document.getElementById('confirmDialog').style.d
 function confirmAndGeneratePDF() {
     if (!pendingOrderData) { alert(' Error: No order data available!'); return; }
     const orderData = JSON.parse(JSON.stringify(pendingOrderData)); closeConfirmDialog();
-    setTimeout(() => { generateManualPDF(orderData, 'invoice'); }, 100);}
+    setTimeout(() => { generateManualPDF(orderData, 'invoice'); }, 100);
+}
 async function deleteEntry(timestamp) {
     if(!timestamp) return alert(" Error: No order ID!");
     const order = allOrders.find(o => o.timestamp === timestamp); const client = order?.client || 'Unknown';
@@ -978,7 +995,8 @@ async function placeOrder() {
     const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received', order_source: 'website' };
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        const waText = '*🔔 NEW WEBSITE ORDER*%0A%0A*👤 Customer:* ' + name + '%0A*📱 Phone:* ' + phone + '%0A*🛠️ Services:* ' + workFormatted + '%0A*💰 Total:* Rs ' + total + '%0A%0A* Source:* Website Order';        window.open('https://wa.me/' + ADMIN_WHATSAPP + '?text=' + waText, '_blank');
+        const waText = '*🔔 NEW WEBSITE ORDER*%0A%0A*👤 Customer:* ' + name + '%0A* Phone:* ' + phone + '%0A*️ Services:* ' + workFormatted + '%0A*💰 Total:* Rs ' + total + '%0A%0A* Source:* Website Order';
+        window.open('https://wa.me/' + ADMIN_WHATSAPP + '?text=' + waText, '_blank');
         alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
         cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
     } catch(e) { alert("Error: " + e.message); }
@@ -1027,7 +1045,8 @@ document.addEventListener('click', function(e) {
 // ✅ EXPORT ALL FUNCTIONS
 window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.openHistoryModal = openHistoryModal; window.triggerAppInstall = triggerAppInstall; window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF; window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF; window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal; window.closeComplaintModal = closeComplaintModal; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry; window.loadLogs = loadLogs; window.updateCart = updateCart; window.closeHistoryModal = closeHistoryModal; window.resetHistoryView = resetHistoryView; window.installApp = installApp; window.dismissInstall = dismissInstall; window.placeOrder = placeOrder; window.viewBackups = viewBackups; window.closeBackupModal = closeBackupModal; window.refreshBackups = refreshBackups; window.exportBackups = exportBackups; window.restoreBackup = restoreBackup; window.setDocType = setDocType; window.generateManualPDF = generateManualPDF; window.convertToInvoice = convertToInvoice; window.calculateTotalRevenue = calculateTotalRevenue;
 
-// ✅ INITIALIZEdocument.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });
+// ✅ INITIALIZE
+document.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });
 </script>
 </body>
 </html>
