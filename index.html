@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=23">
+<link rel="manifest" href="manifest.json?v=24">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -497,6 +497,7 @@ footer a:hover { text-decoration: underline; }
 // ✅ GLOBAL VARIABLES
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
 const ADMIN_WHATSAPP = "923152458657";
+// ✅ NEW SCRIPT URL UPDATED
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuZswXXxOfLTiin3vCl5tsBKYWKaF5yeKts2SRzu0NXqmzYPXoYEOCcmJmfQv44pTdDg/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
@@ -652,8 +653,6 @@ async function saveManualEntry() {
             const price = parseInt(priceInputs[i].value) || 0;
             const lineTotal = qty * price;
             subtotal += lineTotal;
-            // Format: "Item x Qty [Quality] @ Rs Price = Rs Total"
-            // If quality is "-", show just "Item x Qty @ Rs Price = Rs Total"
             const qualityPart = quality !== '-' ? `[${quality}]` : '';
             allWork.push(`${input.value.trim()} x ${qty} ${qualityPart} @ Rs ${price} = Rs ${lineTotal}`.trim());
         }
@@ -709,7 +708,6 @@ async function saveManualEntry() {
         generateManualPDF(payload, docType);
         setTimeout(() => { loadLogs(); }, 2000);
         
-        // Reset Form
         document.getElementById('man_name').value = '';
         document.getElementById('man_phone').value = '';
         document.getElementById('man_date').value = '';
@@ -736,7 +734,7 @@ async function saveManualEntry() {
     }
 }
 
-// ✅ GENERATE PDF - FIXED LOGO & TEXT
+// ✅ GENERATE PDF - WITH DRIVE SAVE (Separate Folders)
 function generateManualPDF(data, docType) {
     try {
         const { jsPDF } = window.jspdf;
@@ -746,7 +744,7 @@ function generateManualPDF(data, docType) {
         doc.setFillColor(0, 0, 0);
         doc.rect(0, 0, 210, 55, 'F');
 
-        // ✅ Logo with Better Quality
+        // Logo
         const logoImg = document.getElementById('brandLogo');
         if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
             try {
@@ -758,72 +756,47 @@ function generateManualPDF(data, docType) {
             } catch(e) {}
         }
 
-        // ✅ FIXED: Company Name - Logo ke RIGHT side par
-        doc.setTextColor(251, 191, 36); // Gold color
-        doc.setFontSize(20);
-        doc.setFont("helvetica", "bold");
-        doc.text("DNHQ SERVICES", 55, 22); // X=55 (logo ke baad), Y=22 (upper position)
-
-        // Tagline - Company name ke neeche
-        doc.setFontSize(8);
-        doc.setFont("helvetica", "normal");
-        doc.setTextColor(200, 200, 200); // Light gray
+        // Company Name & Tagline
+        doc.setTextColor(251, 191, 36);
+        doc.setFontSize(20); doc.setFont("helvetica", "bold");
+        doc.text("DNHQ SERVICES", 55, 22);
+        doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(200, 200, 200);
         doc.text("Professional Electrical & AC Maintenance", 55, 30);
 
         // Customer Info
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0); doc.setFontSize(11);
         doc.text("CUSTOMER: " + data.client, 15, 62);
         doc.text("PHONE: " + data.phone, 15, 69);
         doc.text("DATE: " + formatDate(data.date), 145, 62);
 
         const titleText = docType === 'invoice' ? 'INVOICE' : 'QUOTATION';
-        doc.setFontSize(16);
-        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16); doc.setFont("helvetica", "bold");
         doc.text(titleText, 105, 78, { align: "center" });
 
-        // Table with 5 Columns
+        // Table
         let items = data.work.split(", ");
         let body = items.map(item => {
             if (item.includes(" x ") && item.includes("@ Rs")) {
                 let parts = item.split(" x ");
                 let itemName = parts[0].trim();
                 let rest = parts[1];
-                let qtyMatch = rest.match(/^(\d+)/);
-                let qty = qtyMatch ? qtyMatch[1] : '1';
-                
-                let quality = '-';
-                let qualityMatch = rest.match(/\[([^\]]+)\]/);
-                if (qualityMatch) {
-                    quality = qualityMatch[1];
-                }
-                
-                let priceMatch = rest.match(/@ Rs (\d+)/);
-                let price = priceMatch ? priceMatch[1] : '0';
-                let totalMatch = rest.match(/= Rs (\d+)/);
-                let total = totalMatch ? totalMatch[1] : '0';
+                let qtyMatch = rest.match(/^(\d+)/); let qty = qtyMatch ? qtyMatch[1] : '1';
+                let qualityMatch = rest.match(/\[([^\]]+)\]/); let quality = qualityMatch ? qualityMatch[1] : '-';
+                let priceMatch = rest.match(/@ Rs (\d+)/); let price = priceMatch ? priceMatch[1] : '0';
+                let totalMatch = rest.match(/= Rs (\d+)/); let total = totalMatch ? totalMatch[1] : '0';
                 return [itemName, qty, quality, 'Rs ' + price, 'Rs ' + total];
             }
             return [item.trim(), '1', '-', '-', '-'];
         });
 
         doc.autoTable({
-            startY: 86,
-            head: [['ITEM', 'QTY', 'QUALITY', 'UNIT PRICE', 'TOTAL']],
-            body: body,
-            theme: 'grid',
-            headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 },
+            startY: 86, head: [['ITEM', 'QTY', 'QUALITY', 'UNIT PRICE', 'TOTAL']], body: body,
+            theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 },
             styles: { fontSize: 8, cellPadding: 3 },
-            columnStyles: { 
-                0: { cellWidth: 70 }, 
-                1: { cellWidth: 20, halign: 'center' },
-                2: { cellWidth: 25, halign: 'center' },
-                3: { cellWidth: 35, halign: 'right' },
-                4: { cellWidth: 40, halign: 'right', fontStyle: 'bold' }
-            }
+            columnStyles: { 0: { cellWidth: 70 }, 1: { cellWidth: 20, halign: 'center' }, 2: { cellWidth: 25, halign: 'center' }, 3: { cellWidth: 35, halign: 'right' }, 4: { cellWidth: 40, halign: 'right', fontStyle: 'bold' } }
         });
 
-        // Totals Section
+        // Totals
         let finalY = doc.lastAutoTable.finalY + 8;
         const subtotal = parseFloat(data.subtotal) || 0;
         const discount = parseFloat(data.discount_amount) || 0;
@@ -833,26 +806,21 @@ function generateManualPDF(data, docType) {
 
         doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150);
         doc.text("Subtotal:", 130, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 6;
-
         if (discount > 0) {
             doc.setTextColor(16, 185, 129);
             doc.text(data.discount_text + " Discount:", 130, finalY);
             doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 6;
             doc.setTextColor(150, 150, 150);
         }
-
         doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0);
         doc.text("Total:", 130, finalY); doc.text("Rs " + total.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 9;
-
         if (advance > 0) {
             doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(125, finalY - 4, 195, finalY - 4);
             doc.setFontSize(9); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold");
             doc.text("Advance Received:", 130, finalY + 2); doc.text("-Rs " + advance.toLocaleString(), 195, finalY + 2, { align: 'right' }); finalY += 9;
         }
-
         doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(125, finalY - 4, 195, finalY - 4);
         doc.setFontSize(13); doc.setFont("helvetica", "bold");
-
         if (balanceDue > 0) {
             doc.setTextColor(239, 68, 68);
             doc.text("BALANCE DUE:", 130, finalY + 3); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY + 3, { align: 'right' });
@@ -869,14 +837,34 @@ function generateManualPDF(data, docType) {
         doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" });
         doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
 
-        // Save PDF
-        const docPrefix = docType === 'invoice' ? 'INV' : 'QUO';
-        const cname = data.client.replace(/[^a-z0-9]/gi, '_');
-        const dateStr = formatDate(data.date).replace(/[^a-z0-9]/gi, '_');
-        doc.save('DNHQ_' + docPrefix + '_' + cname + '_' + dateStr + '.pdf');
+        // ✅ SAVE TO GOOGLE DRIVE (Separate Folders)
+        const fileName = `${docType.toUpperCase()}_${data.client.replace(/[^a-z0-9]/gi, '_').substring(0,20)}_${formatDate(data.date).replace(/[^a-z0-9]/gi, '_')}.pdf`;
+        const pdfBase64 = doc.output('datauristring').split(',')[1];
+        
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                type: 'savePDF', 
+                pdfBase64: pdfBase64, 
+                docType: docType, 
+                customer: data.client, 
+                date: data.date 
+            })
+        }).then(res => res.json()).then(result => {
+            if(result.success) {
+                console.log(`✅ Saved to Drive Folder: ${result.folderName}`);
+                console.log(`🔗 Link: ${result.fileUrl}`);
+            }
+        }).catch(err => console.warn('Drive save skipped (offline?):', err));
+
+        // Local Download
+        doc.save(fileName);
+        alert(`✅ ${titleText} Generated & Saved!\n Check Google Drive for backup.`);
 
     } catch (error) {
         alert('PDF Generation Failed: ' + error.message);
+        console.error(error);
     }
 }
 
@@ -1183,17 +1171,14 @@ function switchCalcTab(tab) {
     }
 }
 function clearCalculator() {
-    // Clear Electrical
     document.getElementById('calcV').value = '';
     document.getElementById('calcW').value = '';
     document.getElementById('calcA').value = '';
     document.getElementById('calcResult').style.display = 'none';
     document.getElementById('calcCTA').style.display = 'none';
-    // Clear AC
     document.getElementById('acArea').value = '';
     document.getElementById('acResult').style.display = 'none';
     document.getElementById('acCTA').style.display = 'none';
-    // Clear Room
     document.getElementById('roomLength').value = '';
     document.getElementById('roomWidth').value = '';
     document.getElementById('roomResult').style.display = 'none';
@@ -1241,10 +1226,9 @@ function calculateAC() {
         return;
     }
 
-    // Logic: Area * 25 BTU per sq ft (Pakistan Standard) * Sun Factor
     let requiredBTU = area * 25 * sunFactor;
     let tons = requiredBTU / 12000;
-    let recommendedTons = Math.ceil(tons * 2) / 2; // Round up to nearest 0.5
+    let recommendedTons = Math.ceil(tons * 2) / 2;
     
     if(recommendedTons < 1) recommendedTons = 1;
 
@@ -1272,7 +1256,6 @@ function calculateRoomArea() {
     }
 
     let area = length * width;
-    // Optional: Suggest AC size right here too!
     let suggestedAC = Math.ceil(area / 150); 
     if(suggestedAC < 1) suggestedAC = 1;
     if(area < 120) suggestedAC = "1 Ton";
