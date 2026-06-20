@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=24">
+<link rel="manifest" href="manifest.json?v=25">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -122,8 +122,8 @@ footer a:hover { text-decoration: underline; }
 .calc-wa { width: 100%; background: #22c55e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
 
 /* ✅ Calculator Tabs */
-.calc-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 10px; overflow-x: auto; }
-.calc-tab { flex: 1; padding: 8px 12px; background: #1e293b; border: none; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; font-size: 12px; white-space: nowrap; }
+.calc-tabs { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 10px; overflow-x: auto; }
+.calc-tab { flex: 1; padding: 8px 10px; background: #1e293b; border: none; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; font-size: 11px; white-space: nowrap; min-width: 80px; }
 .calc-tab.active { background: var(--gold); color: black; }
 .calc-section { display: none; }
 .calc-section.active { display: block; }
@@ -383,7 +383,7 @@ footer a:hover { text-decoration: underline; }
   </div>
 </div>
 
-<!-- ✅ CALCULATOR MODAL (3 TABS) -->
+<!-- ✅ CALCULATOR MODAL (4 TABS) -->
 <div id="calculatorModal" class="modal" onclick="closeCalculatorOnBackground(event)">
   <div class="modal-content" style="max-width: 550px;">
     <span class="modal-close" onclick="closeCalculator()">&times;</span>
@@ -394,6 +394,7 @@ footer a:hover { text-decoration: underline; }
         <button class="calc-tab active" onclick="switchCalcTab('elec')">⚡ Electrical</button>
         <button class="calc-tab" onclick="switchCalcTab('ac')">️ AC Tonnage</button>
         <button class="calc-tab" onclick="switchCalcTab('room')">📏 Room Area</button>
+        <button class="calc-tab" onclick="switchCalcTab('amp')">🔌 Amperes</button>
     </div>
 
     <!-- Tab 1: Electrical Calculator -->
@@ -423,7 +424,7 @@ footer a:hover { text-decoration: underline; }
         </div>
 
         <button class="calc-btn" onclick="calculateElectrical()"> Calculate Now</button>
-        <button class="calc-btn" style="background:#334155;color:white;margin-top:8px;" onclick="clearCalculator()">️ Clear</button>
+        <button class="calc-btn" style="background:#334155;color:white;margin-top:8px;" onclick="clearCalculator()">🗑️ Clear</button>
 
         <div id="calcResult" class="calc-result"></div>
         <button id="calcCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I used your electrical calculator. I need a service quote.', '_blank')">📩 Get Free Quote on WhatsApp</button>
@@ -474,6 +475,36 @@ footer a:hover { text-decoration: underline; }
         <button id="roomCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I calculated my room area. I need wiring/AC installation quote.', '_blank')"> Get Quote for This Room</button>
     </div>
 
+    <!-- Tab 4: Amperes Calculator (NEW) -->
+    <div id="calc-amp" class="calc-section">
+        <p style="text-align:center;color:#94a3b8;font-size:13px;margin-bottom:20px;">Calculate Amperes (Current) for electrical loads.</p>
+        <div class="calc-grid">
+            <div>
+                <label style="color:#94a3b8;font-size:12px;">Voltage (V)</label>
+                <input type="number" id="ampV" class="man-input" placeholder="e.g. 220" style="margin-top:5px;">
+            </div>
+            <div>
+                <label style="color:#94a3b8;font-size:12px;">Power (Watts)</label>
+                <input type="number" id="ampW" class="man-input" placeholder="e.g. 1500" style="margin-top:5px;">
+            </div>
+            <div>
+                <label style="color:#94a3b8;font-size:12px;">Power Factor</label>
+                <select id="ampPF" class="man-input" style="margin-top:5px; background:#000; color:white;">
+                    <option value="1">1.0 (Resistive)</option>
+                    <option value="0.9">0.9 (AC/Motor)</option>
+                    <option value="0.8">0.8 (Inductive)</option>
+                    <option value="0.7">0.7 (Old Equipment)</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="calc-btn" onclick="calculateAmperes()">🔌 Calculate Amperes</button>
+        <button class="calc-btn" style="background:#334155;color:white;margin-top:8px;" onclick="clearCalculator()">️ Clear</button>
+
+        <div id="ampResult" class="calc-result"></div>
+        <button id="ampCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I used your Amperes calculator. I need electrical service.', '_blank')">📩 Get Electrical Service Quote</button>
+    </div>
+
   </div>
 </div>
 
@@ -498,7 +529,7 @@ footer a:hover { text-decoration: underline; }
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
 const ADMIN_WHATSAPP = "923152458657";
 // ✅ NEW SCRIPT URL UPDATED
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuZswXXxOfLTiin3vCl5tsBKYWKaF5yeKts2SRzu0NXqmzYPXoYEOCcmJmfQv44pTdDg/exec";
+const SCRIPT_URL = "https://https://script.google.com/macros/s/AKfycbwuZswXXxOfLTiin3vCl5tsBKYWKaF5yeKts2SRzu0NXqmzYPXoYEOCcmJmfQv44pTdDg/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
 // ✅ UTILITY FUNCTIONS
@@ -1165,24 +1196,35 @@ function switchCalcTab(tab) {
     } else if(tab === 'ac') {
         document.querySelector('.calc-tab:nth-child(2)').classList.add('active');
         document.getElementById('calc-ac').classList.add('active');
-    } else {
+    } else if(tab === 'room') {
         document.querySelector('.calc-tab:nth-child(3)').classList.add('active');
         document.getElementById('calc-room').classList.add('active');
+    } else if(tab === 'amp') {
+        document.querySelector('.calc-tab:nth-child(4)').classList.add('active');
+        document.getElementById('calc-amp').classList.add('active');
     }
 }
 function clearCalculator() {
+    // Clear Electrical
     document.getElementById('calcV').value = '';
     document.getElementById('calcW').value = '';
     document.getElementById('calcA').value = '';
     document.getElementById('calcResult').style.display = 'none';
     document.getElementById('calcCTA').style.display = 'none';
+    // Clear AC
     document.getElementById('acArea').value = '';
     document.getElementById('acResult').style.display = 'none';
     document.getElementById('acCTA').style.display = 'none';
+    // Clear Room
     document.getElementById('roomLength').value = '';
     document.getElementById('roomWidth').value = '';
     document.getElementById('roomResult').style.display = 'none';
     document.getElementById('roomCTA').style.display = 'none';
+    // Clear Amperes
+    document.getElementById('ampV').value = '';
+    document.getElementById('ampW').value = '';
+    document.getElementById('ampResult').style.display = 'none';
+    document.getElementById('ampCTA').style.display = 'none';
 }
 function calculateElectrical() {
     let v = parseFloat(document.getElementById('calcV').value) || 0;
@@ -1272,6 +1314,40 @@ function calculateRoomArea() {
     document.getElementById('roomCTA').style.display = 'block';
 }
 
+// ✅ NEW: AMPERES CALCULATOR
+function calculateAmperes() {
+    let v = parseFloat(document.getElementById('ampV').value) || 0;
+    let w = parseFloat(document.getElementById('ampW').value) || 0;
+    let pf = parseFloat(document.getElementById('ampPF').value) || 1;
+    
+    if(v === 0 || w === 0) {
+        document.getElementById('ampResult').innerHTML = "️ Please enter both Voltage and Power.";
+        document.getElementById('ampResult').style.display = 'block';
+        return;
+    }
+
+    // Calculate Amperes: I = P / (V × PF)
+    let amperes = w / (v * pf);
+    let kw = (w / 1000).toFixed(2);
+    
+    // Suggest wire size and breaker
+    let wireSize = "1.5 mm²";
+    let breaker = "10A";
+    if(amperes > 16) { wireSize = "2.5 mm²"; breaker = "20A"; }
+    if(amperes > 25) { wireSize = "4 mm²"; breaker = "32A"; }
+    if(amperes > 40) { wireSize = "6 mm²"; breaker = "40A"; }
+
+    let msg = `✅ <b>Current:</b> ${amperes.toFixed(2)} Amps<br>`;
+    msg += `<small style="color:#94a3b8;">Formula: I = P ÷ (V × PF)</small><br>`;
+    msg += `<small style="color:#fbbf24;">Power: ${w}W / ${kw} kW</small><br>`;
+    msg += `<br><small style="color:#60a5fa;">🔌 Suggested: ${wireSize} wire + ${breaker} MCB</small>`;
+
+    let resDiv = document.getElementById('ampResult');
+    resDiv.innerHTML = msg;
+    resDiv.style.display = 'block';
+    document.getElementById('ampCTA').style.display = 'block';
+}
+
 function closeBackupModalOnBackground(event) {
     if (event.target === document.getElementById('backupModal')) {
         closeBackupModal();
@@ -1279,7 +1355,7 @@ function closeBackupModalOnBackground(event) {
 }
 
 // ✅ EXPORT ALL FUNCTIONS
-window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.openHistoryModal = openHistoryModal; window.triggerAppInstall = triggerAppInstall; window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF; window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF; window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal; window.closeComplaintModal = closeComplaintModal; window.closeComplaintModalOnBackground = closeComplaintModalOnBackground; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry; window.loadLogs = loadLogs; window.updateCart = updateCart; window.closeHistoryModal = closeHistoryModal; window.closeHistoryModalOnBackground = closeHistoryModalOnBackground; window.resetHistoryView = resetHistoryView; window.installApp = installApp; window.dismissInstall = dismissInstall; window.placeOrder = placeOrder; window.viewBackups = viewBackups; window.closeBackupModal = closeBackupModal; window.closeBackupModalOnBackground = closeBackupModalOnBackground; window.refreshBackups = refreshBackups; window.exportBackups = exportBackups; window.restoreBackup = restoreBackup; window.setDocType = setDocType; window.generateManualPDF = generateManualPDF; window.convertToInvoice = convertToInvoice; window.calculateTotalRevenue = calculateTotalRevenue; window.openCalculator = openCalculator; window.closeCalculator = closeCalculator; window.closeCalculatorOnBackground = closeCalculatorOnBackground; window.switchCalcTab = switchCalcTab; window.calculateElectrical = calculateElectrical; window.clearCalculator = clearCalculator; window.calculateAC = calculateAC; window.calculateRoomArea = calculateRoomArea;
+window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.openHistoryModal = openHistoryModal; window.triggerAppInstall = triggerAppInstall; window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF; window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF; window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal; window.closeComplaintModal = closeComplaintModal; window.closeComplaintModalOnBackground = closeComplaintModalOnBackground; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry; window.loadLogs = loadLogs; window.updateCart = updateCart; window.closeHistoryModal = closeHistoryModal; window.closeHistoryModalOnBackground = closeHistoryModalOnBackground; window.resetHistoryView = resetHistoryView; window.installApp = installApp; window.dismissInstall = dismissInstall; window.placeOrder = placeOrder; window.viewBackups = viewBackups; window.closeBackupModal = closeBackupModal; window.closeBackupModalOnBackground = closeBackupModalOnBackground; window.refreshBackups = refreshBackups; window.exportBackups = exportBackups; window.restoreBackup = restoreBackup; window.setDocType = setDocType; window.generateManualPDF = generateManualPDF; window.convertToInvoice = convertToInvoice; window.calculateTotalRevenue = calculateTotalRevenue; window.openCalculator = openCalculator; window.closeCalculator = closeCalculator; window.closeCalculatorOnBackground = closeCalculatorOnBackground; window.switchCalcTab = switchCalcTab; window.calculateElectrical = calculateElectrical; window.clearCalculator = clearCalculator; window.calculateAC = calculateAC; window.calculateRoomArea = calculateRoomArea; window.calculateAmperes = calculateAmperes;
 
 // ✅ INITIALIZE
 document.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });
