@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=36">
+<link rel="manifest" href="manifest.json?v=37">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -306,15 +306,13 @@ footer a:hover { text-decoration: underline; }
     </div>
 </div>
 
-<!-- ✅ NEW: SEPARATE INVOICE GENERATION BUTTONS -->
+<!-- ✅ SEPARATE INVOICE GENERATION BUTTONS -->
 <div style="margin-top:20px; padding-top:15px; border-top:1px solid #334155;">
     <h5 style="color:#fbbf24;margin:0 0 10px 0;">🖨️ Generate Invoice (Select Layout)</h5>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <!-- AC Layout Button -->
         <button onclick="saveManualEntry('ac')" style="flex:1;background:#3b82f6;color:white;font-weight:bold;border:none;padding:12px;border-radius:8px;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.3);">
             ❄️ Save & AC Layout
         </button>
-        <!-- Electrical Layout Button -->
         <button onclick="saveManualEntry('electrical')" style="flex:1;background:#f59e0b;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.3);">
             ⚡ Save & Electrical Layout
         </button>
@@ -455,7 +453,7 @@ footer a:hover { text-decoration: underline; }
         <button class="calc-tab active" onclick="switchCalcTab('elec')"> Electrical</button>
         <button class="calc-tab" onclick="switchCalcTab('ac')">️ AC Tonnage</button>
         <button class="calc-tab" onclick="switchCalcTab('room')">📏 Room Area</button>
-        <button class="calc-tab" onclick="switchCalcTab('amp')">🔌 Amperes</button>
+        <button class="calc-tab" onclick="switchCalcTab('amp')"> Amperes</button>
     </div>
 
     <!-- Tab 1: Electrical Calculator -->
@@ -821,7 +819,7 @@ async function saveManualEntry(layoutType = 'auto') {
     try {
         await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
         alert("✅ Saved!"); 
-        generateManualPDF(payload, payload.docType, layoutType); 
+        generateManualPDF(payload, payload.doc_type, layoutType); 
         loadLogs();
         
         // Reset Form
@@ -839,18 +837,17 @@ async function saveManualEntry(layoutType = 'auto') {
 }
 
 // ==========================================
-// ✅ UPDATED PDF GENERATION (Dual Design + Layout Button)
+// ✅ PDF GENERATION (Async + Logo Guaranteed + Dual Layout)
 // ==========================================
 
-function generateManualPDF(data, docType, layoutType = 'auto') {
+async function generateManualPDF(data, docType, layoutType = 'auto') {
     try {
         const {jsPDF} = window.jspdf; 
         const doc = new jsPDF();
         
-        // ✅ LOGO
-        getImageDataForPDF(document.getElementById('brandLogo')).then(img => {
-            if(img) doc.addImage(img, 'PNG', 15, 10, 35, 35); 
-        });
+        // ✅ LOGO (Wait for it to load)
+        const img = await getImageDataForPDF(document.getElementById('brandLogo'));
+        if(img) doc.addImage(img, 'PNG', 15, 10, 35, 35); 
         
         // ✅ HEADER (Common)
         doc.setTextColor(251,191,36); 
@@ -873,13 +870,9 @@ function generateManualPDF(data, docType, layoutType = 'auto') {
 
         // ✅ DETERMINE LAYOUT
         let isElectrical = false;
-
-        if (layoutType === 'electrical') {
-            isElectrical = true; // Force Electrical Layout
-        } else if (layoutType === 'ac') {
-            isElectrical = false; // Force AC Layout
-        } else {
-            // Auto Detect based on keywords if 'auto'
+        if (layoutType === 'electrical') isElectrical = true;
+        else if (layoutType === 'ac') isElectrical = false;
+        else {
             const electricalKeywords = ['wiring', 'flooring', 'piping', 'board', 'circuit', 'breaker', 'voltage', 'switch', 'socket', 'light', 'fan', 'db', 'distribution'];
             isElectrical = electricalKeywords.some(k => data.work.toLowerCase().includes(k));
         }
@@ -887,17 +880,14 @@ function generateManualPDF(data, docType, layoutType = 'auto') {
         let finalY = 86;
 
         // ==========================================
-        // ⚡ ELECTRICAL STYLE INVOICE (New Design)
+        // ⚡ ELECTRICAL STYLE INVOICE
         // ==========================================
         if(isElectrical) {
-            
-            // ✅ Subject Line
             doc.setFontSize(10);
             const subjectText = data.work.length > 100 ? data.work.substring(0,100) + "..." : data.work;
             doc.text("Subject: " + subjectText, 15, finalY);
             finalY += 12;
 
-            // ✅ Electrical Table: S.no | Description | C/Area | Rate | Qty | Amount
             let body = [];
             data.work.split(", ").forEach((w, i) => {
                 if(w.includes(" x ")) {
@@ -906,15 +896,7 @@ function generateManualPDF(data, docType, layoutType = 'auto') {
                     const price = (rest.match(/Rs (\d+)/) || ["0","0"])[1];
                     const tot = (rest.match(/= Rs (\d+)/) || ["0","0"])[1];
                     const rate = (parseFloat(tot) / parseFloat(qty)).toFixed(2);
-                    
-                    body.push([
-                        (i+1).toString(), // S.no
-                        nm.trim(),        // Description
-                        "-",             // C/Area
-                        rate,             // Rate
-                        qty,              // Qty
-                        tot               // Amount
-                    ]);
+                    body.push([(i+1).toString(), nm.trim(), "-", rate, qty, tot]);
                 }
             });
 
@@ -925,56 +907,32 @@ function generateManualPDF(data, docType, layoutType = 'auto') {
                 theme: 'grid', 
                 headStyles: {fillColor:[0,0,0], textColor:[251,191,36], fontSize:9}, 
                 styles: {fontSize:9, cellPadding: 3}, 
-                columnStyles: {
-                    0:{cellWidth:15, halign:'center'}, 
-                    1:{cellWidth:55}, 
-                    2:{cellWidth:20, halign:'center'}, 
-                    3:{cellWidth:25, halign:'right'}, 
-                    4:{cellWidth:20, halign:'center'}, 
-                    5:{cellWidth:35, halign:'right', fontStyle:'bold'}
-                }
+                columnStyles: {0:{cellWidth:15, halign:'center'}, 1:{cellWidth:55}, 2:{cellWidth:20, halign:'center'}, 3:{cellWidth:25, halign:'right'}, 4:{cellWidth:20, halign:'center'}, 5:{cellWidth:35, halign:'right', fontStyle:'bold'}}
             });
             
             finalY = doc.lastAutoTable.finalY + 8;
-            
-            // ✅ Total Line
             doc.setFontSize(11); doc.setTextColor(0,0,0); doc.setFont("helvetica", "bold");
             doc.text("Total:", 145, finalY);
             doc.text("Rs " + data.total.toLocaleString(), 195, finalY, {align:'right'});
             finalY += 12;
 
-            // ✅ Note / Paragraph Section (Like "Dear Sir...")
             doc.setFontSize(9); doc.setTextColor(50,50,50); doc.setFont("helvetica", "normal");
-            
-            let noteText = "";
-            if(data.note && data.note.trim() !== "") {
-                noteText = "Dear Sir, " + data.note + " We request you to clear the invoice as soon as possible.";
-            } else {
-                noteText = "Dear Sir, this is the bill for the work mentioned above. We request you to clear my invoice as soon as possible.";
-            }
-            
+            let noteText = data.note && data.note.trim() !== "" ? "Dear Sir, " + data.note + " We request you to clear the invoice as soon as possible." : "Dear Sir, this is the bill for the work mentioned above. We request you to clear my invoice as soon as possible.";
             const splitNote = doc.splitTextToSize(noteText, 180);
             doc.text(splitNote, 15, finalY);
             finalY += (splitNote.length * 5) + 15;
 
-            // ✅ Signature Section
             doc.text("Thank you", 15, finalY);
             doc.text("Regards", 15, finalY + 5);
             doc.text("DNHQ Services Team", 15, finalY + 15);
-            
-            // Signature Line
             doc.line(15, finalY + 25, 80, finalY + 25);
             doc.text("Authorized Signature", 15, finalY + 30);
-            
             finalY += 35;
-
         } 
         // ==========================================
-        // ❄️ AC / SERVICE STYLE INVOICE (Old Design)
+        // ❄️ AC / SERVICE STYLE INVOICE
         // ==========================================
         else {
-            
-            // ✅ Service Table: ITEM | QTY | QUALITY | UNIT PRICE | TOTAL
             let body = data.work.split(", ").map(w => {
                 if(w.includes(" x ")) {
                     const [nm, rest] = w.split(" x ");
@@ -993,18 +951,10 @@ function generateManualPDF(data, docType, layoutType = 'auto') {
                 theme: 'grid', 
                 headStyles: {fillColor:[0,0,0], textColor:[251,191,36], fontSize:9}, 
                 styles: {fontSize:8, cellPadding: 3}, 
-                columnStyles: {
-                    0:{cellWidth:70}, 
-                    1:{cellWidth:20,halign:'center'}, 
-                    2:{cellWidth:25,halign:'center'}, 
-                    3:{cellWidth:35,halign:'right'}, 
-                    4:{cellWidth:40,halign:'right',fontStyle:'bold'}
-                }
+                columnStyles: {0:{cellWidth:70}, 1:{cellWidth:20,halign:'center'}, 2:{cellWidth:25,halign:'center'}, 3:{cellWidth:35,halign:'right'}, 4:{cellWidth:40,halign:'right',fontStyle:'bold'}}
             });
 
             finalY = doc.lastAutoTable.finalY + 8;
-            
-            // ✅ Calculations (Subtotal, Discount, Total, Advance, Balance)
             doc.setFontSize(9); doc.setTextColor(150,150,150); 
             doc.text("Subtotal:", 130, finalY); 
             doc.text("Rs " + data.subtotal.toLocaleString(), 195, finalY, {align:'right'}); 
@@ -1045,7 +995,7 @@ function generateManualPDF(data, docType, layoutType = 'auto') {
             }
         }
 
-        // ✅ FOOTER (Common for Both)
+        // ✅ FOOTER (Common)
         doc.setDrawColor(200,200,200); doc.setLineWidth(0.3); doc.line(20, 280, 190, 280); 
         doc.setFontSize(8); doc.setTextColor(120,120,120);
         doc.text("Contact: " + PHONE_1, 105, 286, {align:"center"}); 
@@ -1071,46 +1021,25 @@ async function loadLogs() {
     try {
         const r = await fetch(SCRIPT_URL + "?t=" + Date.now()); 
         const d = await r.json();
-        
-        if(!Array.isArray(d) || !d.length) { 
-            c.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; 
-            return; 
-        }
-        
-        allOrders = d.filter(o => o.client || o.phone).map(o => ({
-            ...o, 
-            order_status: o.order_status || 'received', 
-            order_source: o.order_source || 'manual'
-        }));
-        
+        if(!Array.isArray(d) || !d.length) { c.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; return; }
+        allOrders = d.filter(o => o.client || o.phone).map(o => ({...o, order_status: o.order_status || 'received', order_source: o.order_source || 'manual'}));
         filterOrders('website');
-    } catch(e) { 
-        c.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; 
-    }
+    } catch(e) { c.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
 }
 
 function filterOrders(type) {
-    document.querySelectorAll('.order-filter-btn').forEach(b => {
-        b.classList.remove('active'); 
-        if(b.getAttribute('onclick')?.includes(type)) b.classList.add('active');
-    });
-    
+    document.querySelectorAll('.order-filter-btn').forEach(b => { b.classList.remove('active'); if(b.getAttribute('onclick')?.includes(type)) b.classList.add('active'); });
     const c = document.getElementById('logItems'); 
     const f = allOrders.filter(o => type==='website' ? o.order_source==='website' : o.order_source==='manual');
-    
-    if(f.length === 0) {
-        c.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>';
-    } else {
-        c.innerHTML = f.map((o, i) => `
-            <div class="log-card">
-                <button class="pdf-btn" onclick="generateManualPDF(allOrders[${allOrders.indexOf(o)}],'${o.doc_type}','auto')">PDF</button>
-                <b>${o.client}</b> <span class="badge ${o.doc_type==='invoice'?'badge-invoice':'badge-quotation'}">${o.doc_type.toUpperCase()}</span><br>
-                <small> ${o.phone}</small><br>
-                <b style="color:gold;">Rs ${parseFloat(o.total).toLocaleString()}</b><br>
-                <button class="del-btn" onclick="if(confirm('Delete?')){alert('✅ Deleted');loadLogs();}">Delete</button>
-            </div>
-        `).join('');
-    }
+    c.innerHTML = f.length === 0 ? '<p style="text-align:center;color:#94a3b8;">No orders.</p>' : f.map((o, i) => `
+        <div class="log-card">
+            <button class="pdf-btn" onclick="generateManualPDF(allOrders[${allOrders.indexOf(o)}],'${o.doc_type}','auto')">PDF</button>
+            <b>${o.client}</b> <span class="badge ${o.doc_type==='invoice'?'badge-invoice':'badge-quotation'}">${o.doc_type.toUpperCase()}</span><br>
+            <small> ${o.phone}</small><br>
+            <b style="color:gold;">Rs ${parseFloat(o.total).toLocaleString()}</b><br>
+            <button class="del-btn" onclick="if(confirm('Delete?')){alert('✅ Deleted');loadLogs();}">Delete</button>
+        </div>
+    `).join('');
 }
 
 function refreshOrders() { loadLogs(); alert(' Refreshed'); }
@@ -1118,7 +1047,6 @@ function refreshOrders() { loadLogs(); alert(' Refreshed'); }
 // ==========================================
 // ✅ MODALS & HISTORY
 // ==========================================
-
 function openHistoryModal() { document.getElementById('historyModal').style.display='block'; }
 function closeHistoryModal() { document.getElementById('historyModal').style.display='none'; }
 function closeHistoryModalOnBackground(e) { if(e.target===document.getElementById('historyModal')) closeHistoryModal(); }
@@ -1126,34 +1054,25 @@ function closeHistoryModalOnBackground(e) { if(e.target===document.getElementByI
 async function fetchCustomerHistory() {
     const p = document.getElementById('histPhone').value.trim(); 
     if(!p) return alert("Enter Phone");
-    
     try {
         const r = await fetch(SCRIPT_URL + '?getHistory=true&phone=' + encodeURIComponent(p)); 
         const d = await r.json();
-        
         if(!d.length) return alert("No Records");
-        
         document.getElementById('verifyStep').style.display = 'none'; 
         document.getElementById('showStep').style.display = 'block';
-        
         document.getElementById('histList').innerHTML = d.map(o => `
             <div class="history-item">
-                <b>${formatDate(o.date)}</b><br>
-                ${o.work}<br>
+                <b>${formatDate(o.date)}</b><br>${o.work}<br>
                 <button class="pdf-sm" onclick="generateManualPDF(${JSON.stringify(o).replace(/"/g,'&quot;')},'${o.doc_type}','auto')"> Download</button>
             </div>
         `).join('');
-    } catch(e) { 
-        alert("Error"); 
-    }
+    } catch(e) { alert("Error"); }
 }
-
 function downloadCustomerHistoryPDF() { alert("✅ History PDF Downloaded."); }
 
 // ==========================================
 // ✅ CALCULATORS
 // ==========================================
-
 function openCalculator() { document.getElementById('calculatorModal').style.display='block'; }
 function closeCalculator() { document.getElementById('calculatorModal').style.display='none'; }
 function closeCalculatorOnBackground(e) { if(e.target===document.getElementById('calculatorModal')) closeCalculator(); }
@@ -1161,19 +1080,14 @@ function closeCalculatorOnBackground(e) { if(e.target===document.getElementById(
 function switchCalcTab(t) {
     document.querySelectorAll('.calc-tab').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
-    
     const btn = document.querySelector(`.calc-tab[onclick="switchCalcTab('${t}')"]`);
     if(btn) btn.classList.add('active');
-    
     const section = document.getElementById('calc-' + t);
     if(section) section.classList.add('active');
 }
 
 function clearCalculator() {
-    ['calcV','calcW','calcA','acArea','roomLength','roomWidth','ampV','ampW'].forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.value = '';
-    });
+    ['calcV','calcW','calcA','acArea','roomLength','roomWidth','ampV','ampW'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
     document.querySelectorAll('.calc-result').forEach(e => e.style.display = 'none');
 }
 
@@ -1183,12 +1097,10 @@ function calculateElectrical() {
     const a = parseFloat(document.getElementById('calcA').value) || 0;
     const pf = parseFloat(document.getElementById('calcPF').value) || 1;
     let r = "";
-    
     if(v && w && !a) r = `✅ Current: ${(w/(v*pf)).toFixed(2)} Amps`;
     else if(v && a && !w) r = `✅ Power: ${(v*a*pf).toFixed(0)} Watts`;
     else if(w && a && !v) r = `✅ Voltage: ${(w/(a*pf)).toFixed(2)} Volts`;
     else r = "️ Enter 2 values";
-    
     document.getElementById('calcResult').innerHTML = r; 
     document.getElementById('calcResult').style.display = 'block';
 }
@@ -1196,20 +1108,15 @@ function calculateElectrical() {
 function calculateAC() { 
     const a = parseFloat(document.getElementById('acArea').value) || 0;
     const s = parseFloat(document.getElementById('acSun').value) || 1;
-    
     if(!a) return;
-    
-    const tons = Math.ceil((a * 25 * s) / 12000);
-    document.getElementById('acResult').innerHTML = `✅ Recommended: ${tons} Ton AC`; 
+    document.getElementById('acResult').innerHTML = `✅ Recommended: ${Math.ceil((a * 25 * s) / 12000)} Ton AC`; 
     document.getElementById('acResult').style.display = 'block'; 
 }
 
 function calculateRoomArea() { 
     const l = parseFloat(document.getElementById('roomLength').value) || 0;
     const w = parseFloat(document.getElementById('roomWidth').value) || 0;
-    
     if(!l || !w) return;
-    
     document.getElementById('roomResult').innerHTML = `✅ Area: ${l*w} Sq.Ft`; 
     document.getElementById('roomResult').style.display = 'block'; 
 }
@@ -1218,113 +1125,51 @@ function calculateAmperes() {
     const v = parseFloat(document.getElementById('ampV').value) || 0;
     const w = parseFloat(document.getElementById('ampW').value) || 0;
     const pf = parseFloat(document.getElementById('ampPF').value) || 1;
-    
     if(!v || !w) return;
-    
-    const amps = (w / (v * pf)).toFixed(2);
-    document.getElementById('ampResult').innerHTML = `✅ Current: ${amps} Amps`; 
+    document.getElementById('ampResult').innerHTML = `✅ Current: ${(w / (v * pf)).toFixed(2)} Amps`; 
     document.getElementById('ampResult').style.display = 'block'; 
 }
 
 // ==========================================
 // ✅ BLANK LETTERHEAD DOWNLOAD
 // ==========================================
-
 function downloadBlankLetterhead() {
     try {
         const {jsPDF} = window.jspdf; 
         const doc = new jsPDF();
-        
-        doc.setFillColor(0,0,0); 
-        doc.rect(0,0,210,48,'F');
-        
-        getImageDataForPDF(document.getElementById('brandLogo')).then(img => {
-            if(img) doc.addImage(img,'PNG',15,9,30,30);
-        });
-        
-        doc.setTextColor(251,191,36); 
-        doc.setFontSize(22); 
-        doc.setFont("helvetica","bold"); 
-        doc.text("DNHQ SERVICES", 50, 22);
-        
-        doc.setFontSize(9); 
-        doc.setTextColor(200,200,200); 
-        doc.text("Professional Electrical & AC Maintenance", 50, 28);
-        doc.text(" " + PHONE_1 + " | " + PHONE_2, 50, 34); 
-        doc.text("🌐 dnhq-services.online", 50, 40);
-        
-        doc.setTextColor(0,0,0); 
-        doc.setFontSize(10);
-        doc.text("Date: ____________________", 15, 58); 
-        doc.text("Ref No: ____________________", 15, 65);
-        doc.text("To: ____________________", 15, 72); 
-        doc.text("Subject: ____________________", 15, 79);
-        
-        doc.setDrawColor(220,220,220); 
-        doc.setLineWidth(0.3); 
-        let y = 88; 
-        while(y < 265) {
-            doc.line(15, y, 195, y); 
-            y += 8;
-        }
-        
-        doc.setDrawColor(251,191,36); 
-        doc.setLineWidth(1.2); 
-        doc.line(15, 270, 195, 270);
-        
-        doc.setFontSize(8); 
-        doc.setTextColor(100,100,100);
+        doc.setFillColor(0,0,0); doc.rect(0,0,210,48,'F');
+        getImageDataForPDF(document.getElementById('brandLogo')).then(img => { if(img) doc.addImage(img,'PNG',15,9,30,30); });
+        doc.setTextColor(251,191,36); doc.setFontSize(22); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 50, 22);
+        doc.setFontSize(9); doc.setTextColor(200,200,200); doc.text("Professional Electrical & AC Maintenance", 50, 28);
+        doc.text(" " + PHONE_1 + " | " + PHONE_2, 50, 34); doc.text(" dnhq-services.online", 50, 40);
+        doc.setTextColor(0,0,0); doc.setFontSize(10);
+        doc.text("Date: ____________________", 15, 58); doc.text("Ref No: ____________________", 15, 65);
+        doc.text("To: ____________________", 15, 72); doc.text("Subject: ____________________", 15, 79);
+        doc.setDrawColor(220,220,220); doc.setLineWidth(0.3); let y = 88; while(y < 265){ doc.line(15, y, 195, y); y += 8; }
+        doc.setDrawColor(251,191,36); doc.setLineWidth(1.2); doc.line(15, 270, 195, 270);
+        doc.setFontSize(8); doc.setTextColor(100,100,100);
         doc.text("DNHQ Services - Authorized Official Letterhead", 105, 278, {align:"center"});
         doc.text("Valid only with official stamp & signature.", 105, 284, {align:"center"});
-        
-        doc.save('DNHQ_Letterhead.pdf'); 
-        alert('✅ Letterhead Downloaded!');
-        
-    } catch(e) { 
-        alert('Error: ' + e.message); 
-    }
+        doc.save('DNHQ_Letterhead.pdf'); alert('✅ Letterhead Downloaded!');
+    } catch(e) { alert('Error: ' + e.message); }
 }
 
 // ==========================================
 // ✅ EXPORT ALL FUNCTIONS TO WINDOW
 // ==========================================
-window.toggleSvc = toggleSvc; 
-window.playVid = playVid; 
-window.openAdmin = openAdmin; 
-window.switchAdminTab = switchAdminTab;
-window.setDocType = setDocType; 
-window.addNewManualRow = addNewManualRow; 
-window.saveManualEntry = saveManualEntry;
-window.generateManualPDF = generateManualPDF; 
-window.loadLogs = loadLogs; 
-window.filterOrders = filterOrders; 
-window.refreshOrders = refreshOrders;
-window.openHistoryModal = openHistoryModal; 
-window.closeHistoryModal = closeHistoryModal; 
-window.closeHistoryModalOnBackground = closeHistoryModalOnBackground;
-window.fetchCustomerHistory = fetchCustomerHistory; 
-window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
-window.openCalculator = openCalculator; 
-window.closeCalculator = closeCalculator; 
-window.closeCalculatorOnBackground = closeCalculatorOnBackground;
-window.switchCalcTab = switchCalcTab; 
-window.clearCalculator = clearCalculator;
-window.calculateElectrical = calculateElectrical; 
-window.calculateAC = calculateAC; 
-window.calculateRoomArea = calculateRoomArea; 
-window.calculateAmperes = calculateAmperes;
-window.downloadBlankLetterhead = downloadBlankLetterhead; 
-window.updateCart = updateCart;
-window.setNote = setNote; 
-window.updateAdvanceUI = updateAdvanceUI; 
-window.toggleDiscountInput = toggleDiscountInput;
+window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.switchAdminTab = switchAdminTab;
+window.setDocType = setDocType; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry;
+window.generateManualPDF = generateManualPDF; window.loadLogs = loadLogs; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders;
+window.openHistoryModal = openHistoryModal; window.closeHistoryModal = closeHistoryModal; window.closeHistoryModalOnBackground = closeHistoryModalOnBackground;
+window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
+window.openCalculator = openCalculator; window.closeCalculator = closeCalculator; window.closeCalculatorOnBackground = closeCalculatorOnBackground;
+window.switchCalcTab = switchCalcTab; window.clearCalculator = clearCalculator;
+window.calculateElectrical = calculateElectrical; window.calculateAC = calculateAC; window.calculateRoomArea = calculateRoomArea; window.calculateAmperes = calculateAmperes;
+window.downloadBlankLetterhead = downloadBlankLetterhead; window.updateCart = updateCart;
+window.setNote = setNote; window.updateAdvanceUI = updateAdvanceUI; window.toggleDiscountInput = toggleDiscountInput;
 
 // ✅ INIT
-document.addEventListener('DOMContentLoaded', () => { 
-    console.log('✅ UI Ready'); 
-    updateCart(); 
-});
-
+document.addEventListener('DOMContentLoaded', () => { console.log('✅ UI Ready'); updateCart(); });
 </script>
 </body>
 </html>
