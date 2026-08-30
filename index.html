@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=30">
+<link rel="manifest" href="manifest.json?v=31">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -13,22 +13,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 <style>
 :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 100px; }
 .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
 .logo-main { height: 85px; display: block; margin: 0 auto; border-radius: 10px; }
 .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
 .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
 .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; flex-wrap: wrap; }
-.nav-btn { flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.2s; }
-.nav-btn:hover { background: #1f2937; }
+.nav-btn { flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.2s; user-select: none; }
+.nav-btn:active { transform: scale(0.98); }
 .app-download-btn { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-.app-download-btn:hover { transform: translateY(-2px); }
+.app-download-btn:active { transform: scale(0.98); }
 .tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin: 15px 0 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
 .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
 .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-.svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
-.svc-item:hover { background: #1f2937; }
+.svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; user-select: none; }
+.svc-item:active { background: #1f2937; }
 .svc-item.selected { border: 2px solid var(--gold); background: #000; }
 .svc-meta b { display: block; font-size: 16px; color: white; }
 .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
@@ -50,7 +51,7 @@ footer a:hover { text-decoration: underline; }
 .history-btn { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; }
 .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; backdrop-filter: blur(5px); }
 .modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
-.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
+.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; z-index: 10; }
 .form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
 .verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
 .error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
@@ -137,7 +138,7 @@ footer a:hover { text-decoration: underline; }
 <div class="nav-container">
 <a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
 <a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
-<button class="nav-btn" onclick="openCalculator()" style="border:1px dashed var(--gold); color:var(--gold);"><i class="fas fa-calculator"></i> TOOLS</button>
+<button class="nav-btn" onclick="openCalculator()"><i class="fas fa-calculator"></i> TOOLS</button>
 </div>
 <button class="app-download-btn" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Download Our App</button>
 <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
@@ -193,7 +194,7 @@ footer a:hover { text-decoration: underline; }
         </div>
         <div style="text-align:right;">
             <div style="font-size:14px;color:white;opacity:0.9;" id="totalOrdersCount">0 Orders</div>
-            <button onclick="calculateTotalRevenue()" style="background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 15px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;margin-top:8px;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+            <button onclick="calculateTotalRevenue()" style="background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 15px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;margin-top:8px;transition:all 0.3s;">
                 🔄 Refresh Total
             </button>
         </div>
@@ -574,11 +575,10 @@ footer a:hover { text-decoration: underline; }
 // ✅ GLOBAL VARIABLES
 let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
 const ADMIN_WHATSAPP = "923152458657";
-// ✅ UPDATED: NEW SCRIPT URL ADDED HERE
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuZswXXxOfLTiin3vCl5tsBKYWKaF5yeKts2SRzu0NXqmzYPXoYEOCcmJmfQv44pTdDg/exec";
 const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
-// ✅ NOTE FUNCTION
+// ✅ NOTE & ADVANCE FUNCTIONS
 function setNote(text) { document.getElementById('invoice_note').value = text; }
 function updateAdvanceUI() {
     const type = document.getElementById('advance_type').value;
@@ -666,9 +666,7 @@ function openAdmin() {
         } else if (pin !== null) {
             alert("Wrong PIN!");
         }
-    } catch(e) {
-        alert("Admin Error: " + e.message);
-    }
+    } catch(e) { alert("Admin Error: " + e.message); }
 }
 
 function switchAdminTab(tab) {
@@ -686,47 +684,35 @@ function setDocType(type) {
   const docTypeInput = document.getElementById('doc_type');
   
   if (type === 'invoice') {
-    btnInvoice.style.background = 'var(--gold)';
-    btnInvoice.style.color = 'black';
-    btnQuotation.style.background = '#1e293b';
-    btnQuotation.style.color = '#94a3b8';
+    btnInvoice.style.background = 'var(--gold)'; btnInvoice.style.color = 'black';
+    btnQuotation.style.background = '#1e293b'; btnQuotation.style.color = '#94a3b8';
     docTypeInput.value = 'invoice';
   } else {
-    btnQuotation.style.background = '#10b981';
-    btnQuotation.style.color = 'white';
-    btnInvoice.style.background = '#1e293b';
-    btnInvoice.style.color = '#94a3b8';
+    btnQuotation.style.background = '#10b981'; btnQuotation.style.color = 'white';
+    btnInvoice.style.background = '#1e293b'; btnInvoice.style.color = '#94a3b8';
     docTypeInput.value = 'quotation';
   }
 }
 
-// ✅ ADD NEW ROW (WITH QTY, QUALITY "-", PRICE)
+// ✅ ADD NEW ROW
 function addNewManualRow() {
     const div = document.createElement('div');
     div.style = "display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;";
-    div.innerHTML = `
-        <input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
+    div.innerHTML = `<input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
         <input type="number" class="m-qty man-input" placeholder="Qty" value="1" min="1" style="flex:0.5;margin-bottom:0;min-width:45px;">
         <select class="m-quality man-input" style="flex:1;margin-bottom:0;min-width:80px;padding:8px;font-size:12px;">
-            <option value="-">-</option>
-            <option value="New">New</option>
-            <option value="Used">Used</option>
-            <option value="Refurbished">Refurb</option>
-        </select>
-        <input type="number" class="m-price man-input" placeholder="Price" style="flex:0.8;margin-bottom:0;min-width:65px;">
-    `;
+            <option value="-">-</option><option value="New">New</option><option value="Used">Used</option><option value="Refurbished">Refurb</option></select>
+        <input type="number" class="m-price man-input" placeholder="Price" style="flex:0.8;margin-bottom:0;min-width:65px;">`;
     document.getElementById('manual_works_container').appendChild(div);
 }
 
-// ✅ SAVE MANUAL ENTRY (WITH WORK DISTRIBUTION %)
+// ✅ SAVE MANUAL ENTRY
 async function saveManualEntry() {
     const name = document.getElementById('man_name').value.trim();
     const phone = document.getElementById('man_phone').value.trim();
     const dateInput = document.getElementById('man_date').value;
     const docType = document.getElementById('doc_type').value;
     const note = document.getElementById('invoice_note').value.trim();
-    
-    // ✅ NEW: Get Work Distribution %
     const breakdownSlab = parseFloat(document.getElementById('breakdown_slab').value) || 0;
     const breakdownWiring = parseFloat(document.getElementById('breakdown_wiring').value) || 0;
     
@@ -756,31 +742,21 @@ async function saveManualEntry() {
     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
     let discountAmount = 0, discountText = "None";
     
-    if (discountType === 'percent' && discountValue > 0) {
-        discountAmount = (subtotal * discountValue) / 100;
-        discountText = discountValue + "%";
-    } else if (discountType === 'fixed' && discountValue > 0) {
-        discountAmount = discountValue;
-        discountText = "Rs " + discountValue;
-    }
+    if (discountType === 'percent' && discountValue > 0) { discountAmount = (subtotal * discountValue) / 100; discountText = discountValue + "%"; } 
+    else if (discountType === 'fixed' && discountValue > 0) { discountAmount = discountValue; discountText = "Rs " + discountValue; }
     
     const totalAfterDiscount = subtotal - discountAmount;
     
-    // ✅ ADVANCE PERCENTAGE LOGIC
     const advanceType = document.getElementById('advance_type').value;
     const advanceInput = parseFloat(document.getElementById('advance_payment').value) || 0;
-    let finalAdvance = advanceInput;
-    let advanceNote = '';
-
+    let finalAdvance = advanceInput, advanceNote = '';
     if (advanceType === 'percent' && advanceInput > 0) {
         finalAdvance = (totalAfterDiscount * advanceInput) / 100;
         advanceNote = `(${advanceInput}% of Rs ${totalAfterDiscount.toLocaleString()})`;
         const previewEl = document.getElementById('advance_preview');
         previewEl.textContent = `✅ Calculated Advance: Rs ${Math.round(finalAdvance)} ${advanceNote}`;
         previewEl.style.display = 'block';
-    } else {
-        document.getElementById('advance_preview').style.display = 'none';
-    }
+    } else { document.getElementById('advance_preview').style.display = 'none'; }
 
     const balanceDue = totalAfterDiscount - finalAdvance;
     const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();
@@ -790,10 +766,7 @@ async function saveManualEntry() {
         subtotal: subtotal, discount_type: discountType, discount_value: discountValue, discount_amount: discountAmount,
         discount_text: discountText, advance: finalAdvance, total: totalAfterDiscount, balance_due: balanceDue,
         entry_type: 'order', order_status: 'received', order_source: 'manual', doc_type: docType, note: note,
-        advance_type: advanceType, advance_display: advanceNote,
-        // ✅ NEW: Save breakdown data
-        breakdown_slab: breakdownSlab,
-        breakdown_wiring: breakdownWiring
+        advance_type: advanceType, advance_display: advanceNote, breakdown_slab: breakdownSlab, breakdown_wiring: breakdownWiring
     };
     
     try {
@@ -802,34 +775,23 @@ async function saveManualEntry() {
         generateManualPDF(payload, docType);
         setTimeout(() => { loadLogs(); }, 2000);
         
-        document.getElementById('man_name').value = '';
-        document.getElementById('man_phone').value = '';
-        document.getElementById('man_date').value = '';
-        document.getElementById('discount_type').value = 'none';
-        document.getElementById('discount_value').value = '';
-        document.getElementById('discount_value').style.display = 'none';
-        document.getElementById('advance_payment').value = '';
-        document.getElementById('invoice_note').value = '';
+        document.getElementById('man_name').value = ''; document.getElementById('man_phone').value = '';
+        document.getElementById('man_date').value = ''; document.getElementById('discount_type').value = 'none';
+        document.getElementById('discount_value').value = ''; document.getElementById('discount_value').style.display = 'none';
+        document.getElementById('advance_payment').value = ''; document.getElementById('invoice_note').value = '';
         document.getElementById('advance_preview').style.display = 'none';
-        document.getElementById('breakdown_slab').value = '';
-        document.getElementById('breakdown_wiring').value = '';
-        document.getElementById('manual_works_container').innerHTML = `
-            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
-                <input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
-                <input type="number" class="m-qty man-input" placeholder="Qty" value="1" min="1" style="flex:0.5;margin-bottom:0;min-width:45px;">
-                <select class="m-quality man-input" style="flex:1;margin-bottom:0;min-width:80px;padding:8px;font-size:12px;">
-                    <option value="-">-</option>
-                    <option value="New">New</option>
-                    <option value="Used">Used</option>
-                    <option value="Refurbished">Refurb</option>
-                </select>
-                <input type="number" class="m-price man-input" placeholder="Price" style="flex:0.8;margin-bottom:0;min-width:65px;">
-            </div>`;
+        document.getElementById('breakdown_slab').value = ''; document.getElementById('breakdown_wiring').value = '';
+        document.getElementById('manual_works_container').innerHTML = `<div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+            <input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
+            <input type="number" class="m-qty man-input" placeholder="Qty" value="1" min="1" style="flex:0.5;margin-bottom:0;min-width:45px;">
+            <select class="m-quality man-input" style="flex:1;margin-bottom:0;min-width:80px;padding:8px;font-size:12px;">
+                <option value="-">-</option><option value="New">New</option><option value="Used">Used</option><option value="Refurbished">Refurb</option></select>
+            <input type="number" class="m-price man-input" placeholder="Price" style="flex:0.8;margin-bottom:0;min-width:65px;"></div>`;
         setDocType('invoice');
     } catch(e) { alert("Error: " + e.message); }
 }
 
-// ✅ GENERATE PDF - WITH BREAKDOWN TABLE
+// ✅ GENERATE PDF
 function generateManualPDF(data, docType) {
     try {
         const { jsPDF } = window.jspdf;
@@ -867,55 +829,25 @@ function generateManualPDF(data, docType) {
         doc.autoTable({ startY: 86, head: [['ITEM', 'QTY', 'QUALITY', 'UNIT PRICE', 'TOTAL']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 3 }, columnStyles: { 0: { cellWidth: 70 }, 1: { cellWidth: 20, halign: 'center' }, 2: { cellWidth: 25, halign: 'center' }, 3: { cellWidth: 35, halign: 'right' }, 4: { cellWidth: 40, halign: 'right', fontStyle: 'bold' } });
 
         let finalY = doc.lastAutoTable.finalY + 8;
-        const subtotal = parseFloat(data.subtotal) || 0;
-        const discount = parseFloat(data.discount_amount) || 0;
-        const advance = parseFloat(data.advance) || 0;
-        const total = parseFloat(data.total) || 0;
-        const balanceDue = parseFloat(data.balance_due) || 0;
+        const subtotal = parseFloat(data.subtotal) || 0, discount = parseFloat(data.discount_amount) || 0, advance = parseFloat(data.advance) || 0, total = parseFloat(data.total) || 0, balanceDue = parseFloat(data.balance_due) || 0;
 
         doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150);
         doc.text("Subtotal:", 130, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 6;
-        if (discount > 0) {
-            doc.setTextColor(16, 185, 129); doc.text(data.discount_text + " Discount:", 130, finalY);
-            doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 6; doc.setTextColor(150, 150, 150);
-        }
+        if (discount > 0) { doc.setTextColor(16, 185, 129); doc.text(data.discount_text + " Discount:", 130, finalY); doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 6; doc.setTextColor(150, 150, 150); }
         doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0);
         doc.text("Total:", 130, finalY); doc.text("Rs " + total.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 9;
-        if (advance > 0) {
-            doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(125, finalY - 4, 195, finalY - 4);
-            doc.setFontSize(9); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold");
-            doc.text("Advance Received:", 130, finalY + 2); doc.text("-Rs " + advance.toLocaleString(), 195, finalY + 2, { align: 'right' }); finalY += 9;
-        }
+        if (advance > 0) { doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(125, finalY - 4, 195, finalY - 4); doc.setFontSize(9); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold"); doc.text("Advance Received:", 130, finalY + 2); doc.text("-Rs " + advance.toLocaleString(), 195, finalY + 2, { align: 'right' }); finalY += 9; }
         doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(125, finalY - 4, 195, finalY - 4);
         doc.setFontSize(13); doc.setFont("helvetica", "bold");
         if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 130, finalY + 3); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY + 3, { align: 'right' }); } 
         else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 130, finalY + 3); doc.text("Rs 0", 195, finalY + 3, { align: 'right' }); }
 
-        // ✅ NEW: WORK BREAKDOWN TABLE IN PDF
         if (data.breakdown_slab || data.breakdown_wiring) {
-            finalY += 15;
-            doc.setFontSize(10); doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "bold");
-            doc.text("Cost Breakdown:", 15, finalY);
-            
+            finalY += 15; doc.setFontSize(10); doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "bold"); doc.text("Cost Breakdown:", 15, finalY);
             let breakdownBody = [];
-            if (data.breakdown_slab) {
-                let amt = (total * data.breakdown_slab) / 100;
-                breakdownBody.push(['Slab / Piping Work', data.breakdown_slab + '%', 'Rs ' + amt.toLocaleString()]);
-            }
-            if (data.breakdown_wiring) {
-                let amt = (total * data.breakdown_wiring) / 100;
-                breakdownBody.push(['Wiring / Installation', data.breakdown_wiring + '%', 'Rs ' + amt.toLocaleString()]);
-            }
-            
-            doc.autoTable({
-                startY: finalY + 2,
-                head: [['Description', 'Percentage', 'Amount']],
-                body: breakdownBody,
-                theme: 'grid',
-                headStyles: { fillColor: [30, 41, 59], textColor: [251,191,36] },
-                styles: { fontSize: 9 },
-                margin: { left: 15, right: 15 }
-            });
+            if (data.breakdown_slab) { let amt = (total * data.breakdown_slab) / 100; breakdownBody.push(['Slab / Piping Work', data.breakdown_slab + '%', 'Rs ' + amt.toLocaleString()]); }
+            if (data.breakdown_wiring) { let amt = (total * data.breakdown_wiring) / 100; breakdownBody.push(['Wiring / Installation', data.breakdown_wiring + '%', 'Rs ' + amt.toLocaleString()]); }
+            doc.autoTable({ startY: finalY + 2, head: [['Description', 'Percentage', 'Amount']], body: breakdownBody, theme: 'grid', headStyles: { fillColor: [30, 41, 59], textColor: [251,191,36] }, styles: { fontSize: 9 }, margin: { left: 15, right: 15 } });
             finalY = doc.lastAutoTable.finalY + 5;
         }
 
@@ -924,101 +856,35 @@ function generateManualPDF(data, docType) {
 
         const footerY = 280; doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY);
         doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
-        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" }); doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" });
-        doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
+        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" }); doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" }); doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
 
         const fileName = `${docType.toUpperCase()}_${data.client.replace(/[^a-z0-9]/gi, '_').substring(0,20)}_${formatDate(data.date).replace(/[^a-z0-9]/gi, '_')}.pdf`;
         const pdfBase64 = doc.output('datauristring').split(',')[1];
         fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'savePDF', pdfBase64: pdfBase64, docType: docType, customer: data.client, date: data.date }) })
-        .then(res => res.json()).then(result => { if(result.success) console.log(`✅ Saved to Drive: ${result.fileUrl}`); })
-        .catch(err => console.warn('Drive save skipped:', err));
+        .then(res => res.json()).then(result => { if(result.success) console.log(`✅ Saved to Drive: ${result.fileUrl}`); }).catch(err => console.warn('Drive save skipped:', err));
         doc.save(fileName);
         alert(`✅ ${titleText} Generated & Saved!`);
     } catch (error) { alert('PDF Generation Failed: ' + error.message); }
 }
 
-// ✅ TOTAL REVENUE CALCULATION
+// ✅ REVENUE & OTHER FUNCTIONS
 function calculateTotalRevenue() {
-    if (!allOrders || allOrders.length === 0) {
-        document.getElementById('totalRevenueAmount').innerText = 'Rs 0'; document.getElementById('totalOrdersCount').innerText = '0 Orders';
-        document.getElementById('invoiceTotal').innerText = 'Rs 0'; document.getElementById('quotationTotal').innerText = 'Rs 0'; document.getElementById('pendingTotal').innerText = 'Rs 0'; return;
-    }
+    if (!allOrders || allOrders.length === 0) { document.getElementById('totalRevenueAmount').innerText = 'Rs 0'; document.getElementById('totalOrdersCount').innerText = '0 Orders'; document.getElementById('invoiceTotal').innerText = 'Rs 0'; document.getElementById('quotationTotal').innerText = 'Rs 0'; document.getElementById('pendingTotal').innerText = 'Rs 0'; return; }
     let totalRevenue = 0, invoiceTotal = 0, quotationTotal = 0, pendingTotal = 0, orderCount = 0;
-    allOrders.forEach(order => {
-        const total = parseFloat(order.total) || 0; const docType = (order.doc_type || 'invoice').toLowerCase(); const balanceDue = parseFloat(order.balance_due) || 0;
-        totalRevenue += total; orderCount++;
-        if (docType === 'invoice') invoiceTotal += total; else if (docType === 'quotation') quotationTotal += total;
-        if (balanceDue > 0) pendingTotal += balanceDue;
-    });
-    document.getElementById('totalRevenueAmount').innerText = 'Rs ' + totalRevenue.toLocaleString();
-    document.getElementById('totalOrdersCount').innerText = orderCount + ' Orders';
-    document.getElementById('invoiceTotal').innerText = 'Rs ' + invoiceTotal.toLocaleString();
-    document.getElementById('quotationTotal').innerText = 'Rs ' + quotationTotal.toLocaleString();
-    document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();
+    allOrders.forEach(order => { const total = parseFloat(order.total) || 0; const docType = (order.doc_type || 'invoice').toLowerCase(); const balanceDue = parseFloat(order.balance_due) || 0; totalRevenue += total; orderCount++; if (docType === 'invoice') invoiceTotal += total; else if (docType === 'quotation') quotationTotal += total; if (balanceDue > 0) pendingTotal += balanceDue; });
+    document.getElementById('totalRevenueAmount').innerText = 'Rs ' + totalRevenue.toLocaleString(); document.getElementById('totalOrdersCount').innerText = orderCount + ' Orders'; document.getElementById('invoiceTotal').innerText = 'Rs ' + invoiceTotal.toLocaleString(); document.getElementById('quotationTotal').innerText = 'Rs ' + quotationTotal.toLocaleString(); document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();
 }
 
-// ✅ CONVERT QUOTATION TO INVOICE
-async function convertToInvoice(originalTimestamp) {
-    const originalOrder = allOrders.find(o => o.timestamp === originalTimestamp);
-    if (!originalOrder) { alert('❌ Order not found!'); return; }
-    if (!confirm('Convert Quotation to Invoice?')) return;
-    try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify({ date: new Date().toISOString(), client: originalOrder.client, phone: originalOrder.phone, work: originalOrder.work, subtotal: originalOrder.subtotal, discount_type: originalOrder.discount_type, discount_value: originalOrder.discount_value, discount_amount: originalOrder.discount_amount, discount_text: originalOrder.discount_text, advance: originalOrder.advance, total: originalOrder.total, balance_due: originalOrder.balance_due, entry_type: 'order', order_status: 'received', order_source: 'manual', doc_type: 'invoice', note: originalOrder.note || '', advance_type: 'fixed', advance_display: '' }) });
-        alert('✅ Converted to Invoice!'); setTimeout(() => { loadLogs(); }, 500);
-    } catch (error) { alert(' Error: ' + error.message); }
-}
+async function convertToInvoice(originalTimestamp) { const originalOrder = allOrders.find(o => o.timestamp === originalTimestamp); if (!originalOrder) { alert('❌ Order not found!'); return; } if (!confirm('Convert Quotation to Invoice?')) return; try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ date: new Date().toISOString(), client: originalOrder.client, phone: originalOrder.phone, work: originalOrder.work, subtotal: originalOrder.subtotal, discount_type: originalOrder.discount_type, discount_value: originalOrder.discount_value, discount_amount: originalOrder.discount_amount, discount_text: originalOrder.discount_text, advance: originalOrder.advance, total: originalOrder.total, balance_due: originalOrder.balance_due, entry_type: 'order', order_status: 'received', order_source: 'manual', doc_type: 'invoice', note: originalOrder.note || '', advance_type: 'fixed', advance_display: '' }) }); alert('✅ Converted to Invoice!'); setTimeout(() => { loadLogs(); }, 500); } catch (error) { alert(' Error: ' + error.message); } }
 
-async function loadLogs() {
-    const container = document.getElementById('logItems'); container.innerHTML = '<div class="loading">Fetching...</div>';
-    try {
-        const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random());
-        const data = await res.json();
-        if (!Array.isArray(data)) { container.innerHTML = '<p style="color:#ef4444;">Error</p>'; calculateTotalRevenue(); return; }
-        if(data.error || !data || data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; calculateTotalRevenue(); return; }
-        allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint').map(d => ({...d, order_status: d.order_status || 'received', order_source: d.order_source || 'manual'}));
-        if (allOrders.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders.</p>'; calculateTotalRevenue(); return; }
-        calculateTotalRevenue(); document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector('.order-filter-btn[onclick="filterOrders(\'website\')"]').classList.add('active'); filterOrders('website');
-    } catch(e) { container.innerHTML = '<p style="color:#ef4444;">Error: ' + e.message + '</p>'; calculateTotalRevenue(); }
-}
+async function loadLogs() { const container = document.getElementById('logItems'); container.innerHTML = '<div class="loading">Fetching...</div>'; try { const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random()); const data = await res.json(); if (!Array.isArray(data)) { container.innerHTML = '<p style="color:#ef4444;">Error</p>'; calculateTotalRevenue(); return; } if(data.error || !data || data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; calculateTotalRevenue(); return; } allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint').map(d => ({...d, order_status: d.order_status || 'received', order_source: d.order_source || 'manual'})); if (allOrders.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders.</p>'; calculateTotalRevenue(); return; } calculateTotalRevenue(); document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active')); document.querySelector('.order-filter-btn[onclick="filterOrders(\'website\')"]').classList.add('active'); filterOrders('website'); } catch(e) { container.innerHTML = '<p style="color:#ef4444;">Error: ' + e.message + '</p>'; calculateTotalRevenue(); } }
 
-function filterOrders(type) {
-    document.querySelectorAll('.order-filter-btn').forEach(btn => { btn.classList.remove('active'); if(btn.getAttribute('onclick').includes("'" + type + "'")) btn.classList.add('active'); });
-    const container = document.getElementById('logItems');
-    let filteredData = allOrders;
-    if(type === 'website') filteredData = allOrders.filter(d => d.order_source === 'website');
-    else if(type === 'manual') filteredData = allOrders.filter(d => d.order_source === 'manual');
-    if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; return; }
-    container.innerHTML = filteredData.map((d, index) => {
-        const originalIndex = allOrders.indexOf(d);
-        const total = parseFloat(d.total) || 0; const balanceDue = parseFloat(d.balance_due) || 0;
-        const docType = d.doc_type || 'invoice';
-        const docBadge = docType === 'invoice' ? '<span class="badge badge-invoice"> INV</span>' : '<span class="badge badge-quotation"> QUO</span>';
-        const sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website"> Web</span>' : '<span class="badge badge-manual"> Manual</span>';
-        const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')"> Convert</button>' : '';
-        return `<div class="log-card">${convertBtn}<button class="pdf-btn" data-index="${originalIndex}"> PDF</button><b>${d.client || "Unknown"}</b> ${docBadge}${sourceBadge}<br><small class="phone"> ${d.phone || "N/A"}</small><br><small>${(d.work||"").substring(0,50)}</small><br><b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs '+balanceDue.toLocaleString() : 'Paid'}</b><br><button class="del-btn" onclick="deleteEntry('${d.timestamp}')">️ Delete</button></div>`;
-    }).join('');
-    container.querySelectorAll('.pdf-btn').forEach(btn => { if(!btn.getAttribute('onclick').includes('convertToInvoice')) btn.onclick = function() { showConfirmDialog(allOrders[parseInt(this.getAttribute('data-index'))]); }; });
-    calculateTotalRevenue();
-}
+function filterOrders(type) { document.querySelectorAll('.order-filter-btn').forEach(btn => { btn.classList.remove('active'); if(btn.getAttribute('onclick').includes("'" + type + "'")) btn.classList.add('active'); }); const container = document.getElementById('logItems'); let filteredData = allOrders; if(type === 'website') filteredData = allOrders.filter(d => d.order_source === 'website'); else if(type === 'manual') filteredData = allOrders.filter(d => d.order_source === 'manual'); if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; return; } container.innerHTML = filteredData.map((d, index) => { const originalIndex = allOrders.indexOf(d); const total = parseFloat(d.total) || 0; const balanceDue = parseFloat(d.balance_due) || 0; const docType = d.doc_type || 'invoice'; const docBadge = docType === 'invoice' ? '<span class="badge badge-invoice"> INV</span>' : '<span class="badge badge-quotation"> QUO</span>'; const sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website"> Web</span>' : '<span class="badge badge-manual"> Manual</span>'; const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')"> Convert</button>' : ''; return `<div class="log-card">${convertBtn}<button class="pdf-btn" data-index="${originalIndex}"> PDF</button><b>${d.client || "Unknown"}</b> ${docBadge}${sourceBadge}<br><small class="phone"> ${d.phone || "N/A"}</small><br><small>${(d.work||"").substring(0,50)}</small><br><b style="color:gold;">${balanceDue > 0 ? 'Balance: Rs '+balanceDue.toLocaleString() : 'Paid'}</b><br><button class="del-btn" onclick="deleteEntry('${d.timestamp}')">️ Delete</button></div>`; }).join(''); container.querySelectorAll('.pdf-btn').forEach(btn => { if(!btn.getAttribute('onclick').includes('convertToInvoice')) btn.onclick = function() { showConfirmDialog(allOrders[parseInt(this.getAttribute('data-index'))]); }; }); calculateTotalRevenue(); }
 
 function refreshOrders() { loadLogs(); alert('🔄 Refreshed'); }
-async function loadComplaints() {
-    const container = document.getElementById('complaintsList'); container.innerHTML = '<div class="loading">Loading...</div>';
-    try { const res = await fetch(SCRIPT_URL + "?t=" + Date.now()); const data = await res.json(); if(data.error) throw new Error(data.error);
-        const complaints = data.filter(d => d && d.entry_type === 'complaint'); allComplaints = complaints; document.getElementById('complaintCount').textContent = complaints.length;
-        container.innerHTML = complaints.length === 0 ? '<p style="text-align:center;color:#94a3b8;">No complaints.</p>' : complaints.slice().reverse().map(c => `<div class="complaint-card"><b>${c.name||'Unknown'}</b><br><small>${formatDate(c.date)}</small><p>${c.message}</p></div>`).join('');
-    } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error</p>`; }
-}
+async function loadComplaints() { const container = document.getElementById('complaintsList'); container.innerHTML = '<div class="loading">Loading...</div>'; try { const res = await fetch(SCRIPT_URL + "?t=" + Date.now()); const data = await res.json(); if(data.error) throw new Error(data.error); const complaints = data.filter(d => d && d.entry_type === 'complaint'); allComplaints = complaints; document.getElementById('complaintCount').textContent = complaints.length; container.innerHTML = complaints.length === 0 ? '<p style="text-align:center;color:#94a3b8;">No complaints.</p>' : complaints.slice().reverse().map(c => `<div class="complaint-card"><b>${c.name||'Unknown'}</b><br><small>${formatDate(c.date)}</small><p>${c.message}</p></div>`).join(''); } catch(e) { container.innerHTML = `<p style="color:#ef4444;">Error</p>`; } }
 
-async function viewBackups() {
-    const pin = prompt("Enter PIN:"); if(pin !== "dnhq_backup_2026") { alert("Wrong PIN!"); return; }
-    document.getElementById('backupList').innerHTML = '<div class="loading">Loading...</div>'; document.getElementById('backupModal').style.display = 'block';
-    try { const res = await fetch(SCRIPT_URL + '?getBackups=true&pin=' + encodeURIComponent(pin)); const backups = await res.json(); if(backups.error) throw new Error(backups.error);
-        document.getElementById('backupList').innerHTML = backups.length === 0 ? '<p style="text-align:center;color:#94a3b8;">No backups.</p>' : backups.map(b => `<div class="log-card"><b>${b.client}</b><br><small>${formatDate(b.deleted_at)}</small><br><small>Rs ${parseFloat(b.total).toLocaleString()}</small></div>`).join('');
-    } catch(e) { document.getElementById('backupList').innerHTML = `<p style="color:#ef4444;">Error</p>`; }
-}
+async function viewBackups() { const pin = prompt("Enter PIN:"); if(pin !== "dnhq_backup_2026") { alert("Wrong PIN!"); return; } document.getElementById('backupList').innerHTML = '<div class="loading">Loading...</div>'; document.getElementById('backupModal').style.display = 'block'; try { const res = await fetch(SCRIPT_URL + '?getBackups=true&pin=' + encodeURIComponent(pin)); const backups = await res.json(); if(backups.error) throw new Error(backups.error); document.getElementById('backupList').innerHTML = backups.length === 0 ? '<p style="text-align:center;color:#94a3b8;">No backups.</p>' : backups.map(b => `<div class="log-card"><b>${b.client}</b><br><small>${formatDate(b.deleted_at)}</small><br><small>Rs ${parseFloat(b.total).toLocaleString()}</small></div>`).join(''); } catch(e) { document.getElementById('backupList').innerHTML = `<p style="color:#ef4444;">Error</p>`; } }
 function closeBackupModal() { document.getElementById('backupModal').style.display = 'none'; }
 function refreshBackups() { viewBackups(); }
 async function exportBackups() { alert("Export feature ready."); }
@@ -1028,17 +894,8 @@ function contactCustomer(phone) { if(phone) window.open('tel:' + phone, '_blank'
 function openComplaintModal() { document.getElementById('complaintModal').style.display = 'block'; }
 function closeComplaintModal() { document.getElementById('complaintModal').style.display = 'none'; }
 function closeComplaintModalOnBackground(event) { if (event.target === document.getElementById('complaintModal')) closeComplaintModal(); }
-async function submitComplaint() {
-    const n=document.getElementById('complaintName').value.trim(), p=document.getElementById('complaintPhone').value.trim(), t=document.getElementById('complaintType').value, m=document.getElementById('complaintMessage').value.trim();
-    if(!n||!p||!t||!m) return alert("Fill all fields!");
-    await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify({timestamp:Date.now(), date:new Date().toISOString(), name:n.toUpperCase(), phone:p, type:t, message:m, status:'pending', entry_type:'complaint'}) });
-    alert("✅ Submitted!"); closeComplaintModal();
-}
-function showConfirmDialog(order) {
-    if(!order) return; pendingOrderData = order;
-    let html = `<div class="confirm-row"><label>Customer:</label><span>${order.client}</span></div><div class="confirm-row"><label>Total:</label><span>Rs ${parseFloat(order.total).toLocaleString()}</span></div>`;
-    document.getElementById('confirmBody').innerHTML = html; document.getElementById('confirmDialog').style.display = 'block';
-}
+async function submitComplaint() { const n=document.getElementById('complaintName').value.trim(), p=document.getElementById('complaintPhone').value.trim(), t=document.getElementById('complaintType').value, m=document.getElementById('complaintMessage').value.trim(); if(!n||!p||!t||!m) return alert("Fill all fields!"); await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify({timestamp:Date.now(), date:new Date().toISOString(), name:n.toUpperCase(), phone:p, type:t, message:m, status:'pending', entry_type:'complaint'}) }); alert("✅ Submitted!"); closeComplaintModal(); }
+function showConfirmDialog(order) { if(!order) return; pendingOrderData = order; let html = `<div class="confirm-row"><label>Customer:</label><span>${order.client}</span></div><div class="confirm-row"><label>Total:</label><span>Rs ${parseFloat(order.total).toLocaleString()}</span></div>`; document.getElementById('confirmBody').innerHTML = html; document.getElementById('confirmDialog').style.display = 'block'; }
 function closeConfirmDialog() { document.getElementById('confirmDialog').style.display = 'none'; }
 function confirmAndGeneratePDF() { if(pendingOrderData) { generateManualPDF(pendingOrderData, 'invoice'); closeConfirmDialog(); } }
 async function deleteEntry(ts) { if(confirm("Delete?")) { alert("✅ Deleted."); loadLogs(); } }
@@ -1052,109 +909,33 @@ function closeHistoryModal() { document.getElementById('historyModal').style.dis
 function closeHistoryModalOnBackground(event) { if (event.target === document.getElementById('historyModal')) closeHistoryModal(); }
 function resetHistoryView() { document.getElementById('verifyStep').style.display = 'block'; document.getElementById('showStep').style.display = 'none'; }
 
-async function fetchCustomerHistory() {
-    const phone = document.getElementById('histPhone').value.trim(); if(!phone) return alert("Enter phone");
-    try {
-        const res = await fetch(SCRIPT_URL + '?getHistory=true&phone=' + encodeURIComponent(phone)); const data = await res.json();
-        if(!data.length) return alert("No records");
-        document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block';
-        document.getElementById('histList').innerHTML = data.map(o => `<div class="history-item"><b>${formatDate(o.date)}</b><br>${o.work}<br><button class="pdf-sm" onclick="downloadInvoiceWithMaterials('${o.timestamp}')">📥 Download</button></div>`).join('');
-    } catch(e) { alert("Error"); }
-}
+async function fetchCustomerHistory() { const phone = document.getElementById('histPhone').value.trim(); if(!phone) return alert("Enter phone"); try { const res = await fetch(SCRIPT_URL + '?getHistory=true&phone=' + encodeURIComponent(phone)); const data = await res.json(); if(!data.length) return alert("No records"); document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block'; document.getElementById('histList').innerHTML = data.map(o => `<div class="history-item"><b>${formatDate(o.date)}</b><br>${o.work}<br><button class="pdf-sm" onclick="downloadInvoiceWithMaterials('${o.timestamp}')">📥 Download</button></div>`).join(''); } catch(e) { alert("Error"); } }
 function downloadCustomerHistoryPDF() { alert("✅ History PDF downloaded."); }
 
-async function loadMaterialBills(ts) {
-    try {
-        const res = await fetch(SCRIPT_URL + '?getMaterialBills=true&invoiceTimestamp=' + encodeURIComponent(ts)); const bills = await res.json();
-        const g = document.getElementById(`materialGallery_${ts}`);
-        g.innerHTML = bills.map(b => `<div style="padding:5px;background:#1e293b;margin:5px 0;"><a href="${b.url}" target="_blank" style="color:#3b82f6;">📄 ${b.name}</a></div>`).join('');
-        g.style.display = 'block';
-    } catch(e) { console.error(e); }
-}
+async function loadMaterialBills(ts) { try { const res = await fetch(SCRIPT_URL + '?getMaterialBills=true&invoiceTimestamp=' + encodeURIComponent(ts)); const bills = await res.json(); const g = document.getElementById(`materialGallery_${ts}`); g.innerHTML = bills.map(b => `<div style="padding:5px;background:#1e293b;margin:5px 0;"><a href="${b.url}" target="_blank" style="color:#3b82f6;">📄 ${b.name}</a></div>`).join(''); g.style.display = 'block'; } catch(e) { console.error(e); } }
 function uploadMaterialBill(ts) { alert("📎 Upload feature ready."); }
 async function downloadInvoiceWithMaterials(ts) { alert("📥 Invoice & bills downloading..."); }
 
 function openCalculator() { document.getElementById('calculatorModal').style.display = 'block'; }
 function closeCalculator() { document.getElementById('calculatorModal').style.display = 'none'; }
 function closeCalculatorOnBackground(event) { if (event.target === document.getElementById('calculatorModal')) closeCalculator(); }
-function switchCalcTab(tab) {
-    document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
-    if(tab==='elec') { document.querySelector('.calc-tab:nth-child(1)').classList.add('active'); document.getElementById('calc-elec').classList.add('active'); }
-    else if(tab==='ac') { document.querySelector('.calc-tab:nth-child(2)').classList.add('active'); document.getElementById('calc-ac').classList.add('active'); }
-    else if(tab==='room') { document.querySelector('.calc-tab:nth-child(3)').classList.add('active'); document.getElementById('calc-room').classList.add('active'); }
-    else if(tab==='amp') { document.querySelector('.calc-tab:nth-child(4)').classList.add('active'); document.getElementById('calc-amp').classList.add('active'); }
-}
-function clearCalculator() {
-    document.getElementById('calcV').value = document.getElementById('calcW').value = document.getElementById('calcA').value = '';
-    document.getElementById('acArea').value = document.getElementById('roomLength').value = document.getElementById('roomWidth').value = '';
-    document.getElementById('ampV').value = document.getElementById('ampW').value = '';
-    document.querySelectorAll('.calc-result').forEach(el => el.style.display = 'none');
-}
-function calculateElectrical() {
-    let v=parseFloat(document.getElementById('calcV').value)||0, w=parseFloat(document.getElementById('calcW').value)||0, a=parseFloat(document.getElementById('calcA').value)||0, pf=parseFloat(document.getElementById('calcPF').value)||1, r="";
-    if(v&&w&&!a) { a=w/(v*pf); r=`✅ Current: ${a.toFixed(2)} Amps`; }
-    else if(v&&a&&!w) { w=v*a*pf; r=`✅ Power: ${w.toFixed(0)} Watts`; }
-    else if(w&&a&&!v) { v=w/(a*pf); r=`✅ Voltage: ${v.toFixed(2)} Volts`; }
-    else r="️ Enter 2 values.";
-    document.getElementById('calcResult').innerHTML = r; document.getElementById('calcResult').style.display = 'block';
-}
-function calculateAC() {
-    let a=parseFloat(document.getElementById('acArea').value)||0, s=parseFloat(document.getElementById('acSun').value)||1;
-    if(!a) return; let t=Math.ceil((a*25*s)/12000);
-    document.getElementById('acResult').innerHTML = `✅ Recommended: ${t} Ton AC`; document.getElementById('acResult').style.display = 'block';
-}
-function calculateRoomArea() {
-    let l=parseFloat(document.getElementById('roomLength').value)||0, w=parseFloat(document.getElementById('roomWidth').value)||0;
-    if(!l||!w) return; document.getElementById('roomResult').innerHTML = `✅ Area: ${l*w} Sq.Ft`; document.getElementById('roomResult').style.display = 'block';
-}
-function calculateAmperes() {
-    let v=parseFloat(document.getElementById('ampV').value)||0, w=parseFloat(document.getElementById('ampW').value)||0, pf=parseFloat(document.getElementById('ampPF').value)||1;
-    if(!v||!w) return; let a=w/(v*pf);
-    document.getElementById('ampResult').innerHTML = `✅ Current: ${a.toFixed(2)} Amps`; document.getElementById('ampResult').style.display = 'block';
-}
+function switchCalcTab(tab) { document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active')); if(tab==='elec') { document.querySelector('.calc-tab:nth-child(1)').classList.add('active'); document.getElementById('calc-elec').classList.add('active'); } else if(tab==='ac') { document.querySelector('.calc-tab:nth-child(2)').classList.add('active'); document.getElementById('calc-ac').classList.add('active'); } else if(tab==='room') { document.querySelector('.calc-tab:nth-child(3)').classList.add('active'); document.getElementById('calc-room').classList.add('active'); } else if(tab==='amp') { document.querySelector('.calc-tab:nth-child(4)').classList.add('active'); document.getElementById('calc-amp').classList.add('active'); } }
+function clearCalculator() { document.getElementById('calcV').value = document.getElementById('calcW').value = document.getElementById('calcA').value = ''; document.getElementById('acArea').value = document.getElementById('roomLength').value = document.getElementById('roomWidth').value = ''; document.getElementById('ampV').value = document.getElementById('ampW').value = ''; document.querySelectorAll('.calc-result').forEach(el => el.style.display = 'none'); }
+function calculateElectrical() { let v=parseFloat(document.getElementById('calcV').value)||0, w=parseFloat(document.getElementById('calcW').value)||0, a=parseFloat(document.getElementById('calcA').value)||0, pf=parseFloat(document.getElementById('calcPF').value)||1, r=""; if(v&&w&&!a) { a=w/(v*pf); r=`✅ Current: ${a.toFixed(2)} Amps`; } else if(v&&a&&!w) { w=v*a*pf; r=`✅ Power: ${w.toFixed(0)} Watts`; } else if(w&&a&&!v) { v=w/(a*pf); r=`✅ Voltage: ${v.toFixed(2)} Volts`; } else r="️ Enter 2 values."; document.getElementById('calcResult').innerHTML = r; document.getElementById('calcResult').style.display = 'block'; }
+function calculateAC() { let a=parseFloat(document.getElementById('acArea').value)||0, s=parseFloat(document.getElementById('acSun').value)||1; if(!a) return; let t=Math.ceil((a*25*s)/12000); document.getElementById('acResult').innerHTML = `✅ Recommended: ${t} Ton AC`; document.getElementById('acResult').style.display = 'block'; }
+function calculateRoomArea() { let l=parseFloat(document.getElementById('roomLength').value)||0, w=parseFloat(document.getElementById('roomWidth').value)||0; if(!l||!w) return; document.getElementById('roomResult').innerHTML = `✅ Area: ${l*w} Sq.Ft`; document.getElementById('roomResult').style.display = 'block'; }
+function calculateAmperes() { let v=parseFloat(document.getElementById('ampV').value)||0, w=parseFloat(document.getElementById('ampW').value)||0, pf=parseFloat(document.getElementById('ampPF').value)||1; if(!v||!w) return; let a=w/(v*pf); document.getElementById('ampResult').innerHTML = `✅ Current: ${a.toFixed(2)} Amps`; document.getElementById('ampResult').style.display = 'block'; }
 
-// ✅ BLANK LETTERHEAD DOWNLOAD FUNCTION
-function downloadBlankLetterhead() {
-    try {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 48, 'F');
-        const logoImg = document.getElementById('brandLogo');
-        if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
-            try {
-                const canvas = document.createElement('canvas'); canvas.width = 200; canvas.height = 200;
-                const ctx = canvas.getContext('2d'); ctx.drawImage(logoImg, 0, 0, 200, 200);
-                doc.addImage(canvas.toDataURL('image/png', 1.0), 'PNG', 15, 9, 30, 30);
-            } catch(e) {}
-        }
-        doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.setFont("helvetica", "bold"); doc.text("DNHQ SERVICES", 50, 22);
-        doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.setTextColor(200, 200, 200);
-        doc.text("Professional Electrical & AC Maintenance", 50, 28);
-        doc.text(" +92 315 2458657 | +92 312 8542993", 50, 34);
-        doc.text(" dnhq-services.online", 50, 40);
-        doc.setTextColor(0, 0, 0); doc.setFontSize(10);
-        doc.text("Date: ____________________", 15, 58);
-        doc.text("Ref No: ____________________", 15, 65);
-        doc.text("To: ____________________", 15, 72);
-        doc.text("Subject: ____________________", 15, 79);
-        doc.setDrawColor(220, 220, 220); doc.setLineWidth(0.3);
-        let yLine = 88; while (yLine < 265) { doc.line(15, yLine, 195, yLine); yLine += 8; }
-        doc.setDrawColor(251, 191, 36); doc.setLineWidth(1.2); doc.line(15, 270, 195, 270);
-        doc.setFontSize(8); doc.setTextColor(100, 100, 100);
-        doc.text("DNHQ Services - Authorized Official Letterhead", 105, 278, { align: "center" });
-        doc.text("Valid only with official stamp & authorized signature.", 105, 284, { align: "center" });
-        doc.save('DNHQ_Official_Letterhead.pdf');
-        alert('✅ Blank Letterhead downloaded!');
-    } catch (error) { alert(' Error: ' + error.message); }
-}
+// ✅ BLANK LETTERHEAD DOWNLOAD
+function downloadBlankLetterhead() { try { const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 48, 'F'); const logoImg = document.getElementById('brandLogo'); if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) { try { const canvas = document.createElement('canvas'); canvas.width = 200; canvas.height = 200; const ctx = canvas.getContext('2d'); ctx.drawImage(logoImg, 0, 0, 200, 200); doc.addImage(canvas.toDataURL('image/png', 1.0), 'PNG', 15, 9, 30, 30); } catch(e) {} } doc.setTextColor(251, 191, 36); doc.setFontSize(22); doc.setFont("helvetica", "bold"); doc.text("DNHQ SERVICES", 50, 22); doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.setTextColor(200, 200, 200); doc.text("Professional Electrical & AC Maintenance", 50, 28); doc.text(" +92 315 2458657 | +92 312 8542993", 50, 34); doc.text(" dnhq-services.online", 50, 40); doc.setTextColor(0, 0, 0); doc.setFontSize(10); doc.text("Date: ____________________", 15, 58); doc.text("Ref No: ____________________", 15, 65); doc.text("To: ____________________", 15, 72); doc.text("Subject: ____________________", 15, 79); doc.setDrawColor(220, 220, 220); doc.setLineWidth(0.3); let yLine = 88; while (yLine < 265) { doc.line(15, yLine, 195, yLine); yLine += 8; } doc.setDrawColor(251, 191, 36); doc.setLineWidth(1.2); doc.line(15, 270, 195, 270); doc.setFontSize(8); doc.setTextColor(100, 100, 100); doc.text("DNHQ Services - Authorized Official Letterhead", 105, 278, { align: "center" }); doc.text("Valid only with official stamp & authorized signature.", 105, 284, { align: "center" }); doc.save('DNHQ_Official_Letterhead.pdf'); alert('✅ Blank Letterhead downloaded!'); } catch (error) { alert(' Error: ' + error.message); } }
 
 function closeBackupModalOnBackground(event) { if (event.target === document.getElementById('backupModal')) closeBackupModal(); }
 
-// ✅ EXPORT ALL FUNCTIONS
+// ✅ EXPORT ALL FUNCTIONS TO WINDOW
 window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.openHistoryModal = openHistoryModal; window.triggerAppInstall = triggerAppInstall; window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF; window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF; window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal; window.closeComplaintModal = closeComplaintModal; window.closeComplaintModalOnBackground = closeComplaintModalOnBackground; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry; window.loadLogs = loadLogs; window.updateCart = updateCart; window.closeHistoryModal = closeHistoryModal; window.closeHistoryModalOnBackground = closeHistoryModalOnBackground; window.resetHistoryView = resetHistoryView; window.installApp = installApp; window.dismissInstall = dismissInstall; window.placeOrder = placeOrder; window.viewBackups = viewBackups; window.closeBackupModal = closeBackupModal; window.closeBackupModalOnBackground = closeBackupModalOnBackground; window.refreshBackups = refreshBackups; window.exportBackups = exportBackups; window.restoreBackup = restoreBackup; window.setDocType = setDocType; window.generateManualPDF = generateManualPDF; window.convertToInvoice = convertToInvoice; window.calculateTotalRevenue = calculateTotalRevenue; window.openCalculator = openCalculator; window.closeCalculator = closeCalculator; window.closeCalculatorOnBackground = closeCalculatorOnBackground; window.switchCalcTab = switchCalcTab; window.calculateElectrical = calculateElectrical; window.clearCalculator = clearCalculator; window.calculateAC = calculateAC; window.calculateRoomArea = calculateRoomArea; window.calculateAmperes = calculateAmperes; window.loadMaterialBills = loadMaterialBills; window.uploadMaterialBill = uploadMaterialBill; window.downloadInvoiceWithMaterials = downloadInvoiceWithMaterials; window.setNote = setNote; window.updateAdvanceUI = updateAdvanceUI; window.downloadBlankLetterhead = downloadBlankLetterhead;
 
-document.addEventListener('DOMContentLoaded', function() { console.log('✅ Ready'); updateCart(); });
+// ✅ INITIALIZE
+document.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });
 </script>
 </body>
 </html>
