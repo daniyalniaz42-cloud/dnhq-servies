@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=34">
+<link rel="manifest" href="manifest.json?v=35">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -825,7 +825,7 @@ async function saveManualEntry() {
 }
 
 // ==========================================
-// ✅ PDF GENERATION
+// ✅ UPDATED PDF GENERATION (Dual Design)
 // ==========================================
 
 function generateManualPDF(data, docType) {
@@ -833,21 +833,20 @@ function generateManualPDF(data, docType) {
         const {jsPDF} = window.jspdf; 
         const doc = new jsPDF();
         
-        doc.setFillColor(0,0,0); 
-        doc.rect(0,0,210,55,'F');
-        
-        getImageDataForPDF(document.getElementById('brandLogo')).then(img => { 
-            if(img) doc.addImage(img,'PNG',15,10,35,35); 
+        // ✅ LOGO
+        getImageDataForPDF(document.getElementById('brandLogo')).then(img => {
+            if(img) doc.addImage(img, 'PNG', 15, 10, 35, 35); 
         });
         
+        // ✅ HEADER (Common)
         doc.setTextColor(251,191,36); 
         doc.setFontSize(20); 
         doc.setFont("helvetica","bold"); 
-        doc.text("DNHQ SERVICES",55,22);
+        doc.text("DNHQ SERVICES", 55, 22);
         
         doc.setFontSize(8); 
         doc.setTextColor(200,200,200); 
-        doc.text("Professional Electrical & AC Maintenance",55,30);
+        doc.text("Professional Electrical & AC Maintenance", 55, 30);
         
         doc.setTextColor(0,0,0); 
         doc.setFontSize(11);
@@ -858,103 +857,178 @@ function generateManualPDF(data, docType) {
         doc.setFontSize(16); 
         doc.text(docType.toUpperCase(), 105, 78, {align:"center"});
 
-        let body = data.work.split(", ").map(w => {
-            if(w.includes(" x ")) {
-                const [nm, rest] = w.split(" x ");
-                const q = (rest.match(/^\d+/) || ["1"])[0];
-                const pr = (rest.match(/Rs (\d+)/) || ["0","0"])[1];
-                const tot = (rest.match(/= Rs (\d+)/) || ["0","0"])[1];
-                return [nm.trim(), q, '-', 'Rs '+pr, 'Rs '+tot];
-            }
-            return [w.trim(),'1','-','-','-'];
-        });
-        
-        doc.autoTable({
-            startY: 86, 
-            head: [['ITEM','QTY','QUALITY','UNIT','TOTAL']], 
-            body: body, 
-            theme: 'grid', 
-            headStyles: {fillColor:[0,0,0], textColor:[251,191,36], fontSize:9}, 
-            styles: {fontSize:8}, 
-            columnStyles: {
-                0:{cellWidth:70}, 
-                1:{cellWidth:20,halign:'center'}, 
-                2:{cellWidth:25,halign:'center'}, 
-                3:{cellWidth:35,halign:'right'}, 
-                4:{cellWidth:40,halign:'right',fontStyle:'bold'}
-            }
-        });
+        // ✅ DETECT WORK TYPE
+        // Keywords that trigger the "Electrical" Design (Subject, S.No, etc)
+        const electricalKeywords = ['wiring', 'flooring', 'piping', 'board', 'circuit', 'breaker', 'voltage', 'switch', 'socket', 'light', 'fan', 'db', 'distribution'];
+        const isElectrical = electricalKeywords.some(k => data.work.toLowerCase().includes(k));
 
-        let y = doc.lastAutoTable.finalY + 8;
-        
-        doc.setFontSize(9); doc.setTextColor(150,150,150); 
-        doc.text("Subtotal:", 130, y); 
-        doc.text("Rs " + data.subtotal.toLocaleString(), 195, y, {align:'right'}); 
-        y += 6;
-        
-        if(data.discount_amount > 0) {
-            doc.setTextColor(16,185,129); 
-            doc.text(data.discount_text + " Discount:", 130, y); 
-            doc.text("-Rs " + data.discount_amount.toLocaleString(), 195, y, {align:'right'}); 
-            y += 6; 
-            doc.setTextColor(150,150,150);
-        }
-        
-        doc.setFontSize(10); doc.setTextColor(0,0,0); 
-        doc.text("Total:", 130, y); 
-        doc.text("Rs " + data.total.toLocaleString(), 195, y, {align:'right'}); 
-        y += 9;
-        
-        if(data.advance > 0) {
-            doc.setDrawColor(59,130,246); doc.setLineWidth(0.5); doc.line(125, y-4, 195, y-4);
-            doc.setFontSize(9); doc.setTextColor(59,130,246); 
-            doc.text("Advance:", 130, y+2); 
-            doc.text("-Rs " + data.advance.toLocaleString(), 195, y+2, {align:'right'}); 
-            y += 9;
-        }
-        
-        doc.setDrawColor(251,191,36); doc.setLineWidth(1); doc.line(125, y-4, 195, y-4); 
-        doc.setFontSize(13);
-        
-        if(data.balance_due > 0) {
-            doc.setTextColor(239,68,68); 
-            doc.text("BALANCE DUE:", 130, y+3); 
-            doc.text("Rs " + data.balance_due.toLocaleString(), 195, y+3, {align:'right'});
-        } else {
-            doc.setTextColor(16,185,129); 
-            doc.text("FULLY PAID ✓", 130, y+3); 
-            doc.text("Rs 0", 195, y+3, {align:'right'});
-        }
+        let finalY = 86;
 
-        if(data.breakdown_slab || data.breakdown_wiring) {
-            y += 15; 
-            doc.setFontSize(10); doc.setTextColor(0,0,0); 
-            doc.text("Cost Breakdown:", 15, y);
+        // ==========================================
+        // ⚡ ELECTRICAL STYLE INVOICE (New Design)
+        // ==========================================
+        if(isElectrical) {
             
-            let bd = [];
-            if(data.breakdown_slab) bd.push(['Slab/Piping', data.breakdown_slab+'%', 'Rs '+((data.total*data.breakdown_slab)/100).toLocaleString()]);
-            if(data.breakdown_wiring) bd.push(['Wiring', data.breakdown_wiring+'%', 'Rs '+((data.total*data.breakdown_wiring)/100).toLocaleString()]);
-            
-            doc.autoTable({
-                startY: y+2, 
-                head: [['Work','%','Amount']], 
-                body: bd, 
-                theme: 'grid', 
-                headStyles: {fillColor:[30,41,59], textColor:[251,191,36]}, 
-                styles: {fontSize:9}, 
-                margin: {left:15, right:15}
+            // ✅ Subject Line
+            doc.setFontSize(10);
+            const subjectText = data.work.length > 100 ? data.work.substring(0,100) + "..." : data.work;
+            doc.text("Subject: " + subjectText, 15, finalY);
+            finalY += 12;
+
+            // ✅ Electrical Table: S.no | Description | C/Area | Rate | Qty | Amount
+            let body = [];
+            data.work.split(", ").forEach((w, i) => {
+                if(w.includes(" x ")) {
+                    const [nm, rest] = w.split(" x ");
+                    const qty = (rest.match(/^\d+/) || ["1"])[0];
+                    const price = (rest.match(/Rs (\d+)/) || ["0","0"])[1];
+                    const tot = (rest.match(/= Rs (\d+)/) || ["0","0"])[1];
+                    const rate = (parseFloat(tot) / parseFloat(qty)).toFixed(2);
+                    
+                    body.push([
+                        (i+1).toString(), // S.no
+                        nm.trim(),        // Description
+                        "-",             // C/Area
+                        rate,             // Rate
+                        qty,              // Qty
+                        tot               // Amount
+                    ]);
+                }
             });
+
+            doc.autoTable({
+                startY: finalY, 
+                head: [['S.no','Description','C/Area','Rate','Qty','Amount']], 
+                body: body, 
+                theme: 'grid', 
+                headStyles: {fillColor:[0,0,0], textColor:[251,191,36], fontSize:9}, 
+                styles: {fontSize:9, cellPadding: 3}, 
+                columnStyles: {
+                    0:{cellWidth:15, halign:'center'}, 
+                    1:{cellWidth:55}, 
+                    2:{cellWidth:20, halign:'center'}, 
+                    3:{cellWidth:25, halign:'right'}, 
+                    4:{cellWidth:20, halign:'center'}, 
+                    5:{cellWidth:35, halign:'right', fontStyle:'bold'}
+                }
+            });
+            
+            finalY = doc.lastAutoTable.finalY + 8;
+            
+            // ✅ Total Line
+            doc.setFontSize(11); doc.setTextColor(0,0,0); doc.setFont("helvetica", "bold");
+            doc.text("Total:", 145, finalY);
+            doc.text("Rs " + data.total.toLocaleString(), 195, finalY, {align:'right'});
+            finalY += 12;
+
+            // ✅ Note / Paragraph Section (Like "Dear Sir...")
+            doc.setFontSize(9); doc.setTextColor(50,50,50); doc.setFont("helvetica", "normal");
+            
+            let noteText = "";
+            if(data.note && data.note.trim() !== "") {
+                noteText = "Dear Sir, " + data.note + " We request you to clear the invoice as soon as possible.";
+            } else {
+                noteText = "Dear Sir, this is the bill for the work mentioned above. We request you to clear my invoice as soon as possible.";
+            }
+            
+            const splitNote = doc.splitTextToSize(noteText, 180);
+            doc.text(splitNote, 15, finalY);
+            finalY += (splitNote.length * 5) + 15;
+
+            // ✅ Signature Section
+            doc.text("Thank you", 15, finalY);
+            doc.text("Regards", 15, finalY + 5);
+            doc.text("DNHQ Services Team", 15, finalY + 15);
+            
+            // Signature Line
+            doc.line(15, finalY + 25, 80, finalY + 25);
+            doc.text("Authorized Signature", 15, finalY + 30);
+            
+            finalY += 35;
+
+        } 
+        // ==========================================
+        // ❄️ AC / SERVICE STYLE INVOICE (Old Design)
+        // ==========================================
+        else {
+            
+            // ✅ Service Table: ITEM | QTY | QUALITY | UNIT PRICE | TOTAL
+            let body = data.work.split(", ").map(w => {
+                if(w.includes(" x ")) {
+                    const [nm, rest] = w.split(" x ");
+                    const q = (rest.match(/^\d+/) || ["1"])[0];
+                    const pr = (rest.match(/Rs (\d+)/) || ["0","0"])[1];
+                    const tot = (rest.match(/= Rs (\d+)/) || ["0","0"])[1];
+                    return [nm.trim(), q, '-', 'Rs '+pr, 'Rs '+tot];
+                }
+                return [w.trim(),'1','-','-','-'];
+            });
+
+            doc.autoTable({
+                startY: finalY, 
+                head: [['ITEM','QTY','QUALITY','UNIT PRICE','TOTAL']], 
+                body: body, 
+                theme: 'grid', 
+                headStyles: {fillColor:[0,0,0], textColor:[251,191,36], fontSize:9}, 
+                styles: {fontSize:8, cellPadding: 3}, 
+                columnStyles: {
+                    0:{cellWidth:70}, 
+                    1:{cellWidth:20,halign:'center'}, 
+                    2:{cellWidth:25,halign:'center'}, 
+                    3:{cellWidth:35,halign:'right'}, 
+                    4:{cellWidth:40,halign:'right',fontStyle:'bold'}
+                }
+            });
+
+            finalY = doc.lastAutoTable.finalY + 8;
+            
+            // ✅ Calculations (Subtotal, Discount, Total, Advance, Balance)
+            doc.setFontSize(9); doc.setTextColor(150,150,150); 
+            doc.text("Subtotal:", 130, finalY); 
+            doc.text("Rs " + data.subtotal.toLocaleString(), 195, finalY, {align:'right'}); 
+            finalY += 6;
+            
+            if(data.discount_amount > 0) {
+                doc.setTextColor(16,185,129); 
+                doc.text(data.discount_text + " Discount:", 130, finalY); 
+                doc.text("-Rs " + data.discount_amount.toLocaleString(), 195, finalY, {align:'right'}); 
+                finalY += 6; 
+                doc.setTextColor(150,150,150);
+            }
+            
+            doc.setFontSize(10); doc.setTextColor(0,0,0); doc.setFont("helvetica", "bold");
+            doc.text("Total:", 130, finalY); 
+            doc.text("Rs " + data.total.toLocaleString(), 195, finalY, {align:'right'}); 
+            finalY += 9;
+            
+            if(data.advance > 0) {
+                doc.setDrawColor(59,130,246); doc.setLineWidth(0.5); doc.line(125, finalY-4, 195, finalY-4);
+                doc.setFontSize(9); doc.setTextColor(59,130,246); 
+                doc.text("Advance Received:", 130, finalY+2); 
+                doc.text("-Rs " + data.advance.toLocaleString(), 195, finalY+2, {align:'right'}); 
+                finalY += 9;
+            }
+            
+            doc.setDrawColor(251,191,36); doc.setLineWidth(1); doc.line(125, finalY-4, 195, finalY-4); 
+            doc.setFontSize(13);
+            
+            if(data.balance_due > 0) {
+                doc.setTextColor(239,68,68); 
+                doc.text("BALANCE DUE:", 130, finalY+3); 
+                doc.text("Rs " + data.balance_due.toLocaleString(), 195, finalY+3, {align:'right'});
+            } else {
+                doc.setTextColor(16,185,129); 
+                doc.text("FULLY PAID ✓", 130, finalY+3); 
+                doc.text("Rs 0", 195, finalY+3, {align:'right'});
+            }
         }
-        
-        if(data.note) {
-            doc.setFontSize(8); doc.setTextColor(100,100,100); 
-            doc.text("Note: " + data.note, 15, y+20);
-        }
-        
+
+        // ✅ FOOTER (Common for Both)
         doc.setDrawColor(200,200,200); doc.setLineWidth(0.3); doc.line(20, 280, 190, 280); 
         doc.setFontSize(8); doc.setTextColor(120,120,120);
         doc.text("Contact: " + PHONE_1, 105, 286, {align:"center"}); 
         doc.text("Contact: " + PHONE_2, 105, 291, {align:"center"});
+        doc.text("Website: dnhq-services.online", 105, 296, {align:"center"});
         
         doc.save(`${docType.toUpperCase()}_${data.client.replace(/[^a-z0-9]/gi,'_')}_${formatDate(data.date)}.pdf`);
         alert("✅ PDF Downloaded!");
@@ -1009,7 +1083,7 @@ function filterOrders(type) {
             <div class="log-card">
                 <button class="pdf-btn" onclick="generateManualPDF(allOrders[${allOrders.indexOf(o)}],'${o.doc_type}')">PDF</button>
                 <b>${o.client}</b> <span class="badge ${o.doc_type==='invoice'?'badge-invoice':'badge-quotation'}">${o.doc_type.toUpperCase()}</span><br>
-                <small>📱 ${o.phone}</small><br>
+                <small> ${o.phone}</small><br>
                 <b style="color:gold;">Rs ${parseFloat(o.total).toLocaleString()}</b><br>
                 <button class="del-btn" onclick="if(confirm('Delete?')){alert('✅ Deleted');loadLogs();}">Delete</button>
             </div>
@@ -1192,8 +1266,6 @@ function downloadBlankLetterhead() {
 // ==========================================
 // ✅ EXPORT ALL FUNCTIONS TO WINDOW
 // ==========================================
-// Yeh line ensure karti hai ke HTML ke onclick attributes kaam karein
-
 window.toggleSvc = toggleSvc; 
 window.playVid = playVid; 
 window.openAdmin = openAdmin; 
@@ -1224,13 +1296,6 @@ window.updateCart = updateCart;
 window.setNote = setNote; 
 window.updateAdvanceUI = updateAdvanceUI; 
 window.toggleDiscountInput = toggleDiscountInput;
-window.placeOrder = function() { alert("Order placed!"); };
-window.triggerAppInstall = function() { alert("Install App"); };
-window.installApp = function() {};
-window.dismissInstall = function() {};
-window.submitComplaint = function() { alert("Submitted"); };
-window.viewBackups = function() { alert("Backups"); };
-window.exportBackups = function() { alert("Export"); };
 
 // ✅ INIT
 document.addEventListener('DOMContentLoaded', () => { 
