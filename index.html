@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=37">
+<link rel="manifest" href="manifest.json?v=38">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -127,6 +128,50 @@ footer a:hover { text-decoration: underline; }
 .calc-section.active { display: block; }
 .note-btn { background: #334155; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.2s; }
 .note-btn:hover { background: #475569; }
+
+/* Electrical Invoice Modal Styles */
+#electricalInvoiceModal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
+.elec-toolbar { width: 210mm; margin: 0 auto 10px; display: flex; gap: 8px; flex-wrap: wrap; padding: 10px; background: #1e293b; }
+.elec-toolbar button { background: var(--gold); border: none; padding: 10px 14px; font-weight: 700; cursor: pointer; border-radius: 4px; font-size: 13px; }
+.elec-page { width: 210mm; min-height: 297mm; margin: 0 auto; background: #f7f8fa; display: flex; flex-direction: column; position: relative; box-shadow: 0 2px 14px rgba(0,0,0,.3); overflow: hidden; }
+.elec-header { background: #0b0d0a; display: flex; align-items: center; padding: 12px 22px; }
+.elec-logo { width: 80px; height: auto; }
+.elec-cname { margin-left: 10px; color: var(--gold); font-size: 30px; font-weight: 800; line-height: 1.15; }
+.elec-cname span { color: #fff; font-size: 20px; font-weight: 700; }
+.elec-arrows { margin-left: auto; display: flex; gap: 16px; }
+.elec-chev { width: 60px; height: 60px; background: radial-gradient(circle, var(--gold) 42%, transparent 46%); background-size: 9px 9px; clip-path: polygon(0 0,35% 0,100% 50%,35% 100%,0 100%,62% 50%); }
+.elec-main { flex: 1; position: relative; padding: 24px 46px 14px; display: flex; flex-direction: column; }
+.elec-watermark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: .08; pointer-events: none; }
+.elec-line-input { border: none; border-bottom: 1.5px solid #222; background: transparent; font-size: 15px; padding: 2px 4px; outline: none; width: 100%; }
+.elec-toprow { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+.elec-title-row { text-align: center; margin: 22px 0 18px; }
+#elecBillTitle { border: none; background: transparent; outline: none; text-align: center; font-family: Georgia, serif; font-size: 24px; font-weight: 800; border-bottom: 2px solid #222; width: 70%; padding-bottom: 2px; }
+.elec-info-row { margin-bottom: 10px; font-size: 14px; display: flex; gap: 8px; align-items: flex-start; }
+.elec-info-row b { min-width: 70px; }
+.elec-info-row textarea { flex: 1; border: none; background: transparent; outline: none; resize: none; font-family: inherit; font-size: 14px; line-height: 1.5; }
+.elec-table-wrap { position: relative; z-index: 1; overflow-x: auto; }
+.elec-table { width: 100%; border-collapse: collapse; background: #fff; }
+.elec-th { background: #0b0d0a; color: var(--gold); padding: 7px 5px; font-size: 13px; text-align: left; }
+.elec-td { border: 1px solid #999; padding: 6px; font-size: 14px; text-align: center; }
+.elec-num { width: 70px; border: none; background: transparent; text-align: center; outline: none; font-size: 14px; }
+.elec-total-label { font-weight: 800; text-align: center; background: #fffbe6; }
+.elec-rec-row { display: flex; justify-content: flex-end; gap: 24px; margin-top: 10px; font-size: 14px; font-weight: 700; }
+.elec-rec-row input { width: 110px; border: 1px solid #bbb; padding: 2px 6px; text-align: right; }
+.elec-msg { margin-top: 16px; font-size: 14px; line-height: 1.6; }
+.elec-msg textarea { width: 100%; margin-top: 6px; border: none; background: transparent; outline: none; resize: none; font-family: inherit; font-size: 14px; line-height: 1.6; }
+.elec-sig-area { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding-top: 40px; position: relative; z-index: 1; }
+.elec-sig-left p { font-size: 14px; line-height: 1.5; }
+.elec-sig-left .sig-space { height: 55px; }
+.elec-sig-left .underline { width: 190px; border-bottom: 1.5px solid #222; margin-bottom: 8px; }
+.elec-sig-left input { border: none; background: transparent; outline: none; display: block; font-weight: 800; font-size: 15px; width: 240px; }
+.elec-sig-right { font-weight: 700; font-size: 18px; font-family: Georgia, serif; display: flex; align-items: flex-end; }
+.elec-sig-right .line { width: 160px; border-bottom: 1.5px solid #222; margin-left: 8px; }
+.elec-footer { background: #0b0d0a; color: var(--gold); text-align: center; padding: 8px 12px 12px; }
+.elec-addr-row input { border: none; border-bottom: 1px dashed #6b5a10; background: transparent; color: var(--gold); text-align: center; width: 92%; outline: none; font-size: 12px; padding: 2px; }
+.elec-ftitle { font-weight: 800; font-family: Georgia, serif; margin-top: 4px; }
+.elec-frow { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; margin-top: 4px; }
+.elec-icon { width: 26px; height: 26px; background: var(--gold); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+.elec-sep { font-size: 18px; }
 </style>
 </head>
 <body>
@@ -266,7 +311,7 @@ footer a:hover { text-decoration: underline; }
 </div>
 </div>
 <div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance / Starting Payment</h5>
+<h5 style="color:#3b82f6;margin:0 0 10px 0;"> Advance / Starting Payment</h5>
   <div style="display:flex; gap:8px; margin-bottom:8px;">
     <select id="advance_type" class="man-input" style="flex:1; min-width:120px;" onchange="updateAdvanceUI()">
       <option value="fixed">Fixed Amount (Rs)</option>
@@ -298,7 +343,7 @@ footer a:hover { text-decoration: underline; }
     <h5 style="color:#fbbf24;margin:0 0 10px 0;">📝 Notes (Optional)</h5>
     <textarea id="invoice_note" class="man-input" rows="2" placeholder="Add a custom note here..."></textarea>
     <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
-        <button class="note-btn" onclick="setNote('Please clear your due balance as soon as possible.')">⚠️ Balance Due</button>
+        <button class="note-btn" onclick="setNote('Please clear your due balance as soon as possible.')">️ Balance Due</button>
         <button class="note-btn" onclick="setNote('Thank you for choosing DNHQ Services!')"> Thank You</button>
         <button class="note-btn" onclick="setNote('Warranty valid for 15 days on parts.')">️ Warranty</button>
         <button class="note-btn" onclick="setNote('Please keep this invoice for future reference.')"> Reference</button>
@@ -306,7 +351,7 @@ footer a:hover { text-decoration: underline; }
     </div>
 </div>
 
-<!-- ✅ SEPARATE INVOICE GENERATION BUTTONS -->
+<!-- ✅ NEW INVOICE TYPE BUTTONS -->
 <div style="margin-top:20px; padding-top:15px; border-top:1px solid #334155;">
     <h5 style="color:#fbbf24;margin:0 0 10px 0;">🖨️ Generate Invoice (Select Layout)</h5>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -367,6 +412,102 @@ footer a:hover { text-decoration: underline; }
 </div>
 </div>
 
+<!-- ELECTRICAL INVOICE MODAL -->
+<div id="electricalInvoiceModal">
+    <div class="elec-toolbar no-print">
+        <button onclick="elecAddRow()">+ Row</button>
+        <button id="btnElecArea" onclick="setElecMode('area')">📐 C/ Area Bill</button>
+        <button id="btnElecFixed" onclick="setElecMode('fixed')">💰 Fixed Bill</button>
+        <button style="background:#22c55e;color:white;" onclick="downloadElecPDF()"> PDF Download</button>
+        <button style="background:#ef4444;color:white;" onclick="closeElecModal()">❌ Close</button>
+    </div>
+    
+    <div class="elec-page" id="elecPageEl">
+        <header class="elec-header">
+            <svg class="elec-logo" width="80" height="104" viewBox="0 0 100 130">
+                <path d="M 63.7 92.6 A 40 40 0 1 1 87.6 68.7" fill="none" stroke="#F7C11E" stroke-width="6" stroke-linecap="round"/>
+                <path d="M 40 105 L 72 111 L 40 119 L 72 127" fill="none" stroke="#F7C11E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 55 20 L 30 60 H 46 L 40 90 L 70 48 H 53 Z" fill="#F7C11E"/>
+            </svg>
+            <div class="elec-cname">DNHQ <span>ELECTRIC</span><br>SERVICES</div>
+            <div class="elec-arrows"><div class="elec-chev"></div><div class="elec-chev"></div><div class="elec-chev"></div></div>
+        </header>
+
+        <div class="elec-main">
+            <div class="elec-watermark">
+                <svg width="320" height="416" viewBox="0 0 100 130">
+                    <path d="M 63.7 92.6 A 40 40 0 1 1 87.6 68.7" fill="none" stroke="#F7C11E" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M 40 105 L 72 111 L 40 119 L 72 127" fill="none" stroke="#F7C11E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M 55 20 L 30 60 H 46 L 40 90 L 70 48 H 53 Z" fill="#F7C11E"/>
+                </svg>
+            </div>
+
+            <div class="elec-toprow">
+                <span>KC No / Invoice No:<input class="elec-line-input" id="elecKcNo"></span>
+                <span>Date:<input class="elec-line-input" id="elecDate" style="width:120px"></span>
+            </div>
+
+            <div class="elec-title-row"><input id="elecBillTitle" value="BILL"></div>
+
+            <div class="elec-info-row"><b>Bill To:</b><textarea id="elecBillTo" rows="3" placeholder="Customer / company name&#10;Builder / developer&#10;Area, City"></textarea></div>
+            <div class="elec-info-row"><b>Bill for:</b><input class="elec-line-input" id="elecBillFor" placeholder="Site office & model flat waghera"></div>
+            <div class="elec-info-row"><b>Subject:</b><input class="elec-line-input" id="elecSubject" placeholder="Bill ka subject likhein"></div>
+
+            <div class="elec-table-wrap">
+                <table id="elecBillTable" class="mode-area">
+                    <thead>
+                        <tr>
+                            <th class="elec-th">S.no</th><th class="elec-th">Description</th>
+                            <th class="elec-th arCol">C/ Area</th><th class="elec-th arCol">Rate</th>
+                            <th class="elec-th fxCcol">Total Amount</th>
+                            <th class="elec-th">Qty (%)</th><th class="elec-th">Amount</th><th class="no-print"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="elecItems">
+                        <tr id="elecTotalRow">
+                            <td id="elecTotalLabel" colspan="5" class="elec-total-label">Total:</td>
+                            <td class="amt" id="elecGrandTotal">0/-</td>
+                            <td class="no-print"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="elec-rec-row">
+                <span>Received: <input id="elecReceived" type="number" value="0"></span>
+                <span>Balance: <span id="elecBalance">Rs. 0</span></span>
+            </div>
+
+            <div class="elec-msg">
+                <b>Message / Notes:</b>
+                <textarea id="elecNoteText" rows="3">Dear Sir this is the bill for the above mentioned work. So, we request you to clear my invoice as soon as possible.</textarea>
+            </div>
+
+            <div class="elec-sig-area">
+                <div class="elec-sig-left">
+                    <p>Thank you<br>Regards</p>
+                    <div class="sig-space"></div>
+                    <div class="underline"></div>
+                    <input id="elecName1" value="DNHQ Services Team">
+                    <input id="elecName2" value="DNHQ Electric Services">
+                </div>
+                <div class="elec-sig-right">Sign: <span class="line"></span></div>
+            </div>
+        </div>
+
+        <footer class="elec-footer">
+            <div class="elec-addr-row"><input id="elecAddr" placeholder="Office # 1: address yahan likhein  |  Office # 2: address yahan likhein"></div>
+            <div class="elec-ftitle">CONTACT US</div>
+            <div class="elec-frow">
+                <span class="elec-icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></span>
+                +92 315 2458657 <span class="elec-sep">|</span> +92 312 8542993
+                <span class="elec-icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></span>
+                dnhq-services.online
+            </div>
+        </footer>
+    </div>
+</div>
+
 <!-- HISTORY MODAL -->
 <div id="historyModal" class="modal" onclick="closeHistoryModalOnBackground(event)">
 <div class="modal-content">
@@ -418,7 +559,7 @@ footer a:hover { text-decoration: underline; }
 <div id="confirmDialog" class="confirm-dialog">
 <div class="confirm-box">
 <div class="confirm-header">
-<h3>📋 CONFIRM BILL DETAILS</h3>
+<h3> CONFIRM BILL DETAILS</h3>
 <p>Please review before generating PDF</p>
 </div>
 <div class="confirm-body" id="confirmBody"></div>
@@ -486,7 +627,7 @@ footer a:hover { text-decoration: underline; }
         <button class="calc-btn" style="background:#334155;color:white;margin-top:8px;" onclick="clearCalculator()">️ Clear</button>
 
         <div id="calcResult" class="calc-result"></div>
-        <button id="calcCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I used your electrical calculator. I need a service quote.', '_blank')">📩 Get Free Quote on WhatsApp</button>
+        <button id="calcCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I used your electrical calculator. I need a service quote.', '_blank')"> Get Free Quote on WhatsApp</button>
     </div>
 
     <!-- Tab 2: AC Tonnage Calculator -->
@@ -598,6 +739,10 @@ const ADMIN_WHATSAPP = "923152458657";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuZswXXxOfLTiin3vCl5tsBKYWKaF5yeKts2SRzu0NXqmzYPXoYEOCcmJmfQv44pTdDg/exec";
 const PHONE_1 = "+92 315 2458657";
 const PHONE_2 = "+92 312 8542993";
+
+// Electrical Invoice Variables
+let elecMode = 'area';
+let elecCurrentId = null;
 
 // ==========================================
 // ✅ UTILITY FUNCTIONS
@@ -819,7 +964,14 @@ async function saveManualEntry(layoutType = 'auto') {
     try {
         await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
         alert("✅ Saved!"); 
-        generateManualPDF(payload, payload.doc_type, layoutType); 
+        
+        // Generate invoice based on layout type
+        if(layoutType === 'electrical') {
+            openElectricalInvoice(payload);
+        } else {
+            generateManualPDF(payload, payload.doc_type, layoutType); 
+        }
+        
         loadLogs();
         
         // Reset Form
@@ -837,7 +989,148 @@ async function saveManualEntry(layoutType = 'auto') {
 }
 
 // ==========================================
-// ✅ PDF GENERATION (Async + Logo Guaranteed + Dual Layout)
+// ✅ ELECTRICAL INVOICE FUNCTIONS
+// ==========================================
+
+function openElectricalInvoice(data) {
+    document.getElementById('electricalInvoiceModal').style.display = 'block';
+    
+    // Fill data
+    document.getElementById('elecKcNo').value = '';
+    document.getElementById('elecDate').value = formatDate(data.date);
+    document.getElementById('elecBillTitle').value = data.doc_type.toUpperCase() || 'BILL';
+    document.getElementById('elecBillTo').value = data.client + '\n' + data.phone;
+    document.getElementById('elecBillFor').value = '';
+    document.getElementById('elecSubject').value = data.work.substring(0, 100);
+    document.getElementById('elecReceived').value = data.advance || 0;
+    document.getElementById('elecNoteText').value = data.note || 'Dear Sir this is the bill for the above mentioned work. So, we request you to clear my invoice as soon as possible.';
+    document.getElementById('elecAddr').value = 'Office # 1: DNHQ Services | Office # 2: DNHQ Services';
+    document.getElementById('elecName1').value = 'DNHQ Services Team';
+    document.getElementById('elecName2').value = 'DNHQ Electric Services';
+    
+    // Clear existing rows
+    const tbody = document.getElementById('elecItems');
+    while(tbody.rows.length > 1) {
+        tbody.deleteRow(0);
+    }
+    
+    // Add rows from data
+    const workItems = data.work.split(', ');
+    workItems.forEach((item, index) => {
+        if(item.includes(' x ')) {
+            const [desc, rest] = item.split(' x ');
+            const qtyMatch = rest.match(/^(\d+)/);
+            const qty = qtyMatch ? qtyMatch[1] : '1';
+            elecAddRow({desc: desc.trim(), qty: qty});
+        }
+    });
+    
+    elecCalc();
+}
+
+function closeElecModal() {
+    document.getElementById('electricalInvoiceModal').style.display = 'none';
+}
+
+function elecRowHTML(d){ 
+    d = d || {}; 
+    return `<tr>
+        <td class="no"></td>
+        <td><input class="elec-line-input desc" placeholder="Description of work" value="${d.desc||''}" oninput="elecCalc()"></td>
+        <td class="arCol"><input class="elec-num area" type="number" min="0" value="${d.area||0}" oninput="elecCalc()"></td>
+        <td class="arCol"><input class="elec-num rate" type="number" min="0" value="${d.rate||0}" oninput="elecCalc()"></td>
+        <td class="fxCol"><input class="elec-num ftotal" type="number" min="0" value="${d.ftotal||0}" oninput="elecCalc()"></td>
+        <td><input class="elec-num pct" type="number" min="0" max="100" value="${d.pct!=null?d.pct:100}" oninput="elecCalc()"></td>
+        <td class="amt">0/-</td>
+        <td class="del no-print"><button onclick="this.closest('tr').remove();elecCalc();" style="border:none;background:#e33;color:#fff;border-radius:50%;width:20px;height:20px;cursor:pointer;">×</button></td>
+    </tr>`; 
+}
+
+function elecAddRow(d){ 
+    const totalRow = document.getElementById('elecTotalRow');
+    totalRow.insertAdjacentHTML('beforebegin', elecRowHTML(d)); 
+    elecRenumber(); 
+}
+
+function elecRenumber(){
+    let n=1;
+    const tbody = document.getElementById('elecItems');
+    [...tbody.rows].forEach(r=>{ 
+        if(r.id!=='elecTotalRow') {
+            const noCell = r.querySelector('.no');
+            if(noCell) noCell.textContent = String(n++).padStart(2,'0'); 
+        } 
+    }); 
+}
+
+function setElecMode(m){
+    elecMode = m;
+    const table = document.getElementById('elecBillTable');
+    table.classList.toggle('mode-area', m==='area');
+    table.classList.toggle('mode-fixed', m==='fixed');
+    
+    const totalLabel = document.getElementById('elecTotalLabel');
+    totalLabel.colSpan = (m==='area') ? 5 : 4;
+    
+    document.getElementById('btnElecArea').classList.toggle('active', m==='area');
+    document.getElementById('btnElecFixed').classList.toggle('active', m==='fixed');
+    
+    elecCalc();
+}
+
+function elecCalc(){
+    let grand=0;
+    const tbody = document.getElementById('elecItems');
+    [...tbody.rows].forEach(r=>{
+        if(r.id==='elecTotalRow') return;
+        const area = +r.querySelector('.area').value || 0;
+        const rate = +r.querySelector('.rate').value || 0;
+        const ft = +r.querySelector('.ftotal').value || 0;
+        const pct = +r.querySelector('.pct').value || 0;
+        
+        const amt = (elecMode==='area') ? Math.round(area*rate*pct/100) : Math.round(ft*pct/100);
+        const amtCell = r.querySelector('.amt');
+        if(amtCell) amtCell.textContent = amt.toLocaleString()+'/-';
+        grand += amt;
+    });
+    
+    document.getElementById('elecGrandTotal').textContent = grand.toLocaleString()+'/-';
+    const rec = +document.getElementById('elecReceived').value || 0;
+    document.getElementById('elecBalance').textContent = 'Rs. ' + (grand-rec).toLocaleString();
+}
+
+async function downloadElecPDF(){
+    const page = document.getElementById('elecPageEl');
+    const opt = {
+        margin: 0,
+        filename: 'DNHQ-Electric-Bill-' + (document.getElementById('elecKcNo').value || Date.now()).replace(/[^\w.-]+/g,'_') + '.pdf',
+        image: { type:'jpeg', quality: 0.95 },
+        html2canvas: {
+            scale: 2, 
+            useCORS: true,
+            scrollX: 0, 
+            scrollY: 0,
+            windowWidth: 1000, 
+            windowHeight: 1414,
+            onclone: (doc)=>{
+                doc.querySelectorAll('.no-print').forEach(x=>x.remove());
+                doc.querySelectorAll('[placeholder]').forEach(i=>i.removeAttribute('placeholder'));
+            }
+        },
+        jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
+        pagebreak: { mode: ['css','legacy'] }
+    };
+    
+    try {
+        await html2pdf().set(opt).from(page).save();
+        alert('✅ Electrical Invoice PDF Downloaded!');
+    } catch(e) {
+        alert('PDF na bane to 🖨 Print → Save as PDF use karein.');
+    }
+}
+
+// ==========================================
+// ✅ PDF GENERATION (AC/SERVICE LAYOUT)
 // ==========================================
 
 async function generateManualPDF(data, docType, layoutType = 'auto') {
@@ -1167,9 +1460,16 @@ window.switchCalcTab = switchCalcTab; window.clearCalculator = clearCalculator;
 window.calculateElectrical = calculateElectrical; window.calculateAC = calculateAC; window.calculateRoomArea = calculateRoomArea; window.calculateAmperes = calculateAmperes;
 window.downloadBlankLetterhead = downloadBlankLetterhead; window.updateCart = updateCart;
 window.setNote = setNote; window.updateAdvanceUI = updateAdvanceUI; window.toggleDiscountInput = toggleDiscountInput;
+// Electrical Invoice Functions
+window.openElectricalInvoice = openElectricalInvoice; window.closeElecModal = closeElecModal;
+window.elecAddRow = elecAddRow; window.setElecMode = setElecMode; window.elecCalc = elecCalc; window.downloadElecPDF = downloadElecPDF;
 
 // ✅ INIT
-document.addEventListener('DOMContentLoaded', () => { console.log('✅ UI Ready'); updateCart(); });
+document.addEventListener('DOMContentLoaded', () => { 
+    console.log('✅ UI Ready'); 
+    updateCart(); 
+    setElecMode('area');
+});
 </script>
 </body>
 </html>
