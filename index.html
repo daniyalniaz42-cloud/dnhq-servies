@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=35">
+<link rel="manifest" href="manifest.json?v=36">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -226,7 +226,7 @@ footer a:hover { text-decoration: underline; }
 
 <!-- Document Type Selector -->
 <div style="margin-bottom:15px;">
-  <label style="color:#94a3b8;font-size:13px;display:block;margin-bottom:5px;">📄 Document Type:</label>
+  <label style="color:#94a3b8;font-size:13px;display:block;margin-bottom:5px;"> Document Type:</label>
   <div style="display:flex;gap:10px;">
     <button type="button" id="btnInvoice" onclick="setDocType('invoice')" style="flex:1;padding:10px;background:var(--gold);color:black;border:none;border-radius:8px;font-weight:bold;cursor:pointer;"> INVOICE</button>
     <button type="button" id="btnQuotation" onclick="setDocType('quotation')" style="flex:1;padding:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;font-weight:bold;cursor:pointer;"> QUOTATION</button>
@@ -300,13 +300,27 @@ footer a:hover { text-decoration: underline; }
     <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
         <button class="note-btn" onclick="setNote('Please clear your due balance as soon as possible.')">⚠️ Balance Due</button>
         <button class="note-btn" onclick="setNote('Thank you for choosing DNHQ Services!')"> Thank You</button>
-        <button class="note-btn" onclick="setNote('Warranty valid for 15 days on parts.')">🛡️ Warranty</button>
+        <button class="note-btn" onclick="setNote('Warranty valid for 15 days on parts.')">️ Warranty</button>
         <button class="note-btn" onclick="setNote('Please keep this invoice for future reference.')"> Reference</button>
         <button class="note-btn" onclick="setNote('')" style="background:#ef4444;">❌ Clear</button>
     </div>
 </div>
 
-<button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;"> SAVE & GENERATE PDF</button>
+<!-- ✅ NEW: SEPARATE INVOICE GENERATION BUTTONS -->
+<div style="margin-top:20px; padding-top:15px; border-top:1px solid #334155;">
+    <h5 style="color:#fbbf24;margin:0 0 10px 0;">🖨️ Generate Invoice (Select Layout)</h5>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <!-- AC Layout Button -->
+        <button onclick="saveManualEntry('ac')" style="flex:1;background:#3b82f6;color:white;font-weight:bold;border:none;padding:12px;border-radius:8px;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.3);">
+            ❄️ Save & AC Layout
+        </button>
+        <!-- Electrical Layout Button -->
+        <button onclick="saveManualEntry('electrical')" style="flex:1;background:#f59e0b;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.3);">
+            ⚡ Save & Electrical Layout
+        </button>
+    </div>
+</div>
+
 </div>
 
 <div class="order-filters">
@@ -734,7 +748,7 @@ function addNewManualRow() {
     document.getElementById('manual_works_container').appendChild(d);
 }
 
-async function saveManualEntry() {
+async function saveManualEntry(layoutType = 'auto') {
     const n = document.getElementById('man_name').value.trim();
     const p = document.getElementById('man_phone').value.trim();
     if(!n || !p) return alert("Name & Phone Required!");
@@ -807,7 +821,7 @@ async function saveManualEntry() {
     try {
         await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
         alert("✅ Saved!"); 
-        generateManualPDF(payload, payload.doc_type); 
+        generateManualPDF(payload, payload.docType, layoutType); 
         loadLogs();
         
         // Reset Form
@@ -825,10 +839,10 @@ async function saveManualEntry() {
 }
 
 // ==========================================
-// ✅ UPDATED PDF GENERATION (Dual Design)
+// ✅ UPDATED PDF GENERATION (Dual Design + Layout Button)
 // ==========================================
 
-function generateManualPDF(data, docType) {
+function generateManualPDF(data, docType, layoutType = 'auto') {
     try {
         const {jsPDF} = window.jspdf; 
         const doc = new jsPDF();
@@ -857,10 +871,18 @@ function generateManualPDF(data, docType) {
         doc.setFontSize(16); 
         doc.text(docType.toUpperCase(), 105, 78, {align:"center"});
 
-        // ✅ DETECT WORK TYPE
-        // Keywords that trigger the "Electrical" Design (Subject, S.No, etc)
-        const electricalKeywords = ['wiring', 'flooring', 'piping', 'board', 'circuit', 'breaker', 'voltage', 'switch', 'socket', 'light', 'fan', 'db', 'distribution'];
-        const isElectrical = electricalKeywords.some(k => data.work.toLowerCase().includes(k));
+        // ✅ DETERMINE LAYOUT
+        let isElectrical = false;
+
+        if (layoutType === 'electrical') {
+            isElectrical = true; // Force Electrical Layout
+        } else if (layoutType === 'ac') {
+            isElectrical = false; // Force AC Layout
+        } else {
+            // Auto Detect based on keywords if 'auto'
+            const electricalKeywords = ['wiring', 'flooring', 'piping', 'board', 'circuit', 'breaker', 'voltage', 'switch', 'socket', 'light', 'fan', 'db', 'distribution'];
+            isElectrical = electricalKeywords.some(k => data.work.toLowerCase().includes(k));
+        }
 
         let finalY = 86;
 
@@ -1081,7 +1103,7 @@ function filterOrders(type) {
     } else {
         c.innerHTML = f.map((o, i) => `
             <div class="log-card">
-                <button class="pdf-btn" onclick="generateManualPDF(allOrders[${allOrders.indexOf(o)}],'${o.doc_type}')">PDF</button>
+                <button class="pdf-btn" onclick="generateManualPDF(allOrders[${allOrders.indexOf(o)}],'${o.doc_type}','auto')">PDF</button>
                 <b>${o.client}</b> <span class="badge ${o.doc_type==='invoice'?'badge-invoice':'badge-quotation'}">${o.doc_type.toUpperCase()}</span><br>
                 <small> ${o.phone}</small><br>
                 <b style="color:gold;">Rs ${parseFloat(o.total).toLocaleString()}</b><br>
@@ -1118,7 +1140,7 @@ async function fetchCustomerHistory() {
             <div class="history-item">
                 <b>${formatDate(o.date)}</b><br>
                 ${o.work}<br>
-                <button class="pdf-sm" onclick="generateManualPDF(${JSON.stringify(o).replace(/"/g,'&quot;')},'${o.doc_type}')"> Download</button>
+                <button class="pdf-sm" onclick="generateManualPDF(${JSON.stringify(o).replace(/"/g,'&quot;')},'${o.doc_type}','auto')"> Download</button>
             </div>
         `).join('');
     } catch(e) { 
