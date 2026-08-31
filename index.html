@@ -4,33 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DNHQ SERVICES | Official</title>
-<link rel="manifest" href="manifest.json?v=38">
+<link rel="manifest" href="manifest.json?v=25">
 <meta name="theme-color" content="#fbbf24">
 <link rel="apple-touch-icon" href="1773452778552.jpeg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root { --dark: #070a13; --gold: #fbbf24; --card: #111827; --text: #f1f5f9; }
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #0f172a; color: var(--text); padding-bottom: 100px; }
 .brand-header { background: #000; padding: 30px 20px 25px; text-align: center; border-bottom: 4px solid var(--gold); border-radius: 0 0 30px 30px; }
 .logo-main { height: 85px; display: block; margin: 0 auto; border-radius: 10px; }
 .brand-title { color: var(--gold); font-size: 24px; font-weight: 900; margin-top: 15px; text-transform: uppercase; }
 .wrapper { padding: 15px; max-width: 600px; margin: 0 auto; }
 .nav-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; flex-wrap: wrap; }
-.nav-btn { flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.2s; user-select: none; }
-.nav-btn:active { transform: scale(0.98); }
+.nav-btn { flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--gold); color: white; padding: 12px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.2s; }
+.nav-btn:hover { background: #1f2937; }
 .app-download-btn { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-.app-download-btn:active { transform: scale(0.98); }
+.app-download-btn:hover { transform: translateY(-2px); }
 .tut-btn { width: 100%; background: var(--gold); color: black; padding: 12px; border-radius: 12px; border: none; font-weight: 800; margin: 15px 0 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .section-tag { display: flex; align-items: center; margin: 30px 0 15px; }
 .section-tag h2 { font-size: 13px; color: #94a3b8; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
 .section-line { flex-grow: 1; height: 1px; background: rgba(251, 191, 36, 0.2); margin-left: 15px; }
-.svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; user-select: none; }
-.svc-item:active { background: #1f2937; }
+.svc-item { background: var(--card); border: 1px solid #1f2937; border-radius: 15px; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+.svc-item:hover { background: #1f2937; }
 .svc-item.selected { border: 2px solid var(--gold); background: #000; }
 .svc-meta b { display: block; font-size: 16px; color: white; }
 .svc-meta p { font-size: 12px; color: #94a3b8; margin: 0; }
@@ -52,7 +50,7 @@ footer a:hover { text-decoration: underline; }
 .history-btn { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; padding: 14px 25px; font-size: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; margin: 10px auto; display: flex; align-items: center; justify-content: center; gap: 10px; width: 90%; max-width: 500px; }
 .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); overflow-y: auto; backdrop-filter: blur(5px); }
 .modal-content { background: #111827; margin: 8% auto; padding: 20px; border: 2px solid #fbbf24; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
-.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; z-index: 10; }
+.modal-close { position: absolute; right: 15px; top: 10px; font-size: 24px; color: #94a3b8; cursor: pointer; }
 .form-input { width: 100%; padding: 12px; margin: 8px 0 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; font-size: 14px; box-sizing: border-box; }
 .verify-btn { width: 100%; background: #fbbf24; color: black; padding: 14px; border: none; border-radius: 10px; font-weight: 800; font-size: 15px; cursor: pointer; margin-top: 5px; }
 .error-msg { color: #ef4444; text-align: center; font-size: 13px; margin: 10px 0; display: none; }
@@ -116,62 +114,19 @@ footer a:hover { text-decoration: underline; }
 .m-quality { width: 90px; text-align: center; font-size: 12px; padding: 8px; }
 .m-price { width: 70px; text-align: center; }
 
+/* ✅ Calculator Styles */
 .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 15px; }
 .calc-result { background: #0f172a; border-radius: 8px; padding: 15px; margin-top: 15px; border-left: 3px solid var(--gold); display: none; }
 .calc-btn { width: 100%; background: var(--gold); color: black; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
 .calc-btn:hover { opacity: 0.9; }
 .calc-wa { width: 100%; background: #22c55e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
+
+/* ✅ Calculator Tabs */
 .calc-tabs { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 10px; overflow-x: auto; }
 .calc-tab { flex: 1; padding: 8px 10px; background: #1e293b; border: none; border-radius: 8px; color: #94a3b8; font-weight: bold; cursor: pointer; text-align: center; font-size: 11px; white-space: nowrap; min-width: 80px; }
 .calc-tab.active { background: var(--gold); color: black; }
 .calc-section { display: none; }
 .calc-section.active { display: block; }
-.note-btn { background: #334155; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.2s; }
-.note-btn:hover { background: #475569; }
-
-/* Electrical Invoice Modal Styles */
-#electricalInvoiceModal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
-.elec-toolbar { width: 210mm; margin: 0 auto 10px; display: flex; gap: 8px; flex-wrap: wrap; padding: 10px; background: #1e293b; }
-.elec-toolbar button { background: var(--gold); border: none; padding: 10px 14px; font-weight: 700; cursor: pointer; border-radius: 4px; font-size: 13px; }
-.elec-page { width: 210mm; min-height: 297mm; margin: 0 auto; background: #f7f8fa; display: flex; flex-direction: column; position: relative; box-shadow: 0 2px 14px rgba(0,0,0,.3); overflow: hidden; }
-.elec-header { background: #0b0d0a; display: flex; align-items: center; padding: 12px 22px; }
-.elec-logo { width: 80px; height: auto; }
-.elec-cname { margin-left: 10px; color: var(--gold); font-size: 30px; font-weight: 800; line-height: 1.15; }
-.elec-cname span { color: #fff; font-size: 20px; font-weight: 700; }
-.elec-arrows { margin-left: auto; display: flex; gap: 16px; }
-.elec-chev { width: 60px; height: 60px; background: radial-gradient(circle, var(--gold) 42%, transparent 46%); background-size: 9px 9px; clip-path: polygon(0 0,35% 0,100% 50%,35% 100%,0 100%,62% 50%); }
-.elec-main { flex: 1; position: relative; padding: 24px 46px 14px; display: flex; flex-direction: column; }
-.elec-watermark { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: .08; pointer-events: none; }
-.elec-line-input { border: none; border-bottom: 1.5px solid #222; background: transparent; font-size: 15px; padding: 2px 4px; outline: none; width: 100%; }
-.elec-toprow { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 10px; }
-.elec-title-row { text-align: center; margin: 22px 0 18px; }
-#elecBillTitle { border: none; background: transparent; outline: none; text-align: center; font-family: Georgia, serif; font-size: 24px; font-weight: 800; border-bottom: 2px solid #222; width: 70%; padding-bottom: 2px; }
-.elec-info-row { margin-bottom: 10px; font-size: 14px; display: flex; gap: 8px; align-items: flex-start; }
-.elec-info-row b { min-width: 70px; }
-.elec-info-row textarea { flex: 1; border: none; background: transparent; outline: none; resize: none; font-family: inherit; font-size: 14px; line-height: 1.5; }
-.elec-table-wrap { position: relative; z-index: 1; overflow-x: auto; }
-.elec-table { width: 100%; border-collapse: collapse; background: #fff; }
-.elec-th { background: #0b0d0a; color: var(--gold); padding: 7px 5px; font-size: 13px; text-align: left; }
-.elec-td { border: 1px solid #999; padding: 6px; font-size: 14px; text-align: center; }
-.elec-num { width: 70px; border: none; background: transparent; text-align: center; outline: none; font-size: 14px; }
-.elec-total-label { font-weight: 800; text-align: center; background: #fffbe6; }
-.elec-rec-row { display: flex; justify-content: flex-end; gap: 24px; margin-top: 10px; font-size: 14px; font-weight: 700; }
-.elec-rec-row input { width: 110px; border: 1px solid #bbb; padding: 2px 6px; text-align: right; }
-.elec-msg { margin-top: 16px; font-size: 14px; line-height: 1.6; }
-.elec-msg textarea { width: 100%; margin-top: 6px; border: none; background: transparent; outline: none; resize: none; font-family: inherit; font-size: 14px; line-height: 1.6; }
-.elec-sig-area { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding-top: 40px; position: relative; z-index: 1; }
-.elec-sig-left p { font-size: 14px; line-height: 1.5; }
-.elec-sig-left .sig-space { height: 55px; }
-.elec-sig-left .underline { width: 190px; border-bottom: 1.5px solid #222; margin-bottom: 8px; }
-.elec-sig-left input { border: none; background: transparent; outline: none; display: block; font-weight: 800; font-size: 15px; width: 240px; }
-.elec-sig-right { font-weight: 700; font-size: 18px; font-family: Georgia, serif; display: flex; align-items: flex-end; }
-.elec-sig-right .line { width: 160px; border-bottom: 1.5px solid #222; margin-left: 8px; }
-.elec-footer { background: #0b0d0a; color: var(--gold); text-align: center; padding: 8px 12px 12px; }
-.elec-addr-row input { border: none; border-bottom: 1px dashed #6b5a10; background: transparent; color: var(--gold); text-align: center; width: 92%; outline: none; font-size: 12px; padding: 2px; }
-.elec-ftitle { font-weight: 800; font-family: Georgia, serif; margin-top: 4px; }
-.elec-frow { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; margin-top: 4px; }
-.elec-icon { width: 26px; height: 26px; background: var(--gold); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
-.elec-sep { font-size: 18px; }
 </style>
 </head>
 <body>
@@ -183,7 +138,7 @@ footer a:hover { text-decoration: underline; }
 <div class="nav-container">
 <a href="portfolio/index.html" class="nav-btn"><i class="fas fa-images"></i> OUR WORK</a>
 <a href="team/index.html" class="nav-btn"><i class="fas fa-users"></i> OUR TEAM</a>
-<button class="nav-btn" onclick="openCalculator()"><i class="fas fa-calculator"></i> TOOLS</button>
+<button class="nav-btn" onclick="openCalculator()" style="border:1px dashed var(--gold); color:var(--gold);"><i class="fas fa-calculator"></i> TOOLS</button>
 </div>
 <button class="app-download-btn" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Download Our App</button>
 <button class="tut-btn" onclick="playVid()"><i class="fas fa-play-circle"></i> WATCH TUTORIAL</button>
@@ -233,14 +188,14 @@ footer a:hover { text-decoration: underline; }
 <div style="background:linear-gradient(135deg, #10b981 0%, #059669 100%);padding:20px;border-radius:15px;margin-bottom:20px;box-shadow:0 4px 15px rgba(16,185,129,0.3);">
     <div style="display:flex;justify-content:space-between;align-items:center;">
         <div>
-            <h4 style="color:white;margin:0 0 5px 0;font-size:14px;opacity:0.9;"> TOTAL REVENUE</h4>
+            <h4 style="color:white;margin:0 0 5px 0;font-size:14px;opacity:0.9;">💰 TOTAL REVENUE</h4>
             <div style="font-size:28px;font-weight:900;color:white;" id="totalRevenueAmount">Rs 0</div>
             <small style="color:rgba(255,255,255,0.8);">From all invoices & quotations</small>
         </div>
         <div style="text-align:right;">
             <div style="font-size:14px;color:white;opacity:0.9;" id="totalOrdersCount">0 Orders</div>
-            <button onclick="calculateTotalRevenue()" style="background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 15px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;margin-top:8px;transition:all 0.3s;">
-                 Refresh Total
+            <button onclick="calculateTotalRevenue()" style="background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 15px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;margin-top:8px;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                🔄 Refresh Total
             </button>
         </div>
     </div>
@@ -267,14 +222,14 @@ footer a:hover { text-decoration: underline; }
 
 <div id="ordersSection">
 <div style="background:#1e293b;padding:15px;border-radius:12px;border:1px dashed var(--gold);margin-bottom:25px;">
-<h4 style="color:var(--gold);margin:0 0 10px 0;"> CREATE MANUAL BILL</h4>
+<h4 style="color:var(--gold);margin:0 0 10px 0;">💵 CREATE MANUAL BILL</h4>
 
 <!-- Document Type Selector -->
 <div style="margin-bottom:15px;">
-  <label style="color:#94a3b8;font-size:13px;display:block;margin-bottom:5px;"> Document Type:</label>
+  <label style="color:#94a3b8;font-size:13px;display:block;margin-bottom:5px;">📄 Document Type:</label>
   <div style="display:flex;gap:10px;">
     <button type="button" id="btnInvoice" onclick="setDocType('invoice')" style="flex:1;padding:10px;background:var(--gold);color:black;border:none;border-radius:8px;font-weight:bold;cursor:pointer;"> INVOICE</button>
-    <button type="button" id="btnQuotation" onclick="setDocType('quotation')" style="flex:1;padding:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;font-weight:bold;cursor:pointer;"> QUOTATION</button>
+    <button type="button" id="btnQuotation" onclick="setDocType('quotation')" style="flex:1;padding:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:8px;font-weight:bold;cursor:pointer;">📋 QUOTATION</button>
   </div>
   <input type="hidden" id="doc_type" value="invoice">
 </div>
@@ -311,64 +266,15 @@ footer a:hover { text-decoration: underline; }
 </div>
 </div>
 <div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-<h5 style="color:#3b82f6;margin:0 0 10px 0;"> Advance / Starting Payment</h5>
-  <div style="display:flex; gap:8px; margin-bottom:8px;">
-    <select id="advance_type" class="man-input" style="flex:1; min-width:120px;" onchange="updateAdvanceUI()">
-      <option value="fixed">Fixed Amount (Rs)</option>
-      <option value="percent">Percentage (%)</option>
-    </select>
-  </div>
-  <input type="number" id="advance_payment" class="man-input" placeholder="Enter fixed amount in Rs">
-  <small id="advance_preview" style="color:#10b981; font-size:12px; font-weight:bold; display:none; margin-top:-5px; margin-bottom:5px;"></small>
+<h5 style="color:#3b82f6;margin:0 0 10px 0;">💰 Advance Payment (Optional)</h5>
+<input type="number" id="advance_payment" class="man-input" placeholder="Enter advance amount received">
 </div>
-
-<!-- ✅ WORK DISTRIBUTION (PERCENTAGE BREAKDOWN) -->
-<div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-    <h5 style="color:#fbbf24;margin:0 0 10px 0;">⚡ Work Distribution (%)</h5>
-    <p style="color:#94a3b8;font-size:11px;margin-bottom:8px;">Enter % of total bill for each category (Optional)</p>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <div>
-            <label style="color:#94a3b8;font-size:11px;">Slab/Piping %</label>
-            <input type="number" id="breakdown_slab" class="man-input" placeholder="e.g. 30" style="margin-top:2px;">
-        </div>
-        <div>
-            <label style="color:#94a3b8;font-size:11px;">Wiring %</label>
-            <input type="number" id="breakdown_wiring" class="man-input" placeholder="e.g. 70" style="margin-top:2px;">
-        </div>
-    </div>
-</div>
-
-<!-- ✅ NOTES SECTION -->
-<div style="border-top:1px solid #334155;padding-top:15px;margin-top:15px;">
-    <h5 style="color:#fbbf24;margin:0 0 10px 0;">📝 Notes (Optional)</h5>
-    <textarea id="invoice_note" class="man-input" rows="2" placeholder="Add a custom note here..."></textarea>
-    <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
-        <button class="note-btn" onclick="setNote('Please clear your due balance as soon as possible.')">️ Balance Due</button>
-        <button class="note-btn" onclick="setNote('Thank you for choosing DNHQ Services!')"> Thank You</button>
-        <button class="note-btn" onclick="setNote('Warranty valid for 15 days on parts.')">️ Warranty</button>
-        <button class="note-btn" onclick="setNote('Please keep this invoice for future reference.')"> Reference</button>
-        <button class="note-btn" onclick="setNote('')" style="background:#ef4444;">❌ Clear</button>
-    </div>
-</div>
-
-<!-- ✅ NEW INVOICE TYPE BUTTONS -->
-<div style="margin-top:20px; padding-top:15px; border-top:1px solid #334155;">
-    <h5 style="color:#fbbf24;margin:0 0 10px 0;">🖨️ Generate Invoice (Select Layout)</h5>
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button onclick="saveManualEntry('ac')" style="flex:1;background:#3b82f6;color:white;font-weight:bold;border:none;padding:12px;border-radius:8px;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.3);">
-            ❄️ Save & AC Layout
-        </button>
-        <button onclick="saveManualEntry('electrical')" style="flex:1;background:#f59e0b;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.3);">
-            ⚡ Save & Electrical Layout
-        </button>
-    </div>
-</div>
-
+<button onclick="saveManualEntry()" style="width:100%;background:gold;color:black;font-weight:bold;border:none;padding:12px;border-radius:8px;margin-top:15px;">💾 SAVE & GENERATE PDF</button>
 </div>
 
 <div class="order-filters">
-<button class="order-filter-btn active" onclick="filterOrders('website')"> Website Orders</button>
-<button class="order-filter-btn" onclick="filterOrders('manual')"> Manual Orders</button>
+<button class="order-filter-btn active" onclick="filterOrders('website')">🌐 Website Orders</button>
+<button class="order-filter-btn" onclick="filterOrders('manual')">📝 Manual Orders</button>
 <button class="order-filter-btn" onclick="refreshOrders()" style="background:#3b82f6;color:white;border:none;">🔄 Refresh</button>
 </div>
 
@@ -379,16 +285,6 @@ footer a:hover { text-decoration: underline; }
     <button class="order-filter-btn" onclick="exportBackups()" style="background:#10b981;color:white;border:none;"> Export Backups</button>
   </div>
 </div>
-
-<!-- ✅ OFFICIAL TEMPLATES SECTION -->
-<div style="background:#1e293b;padding:15px;border-radius:12px;border:1px solid #fbbf24;margin:15px 0;">
-  <h4 style="color:#fbbf24;margin:0 0 10px 0;"> Official Templates</h4>
-  <button class="order-filter-btn" onclick="downloadBlankLetterhead()" style="background:#fbbf24;color:black;border:none;width:100%;font-weight:bold;">
-    ️ Download Blank Letterhead
-  </button>
-  <small style="color:#94a3b8;display:block;margin-top:8px;">Ready-to-print official letterhead with your logo & contact info.</small>
-</div>
-
 <div id="logItems" class="loading">Loading...</div>
 </div>
 
@@ -412,108 +308,12 @@ footer a:hover { text-decoration: underline; }
 </div>
 </div>
 
-<!-- ELECTRICAL INVOICE MODAL -->
-<div id="electricalInvoiceModal">
-    <div class="elec-toolbar no-print">
-        <button onclick="elecAddRow()">+ Row</button>
-        <button id="btnElecArea" onclick="setElecMode('area')">📐 C/ Area Bill</button>
-        <button id="btnElecFixed" onclick="setElecMode('fixed')">💰 Fixed Bill</button>
-        <button style="background:#22c55e;color:white;" onclick="downloadElecPDF()"> PDF Download</button>
-        <button style="background:#ef4444;color:white;" onclick="closeElecModal()">❌ Close</button>
-    </div>
-    
-    <div class="elec-page" id="elecPageEl">
-        <header class="elec-header">
-            <svg class="elec-logo" width="80" height="104" viewBox="0 0 100 130">
-                <path d="M 63.7 92.6 A 40 40 0 1 1 87.6 68.7" fill="none" stroke="#F7C11E" stroke-width="6" stroke-linecap="round"/>
-                <path d="M 40 105 L 72 111 L 40 119 L 72 127" fill="none" stroke="#F7C11E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M 55 20 L 30 60 H 46 L 40 90 L 70 48 H 53 Z" fill="#F7C11E"/>
-            </svg>
-            <div class="elec-cname">DNHQ <span>ELECTRIC</span><br>SERVICES</div>
-            <div class="elec-arrows"><div class="elec-chev"></div><div class="elec-chev"></div><div class="elec-chev"></div></div>
-        </header>
-
-        <div class="elec-main">
-            <div class="elec-watermark">
-                <svg width="320" height="416" viewBox="0 0 100 130">
-                    <path d="M 63.7 92.6 A 40 40 0 1 1 87.6 68.7" fill="none" stroke="#F7C11E" stroke-width="6" stroke-linecap="round"/>
-                    <path d="M 40 105 L 72 111 L 40 119 L 72 127" fill="none" stroke="#F7C11E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M 55 20 L 30 60 H 46 L 40 90 L 70 48 H 53 Z" fill="#F7C11E"/>
-                </svg>
-            </div>
-
-            <div class="elec-toprow">
-                <span>KC No / Invoice No:<input class="elec-line-input" id="elecKcNo"></span>
-                <span>Date:<input class="elec-line-input" id="elecDate" style="width:120px"></span>
-            </div>
-
-            <div class="elec-title-row"><input id="elecBillTitle" value="BILL"></div>
-
-            <div class="elec-info-row"><b>Bill To:</b><textarea id="elecBillTo" rows="3" placeholder="Customer / company name&#10;Builder / developer&#10;Area, City"></textarea></div>
-            <div class="elec-info-row"><b>Bill for:</b><input class="elec-line-input" id="elecBillFor" placeholder="Site office & model flat waghera"></div>
-            <div class="elec-info-row"><b>Subject:</b><input class="elec-line-input" id="elecSubject" placeholder="Bill ka subject likhein"></div>
-
-            <div class="elec-table-wrap">
-                <table id="elecBillTable" class="mode-area">
-                    <thead>
-                        <tr>
-                            <th class="elec-th">S.no</th><th class="elec-th">Description</th>
-                            <th class="elec-th arCol">C/ Area</th><th class="elec-th arCol">Rate</th>
-                            <th class="elec-th fxCcol">Total Amount</th>
-                            <th class="elec-th">Qty (%)</th><th class="elec-th">Amount</th><th class="no-print"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="elecItems">
-                        <tr id="elecTotalRow">
-                            <td id="elecTotalLabel" colspan="5" class="elec-total-label">Total:</td>
-                            <td class="amt" id="elecGrandTotal">0/-</td>
-                            <td class="no-print"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="elec-rec-row">
-                <span>Received: <input id="elecReceived" type="number" value="0"></span>
-                <span>Balance: <span id="elecBalance">Rs. 0</span></span>
-            </div>
-
-            <div class="elec-msg">
-                <b>Message / Notes:</b>
-                <textarea id="elecNoteText" rows="3">Dear Sir this is the bill for the above mentioned work. So, we request you to clear my invoice as soon as possible.</textarea>
-            </div>
-
-            <div class="elec-sig-area">
-                <div class="elec-sig-left">
-                    <p>Thank you<br>Regards</p>
-                    <div class="sig-space"></div>
-                    <div class="underline"></div>
-                    <input id="elecName1" value="DNHQ Services Team">
-                    <input id="elecName2" value="DNHQ Electric Services">
-                </div>
-                <div class="elec-sig-right">Sign: <span class="line"></span></div>
-            </div>
-        </div>
-
-        <footer class="elec-footer">
-            <div class="elec-addr-row"><input id="elecAddr" placeholder="Office # 1: address yahan likhein  |  Office # 2: address yahan likhein"></div>
-            <div class="elec-ftitle">CONTACT US</div>
-            <div class="elec-frow">
-                <span class="elec-icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></span>
-                +92 315 2458657 <span class="elec-sep">|</span> +92 312 8542993
-                <span class="elec-icon"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></span>
-                dnhq-services.online
-            </div>
-        </footer>
-    </div>
-</div>
-
 <!-- HISTORY MODAL -->
 <div id="historyModal" class="modal" onclick="closeHistoryModalOnBackground(event)">
 <div class="modal-content">
 <span class="modal-close" onclick="closeHistoryModal()">&times;</span>
 <div id="verifyStep">
-<h3 style="text-align:center;color:#fbbf24;"> Check Service History</h3>
+<h3 style="text-align:center;color:#fbbf24;">🔐 Check Service History</h3>
 <p style="text-align:center;color:#94a3b8;font-size:13px;">Enter your phone number to view history</p>
 <input type="tel" id="histPhone" class="form-input" placeholder="Phone: 03XX-XXXXXXX">
 <button class="verify-btn" onclick="fetchCustomerHistory()">Show My History</button>
@@ -549,7 +349,7 @@ footer a:hover { text-decoration: underline; }
 <option value="other">Other</option>
 </select>
 <textarea id="complaintMessage" class="form-input" placeholder="Describe your complaint..." rows="4" style="background:#0f172a;color:white;resize:vertical;"></textarea>
-<button onclick="submitComplaint()" style="width:100%;background:#ef4444;color:white;font-weight:bold;border:none;padding:14px;border-radius:10px;font-size:15px;cursor:pointer;"> Submit Complaint</button>
+<button onclick="submitComplaint()" style="width:100%;background:#ef4444;color:white;font-weight:bold;border:none;padding:14px;border-radius:10px;font-size:15px;cursor:pointer;">📤 Submit Complaint</button>
 <div id="complaintError" class="error-msg"></div>
 <div id="complaintSuccess" class="success-msg"></div>
 </div>
@@ -559,12 +359,12 @@ footer a:hover { text-decoration: underline; }
 <div id="confirmDialog" class="confirm-dialog">
 <div class="confirm-box">
 <div class="confirm-header">
-<h3> CONFIRM BILL DETAILS</h3>
+<h3>📋 CONFIRM BILL DETAILS</h3>
 <p>Please review before generating PDF</p>
 </div>
 <div class="confirm-body" id="confirmBody"></div>
 <div class="confirm-footer">
-<button class="btn-cancel" onclick="closeConfirmDialog()"> Cancel</button>
+<button class="btn-cancel" onclick="closeConfirmDialog()">❌ Cancel</button>
 <button class="btn-confirm" onclick="confirmAndGeneratePDF()">✅ Confirm & Generate PDF</button>
 </div>
 </div>
@@ -574,7 +374,7 @@ footer a:hover { text-decoration: underline; }
 <div id="backupModal" class="modal" onclick="closeBackupModalOnBackground(event)">
   <div class="modal-content" style="max-width:700px;">
     <span class="modal-close" onclick="closeBackupModal()">&times;</span>
-    <h3 style="text-align:center;color:#3b82f6;">️ Deleted Orders Backup</h3>
+    <h3 style="text-align:center;color:#3b82f6;">🗂️ Deleted Orders Backup</h3>
     <div id="backupList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
     <div style="display:flex;gap:10px;">
       <button class="btn-back" onclick="closeBackupModal()" style="flex:1;">Close</button>
@@ -591,10 +391,10 @@ footer a:hover { text-decoration: underline; }
     
     <!-- Tabs -->
     <div class="calc-tabs">
-        <button class="calc-tab active" onclick="switchCalcTab('elec')"> Electrical</button>
+        <button class="calc-tab active" onclick="switchCalcTab('elec')">⚡ Electrical</button>
         <button class="calc-tab" onclick="switchCalcTab('ac')">️ AC Tonnage</button>
         <button class="calc-tab" onclick="switchCalcTab('room')">📏 Room Area</button>
-        <button class="calc-tab" onclick="switchCalcTab('amp')"> Amperes</button>
+        <button class="calc-tab" onclick="switchCalcTab('amp')">🔌 Amperes</button>
     </div>
 
     <!-- Tab 1: Electrical Calculator -->
@@ -624,10 +424,10 @@ footer a:hover { text-decoration: underline; }
         </div>
 
         <button class="calc-btn" onclick="calculateElectrical()"> Calculate Now</button>
-        <button class="calc-btn" style="background:#334155;color:white;margin-top:8px;" onclick="clearCalculator()">️ Clear</button>
+        <button class="calc-btn" style="background:#334155;color:white;margin-top:8px;" onclick="clearCalculator()">🗑️ Clear</button>
 
         <div id="calcResult" class="calc-result"></div>
-        <button id="calcCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I used your electrical calculator. I need a service quote.', '_blank')"> Get Free Quote on WhatsApp</button>
+        <button id="calcCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I used your electrical calculator. I need a service quote.', '_blank')">📩 Get Free Quote on WhatsApp</button>
     </div>
 
     <!-- Tab 2: AC Tonnage Calculator -->
@@ -647,7 +447,7 @@ footer a:hover { text-decoration: underline; }
             </div>
         </div>
 
-        <button class="calc-btn" onclick="calculateAC()">️ Find AC Size</button>
+        <button class="calc-btn" onclick="calculateAC()">❄️ Find AC Size</button>
         <button class="calc-btn" style="background:#334155;color:white;margin-top:8px;" onclick="clearCalculator()">️ Clear</button>
 
         <div id="acResult" class="calc-result"></div>
@@ -698,11 +498,11 @@ footer a:hover { text-decoration: underline; }
             </div>
         </div>
 
-        <button class="calc-btn" onclick="calculateAmperes()"> Calculate Amperes</button>
+        <button class="calc-btn" onclick="calculateAmperes()">🔌 Calculate Amperes</button>
         <button class="calc-btn" style="background:#334155;color:white;margin-top:8px;" onclick="clearCalculator()">️ Clear</button>
 
         <div id="ampResult" class="calc-result"></div>
-        <button id="ampCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I used your Amperes calculator. I need electrical service.', '_blank')"> Get Electrical Service Quote</button>
+        <button id="ampCTA" class="calc-wa" onclick="window.open('https://wa.me/923152458657?text=Hi! I used your Amperes calculator. I need electrical service.', '_blank')">📩 Get Electrical Service Quote</button>
     </div>
 
   </div>
@@ -725,751 +525,840 @@ footer a:hover { text-decoration: underline; }
 </footer>
 
 <script>
-// ==========================================
-// ✅ GLOBAL VARIABLES & CONFIGURATION
-// ==========================================
-let cart = [];
-let currentCustData = null;
-let deferredPrompt = null;
-let pendingOrderData = null;
-let allComplaints = [];
-let allOrders = [];
-
+// ✅ GLOBAL VARIABLES
+let cart = [], currentCustData = null, deferredPrompt = null, pendingOrderData = null, allComplaints = [], allOrders = [];
 const ADMIN_WHATSAPP = "923152458657";
+// ✅ NEW SCRIPT URL UPDATED
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuZswXXxOfLTiin3vCl5tsBKYWKaF5yeKts2SRzu0NXqmzYPXoYEOCcmJmfQv44pTdDg/exec";
-const PHONE_1 = "+92 315 2458657";
-const PHONE_2 = "+92 312 8542993";
+const PHONE_1 = "+92 315 2458657", PHONE_2 = "+92 312 8542993";
 
-// Electrical Invoice Variables
-let elecMode = 'area';
-let elecCurrentId = null;
-
-// ==========================================
 // ✅ UTILITY FUNCTIONS
-// ==========================================
-
-function setNote(text) {
-    document.getElementById('invoice_note').value = text;
-}
-
-function updateAdvanceUI() {
-    const type = document.getElementById('advance_type').value;
-    const input = document.getElementById('advance_payment');
-    input.value = '';
-    input.placeholder = type === 'percent' ? 'Enter percentage (e.g., 20)' : 'Enter amount in Rs';
-    document.getElementById('advance_preview').style.display = 'none';
-}
-
 function toggleDiscountInput() {
     const type = document.getElementById('discount_type').value;
     const input = document.getElementById('discount_value');
-    if(input) { 
-        input.style.display = type === 'none' ? 'none' : 'block'; 
-        if (type === 'none') input.value = ''; 
+    if(input) { input.style.display = type === 'none' ? 'none' : 'block'; if (type === 'none') input.value = ''; }
+}
+
+function formatDate(dateInput) {
+    if (!dateInput || dateInput === '' || dateInput === 'null' || dateInput === 'undefined') {
+        return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
     }
+    try {
+        let date;
+        if (dateInput instanceof Date) { date = dateInput; }
+        else if (typeof dateInput === 'number') { date = new Date(dateInput); }
+        else if (typeof dateInput === 'string') {
+            const str = dateInput.trim(); date = new Date(str);
+            if (isNaN(date.getTime())) {
+                const ddmmyyyy = str.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+                if (ddmmyyyy) date = new Date(ddmmyyyy[3], ddmmyyyy[2] - 1, ddmmyyyy[1]);
+            }
+        }
+        if (!date || isNaN(date.getTime())) {
+            return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+        }
+        return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-');
+    } catch (e) { return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-'); }
 }
 
-function formatDate(d) {
-    if (!d || d === '' || d === 'null') return new Date().toLocaleDateString('en-GB').replace(/ /g,'-');
-    try { return new Date(d).toLocaleDateString('en-GB').replace(/ /g,'-'); } 
-    catch(e) { return new Date().toLocaleDateString('en-GB').replace(/ /g,'-'); }
+function getJsPDFConstructor() {
+    if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
+    if (window.jspdf) return window.jspdf;
+    if (window.jsPDF) return window.jsPDF;
+    return null;
 }
 
-function getJsPDFConstructor() { 
-    return window.jspdf?.jsPDF || window.jspdf || window.jsPDF || null; 
-}
-
-function getImageDataForPDF(el) {
-    return new Promise(resolve => {
+function getImageDataForPDF(imgElement) {
+    return new Promise((resolve) => {
         try {
-            if(!el?.src || !el.complete || el.naturalWidth===0) return resolve(null);
-            const c=document.createElement('canvas'); c.width=200; c.height=200;
-            c.getContext('2d').drawImage(el,0,0,200,200);
-            resolve(c.toDataURL('image/png',1.0));
-        } catch(e) { resolve(null); }
+            if (!imgElement || !imgElement.src || !imgElement.complete || imgElement.naturalWidth === 0) { resolve(null); return; }
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 200; canvas.height = 200;
+            ctx.drawImage(imgElement, 0, 0, 200, 200);
+            resolve(canvas.toDataURL('image/png', 1.0));
+        } catch (e) { resolve(null); }
     });
 }
 
-// ==========================================
 // ✅ SERVICE & CART FUNCTIONS
-// ==========================================
-
 function playVid() {
-    const b=document.getElementById('videoBox'); 
-    const v=document.getElementById('myVideo');
-    if(b&&v) { 
-        b.style.display = b.style.display==="none"?"block":"none"; 
-        b.style.display==="block"?v.play():v.pause(); 
-    }
+    const box = document.getElementById('videoBox'); const vid = document.getElementById('myVideo');
+    if(box && vid) { box.style.display = box.style.display === "none" ? "block" : "none"; box.style.display === "block" ? vid.play() : vid.pause(); }
 }
 
 function toggleSvc(el, name, price) {
     const idx = cart.findIndex(c => c.name === name);
-    if(idx > -1) { 
-        cart.splice(idx, 1); 
-        el.classList.remove('selected'); 
-    } 
-    else { 
-        cart.push({name: name, price: parseInt(price)||0}); 
-        el.classList.add('selected'); 
-    }
+    if (idx > -1) { cart.splice(idx, 1); el.classList.remove('selected'); } 
+    else { cart.push({name, price: parseInt(price) || 0}); el.classList.add('selected'); }
     updateCart();
 }
 
 function updateCart() {
-    const t = cart.reduce((a,b) => a+(b.price||0), 0);
-    const bar = document.getElementById('cart'); 
-    const tot = document.getElementById('billTotal');
-    if(bar && tot) { 
-        bar.style.display = cart.length>0 ? 'block' : 'none'; 
-        tot.innerText = t.toLocaleString(); 
-    }
+    const total = cart.reduce((a, b) => a + (b.price || 0), 0);
+    const bar = document.getElementById('cart'); const billTotal = document.getElementById('billTotal');
+    if(bar && billTotal) { bar.style.display = cart.length > 0 ? 'block' : 'none'; billTotal.innerText = total.toLocaleString(); }
 }
 
-// ==========================================
 // ✅ ADMIN PANEL FUNCTIONS
-// ==========================================
-
 function openAdmin() {
-    const pin = prompt("Enter Admin PIN:");
-    if(pin === "dnhq123") { 
-        document.getElementById('adminView').style.display='block'; 
-        loadLogs(); 
-    } else if(pin !== null) { 
-        alert("Wrong PIN!"); 
+    try {
+        const pin = prompt("Enter Admin PIN:");
+        if (pin === "dnhq123") {
+            document.getElementById('adminView').style.display = 'block';
+            loadLogs();
+        } else if (pin !== null) {
+            alert("Wrong PIN!");
+        }
+    } catch(e) {
+        alert("Admin Error: " + e.message);
     }
 }
 
 function switchAdminTab(tab) {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-'+tab).classList.add('active');
-    ['ordersSection','complaintsSection'].forEach(id => { 
-        const e=document.getElementById(id); 
-        if(e) e.style.display='none'; 
-    });
-    document.getElementById(tab==='orders'?'ordersSection':'complaintsSection').style.display='block';
-    if(tab === 'orders') loadLogs(); 
-    else loadComplaints();
+    document.getElementById('tab-' + tab).classList.add('active');
+    ['ordersSection','complaintsSection'].forEach(id => { const el=document.getElementById(id); if(el)el.style.display='none'; });
+    if(tab === 'orders') { document.getElementById('ordersSection').style.display = 'block'; loadLogs(); } 
+    else if(tab === 'complaints') { document.getElementById('complaintsSection').style.display = 'block'; loadComplaints(); }
 }
 
+// ✅ DOCUMENT TYPE SELECTOR
 function setDocType(type) {
-    const b1=document.getElementById('btnInvoice');
-    const b2=document.getElementById('btnQuotation');
-    const inp=document.getElementById('doc_type');
-    
-    if(type==='invoice') { 
-        b1.style.background='var(--gold)'; 
-        b1.style.color='black'; 
-        b2.style.background='#1e293b'; 
-        b2.style.color='#94a3b8'; 
-        inp.value='invoice'; 
-    }
-    else { 
-        b2.style.background='#10b981'; 
-        b2.style.color='white'; 
-        b1.style.background='#1e293b'; 
-        b1.style.color='#94a3b8'; 
-        inp.value='quotation'; 
-    }
+  const btnInvoice = document.getElementById('btnInvoice');
+  const btnQuotation = document.getElementById('btnQuotation');
+  const docTypeInput = document.getElementById('doc_type');
+  
+  if (type === 'invoice') {
+    btnInvoice.style.background = 'var(--gold)';
+    btnInvoice.style.color = 'black';
+    btnQuotation.style.background = '#1e293b';
+    btnQuotation.style.color = '#94a3b8';
+    docTypeInput.value = 'invoice';
+  } else {
+    btnQuotation.style.background = '#10b981';
+    btnQuotation.style.color = 'white';
+    btnInvoice.style.background = '#1e293b';
+    btnInvoice.style.color = '#94a3b8';
+    docTypeInput.value = 'quotation';
+  }
 }
 
-// ==========================================
-// ✅ MANUAL BILL ENTRY
-// ==========================================
-
+// ✅ ADD NEW ROW (WITH QTY, QUALITY "-", PRICE)
 function addNewManualRow() {
-    const d = document.createElement('div');
-    d.style = "display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;";
-    d.innerHTML = `
-        <input type="text" class="m-work man-input" placeholder="Item" style="flex:2;min-width:100px;">
-        <input type="number" class="m-qty man-input" value="1" min="1" style="flex:0.5;min-width:45px;">
-        <select class="m-quality man-input" style="flex:1;min-width:80px;">
-            <option>-</option><option>New</option><option>Used</option><option>Refurb</option>
+    const div = document.createElement('div');
+    div.style = "display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;";
+    div.innerHTML = `
+        <input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
+        <input type="number" class="m-qty man-input" placeholder="Qty" value="1" min="1" style="flex:0.5;margin-bottom:0;min-width:45px;">
+        <select class="m-quality man-input" style="flex:1;margin-bottom:0;min-width:80px;padding:8px;font-size:12px;">
+            <option value="-">-</option>
+            <option value="New">New</option>
+            <option value="Used">Used</option>
+            <option value="Refurbished">Refurb</option>
         </select>
-        <input type="number" class="m-price man-input" placeholder="Price" style="flex:0.8;min-width:65px;">
+        <input type="number" class="m-price man-input" placeholder="Price" style="flex:0.8;margin-bottom:0;min-width:65px;">
     `;
-    document.getElementById('manual_works_container').appendChild(d);
+    document.getElementById('manual_works_container').appendChild(div);
 }
 
-async function saveManualEntry(layoutType = 'auto') {
-    const n = document.getElementById('man_name').value.trim();
-    const p = document.getElementById('man_phone').value.trim();
-    if(!n || !p) return alert("Name & Phone Required!");
+// ✅ SAVE MANUAL ENTRY (WITH QTY, QUALITY "-", PRICE, TOTAL)
+async function saveManualEntry() {
+    const name = document.getElementById('man_name').value.trim();
+    const phone = document.getElementById('man_phone').value.trim();
+    const dateInput = document.getElementById('man_date').value;
+    const docType = document.getElementById('doc_type').value;
     
-    let work = [], sub = 0;
     const workInputs = document.querySelectorAll('.m-work');
     const qtyInputs = document.querySelectorAll('.m-qty');
     const qualityInputs = document.querySelectorAll('.m-quality');
     const priceInputs = document.querySelectorAll('.m-price');
-
-    workInputs.forEach((el, i) => {
-        if(el.value.trim()) {
-            const q = parseInt(qtyInputs[i].value) || 1;
-            const ql = qualityInputs[i].value;
-            const pr = parseInt(priceInputs[i].value) || 0;
-            const tot = q * pr; 
-            sub += tot;
-            work.push(`${el.value.trim()} x ${q} [${ql}] @ Rs ${pr} = Rs ${tot}`);
+    
+    if(!name || !phone) return alert("Please enter Name AND Phone!");
+    
+    let allWork = [], subtotal = 0;
+    workInputs.forEach((input, i) => {
+        if(input.value.trim() !== "") {
+            const qty = parseInt(qtyInputs[i].value) || 1;
+            const quality = qualityInputs[i].value;
+            const price = parseInt(priceInputs[i].value) || 0;
+            const lineTotal = qty * price;
+            subtotal += lineTotal;
+            const qualityPart = quality !== '-' ? `[${quality}]` : '';
+            allWork.push(`${input.value.trim()} x ${qty} ${qualityPart} @ Rs ${price} = Rs ${lineTotal}`.trim());
         }
     });
-
-    if(!work.length) return alert("Add at least 1 item!");
-
-    const dt = document.getElementById('discount_type').value;
-    const dv = parseFloat(document.getElementById('discount_value').value) || 0;
-    let da = 0, dtxt = "None";
-
-    if(dt==='percent' && dv>0){ da=(sub*dv)/100; dtxt=dv+"%"; }
-    else if(dt==='fixed' && dv>0){ da=dv; dtxt="Rs "+dv; }
     
-    const final = sub - da;
+    if(allWork.length === 0) return alert("Add at least one item!");
     
-    const at = document.getElementById('advance_type').value;
-    const av = parseFloat(document.getElementById('advance_payment').value) || 0;
-    let fa = av, an = '';
-
-    if(at==='percent' && av>0) {
-        fa = (final * av) / 100; 
-        an = `(${av}% of Rs ${final})`; 
-        document.getElementById('advance_preview').textContent = `✅ Advance: Rs ${Math.round(fa)} ${an}`; 
-        document.getElementById('advance_preview').style.display = 'block';
-    } else {
-        document.getElementById('advance_preview').style.display = 'none';
+    const discountType = document.getElementById('discount_type').value;
+    const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+    let discountAmount = 0, discountText = "None";
+    
+    if (discountType === 'percent' && discountValue > 0) {
+        discountAmount = (subtotal * discountValue) / 100;
+        discountText = discountValue + "%";
+    } else if (discountType === 'fixed' && discountValue > 0) {
+        discountAmount = discountValue;
+        discountText = "Rs " + discountValue;
     }
-
+    
+    const totalAfterDiscount = subtotal - discountAmount;
+    const advance = parseFloat(document.getElementById('advance_payment').value) || 0;
+    const balanceDue = totalAfterDiscount - advance;
+    const orderDate = dateInput ? new Date(dateInput).toISOString() : new Date().toISOString();
+    
     const payload = {
-        date: new Date().toISOString(), 
-        client: n.toUpperCase(), 
-        phone: p, 
-        work: work.join(", "),
-        subtotal: sub, 
-        discount_type: dt, 
-        discount_value: dv, 
-        discount_amount: da, 
-        discount_text: dtxt,
-        advance: fa, 
-        total: final, 
-        balance_due: final - fa, 
-        entry_type: 'order', 
-        order_status: 'received', 
+        date: orderDate,
+        client: name.toUpperCase(),
+        phone: phone,
+        work: allWork.join(", "),
+        subtotal: subtotal,
+        discount_type: discountType,
+        discount_value: discountValue,
+        discount_amount: discountAmount,
+        discount_text: discountText,
+        advance: advance,
+        total: totalAfterDiscount,
+        balance_due: balanceDue,
+        entry_type: 'order',
+        order_status: 'received',
         order_source: 'manual',
-        doc_type: document.getElementById('doc_type').value, 
-        note: document.getElementById('invoice_note').value.trim(),
-        advance_type: at, 
-        advance_display: an, 
-        breakdown_slab: parseFloat(document.getElementById('breakdown_slab').value) || 0, 
-        breakdown_wiring: parseFloat(document.getElementById('breakdown_wiring').value) || 0
+        doc_type: docType
     };
-
+    
     try {
-        await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-        alert("✅ Saved!"); 
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
         
-        // Generate invoice based on layout type
-        if(layoutType === 'electrical') {
-            openElectricalInvoice(payload);
-        } else {
-            generateManualPDF(payload, payload.doc_type, layoutType); 
-        }
+        alert("✅ " + (docType === 'invoice' ? 'Invoice' : 'Quotation') + " saved successfully!");
+        generateManualPDF(payload, docType);
+        setTimeout(() => { loadLogs(); }, 2000);
         
-        loadLogs();
-        
-        // Reset Form
-        document.getElementById('man_name').value = ''; 
+        document.getElementById('man_name').value = '';
         document.getElementById('man_phone').value = '';
-        document.getElementById('discount_value').value = ''; 
+        document.getElementById('man_date').value = '';
+        document.getElementById('discount_type').value = 'none';
+        document.getElementById('discount_value').value = '';
+        document.getElementById('discount_value').style.display = 'none';
         document.getElementById('advance_payment').value = '';
-        document.getElementById('invoice_note').value = ''; 
-        document.getElementById('breakdown_slab').value = ''; 
-        document.getElementById('breakdown_wiring').value = '';
+        document.getElementById('manual_works_container').innerHTML = `
+            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+                <input type="text" class="m-work man-input" placeholder="Item Name" style="flex:2;margin-bottom:0;min-width:100px;">
+                <input type="number" class="m-qty man-input" placeholder="Qty" value="1" min="1" style="flex:0.5;margin-bottom:0;min-width:45px;">
+                <select class="m-quality man-input" style="flex:1;margin-bottom:0;min-width:80px;padding:8px;font-size:12px;">
+                    <option value="-">-</option>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                    <option value="Refurbished">Refurb</option>
+                </select>
+                <input type="number" class="m-price man-input" placeholder="Price" style="flex:0.8;margin-bottom:0;min-width:65px;">
+            </div>`;
+        setDocType('invoice');
         
-    } catch(e) { 
-        alert("Error: " + e.message); 
-    }
-}
-
-// ==========================================
-// ✅ ELECTRICAL INVOICE FUNCTIONS
-// ==========================================
-
-function openElectricalInvoice(data) {
-    document.getElementById('electricalInvoiceModal').style.display = 'block';
-    
-    // Fill data
-    document.getElementById('elecKcNo').value = '';
-    document.getElementById('elecDate').value = formatDate(data.date);
-    document.getElementById('elecBillTitle').value = data.doc_type.toUpperCase() || 'BILL';
-    document.getElementById('elecBillTo').value = data.client + '\n' + data.phone;
-    document.getElementById('elecBillFor').value = '';
-    document.getElementById('elecSubject').value = data.work.substring(0, 100);
-    document.getElementById('elecReceived').value = data.advance || 0;
-    document.getElementById('elecNoteText').value = data.note || 'Dear Sir this is the bill for the above mentioned work. So, we request you to clear my invoice as soon as possible.';
-    document.getElementById('elecAddr').value = 'Office # 1: DNHQ Services | Office # 2: DNHQ Services';
-    document.getElementById('elecName1').value = 'DNHQ Services Team';
-    document.getElementById('elecName2').value = 'DNHQ Electric Services';
-    
-    // Clear existing rows
-    const tbody = document.getElementById('elecItems');
-    while(tbody.rows.length > 1) {
-        tbody.deleteRow(0);
-    }
-    
-    // Add rows from data
-    const workItems = data.work.split(', ');
-    workItems.forEach((item, index) => {
-        if(item.includes(' x ')) {
-            const [desc, rest] = item.split(' x ');
-            const qtyMatch = rest.match(/^(\d+)/);
-            const qty = qtyMatch ? qtyMatch[1] : '1';
-            elecAddRow({desc: desc.trim(), qty: qty});
-        }
-    });
-    
-    elecCalc();
-}
-
-function closeElecModal() {
-    document.getElementById('electricalInvoiceModal').style.display = 'none';
-}
-
-function elecRowHTML(d){ 
-    d = d || {}; 
-    return `<tr>
-        <td class="no"></td>
-        <td><input class="elec-line-input desc" placeholder="Description of work" value="${d.desc||''}" oninput="elecCalc()"></td>
-        <td class="arCol"><input class="elec-num area" type="number" min="0" value="${d.area||0}" oninput="elecCalc()"></td>
-        <td class="arCol"><input class="elec-num rate" type="number" min="0" value="${d.rate||0}" oninput="elecCalc()"></td>
-        <td class="fxCol"><input class="elec-num ftotal" type="number" min="0" value="${d.ftotal||0}" oninput="elecCalc()"></td>
-        <td><input class="elec-num pct" type="number" min="0" max="100" value="${d.pct!=null?d.pct:100}" oninput="elecCalc()"></td>
-        <td class="amt">0/-</td>
-        <td class="del no-print"><button onclick="this.closest('tr').remove();elecCalc();" style="border:none;background:#e33;color:#fff;border-radius:50%;width:20px;height:20px;cursor:pointer;">×</button></td>
-    </tr>`; 
-}
-
-function elecAddRow(d){ 
-    const totalRow = document.getElementById('elecTotalRow');
-    totalRow.insertAdjacentHTML('beforebegin', elecRowHTML(d)); 
-    elecRenumber(); 
-}
-
-function elecRenumber(){
-    let n=1;
-    const tbody = document.getElementById('elecItems');
-    [...tbody.rows].forEach(r=>{ 
-        if(r.id!=='elecTotalRow') {
-            const noCell = r.querySelector('.no');
-            if(noCell) noCell.textContent = String(n++).padStart(2,'0'); 
-        } 
-    }); 
-}
-
-function setElecMode(m){
-    elecMode = m;
-    const table = document.getElementById('elecBillTable');
-    table.classList.toggle('mode-area', m==='area');
-    table.classList.toggle('mode-fixed', m==='fixed');
-    
-    const totalLabel = document.getElementById('elecTotalLabel');
-    totalLabel.colSpan = (m==='area') ? 5 : 4;
-    
-    document.getElementById('btnElecArea').classList.toggle('active', m==='area');
-    document.getElementById('btnElecFixed').classList.toggle('active', m==='fixed');
-    
-    elecCalc();
-}
-
-function elecCalc(){
-    let grand=0;
-    const tbody = document.getElementById('elecItems');
-    [...tbody.rows].forEach(r=>{
-        if(r.id==='elecTotalRow') return;
-        const area = +r.querySelector('.area').value || 0;
-        const rate = +r.querySelector('.rate').value || 0;
-        const ft = +r.querySelector('.ftotal').value || 0;
-        const pct = +r.querySelector('.pct').value || 0;
-        
-        const amt = (elecMode==='area') ? Math.round(area*rate*pct/100) : Math.round(ft*pct/100);
-        const amtCell = r.querySelector('.amt');
-        if(amtCell) amtCell.textContent = amt.toLocaleString()+'/-';
-        grand += amt;
-    });
-    
-    document.getElementById('elecGrandTotal').textContent = grand.toLocaleString()+'/-';
-    const rec = +document.getElementById('elecReceived').value || 0;
-    document.getElementById('elecBalance').textContent = 'Rs. ' + (grand-rec).toLocaleString();
-}
-
-async function downloadElecPDF(){
-    const page = document.getElementById('elecPageEl');
-    const opt = {
-        margin: 0,
-        filename: 'DNHQ-Electric-Bill-' + (document.getElementById('elecKcNo').value || Date.now()).replace(/[^\w.-]+/g,'_') + '.pdf',
-        image: { type:'jpeg', quality: 0.95 },
-        html2canvas: {
-            scale: 2, 
-            useCORS: true,
-            scrollX: 0, 
-            scrollY: 0,
-            windowWidth: 1000, 
-            windowHeight: 1414,
-            onclone: (doc)=>{
-                doc.querySelectorAll('.no-print').forEach(x=>x.remove());
-                doc.querySelectorAll('[placeholder]').forEach(i=>i.removeAttribute('placeholder'));
-            }
-        },
-        jsPDF: { unit:'mm', format:'a4', orientation:'portrait' },
-        pagebreak: { mode: ['css','legacy'] }
-    };
-    
-    try {
-        await html2pdf().set(opt).from(page).save();
-        alert('✅ Electrical Invoice PDF Downloaded!');
     } catch(e) {
-        alert('PDF na bane to 🖨 Print → Save as PDF use karein.');
+        alert("Error: " + e.message);
     }
 }
 
-// ==========================================
-// ✅ PDF GENERATION (AC/SERVICE LAYOUT)
-// ==========================================
-
-async function generateManualPDF(data, docType, layoutType = 'auto') {
+// ✅ GENERATE PDF - WITH DRIVE SAVE (Separate Folders)
+function generateManualPDF(data, docType) {
     try {
-        const {jsPDF} = window.jspdf; 
+        const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        
-        // ✅ LOGO (Wait for it to load)
-        const img = await getImageDataForPDF(document.getElementById('brandLogo'));
-        if(img) doc.addImage(img, 'PNG', 15, 10, 35, 35); 
-        
-        // ✅ HEADER (Common)
-        doc.setTextColor(251,191,36); 
-        doc.setFontSize(20); 
-        doc.setFont("helvetica","bold"); 
+
+        // Header Background
+        doc.setFillColor(0, 0, 0);
+        doc.rect(0, 0, 210, 55, 'F');
+
+        // Logo
+        const logoImg = document.getElementById('brandLogo');
+        if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width = 200; canvas.height = 200;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(logoImg, 0, 0, 200, 200);
+                doc.addImage(canvas.toDataURL('image/png', 1.0), 'PNG', 15, 10, 35, 35);
+            } catch(e) {}
+        }
+
+        // Company Name & Tagline
+        doc.setTextColor(251, 191, 36);
+        doc.setFontSize(20); doc.setFont("helvetica", "bold");
         doc.text("DNHQ SERVICES", 55, 22);
-        
-        doc.setFontSize(8); 
-        doc.setTextColor(200,200,200); 
+        doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(200, 200, 200);
         doc.text("Professional Electrical & AC Maintenance", 55, 30);
-        
-        doc.setTextColor(0,0,0); 
-        doc.setFontSize(11);
-        doc.text("CUSTOMER: " + data.client, 15, 62); 
-        doc.text("PHONE: " + data.phone, 15, 69); 
+
+        // Customer Info
+        doc.setTextColor(0, 0, 0); doc.setFontSize(11);
+        doc.text("CUSTOMER: " + data.client, 15, 62);
+        doc.text("PHONE: " + data.phone, 15, 69);
         doc.text("DATE: " + formatDate(data.date), 145, 62);
-        
-        doc.setFontSize(16); 
-        doc.text(docType.toUpperCase(), 105, 78, {align:"center"});
 
-        // ✅ DETERMINE LAYOUT
-        let isElectrical = false;
-        if (layoutType === 'electrical') isElectrical = true;
-        else if (layoutType === 'ac') isElectrical = false;
-        else {
-            const electricalKeywords = ['wiring', 'flooring', 'piping', 'board', 'circuit', 'breaker', 'voltage', 'switch', 'socket', 'light', 'fan', 'db', 'distribution'];
-            isElectrical = electricalKeywords.some(k => data.work.toLowerCase().includes(k));
+        const titleText = docType === 'invoice' ? 'INVOICE' : 'QUOTATION';
+        doc.setFontSize(16); doc.setFont("helvetica", "bold");
+        doc.text(titleText, 105, 78, { align: "center" });
+
+        // Table
+        let items = data.work.split(", ");
+        let body = items.map(item => {
+            if (item.includes(" x ") && item.includes("@ Rs")) {
+                let parts = item.split(" x ");
+                let itemName = parts[0].trim();
+                let rest = parts[1];
+                let qtyMatch = rest.match(/^(\d+)/); let qty = qtyMatch ? qtyMatch[1] : '1';
+                let qualityMatch = rest.match(/\[([^\]]+)\]/); let quality = qualityMatch ? qualityMatch[1] : '-';
+                let priceMatch = rest.match(/@ Rs (\d+)/); let price = priceMatch ? priceMatch[1] : '0';
+                let totalMatch = rest.match(/= Rs (\d+)/); let total = totalMatch ? totalMatch[1] : '0';
+                return [itemName, qty, quality, 'Rs ' + price, 'Rs ' + total];
+            }
+            return [item.trim(), '1', '-', '-', '-'];
+        });
+
+        doc.autoTable({
+            startY: 86, head: [['ITEM', 'QTY', 'QUALITY', 'UNIT PRICE', 'TOTAL']], body: body,
+            theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 9 },
+            styles: { fontSize: 8, cellPadding: 3 },
+            columnStyles: { 0: { cellWidth: 70 }, 1: { cellWidth: 20, halign: 'center' }, 2: { cellWidth: 25, halign: 'center' }, 3: { cellWidth: 35, halign: 'right' }, 4: { cellWidth: 40, halign: 'right', fontStyle: 'bold' } }
+        });
+
+        // Totals
+        let finalY = doc.lastAutoTable.finalY + 8;
+        const subtotal = parseFloat(data.subtotal) || 0;
+        const discount = parseFloat(data.discount_amount) || 0;
+        const advance = parseFloat(data.advance) || 0;
+        const total = parseFloat(data.total) || 0;
+        const balanceDue = parseFloat(data.balance_due) || 0;
+
+        doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150);
+        doc.text("Subtotal:", 130, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 6;
+        if (discount > 0) {
+            doc.setTextColor(16, 185, 129);
+            doc.text(data.discount_text + " Discount:", 130, finalY);
+            doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 6;
+            doc.setTextColor(150, 150, 150);
+        }
+        doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0);
+        doc.text("Total:", 130, finalY); doc.text("Rs " + total.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 9;
+        if (advance > 0) {
+            doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(125, finalY - 4, 195, finalY - 4);
+            doc.setFontSize(9); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold");
+            doc.text("Advance Received:", 130, finalY + 2); doc.text("-Rs " + advance.toLocaleString(), 195, finalY + 2, { align: 'right' }); finalY += 9;
+        }
+        doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(125, finalY - 4, 195, finalY - 4);
+        doc.setFontSize(13); doc.setFont("helvetica", "bold");
+        if (balanceDue > 0) {
+            doc.setTextColor(239, 68, 68);
+            doc.text("BALANCE DUE:", 130, finalY + 3); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY + 3, { align: 'right' });
+        } else {
+            doc.setTextColor(16, 185, 129);
+            doc.text("FULLY PAID ✓", 130, finalY + 3); doc.text("Rs 0", 195, finalY + 3, { align: 'right' });
         }
 
-        let finalY = 86;
+        // Footer
+        const footerY = 280;
+        doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY);
+        doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120);
+        doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" });
+        doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" });
+        doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
 
-        // ==========================================
-        // ⚡ ELECTRICAL STYLE INVOICE
-        // ==========================================
-        if(isElectrical) {
-            doc.setFontSize(10);
-            const subjectText = data.work.length > 100 ? data.work.substring(0,100) + "..." : data.work;
-            doc.text("Subject: " + subjectText, 15, finalY);
-            finalY += 12;
-
-            let body = [];
-            data.work.split(", ").forEach((w, i) => {
-                if(w.includes(" x ")) {
-                    const [nm, rest] = w.split(" x ");
-                    const qty = (rest.match(/^\d+/) || ["1"])[0];
-                    const price = (rest.match(/Rs (\d+)/) || ["0","0"])[1];
-                    const tot = (rest.match(/= Rs (\d+)/) || ["0","0"])[1];
-                    const rate = (parseFloat(tot) / parseFloat(qty)).toFixed(2);
-                    body.push([(i+1).toString(), nm.trim(), "-", rate, qty, tot]);
-                }
-            });
-
-            doc.autoTable({
-                startY: finalY, 
-                head: [['S.no','Description','C/Area','Rate','Qty','Amount']], 
-                body: body, 
-                theme: 'grid', 
-                headStyles: {fillColor:[0,0,0], textColor:[251,191,36], fontSize:9}, 
-                styles: {fontSize:9, cellPadding: 3}, 
-                columnStyles: {0:{cellWidth:15, halign:'center'}, 1:{cellWidth:55}, 2:{cellWidth:20, halign:'center'}, 3:{cellWidth:25, halign:'right'}, 4:{cellWidth:20, halign:'center'}, 5:{cellWidth:35, halign:'right', fontStyle:'bold'}}
-            });
-            
-            finalY = doc.lastAutoTable.finalY + 8;
-            doc.setFontSize(11); doc.setTextColor(0,0,0); doc.setFont("helvetica", "bold");
-            doc.text("Total:", 145, finalY);
-            doc.text("Rs " + data.total.toLocaleString(), 195, finalY, {align:'right'});
-            finalY += 12;
-
-            doc.setFontSize(9); doc.setTextColor(50,50,50); doc.setFont("helvetica", "normal");
-            let noteText = data.note && data.note.trim() !== "" ? "Dear Sir, " + data.note + " We request you to clear the invoice as soon as possible." : "Dear Sir, this is the bill for the work mentioned above. We request you to clear my invoice as soon as possible.";
-            const splitNote = doc.splitTextToSize(noteText, 180);
-            doc.text(splitNote, 15, finalY);
-            finalY += (splitNote.length * 5) + 15;
-
-            doc.text("Thank you", 15, finalY);
-            doc.text("Regards", 15, finalY + 5);
-            doc.text("DNHQ Services Team", 15, finalY + 15);
-            doc.line(15, finalY + 25, 80, finalY + 25);
-            doc.text("Authorized Signature", 15, finalY + 30);
-            finalY += 35;
-        } 
-        // ==========================================
-        // ❄️ AC / SERVICE STYLE INVOICE
-        // ==========================================
-        else {
-            let body = data.work.split(", ").map(w => {
-                if(w.includes(" x ")) {
-                    const [nm, rest] = w.split(" x ");
-                    const q = (rest.match(/^\d+/) || ["1"])[0];
-                    const pr = (rest.match(/Rs (\d+)/) || ["0","0"])[1];
-                    const tot = (rest.match(/= Rs (\d+)/) || ["0","0"])[1];
-                    return [nm.trim(), q, '-', 'Rs '+pr, 'Rs '+tot];
-                }
-                return [w.trim(),'1','-','-','-'];
-            });
-
-            doc.autoTable({
-                startY: finalY, 
-                head: [['ITEM','QTY','QUALITY','UNIT PRICE','TOTAL']], 
-                body: body, 
-                theme: 'grid', 
-                headStyles: {fillColor:[0,0,0], textColor:[251,191,36], fontSize:9}, 
-                styles: {fontSize:8, cellPadding: 3}, 
-                columnStyles: {0:{cellWidth:70}, 1:{cellWidth:20,halign:'center'}, 2:{cellWidth:25,halign:'center'}, 3:{cellWidth:35,halign:'right'}, 4:{cellWidth:40,halign:'right',fontStyle:'bold'}}
-            });
-
-            finalY = doc.lastAutoTable.finalY + 8;
-            doc.setFontSize(9); doc.setTextColor(150,150,150); 
-            doc.text("Subtotal:", 130, finalY); 
-            doc.text("Rs " + data.subtotal.toLocaleString(), 195, finalY, {align:'right'}); 
-            finalY += 6;
-            
-            if(data.discount_amount > 0) {
-                doc.setTextColor(16,185,129); 
-                doc.text(data.discount_text + " Discount:", 130, finalY); 
-                doc.text("-Rs " + data.discount_amount.toLocaleString(), 195, finalY, {align:'right'}); 
-                finalY += 6; 
-                doc.setTextColor(150,150,150);
-            }
-            
-            doc.setFontSize(10); doc.setTextColor(0,0,0); doc.setFont("helvetica", "bold");
-            doc.text("Total:", 130, finalY); 
-            doc.text("Rs " + data.total.toLocaleString(), 195, finalY, {align:'right'}); 
-            finalY += 9;
-            
-            if(data.advance > 0) {
-                doc.setDrawColor(59,130,246); doc.setLineWidth(0.5); doc.line(125, finalY-4, 195, finalY-4);
-                doc.setFontSize(9); doc.setTextColor(59,130,246); 
-                doc.text("Advance Received:", 130, finalY+2); 
-                doc.text("-Rs " + data.advance.toLocaleString(), 195, finalY+2, {align:'right'}); 
-                finalY += 9;
-            }
-            
-            doc.setDrawColor(251,191,36); doc.setLineWidth(1); doc.line(125, finalY-4, 195, finalY-4); 
-            doc.setFontSize(13);
-            
-            if(data.balance_due > 0) {
-                doc.setTextColor(239,68,68); 
-                doc.text("BALANCE DUE:", 130, finalY+3); 
-                doc.text("Rs " + data.balance_due.toLocaleString(), 195, finalY+3, {align:'right'});
-            } else {
-                doc.setTextColor(16,185,129); 
-                doc.text("FULLY PAID ✓", 130, finalY+3); 
-                doc.text("Rs 0", 195, finalY+3, {align:'right'});
-            }
-        }
-
-        // ✅ FOOTER (Common)
-        doc.setDrawColor(200,200,200); doc.setLineWidth(0.3); doc.line(20, 280, 190, 280); 
-        doc.setFontSize(8); doc.setTextColor(120,120,120);
-        doc.text("Contact: " + PHONE_1, 105, 286, {align:"center"}); 
-        doc.text("Contact: " + PHONE_2, 105, 291, {align:"center"});
-        doc.text("Website: dnhq-services.online", 105, 296, {align:"center"});
+        // ✅ SAVE TO GOOGLE DRIVE (Separate Folders)
+        const fileName = `${docType.toUpperCase()}_${data.client.replace(/[^a-z0-9]/gi, '_').substring(0,20)}_${formatDate(data.date).replace(/[^a-z0-9]/gi, '_')}.pdf`;
+        const pdfBase64 = doc.output('datauristring').split(',')[1];
         
-        doc.save(`${docType.toUpperCase()}_${data.client.replace(/[^a-z0-9]/gi,'_')}_${formatDate(data.date)}.pdf`);
-        alert("✅ PDF Downloaded!");
-        
-    } catch(e) { 
-        alert("PDF Error: " + e.message); 
-        console.error(e); 
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                type: 'savePDF', 
+                pdfBase64: pdfBase64, 
+                docType: docType, 
+                customer: data.client, 
+                date: data.date 
+            })
+        }).then(res => res.json()).then(result => {
+            if(result.success) {
+                console.log(`✅ Saved to Drive Folder: ${result.folderName}`);
+                console.log(`🔗 Link: ${result.fileUrl}`);
+            }
+        }).catch(err => console.warn('Drive save skipped (offline?):', err));
+
+        // Local Download
+        doc.save(fileName);
+        alert(`✅ ${titleText} Generated & Saved!\n Check Google Drive for backup.`);
+
+    } catch (error) {
+        alert('PDF Generation Failed: ' + error.message);
+        console.error(error);
     }
 }
 
-// ==========================================
-// ✅ LOGS & FILTERS
-// ==========================================
+// ✅ TOTAL REVENUE CALCULATION
+function calculateTotalRevenue() {
+    if (!allOrders || allOrders.length === 0) {
+        document.getElementById('totalRevenueAmount').innerText = 'Rs 0';
+        document.getElementById('totalOrdersCount').innerText = '0 Orders';
+        document.getElementById('invoiceTotal').innerText = 'Rs 0';
+        document.getElementById('quotationTotal').innerText = 'Rs 0';
+        document.getElementById('pendingTotal').innerText = 'Rs 0';
+        return;
+    }
+    
+    let totalRevenue = 0, invoiceTotal = 0, quotationTotal = 0, pendingTotal = 0, orderCount = 0;
+    
+    allOrders.forEach(order => {
+        const total = parseFloat(order.total) || 0;
+        const docType = (order.doc_type || 'invoice').toLowerCase();
+        const balanceDue = parseFloat(order.balance_due) || 0;
+        totalRevenue += total; orderCount++;
+        if (docType === 'invoice') invoiceTotal += total;
+        else if (docType === 'quotation') quotationTotal += total;
+        if (balanceDue > 0) pendingTotal += balanceDue;
+    });
+    
+    document.getElementById('totalRevenueAmount').innerText = 'Rs ' + totalRevenue.toLocaleString();
+    document.getElementById('totalOrdersCount').innerText = orderCount + ' Orders';
+    document.getElementById('invoiceTotal').innerText = 'Rs ' + invoiceTotal.toLocaleString();
+    document.getElementById('quotationTotal').innerText = 'Rs ' + quotationTotal.toLocaleString();
+    document.getElementById('pendingTotal').innerText = 'Rs ' + pendingTotal.toLocaleString();
+}
+
+// ✅ CONVERT QUOTATION TO INVOICE
+async function convertToInvoice(originalTimestamp) {
+    const originalOrder = allOrders.find(o => o.timestamp === originalTimestamp);
+    if (!originalOrder) { alert('❌ Order not found!'); return; }
+    const confirmMsg = ' Convert Quotation to Invoice?\n\nCustomer: ' + originalOrder.client + '\nAmount: Rs ' + (parseFloat(originalOrder.total) || 0).toLocaleString();
+    if (!confirm(confirmMsg)) return;
+    try {
+        const invoicePayload = {
+            date: new Date().toISOString(), client: originalOrder.client, phone: originalOrder.phone, work: originalOrder.work,
+            subtotal: parseFloat(originalOrder.subtotal) || 0, discount_type: originalOrder.discount_type || 'none',
+            discount_value: parseFloat(originalOrder.discount_value) || 0, discount_amount: parseFloat(originalOrder.discount_amount) || 0,
+            discount_text: originalOrder.discount_text || 'None', advance: parseFloat(originalOrder.advance) || 0,
+            total: parseFloat(originalOrder.total) || 0, balance_due: parseFloat(originalOrder.balance_due) || 0,
+            entry_type: 'order', order_status: 'received', order_source: 'manual', doc_type: 'invoice'
+        };
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(invoicePayload) });
+        alert('✅ Converted to Invoice!'); setTimeout(() => { loadLogs(); }, 500);
+    } catch (error) { alert(' Error converting: ' + error.message); }
+}
 
 async function loadLogs() {
-    const c = document.getElementById('logItems'); 
-    c.innerHTML = '<div class="loading">Fetching...</div>';
+    const container = document.getElementById('logItems');
+    container.innerHTML = '<div class="loading">Fetching...</div>';
     try {
-        const r = await fetch(SCRIPT_URL + "?t=" + Date.now()); 
-        const d = await r.json();
-        if(!Array.isArray(d) || !d.length) { c.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders.</p>'; return; }
-        allOrders = d.filter(o => o.client || o.phone).map(o => ({...o, order_status: o.order_status || 'received', order_source: o.order_source || 'manual'}));
+        const res = await fetch(SCRIPT_URL + "?t=" + Date.now() + "&rand=" + Math.random());
+        const data = await res.json();
+        if (!Array.isArray(data)) { container.innerHTML = '<p style="color:#ef4444;">Error: Invalid data format</p>'; calculateTotalRevenue(); return; }
+        if(data.error) throw new Error(data.error);
+        if(!data || data.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; calculateTotalRevenue(); return; }
+        allOrders = data.filter(d => d && (d.client || d.phone || d.work) && d.entry_type !== 'complaint').map(d => ({...d, order_status: d.order_status || 'received', order_source: d.order_source || 'manual'}));
+        if (allOrders.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No valid orders found.</p>'; calculateTotalRevenue(); return; }
+        calculateTotalRevenue();
+        document.querySelectorAll('.order-filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.order-filter-btn[onclick="filterOrders(\'website\')"]').classList.add('active');
         filterOrders('website');
-    } catch(e) { c.innerHTML = `<p style="color:#ef4444;">Error: ${e.message}</p>`; }
+    } catch(e) { console.error(' Load Logs Error:', e); container.innerHTML = '<p style="color:#ef4444;">Error: ' + e.message + '</p>'; calculateTotalRevenue(); }
 }
 
 function filterOrders(type) {
-    document.querySelectorAll('.order-filter-btn').forEach(b => { b.classList.remove('active'); if(b.getAttribute('onclick')?.includes(type)) b.classList.add('active'); });
-    const c = document.getElementById('logItems'); 
-    const f = allOrders.filter(o => type==='website' ? o.order_source==='website' : o.order_source==='manual');
-    c.innerHTML = f.length === 0 ? '<p style="text-align:center;color:#94a3b8;">No orders.</p>' : f.map((o, i) => `
-        <div class="log-card">
-            <button class="pdf-btn" onclick="generateManualPDF(allOrders[${allOrders.indexOf(o)}],'${o.doc_type}','auto')">PDF</button>
-            <b>${o.client}</b> <span class="badge ${o.doc_type==='invoice'?'badge-invoice':'badge-quotation'}">${o.doc_type.toUpperCase()}</span><br>
-            <small> ${o.phone}</small><br>
-            <b style="color:gold;">Rs ${parseFloat(o.total).toLocaleString()}</b><br>
-            <button class="del-btn" onclick="if(confirm('Delete?')){alert('✅ Deleted');loadLogs();}">Delete</button>
-        </div>
-    `).join('');
+    document.querySelectorAll('.order-filter-btn').forEach(btn => { btn.classList.remove('active'); if(btn.getAttribute('onclick').includes("'" + type + "'")) btn.classList.add('active'); });
+    const container = document.getElementById('logItems');
+    let filteredData = allOrders;
+    if(type === 'website') filteredData = allOrders.filter(d => d.order_source === 'website');
+    else if(type === 'manual') filteredData = allOrders.filter(d => d.order_source === 'manual');
+    if (filteredData.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No orders found.</p>'; return; }
+    container.innerHTML = filteredData.map((d, index) => {
+        const originalIndex = allOrders.indexOf(d);
+        const subtotal = parseFloat(d.subtotal) || parseFloat(d.total) || 0;
+        const discountAmount = parseFloat(d.discount_amount) || 0;
+        const advance = parseFloat(d.advance) || 0;
+        const total = parseFloat(d.total) || (subtotal - discountAmount);
+        const balanceDue = parseFloat(d.balance_due) || (total - advance);
+        const docType = d.doc_type || 'invoice';
+        const docBadge = docType === 'invoice' ? '<span class="badge badge-invoice"> INV</span>' : '<span class="badge badge-quotation"> QUO</span>';
+        let sourceBadge = d.order_source === 'website' ? '<span class="badge badge-website"> Web</span>' : '<span class="badge badge-manual"> Manual</span>';
+        const convertBtn = docType === 'quotation' ? '<button class="pdf-btn" style="background:#3b82f6;color:white;" onclick="convertToInvoice(\'' + d.timestamp + '\')"> Convert</button>' : '';
+        return '<div class="log-card">' + convertBtn + '<button class="pdf-btn" data-index="' + originalIndex + '"> PDF</button><b>' + (d.client || "Unknown") + '</b> ' + docBadge + sourceBadge + '<br><small class="phone"> ' + (d.phone || "N/A") + '</small><br><small>' + (d.work || "").substring(0, 50) + '</small><br><b style="color:gold;">' + (balanceDue > 0 ? 'Balance: Rs ' + balanceDue.toLocaleString() : 'Paid: Rs ' + total.toLocaleString()) + '</b><br><button class="del-btn" onclick="deleteEntry(\'' + d.timestamp + '\')">️ Delete</button></div>';
+    }).join('');
+    container.querySelectorAll('.pdf-btn').forEach(btn => { if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes('convertToInvoice')) return; btn.onclick = function() { const index = this.getAttribute('data-index'); const order = allOrders[parseInt(index)]; if (order) showConfirmDialog(order); }; });
+    calculateTotalRevenue();
 }
 
-function refreshOrders() { loadLogs(); alert(' Refreshed'); }
+function refreshOrders() { console.log('🔄 Manual refresh'); loadLogs(); alert(' Refreshing orders...'); }
+async function loadComplaints() {
+    const container = document.getElementById('complaintsList'); container.innerHTML = '<div class="loading">Loading complaints...</div>';
+    try {
+        const res = await fetch(SCRIPT_URL + "?t=" + Date.now()); const data = await res.json();
+        if(data.error) throw new Error(data.error);
+        const complaints = data.filter(d => d && d.entry_type === 'complaint'); allComplaints = complaints;
+        document.getElementById('complaintCount').textContent = complaints.length;
+        if(complaints.length === 0) { container.innerHTML = '<p style="text-align:center;color:#94a3b8;">No complaints yet.</p>'; return; }
+        container.innerHTML = complaints.slice().reverse().map((c, index) => '<div class="complaint-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;"><div><b style="color:white;font-size:15px;">' + (c.name || 'Unknown') + '</b></div><small style="color:#94a3b8;">' + (c.date ? formatDate(c.date) : 'N/A') + '</small></div><small class="phone">📱 ' + (c.phone || 'N/A') + '</small><p style="color:#f1f5f9;margin:10px 0;font-size:14px;">' + (c.message || 'No message') + '</p></div>').join('');
+    } catch(e) { container.innerHTML = '<p style="color:#ef4444;">Error: ' + e.message + '</p>'; }
+}
 
-// ==========================================
-// ✅ MODALS & HISTORY
-// ==========================================
-function openHistoryModal() { document.getElementById('historyModal').style.display='block'; }
-function closeHistoryModal() { document.getElementById('historyModal').style.display='none'; }
-function closeHistoryModalOnBackground(e) { if(e.target===document.getElementById('historyModal')) closeHistoryModal(); }
+// ✅ BACKUP FUNCTIONS
+async function viewBackups() {
+    const pin = prompt(" Enter Backup PIN:"); if(pin !== "dnhq_backup_2026") { alert(" Wrong PIN!"); return; }
+    document.getElementById('backupList').innerHTML = '<div class="loading">Loading backups...</div>'; document.getElementById('backupModal').style.display = 'block';
+    try {
+        const res = await fetch(SCRIPT_URL + '?getBackups=true&pin=' + encodeURIComponent(pin)); const backups = await res.json();
+        if(backups.error) throw new Error(backups.error);
+        if(backups.length === 0) { document.getElementById('backupList').innerHTML = '<p style="text-align:center;color:#94a3b8;">No deleted orders found.</p>'; return; }
+        document.getElementById('backupList').innerHTML = backups.map(b => '<div class="log-card" style="border-left:4px solid #ef4444;"><div style="display:flex;justify-content:space-between;align-items:start;"><div><b style="color:white;">' + (b.client || 'Unknown') + '</b></div><small style="color:#94a3b8;">' + formatDate(b.deleted_at) + '</small></div><small class="phone"> ' + (b.phone || 'N/A') + '</small><small style="color:#fbbf24;display:block;margin:5px 0;"> Total: Rs ' + ((b.total||0)).toLocaleString() + '</small><div style="margin-top:10px;display:flex;gap:8px;"><button class="pdf-btn" onclick="generatePDF(' + JSON.stringify(b).replace(/'/g,"'") + ')">📄 PDF</button><button class="btn-confirm" style="padding:5px 12px;font-size:11px;" onclick="restoreBackup(\'' + b.timestamp + '\')">️ Restore</button></div></div>').join('');
+    } catch(e) { document.getElementById('backupList').innerHTML = '<p style="color:#ef4444;">Error: ' + e.message + '</p>'; }
+}
+function closeBackupModal() { document.getElementById('backupModal').style.display = 'none'; }
+function refreshBackups() { viewBackups(); }
+async function exportBackups() {
+    const pin = prompt(" Enter Backup PIN:"); if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
+    try {
+        const res = await fetch(SCRIPT_URL + '?getBackups=true&pin=' + encodeURIComponent(pin)); const backups = await res.json();
+        if(backups.error) throw new Error(backups.error);
+        const headers = ['Date','Client','Phone','Work','Total','Deleted_At','Deleted_By','Reason']; const csv = [headers.join(',')];
+        backups.forEach(b => { csv.push([b.date||'', '"' + (b.client||'').replace(/"/g,'""') + '"', b.phone||'', '"' + (b.work||'').replace(/"/g,'""') + '"', b.total||0, b.deleted_at||'', b.deleted_by||'', '"' + (b.delete_reason||'').replace(/"/g,'""') + '"'].join(',')); });
+        const blob = new Blob([csv.join('\n')], {type: 'text/csv'}); const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'DNHQ_Backups_' + new Date().toISOString().split('T')[0] + '.csv'; a.click();
+        alert('✅ Exported ' + backups.length + ' backup records!');
+    } catch(e) { alert("Export Error: " + e.message); }
+}
+async function restoreBackup(timestamp) {
+    if(!confirm("♻️ Restore this deleted order?")) return;
+    const pin = prompt("🔐 Enter Backup PIN:"); if(pin !== "dnhq_backup_2026") { alert("❌ Wrong PIN!"); return; }
+    try {
+        const res = await fetch(SCRIPT_URL + '?restoreBackup=true&timestamp=' + encodeURIComponent(timestamp) + '&pin=' + encodeURIComponent(pin)); const result = await res.json();
+        if(result.error) throw new Error(result.error);
+        alert("✅ Order restored successfully!"); loadLogs(); viewBackups();
+    } catch(e) { alert("Restore Error: " + e.message); }
+}
 
+// ✅ OTHER FUNCTIONS
+function contactCustomer(phone) { if(phone) { window.open('tel:' + phone, '_blank'); } }
+function openComplaintModal() { document.getElementById('complaintModal').style.display = 'block'; document.getElementById('complaintError').style.display = 'none'; document.getElementById('complaintSuccess').style.display = 'none'; }
+function closeComplaintModal() { document.getElementById('complaintModal').style.display = 'none'; document.getElementById('complaintName').value = ''; document.getElementById('complaintPhone').value = ''; document.getElementById('complaintType').value = ''; document.getElementById('complaintMessage').value = ''; }
+function closeComplaintModalOnBackground(event) {
+    if (event.target === document.getElementById('complaintModal')) {
+        closeComplaintModal();
+    }
+}
+async function submitComplaint() {
+    const name = document.getElementById('complaintName').value.trim(); const phone = document.getElementById('complaintPhone').value.trim();
+    const type = document.getElementById('complaintType').value; const message = document.getElementById('complaintMessage').value.trim();
+    const error = document.getElementById('complaintError'); const success = document.getElementById('complaintSuccess');
+    if(!name || !phone || !type || !message) { error.textContent = 'Please fill all fields!'; error.style.display = 'block'; return; }
+    const payload = { timestamp: Date.now().toString(), date: new Date().toISOString(), name: name.toUpperCase(), phone: phone, type: type, message: message, status: 'pending', entry_type: 'complaint' };
+    try {
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        success.textContent = '✅ Complaint submitted!'; success.style.display = 'block'; error.style.display = 'none';
+        setTimeout(() => { closeComplaintModal(); }, 3000);
+    } catch(e) { error.textContent = 'Error: ' + e.message; error.style.display = 'block'; }
+}
+function showConfirmDialog(order) {
+    if (!order || typeof order !== 'object') { alert(' Error: Invalid order data!'); return; }
+    pendingOrderData = order;
+    const client = order.client ? String(order.client) : 'Customer'; const phone = order.phone ? String(order.phone) : 'N/A';
+    const orderDate = order.date || order.timestamp || new Date().toISOString();
+    const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0;
+    const discountAmount = parseFloat(order.discount_amount) || 0; const advance = parseFloat(order.advance) || 0;
+    const total = parseFloat(order.total) || (subtotal - discountAmount); const balanceDue = parseFloat(order.balance_due) || (total - advance);
+    let html = '<div class="confirm-row"><label> Customer:</label><span class="value">' + client + '</span></div><div class="confirm-row"><label> Phone:</label><span class="value">' + phone + '</span></div><div class="confirm-row"><label> Date:</label><span class="value">' + formatDate(orderDate) + '</span></div><div class="confirm-row" style="border-top:2px solid #334155;margin-top:10px;padding-top:15px;"><label> Subtotal:</label><span class="value">Rs ' + subtotal.toLocaleString() + '</span></div>';
+    if (discountAmount > 0) html += '<div class="confirm-row discount highlight"><label> Discount:</label><span class="value">-Rs ' + discountAmount.toLocaleString() + '</span></div>';
+    html += '<div class="confirm-row highlight" style="background:rgba(251,191,36,0.2);"><label style="color:#fbbf24;font-size:16px;">💵 Total:</label><span class="value" style="color:#fbbf24;font-size:18px;">Rs ' + total.toLocaleString() + '</span></div>';
+    if (advance > 0) html += '<div class="confirm-row advance highlight"><label> Advance:</label><span class="value">-Rs ' + advance.toLocaleString() + '</span></div>';
+    if (balanceDue > 0) html += '<div class="confirm-row balance"><label>️ Balance Due:</label><span class="value">Rs ' + balanceDue.toLocaleString() + '</span></div>';
+    else html += '<div class="confirm-row balance paid"><label>✅ Payment Status:</label><span class="value">FULLY PAID</span></div>';
+    document.getElementById('confirmBody').innerHTML = html; document.getElementById('confirmDialog').style.display = 'block';
+}
+function closeConfirmDialog() { document.getElementById('confirmDialog').style.display = 'none'; pendingOrderData = null; }
+function confirmAndGeneratePDF() {
+    if (!pendingOrderData) { alert(' Error: No order data available!'); return; }
+    const orderData = JSON.parse(JSON.stringify(pendingOrderData)); closeConfirmDialog();
+    setTimeout(() => { generateManualPDF(orderData, 'invoice'); }, 100);
+}
+async function deleteEntry(timestamp) {
+    if(!timestamp) return alert(" Error: No order ID!");
+    const order = allOrders.find(o => o.timestamp === timestamp); const client = order?.client || 'Unknown';
+    const confirmMsg = '️ Delete Order?\n\nClient: ' + client + '\n\nThis will:\n1. Save to Backup Sheet\n2. Delete from Main Sheet\n\nContinue?';
+    if(!confirm(confirmMsg)) return;
+    const pin = prompt(" Enter Admin Delete PIN:"); if(pin !== "dnhq_delete_2026") { alert("❌ Wrong PIN! Deletion cancelled."); return; }
+    const reason = prompt("📝 Delete Reason (optional):", "Admin request") || "No reason";
+    try {
+        const url = SCRIPT_URL + '?deleteRow=true&timestamp=' + encodeURIComponent(timestamp) + '&pin=' + encodeURIComponent(pin) + '&reason=' + encodeURIComponent(reason);
+        const res = await fetch(url, { method: 'GET' }); const result = await res.json();
+        if(result.error) throw new Error(result.error);
+        alert('✅ Order deleted & backed up!\n\nBackup saved in "Deleted_Orders" sheet'); loadLogs();
+    } catch(e) { alert(" Delete Error: " + e.message); }
+}
+async function generatePDF(order) {
+    if (!order) { alert('❌ Error: Order data is missing!'); return; }
+    try {
+        const JsPDFConstructor = getJsPDFConstructor(); if (!JsPDFConstructor) { alert(' jsPDF library not loaded!'); return; }
+        const doc = new JsPDFConstructor();
+        const client = order.client ? String(order.client) : 'Customer'; const phone = order.phone ? String(order.phone) : 'N/A';
+        const orderDate = order.date || order.timestamp || new Date().toISOString(); const work = order.work ? String(order.work) : 'No work specified';
+        doc.setFillColor(0, 0, 0); doc.rect(0, 0, 210, 45, 'F');
+        try { const imgData = await getImageDataForPDF(document.getElementById('brandLogo')); if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30); } catch (e) {}
+        doc.setTextColor(251, 191, 36); doc.setFontSize(24); doc.setFont("helvetica", "bold"); doc.text("DNHQ SERVICES", 55, 24);
+        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(255, 255, 255); doc.text("Professional Electrical & AC Maintenance", 55, 31);
+        doc.setTextColor(0, 0, 0); doc.setFontSize(11); doc.text("INVOICE TO: " + client, 15, 55); doc.text("PHONE: " + phone, 15, 62); doc.text("DATE: " + formatDate(orderDate), 145, 55);
+        doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("INVOICE", 105, 72, { align: "center" });
+        let items = work.split(", "); let body = items.map(item => { if (item.includes("(Rs ")) { let parts = item.split(" (Rs "); return [parts[0].trim(), "Rs " + parts[1].replace(")", "").trim()]; } return [item.trim(), "-"]; });
+        doc.autoTable({ startY: 78, head: [['SERVICE', 'AMOUNT']], body: body, theme: 'grid', headStyles: { fillColor: [0,0,0], textColor: [251,191,36], fontSize: 10 }, styles: { fontSize: 9, cellPadding: 4 }, columnStyles: { 0: { cellWidth: 135 }, 1: { cellWidth: 45, halign: 'right' } } });
+        let finalY = doc.lastAutoTable.finalY + 10; const subtotal = parseFloat(order.subtotal) || parseFloat(order.total) || 0; const discount = parseFloat(order.discount_amount) || 0; const advance = parseFloat(order.advance) || 0; const totalAfterDiscount = subtotal - discount; const balanceDue = totalAfterDiscount - advance;
+        doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(150, 150, 150); doc.text("Subtotal:", 115, finalY); doc.text("Rs " + subtotal.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7;
+        if (discount > 0) { doc.setTextColor(16, 185, 129); doc.text(order.discount_text + " Discount:", 115, finalY); doc.text("-Rs " + discount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 7; doc.setTextColor(150, 150, 150); }
+        doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0); doc.text("Total:", 115, finalY); doc.text("Rs " + totalAfterDiscount.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10;
+        if (advance > 0) { doc.setDrawColor(59, 130, 246); doc.setLineWidth(0.5); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(10); doc.setTextColor(59, 130, 246); doc.setFont("helvetica", "bold"); doc.text("Advance Received:", 115, finalY); doc.text("-Rs " + advance.toLocaleString(), 195, finalY, { align: 'right' }); finalY += 10; }
+        doc.setDrawColor(251, 191, 36); doc.setLineWidth(1); doc.line(110, finalY - 5, 195, finalY - 5); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+        if (balanceDue > 0) { doc.setTextColor(239, 68, 68); doc.text("BALANCE DUE:", 115, finalY); doc.text("Rs " + balanceDue.toLocaleString(), 195, finalY, { align: 'right' }); } else { doc.setTextColor(16, 185, 129); doc.text("FULLY PAID ✓", 115, finalY); doc.text("Rs 0", 195, finalY, { align: 'right' }); }
+        const footerY = 280; doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(20, footerY, 190, footerY); doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 120); doc.text("Contact: " + PHONE_1, 105, footerY + 6, { align: "center" }); doc.text("Contact: " + PHONE_2, 105, footerY + 11, { align: "center" }); doc.text("Website: dnhq-services.online", 105, footerY + 16, { align: "center" });
+        const cname = client.replace(/[^a-z0-9]/gi, '_'); const dateStr = formatDate(orderDate).replace(/[^a-z0-9]/gi, '_'); doc.save('DNHQ_' + cname + '_' + dateStr + '.pdf');
+    } catch (error) { alert('❌ PDF Generation Failed: ' + error.message); }
+}
+async function placeOrder() {
+    if(cart.length === 0) return alert("Select at least one service!");
+    const name = prompt("Customer Name:")?.trim(); const phone = prompt("Phone (03XX-XXXXXXX):")?.trim();
+    if(!name || !phone) { alert("Name and Phone required!"); return; }
+    const total = cart.reduce((a, b) => a + (b.price || 0), 0); const workFormatted = cart.map(c => c.name + " (Rs " + c.price + ")").join(", ");
+    const payload = { date: new Date().toISOString(), client: name.toUpperCase(), phone: phone, work: workFormatted, subtotal: total, discount_type: 'none', discount_value: 0, discount_amount: 0, discount_text: 'None', advance: 0, total: total, balance_due: total, entry_type: 'order', order_status: 'received', order_source: 'website' };
+    try {
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+        const waText = '*🔔 NEW WEBSITE ORDER*%0A%0A* Customer:* ' + name + '%0A* Phone:* ' + phone + '%0A*️ Services:* ' + workFormatted + '%0A* Total:* Rs ' + total + '%0A%0A* Source:* Website Order';
+        window.open('https://wa.me/' + ADMIN_WHATSAPP + '?text=' + waText, '_blank');
+        alert("✅ Order Sent Successfully!\n\nThank you for your order.\n\nWe will contact you shortly.");
+        cart = []; updateCart(); document.querySelectorAll('.svc-item').forEach(el => el.classList.remove('selected'));
+    } catch(e) { alert("Error: " + e.message); }
+}
+function triggerAppInstall() { if (deferredPrompt) { document.getElementById('installPrompt').style.display = 'block'; } else { alert("📲 Tap Share → Add to Home Screen"); } }
+function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installPrompt').style.display = 'none'; } }
+function dismissInstall() { document.getElementById('installPrompt').style.display = 'none'; }
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+function openHistoryModal() { document.getElementById('historyModal').style.display = 'block'; }
+function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; resetHistoryView(); }
+function closeHistoryModalOnBackground(event) {
+    if (event.target === document.getElementById('historyModal')) {
+        closeHistoryModal();
+    }
+}
+function resetHistoryView() { document.getElementById('verifyStep').style.display = 'block'; document.getElementById('showStep').style.display = 'none'; document.getElementById('histPhone').value = ''; document.getElementById('histError').style.display = 'none'; currentCustData = null; }
 async function fetchCustomerHistory() {
-    const p = document.getElementById('histPhone').value.trim(); 
-    if(!p) return alert("Enter Phone");
+    const phone = document.getElementById('histPhone').value.trim(); const err = document.getElementById('histError');
+    if (!phone) { err.textContent = "Enter phone number"; err.style.display = 'block'; return; }
+    err.style.display = 'none'; document.getElementById('histList').innerHTML = '<div class="loading">Loading...</div>';
     try {
-        const r = await fetch(SCRIPT_URL + '?getHistory=true&phone=' + encodeURIComponent(p)); 
-        const d = await r.json();
-        if(!d.length) return alert("No Records");
-        document.getElementById('verifyStep').style.display = 'none'; 
-        document.getElementById('showStep').style.display = 'block';
-        document.getElementById('histList').innerHTML = d.map(o => `
-            <div class="history-item">
-                <b>${formatDate(o.date)}</b><br>${o.work}<br>
-                <button class="pdf-sm" onclick="generateManualPDF(${JSON.stringify(o).replace(/"/g,'&quot;')},'${o.doc_type}','auto')"> Download</button>
-            </div>
-        `).join('');
-    } catch(e) { alert("Error"); }
+        const url = SCRIPT_URL + '?getHistory=true&phone=' + encodeURIComponent(phone); const res = await fetch(url); const data = await res.json();
+        if (data.error) throw new Error(data.error); if (!data || data.length === 0) { err.textContent = " No records found"; err.style.display = 'block'; return; }
+        currentCustData = data; document.getElementById('verifyStep').style.display = 'none'; document.getElementById('showStep').style.display = 'block';
+        const totalSpent = data.reduce((sum, o) => sum + (parseFloat(o.total)||0), 0);
+        document.getElementById('custInfo').innerHTML = '<b>👤 ' + (data[0].client || 'Customer') + '</b><br><b class="phone"> ' + phone + '</b><br><b>Orders:</b> ' + data.length + ' | <b>Total:</b> Rs ' + totalSpent.toLocaleString();
+        document.getElementById('histList').innerHTML = data.slice().reverse().map((o, i) => '<div class="history-item"><b>#' + (data.length - i) + ' • ' + formatDate(o.date || o.timestamp) + '</b><small style="color:#fbbf24; display:block; margin:3px 0;">👤 ' + (o.client || 'Customer') + '</small><small class="phone"> ' + (o.phone || phone) + '</small><small> ' + (o.work || "").substring(0, 60) + '</small><span class="amt">' + (parseFloat(o.balance_due) > 0 ? 'Balance: Rs ' + parseFloat(o.balance_due).toLocaleString() : '✓ Paid') + '</span><button class="pdf-sm" data-order=\'' + JSON.stringify(o).replace(/'/g,"'") + '\'>📄 Download</button></div>').join('');
+        document.getElementById('histList').querySelectorAll('.pdf-sm').forEach(btn => { btn.onclick = function() { const order = JSON.parse(this.dataset.order.replace(/'/g, "'")); showConfirmDialog(order); }; });
+    } catch (e) { err.textContent = "Error"; err.style.display = 'block'; }
 }
-function downloadCustomerHistoryPDF() { alert("✅ History PDF Downloaded."); }
+function downloadCustomerHistoryPDF() {
+    if (!currentCustData || currentCustData.length === 0) return alert("No data!");
+    const JsPDFConstructor = getJsPDFConstructor(); if (!JsPDFConstructor) return alert('jsPDF not loaded!');
+    const doc = new JsPDFConstructor(); const cust = currentCustData[0]; const grandTotal = currentCustData.reduce((s,o) => s + (parseFloat(o.total)||0), 0);
+    doc.setFillColor(0,0,0); doc.rect(0,0,210,45,'F');
+    getImageDataForPDF(document.getElementById('brandLogo')).then(imgData => {
+        if (imgData) doc.addImage(imgData, 'JPEG', 15, 8, 30, 30);
+        doc.setTextColor(251,191,36); doc.setFontSize(20); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 55, 22);
+        doc.setTextColor(0,0,0); doc.setFontSize(9); doc.text("SERVICE HISTORY", 55, 28); doc.setTextColor(0,0,0); doc.setFontSize(10); doc.text("Phone: " + cust.phone, 15, 52);
+        const rows = currentCustData.map(o => [formatDate(o.date || o.timestamp), (o.work || "").substring(0, 30), "Rs " + (parseFloat(o.total)||0).toLocaleString()]);
+        doc.autoTable({ startY: 64, head: [['DATE','SERVICE','AMOUNT']], body: rows, theme: 'grid', headStyles: { fillColor: [0,0,0] }, styles: { fontSize: 8 } });
+        let y = doc.lastAutoTable.finalY + 12; doc.setDrawColor(251,191,36); doc.line(110, y-4, 195, y-4); doc.setFontSize(12); doc.text("GRAND TOTAL:", 115, y); doc.text("Rs " + grandTotal.toLocaleString(), 195, y, {align:'right'});
+        doc.save('DNHQ_History_' + cust.phone + '.pdf');
+    });
+}
 
-// ==========================================
-// ✅ CALCULATORS
-// ==========================================
-function openCalculator() { document.getElementById('calculatorModal').style.display='block'; }
-function closeCalculator() { document.getElementById('calculatorModal').style.display='none'; }
-function closeCalculatorOnBackground(e) { if(e.target===document.getElementById('calculatorModal')) closeCalculator(); }
-
-function switchCalcTab(t) {
-    document.querySelectorAll('.calc-tab').forEach(b => b.classList.remove('active'));
+// ✅ CALCULATOR FUNCTIONS
+function openCalculator() { document.getElementById('calculatorModal').style.display = 'block'; }
+function closeCalculator() { document.getElementById('calculatorModal').style.display = 'none'; }
+function closeCalculatorOnBackground(event) {
+    if (event.target === document.getElementById('calculatorModal')) {
+        closeCalculator();
+    }
+}
+function switchCalcTab(tab) {
+    document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
-    const btn = document.querySelector(`.calc-tab[onclick="switchCalcTab('${t}')"]`);
-    if(btn) btn.classList.add('active');
-    const section = document.getElementById('calc-' + t);
-    if(section) section.classList.add('active');
+    
+    if(tab === 'elec') {
+        document.querySelector('.calc-tab:nth-child(1)').classList.add('active');
+        document.getElementById('calc-elec').classList.add('active');
+    } else if(tab === 'ac') {
+        document.querySelector('.calc-tab:nth-child(2)').classList.add('active');
+        document.getElementById('calc-ac').classList.add('active');
+    } else if(tab === 'room') {
+        document.querySelector('.calc-tab:nth-child(3)').classList.add('active');
+        document.getElementById('calc-room').classList.add('active');
+    } else if(tab === 'amp') {
+        document.querySelector('.calc-tab:nth-child(4)').classList.add('active');
+        document.getElementById('calc-amp').classList.add('active');
+    }
 }
-
 function clearCalculator() {
-    ['calcV','calcW','calcA','acArea','roomLength','roomWidth','ampV','ampW'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-    document.querySelectorAll('.calc-result').forEach(e => e.style.display = 'none');
+    // Clear Electrical
+    document.getElementById('calcV').value = '';
+    document.getElementById('calcW').value = '';
+    document.getElementById('calcA').value = '';
+    document.getElementById('calcResult').style.display = 'none';
+    document.getElementById('calcCTA').style.display = 'none';
+    // Clear AC
+    document.getElementById('acArea').value = '';
+    document.getElementById('acResult').style.display = 'none';
+    document.getElementById('acCTA').style.display = 'none';
+    // Clear Room
+    document.getElementById('roomLength').value = '';
+    document.getElementById('roomWidth').value = '';
+    document.getElementById('roomResult').style.display = 'none';
+    document.getElementById('roomCTA').style.display = 'none';
+    // Clear Amperes
+    document.getElementById('ampV').value = '';
+    document.getElementById('ampW').value = '';
+    document.getElementById('ampResult').style.display = 'none';
+    document.getElementById('ampCTA').style.display = 'none';
 }
-
 function calculateElectrical() {
-    const v = parseFloat(document.getElementById('calcV').value) || 0;
-    const w = parseFloat(document.getElementById('calcW').value) || 0;
-    const a = parseFloat(document.getElementById('calcA').value) || 0;
-    const pf = parseFloat(document.getElementById('calcPF').value) || 1;
-    let r = "";
-    if(v && w && !a) r = `✅ Current: ${(w/(v*pf)).toFixed(2)} Amps`;
-    else if(v && a && !w) r = `✅ Power: ${(v*a*pf).toFixed(0)} Watts`;
-    else if(w && a && !v) r = `✅ Voltage: ${(w/(a*pf)).toFixed(2)} Volts`;
-    else r = "️ Enter 2 values";
-    document.getElementById('calcResult').innerHTML = r; 
-    document.getElementById('calcResult').style.display = 'block';
+    let v = parseFloat(document.getElementById('calcV').value) || 0;
+    let w = parseFloat(document.getElementById('calcW').value) || 0;
+    let a = parseFloat(document.getElementById('calcA').value) || 0;
+    let pf = parseFloat(document.getElementById('calcPF').value) || 1;
+    let result = "", showCTA = false;
+
+    if(v && w && !a) {
+        a = w / (v * pf);
+        let kw = (w / 1000).toFixed(2);
+        result = `✅ <b>Current:</b> ${a.toFixed(2)} Amps<br><small style="color:#94a3b8;">Formula: I = P ÷ (V × PF)</small><br><small style="color:#fbbf24;">(Power: ${w}W / ${kw} kW)</small>`;
+        showCTA = true;
+    } else if(v && a && !w) {
+        w = v * a * pf;
+        let kw = (w / 1000).toFixed(2);
+        result = `✅ <b>Power:</b> ${w.toFixed(0)} Watts (${kw} kW)<br><small style="color:#94a3b8;">Formula: P = V × I × PF</small>`;
+        showCTA = true;
+    } else if(w && a && !v) {
+        v = w / (a * pf);
+        let kw = (w / 1000).toFixed(2);
+        result = `✅ <b>Voltage:</b> ${v.toFixed(2)} Volts<br><small style="color:#94a3b8;">Formula: V = P ÷ (I × PF)</small><br><small style="color:#fbbf24;">(Power: ${w}W / ${kw} kW)</small>`;
+        showCTA = true;
+    } else {
+        result = "️ Please enter exactly <b>two values</b> to calculate the third.";
+    }
+
+    let resDiv = document.getElementById('calcResult');
+    resDiv.innerHTML = result;
+    resDiv.style.display = 'block';
+    document.getElementById('calcCTA').style.display = showCTA ? 'block' : 'none';
 }
 
-function calculateAC() { 
-    const a = parseFloat(document.getElementById('acArea').value) || 0;
-    const s = parseFloat(document.getElementById('acSun').value) || 1;
-    if(!a) return;
-    document.getElementById('acResult').innerHTML = `✅ Recommended: ${Math.ceil((a * 25 * s) / 12000)} Ton AC`; 
-    document.getElementById('acResult').style.display = 'block'; 
+function calculateAC() {
+    let area = parseFloat(document.getElementById('acArea').value) || 0;
+    let sunFactor = parseFloat(document.getElementById('acSun').value) || 1;
+    
+    if(area === 0) {
+        document.getElementById('acResult').innerHTML = "️ Please enter room area.";
+        document.getElementById('acResult').style.display = 'block';
+        return;
+    }
+
+    let requiredBTU = area * 25 * sunFactor;
+    let tons = requiredBTU / 12000;
+    let recommendedTons = Math.ceil(tons * 2) / 2;
+    
+    if(recommendedTons < 1) recommendedTons = 1;
+
+    let msg = `✅ <b>Recommended Size:</b> ${recommendedTons} Ton AC<br>`;
+    msg += `<small style="color:#94a3b8;">Area: ${area} sq ft | Required: ~${Math.round(requiredBTU)} BTU</small>`;
+    
+    if(recommendedTons >= 2.5) {
+        msg += `<br><small style="color:#ef4444;">️ Large room: Consider 2 ACs or Duct System</small>`;
+    }
+
+    let resDiv = document.getElementById('acResult');
+    resDiv.innerHTML = msg;
+    resDiv.style.display = 'block';
+    document.getElementById('acCTA').style.display = 'block';
 }
 
-function calculateRoomArea() { 
-    const l = parseFloat(document.getElementById('roomLength').value) || 0;
-    const w = parseFloat(document.getElementById('roomWidth').value) || 0;
-    if(!l || !w) return;
-    document.getElementById('roomResult').innerHTML = `✅ Area: ${l*w} Sq.Ft`; 
-    document.getElementById('roomResult').style.display = 'block'; 
+function calculateRoomArea() {
+    let length = parseFloat(document.getElementById('roomLength').value) || 0;
+    let width = parseFloat(document.getElementById('roomWidth').value) || 0;
+    
+    if(length === 0 || width === 0) {
+        document.getElementById('roomResult').innerHTML = "️ Please enter both Length and Width.";
+        document.getElementById('roomResult').style.display = 'block';
+        return;
+    }
+
+    let area = length * width;
+    let suggestedAC = Math.ceil(area / 150); 
+    if(suggestedAC < 1) suggestedAC = 1;
+    if(area < 120) suggestedAC = "1 Ton";
+    else if(area < 200) suggestedAC = "1.5 Ton";
+    else suggestedAC = "2 Ton";
+
+    let msg = `✅ <b>Total Area:</b> ${area} Sq.Ft<br>`;
+    msg += `<small style="color:#94a3b8;">${length}ft × ${width}ft</small>`;
+    msg += `<br><small style="color:#fbbf24;"> Recommended for this room: ${suggestedAC} AC</small>`;
+
+    let resDiv = document.getElementById('roomResult');
+    resDiv.innerHTML = msg;
+    resDiv.style.display = 'block';
+    document.getElementById('roomCTA').style.display = 'block';
 }
 
-function calculateAmperes() { 
-    const v = parseFloat(document.getElementById('ampV').value) || 0;
-    const w = parseFloat(document.getElementById('ampW').value) || 0;
-    const pf = parseFloat(document.getElementById('ampPF').value) || 1;
-    if(!v || !w) return;
-    document.getElementById('ampResult').innerHTML = `✅ Current: ${(w / (v * pf)).toFixed(2)} Amps`; 
-    document.getElementById('ampResult').style.display = 'block'; 
+// ✅ NEW: AMPERES CALCULATOR
+function calculateAmperes() {
+    let v = parseFloat(document.getElementById('ampV').value) || 0;
+    let w = parseFloat(document.getElementById('ampW').value) || 0;
+    let pf = parseFloat(document.getElementById('ampPF').value) || 1;
+    
+    if(v === 0 || w === 0) {
+        document.getElementById('ampResult').innerHTML = "️ Please enter both Voltage and Power.";
+        document.getElementById('ampResult').style.display = 'block';
+        return;
+    }
+
+    // Calculate Amperes: I = P / (V × PF)
+    let amperes = w / (v * pf);
+    let kw = (w / 1000).toFixed(2);
+    
+    // Suggest wire size and breaker
+    let wireSize = "1.5 mm²";
+    let breaker = "10A";
+    if(amperes > 16) { wireSize = "2.5 mm²"; breaker = "20A"; }
+    if(amperes > 25) { wireSize = "4 mm²"; breaker = "32A"; }
+    if(amperes > 40) { wireSize = "6 mm²"; breaker = "40A"; }
+
+    let msg = `✅ <b>Current:</b> ${amperes.toFixed(2)} Amps<br>`;
+    msg += `<small style="color:#94a3b8;">Formula: I = P ÷ (V × PF)</small><br>`;
+    msg += `<small style="color:#fbbf24;">Power: ${w}W / ${kw} kW</small><br>`;
+    msg += `<br><small style="color:#60a5fa;">🔌 Suggested: ${wireSize} wire + ${breaker} MCB</small>`;
+
+    let resDiv = document.getElementById('ampResult');
+    resDiv.innerHTML = msg;
+    resDiv.style.display = 'block';
+    document.getElementById('ampCTA').style.display = 'block';
 }
 
-// ==========================================
-// ✅ BLANK LETTERHEAD DOWNLOAD
-// ==========================================
-function downloadBlankLetterhead() {
-    try {
-        const {jsPDF} = window.jspdf; 
-        const doc = new jsPDF();
-        doc.setFillColor(0,0,0); doc.rect(0,0,210,48,'F');
-        getImageDataForPDF(document.getElementById('brandLogo')).then(img => { if(img) doc.addImage(img,'PNG',15,9,30,30); });
-        doc.setTextColor(251,191,36); doc.setFontSize(22); doc.setFont("helvetica","bold"); doc.text("DNHQ SERVICES", 50, 22);
-        doc.setFontSize(9); doc.setTextColor(200,200,200); doc.text("Professional Electrical & AC Maintenance", 50, 28);
-        doc.text(" " + PHONE_1 + " | " + PHONE_2, 50, 34); doc.text(" dnhq-services.online", 50, 40);
-        doc.setTextColor(0,0,0); doc.setFontSize(10);
-        doc.text("Date: ____________________", 15, 58); doc.text("Ref No: ____________________", 15, 65);
-        doc.text("To: ____________________", 15, 72); doc.text("Subject: ____________________", 15, 79);
-        doc.setDrawColor(220,220,220); doc.setLineWidth(0.3); let y = 88; while(y < 265){ doc.line(15, y, 195, y); y += 8; }
-        doc.setDrawColor(251,191,36); doc.setLineWidth(1.2); doc.line(15, 270, 195, 270);
-        doc.setFontSize(8); doc.setTextColor(100,100,100);
-        doc.text("DNHQ Services - Authorized Official Letterhead", 105, 278, {align:"center"});
-        doc.text("Valid only with official stamp & signature.", 105, 284, {align:"center"});
-        doc.save('DNHQ_Letterhead.pdf'); alert('✅ Letterhead Downloaded!');
-    } catch(e) { alert('Error: ' + e.message); }
+function closeBackupModalOnBackground(event) {
+    if (event.target === document.getElementById('backupModal')) {
+        closeBackupModal();
+    }
 }
 
-// ==========================================
-// ✅ EXPORT ALL FUNCTIONS TO WINDOW
-// ==========================================
-window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.switchAdminTab = switchAdminTab;
-window.setDocType = setDocType; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry;
-window.generateManualPDF = generateManualPDF; window.loadLogs = loadLogs; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders;
-window.openHistoryModal = openHistoryModal; window.closeHistoryModal = closeHistoryModal; window.closeHistoryModalOnBackground = closeHistoryModalOnBackground;
-window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF;
-window.openCalculator = openCalculator; window.closeCalculator = closeCalculator; window.closeCalculatorOnBackground = closeCalculatorOnBackground;
-window.switchCalcTab = switchCalcTab; window.clearCalculator = clearCalculator;
-window.calculateElectrical = calculateElectrical; window.calculateAC = calculateAC; window.calculateRoomArea = calculateRoomArea; window.calculateAmperes = calculateAmperes;
-window.downloadBlankLetterhead = downloadBlankLetterhead; window.updateCart = updateCart;
-window.setNote = setNote; window.updateAdvanceUI = updateAdvanceUI; window.toggleDiscountInput = toggleDiscountInput;
-// Electrical Invoice Functions
-window.openElectricalInvoice = openElectricalInvoice; window.closeElecModal = closeElecModal;
-window.elecAddRow = elecAddRow; window.setElecMode = setElecMode; window.elecCalc = elecCalc; window.downloadElecPDF = downloadElecPDF;
+// ✅ EXPORT ALL FUNCTIONS
+window.toggleSvc = toggleSvc; window.playVid = playVid; window.openAdmin = openAdmin; window.openHistoryModal = openHistoryModal; window.triggerAppInstall = triggerAppInstall; window.generatePDF = generatePDF; window.deleteEntry = deleteEntry; window.fetchCustomerHistory = fetchCustomerHistory; window.downloadCustomerHistoryPDF = downloadCustomerHistoryPDF; window.toggleDiscountInput = toggleDiscountInput; window.showConfirmDialog = showConfirmDialog; window.closeConfirmDialog = closeConfirmDialog; window.confirmAndGeneratePDF = confirmAndGeneratePDF; window.switchAdminTab = switchAdminTab; window.loadComplaints = loadComplaints; window.contactCustomer = contactCustomer; window.openComplaintModal = openComplaintModal; window.closeComplaintModal = closeComplaintModal; window.closeComplaintModalOnBackground = closeComplaintModalOnBackground; window.submitComplaint = submitComplaint; window.filterOrders = filterOrders; window.refreshOrders = refreshOrders; window.addNewManualRow = addNewManualRow; window.saveManualEntry = saveManualEntry; window.loadLogs = loadLogs; window.updateCart = updateCart; window.closeHistoryModal = closeHistoryModal; window.closeHistoryModalOnBackground = closeHistoryModalOnBackground; window.resetHistoryView = resetHistoryView; window.installApp = installApp; window.dismissInstall = dismissInstall; window.placeOrder = placeOrder; window.viewBackups = viewBackups; window.closeBackupModal = closeBackupModal; window.closeBackupModalOnBackground = closeBackupModalOnBackground; window.refreshBackups = refreshBackups; window.exportBackups = exportBackups; window.restoreBackup = restoreBackup; window.setDocType = setDocType; window.generateManualPDF = generateManualPDF; window.convertToInvoice = convertToInvoice; window.calculateTotalRevenue = calculateTotalRevenue; window.openCalculator = openCalculator; window.closeCalculator = closeCalculator; window.closeCalculatorOnBackground = closeCalculatorOnBackground; window.switchCalcTab = switchCalcTab; window.calculateElectrical = calculateElectrical; window.clearCalculator = clearCalculator; window.calculateAC = calculateAC; window.calculateRoomArea = calculateRoomArea; window.calculateAmperes = calculateAmperes;
 
-// ✅ INIT
-document.addEventListener('DOMContentLoaded', () => { 
-    console.log('✅ UI Ready'); 
-    updateCart(); 
-    setElecMode('area');
-});
+// ✅ INITIALIZE
+document.addEventListener('DOMContentLoaded', function() { console.log('✅ DOM Loaded - All functions ready'); updateCart(); });
 </script>
 </body>
 </html>
